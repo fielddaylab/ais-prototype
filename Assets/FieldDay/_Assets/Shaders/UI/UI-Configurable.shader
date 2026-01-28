@@ -2,7 +2,7 @@ Shader "FieldDay/UI/Configurable"
 {
     Properties
     {
-        [PerRendererData] _MainTex ("Sprite Texture", 2D) = "white" {}
+        [PerRendererData] [NoScaleOffset] _MainTex ("Sprite Texture", 2D) = "white" {}
         _Color ("Tint", Color) = (1,1,1,1)
 
         [HideInInspector] _StencilComp ("Stencil Comparison", Float) = 8

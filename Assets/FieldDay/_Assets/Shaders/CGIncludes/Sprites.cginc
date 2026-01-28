@@ -54,7 +54,9 @@ CBUFFER_START(UnityPerDrawSprite)
     fixed4 _RendererColor;
     fixed2 _Flip;
 #endif
+#if ETC1_EXTERNAL_ALPHA
     float _EnableExternalAlpha;
+#endif // ETC1_EXTERNAL_ALPHA
 CBUFFER_END
 
 /// Uniforms

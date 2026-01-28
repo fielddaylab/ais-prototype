@@ -38,11 +38,9 @@ struct Varyings_UI
 
 // main texture
 sampler2D _MainTex;
-float4 _MainTex_ST;
 
-// color/sample add
+// color
 fixed4 _Color;
-fixed4 _TextureSampleAdd;
 
 // clipping
 float4 _ClipRect;
@@ -105,7 +103,7 @@ Varyings_UI DefaultUIVert(Attributes_UI v)
     output.worldPosition = v.vertex;
     output.vertex = vPosition;
     
-    output.texcoord = TRANSFORM_TEX(v.texcoord.xy, _MainTex);
+    output.texcoord = v.texcoord.xy;
 #if UNITY_UI_CLIP_RECT
     output.mask = UIComputeRectMask(v.vertex);
 #endif // UNITY_UI_CLIP_RECT
@@ -117,7 +115,7 @@ Varyings_UI DefaultUIVert(Attributes_UI v)
 fixed4 DefaultUIFrag(Varyings_UI f) : SV_Target
 {
     f.color.a = Quantize8(f.color.a);
-    half4 color = f.color * (tex2D(_MainTex, f.texcoord) + _TextureSampleAdd);
+    half4 color = f.color * (tex2D(_MainTex, f.texcoord));
     
     UIRectClip(f.mask, color);
     UIAlphaClip(color);
