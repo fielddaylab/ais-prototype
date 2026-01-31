@@ -3,7 +3,6 @@
 #ifndef FD_UI_INCLUDED
 #define FD_UI_INCLUDED
 
-#include "UnityCG.cginc"
 #include "./Common.cginc"
 #include "UnityUI.cginc"
 
@@ -19,7 +18,7 @@ struct Attributes_UI
     float4 vertex   : POSITION;
     fixed4 color    : COLOR;
     float2 texcoord : TEXCOORD0;
-    AttributesInstancing
+    AttributesInstancing()
 };
 
 struct Varyings_UI
@@ -31,7 +30,7 @@ struct Varyings_UI
 #if UNITY_UI_CLIP_RECT
     half4  mask             : TEXCOORD2;
 #endif // UNITY_UI_CLIP_RECT
-    VaryingsStereo
+    VaryingsStereo()
 };
 
 /// Uniforms

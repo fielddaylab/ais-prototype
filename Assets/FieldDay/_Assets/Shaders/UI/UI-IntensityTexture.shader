@@ -1,9 +1,11 @@
-Shader "FieldDay/UI/Alpha Texture"
+Shader "FieldDay/UI/Intensity Texture"
 {
     Properties
     {
-        [PerRendererData] [NoScaleOffset] _MainTex ("Alpha Texture", 2D) = "white" {}
+        [PerRendererData] [NoScaleOffset] _MainTex ("Intensity Texture", 2D) = "white" {}
         [Toggle(FD_SAMPLE_A)] _SampleAlpha ("Sample Alpha Channel", Float) = 1
+		[KeywordEnum(COLOR, ALPHA, COLOR_ALPHA)] FD_INTENSITY("Intensity Mode", Int) = 2
+		_IntensityThreshold("Intensity Threshold", Range(0.001, 1)) = 1
         _Color ("Tint", Color) = (1,1,1,1)
 
         [HideInInspector] _StencilComp ("Stencil Comparison", Float) = 8
@@ -64,13 +66,14 @@ Shader "FieldDay/UI/Alpha Texture"
             #pragma multi_compile_local _ UNITY_UI_ALPHACLIP
             #pragma multi_compile_local _ FD_SAMPLE_A
 			#pragma multi_compile_local _ FD_PREMULTIPLY_ALPHA
+			#pragma multi_compile_local FD_INTENSITY_COLOR FD_INTENSITY_ALPHA FD_INTENSITY_COLOR_ALPHA
 
             #include "../CGIncludes/UI.cginc"
-			#include "../CGIncludes/Layers.cginc"
+			#include "../CGIncludes/Intensity.cginc"
 
             fixed4 CustomFrag(Varyings_UI IN) : SV_Target
             {
-				half4 color = LayerAlphaTexture(_MainTex, IN.texcoord, IN.color);
+				half4 color = LayerIntensityTexture(_MainTex, IN.texcoord, IN.color);
 
                 UIRectClip(IN.mask, color);
                 UIAlphaClip(color);

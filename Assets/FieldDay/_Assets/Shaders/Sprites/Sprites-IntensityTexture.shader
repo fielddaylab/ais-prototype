@@ -1,9 +1,11 @@
-Shader "FieldDay/Sprites/Intensity  Texture"
+Shader "FieldDay/Sprites/Intensity Texture"
 {
     Properties
     {
         [PerRendererData] _MainTex ("Intensity Texture", 2D) = "white" {}
         [Toggle(FD_SAMPLE_A)] _SampleAlpha ("Sample Alpha Channel", Float) = 1
+		[KeywordEnum(COLOR, ALPHA, COLOR_ALPHA)] FD_INTENSITY("Intensity Mode", Int) = 2
+		_IntensityThreshold("Intensity Threshold", Range(0.001, 1)) = 1
         _Color ("Tint", Color) = (1,1,1,1)
         [MaterialToggle] PixelSnap ("Pixel snap", Float) = 0
         [HideInInspector] _RendererColor ("RendererColor", Color) = (1,1,1,1)
@@ -56,9 +58,10 @@ Shader "FieldDay/Sprites/Intensity  Texture"
 			#pragma multi_compile_local _ FD_PREMULTIPLY_ALPHA
             #pragma multi_compile_local _ FD_SAMPLE_A
             #pragma multi_compile_local _ FD_ENABLE_FOG
+			#pragma multi_compile_local FD_INTENSITY_COLOR FD_INTENSITY_ALPHA FD_INTENSITY_COLOR_ALPHA
 
             #include "../CGIncludes/Sprites.cginc"
-			#include "../CGIncludes/Layers.cginc"
+			#include "../CGIncludes/Intensity.cginc"
 
             fixed4 SpriteFragAlpha(Varyings_Sprite v) : SV_Target
             {

@@ -14,13 +14,13 @@
 
 /// Instancing
 
-#define     AttributesInstancing    UNITY_VERTEX_INPUT_INSTANCE_ID
-#define     VaryingsInstancing      UNITY_VERTEX_INPUT_INSTANCE_ID
+#define     AttributesInstancing()    UNITY_VERTEX_INPUT_INSTANCE_ID
+#define     VaryingsInstancing()      UNITY_VERTEX_INPUT_INSTANCE_ID
 #define     InstancingInitialize(input)     UNITY_SETUP_INSTANCE_ID(input)
 
 /// Stereo
 
-#define     VaryingsStereo                  UNITY_VERTEX_OUTPUT_STEREO
+#define     VaryingsStereo()                  UNITY_VERTEX_OUTPUT_STEREO
 #define     StereoInitialize(output)        UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(output)
 
 /// Quantization
@@ -68,7 +68,7 @@ inline float2 Rotate2d(float2 base, float radians)
     #define PixelSnapApply(position)
 #endif // PIXELSNAP_ON
 
-#define ColorMakeOpaque(color)  color.a = 1
+#define ColorMakeOpaque(color)  (color).a = 1
 
 /// Texture Coordinates
 

@@ -31,6 +31,8 @@
     #define     FogApply(color, input)
 #endif // FD_ENABLE_FOG
 
+#define UnityFogColor()     (unity_FogColor).rgb
+
 /// Programs
 
 #endif // FD_EFFECTS_INCLUDED
