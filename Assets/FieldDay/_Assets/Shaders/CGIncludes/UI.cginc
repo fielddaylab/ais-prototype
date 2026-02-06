@@ -3,8 +3,11 @@
 #ifndef FD_UI_INCLUDED
 #define FD_UI_INCLUDED
 
+#define IS_UI_SHADER    true
+
 #include "./Common.cginc"
 #include "UnityUI.cginc"
+#include "./ColorMod.cginc"
 
 /// Configuration Defines
 
@@ -19,6 +22,8 @@ struct Attributes_UI
     fixed4 color    : COLOR;
     float2 texcoord : TEXCOORD0;
     AttributesInstancing()
+    AttributesUILerpColor(1)
+    AttributesUIAdditiveColor(2)
 };
 
 struct Varyings_UI
@@ -31,6 +36,8 @@ struct Varyings_UI
     half4  mask             : TEXCOORD2;
 #endif // UNITY_UI_CLIP_RECT
     VaryingsStereo()
+    VaryingsUILerpColor(3)
+    VaryingsUIAdditiveColor(4)
 };
 
 /// Uniforms
@@ -108,6 +115,10 @@ Varyings_UI DefaultUIVert(Attributes_UI v)
 #endif // UNITY_UI_CLIP_RECT
     
     output.color = v.color * _Color;
+    
+    UITransferLerpColor(v, output);
+    UITransferAdditiveColor(v, output);
+    
     return output;
 }
 
@@ -118,6 +129,9 @@ fixed4 DefaultUIFrag(Varyings_UI f) : SV_Target
     
     UIRectClip(f.mask, color);
     UIAlphaClip(color);
+    
+    UIApplyLerpColor(color, f);
+    UIApplyAdditiveColor(color, f);
     
     PremultiplyAlpha(color);
     return color;

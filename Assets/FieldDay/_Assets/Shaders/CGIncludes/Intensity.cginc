@@ -11,7 +11,8 @@
 
 /// Uniforms
 
-half _IntensityThreshold;
+half _IntensityColorThreshold;
+half _IntensityAlphaThreshold;
 
 /// Helpers
 
@@ -20,19 +21,16 @@ inline float4 LayerIntensityTexture(sampler2D intensityTexture, float2 uv, float
     float intensity = SampleSingle(intensityTexture, uv);
     return float4(
 #if FD_INTENSITY_COLOR || FD_INTENSITY_COLOR_ALPHA
-        color.rgb * intensity,
+        color.rgb * saturate(intensity / _IntensityColorThreshold),
 #else
         color.rgb,
 #endif // FD_INTENSITY_COLOR || FD_INTENSITY_COLOR_ALPHA
 #if FD_INTENSITY_ALPHA || FD_INTENSITY_COLOR_ALPHA
-        saturate(intensity / _IntensityThreshold) * color.a
+        saturate(intensity / _IntensityAlphaThreshold) * color.a
 #else
         color.a
 #endif // FD_INTENSITY_ALPHA || FD_INTENSITY_COLOR_ALPHA
     );
 }
-
-// #define LayerLerpColor(baseColor, lerpColor)    baseColor.rgb = lerp(baseColor.rgb, lerpColor.rgb, lerpColor.a)
-// #define LayerAdditiveColor(baseColor, additiveColor)    baseColor.rgb += (additiveColor).rgb * ((additiveColor).a * (baseColor).a)
 
 #endif // FD_INTENSITY_INCLUDED

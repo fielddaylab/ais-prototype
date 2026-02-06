@@ -17,10 +17,11 @@
 #define     AttributesInstancing()    UNITY_VERTEX_INPUT_INSTANCE_ID
 #define     VaryingsInstancing()      UNITY_VERTEX_INPUT_INSTANCE_ID
 #define     InstancingInitialize(input)     UNITY_SETUP_INSTANCE_ID(input)
+#define     InstancingTransfer(input, output)   UNITY_TRANSFER_INSTANCE_ID(input, output)
 
 /// Stereo
 
-#define     VaryingsStereo()                  UNITY_VERTEX_OUTPUT_STEREO
+#define     VaryingsStereo()                UNITY_VERTEX_OUTPUT_STEREO
 #define     StereoInitialize(output)        UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(output)
 
 /// Quantization

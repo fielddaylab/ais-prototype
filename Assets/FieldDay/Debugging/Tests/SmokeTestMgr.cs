@@ -337,7 +337,7 @@ namespace FieldDay.Debugging {
         [EngineMenuFactory]
         static private DMInfo CreateDebugMenu() {
             DMInfo menu = new DMInfo("Smoke Tests", 64);
-            foreach(var testRegistration in Reflect.FindMethods<SmokeTestProviderAttribute>(ReflectionCache.UserAssemblies, System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.NonPublic, false)) {
+            foreach(var testRegistration in Reflect.FindMethods<SmokeTestProviderAttribute>(ReflectionCache.UserAssemblies, System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic, false)) {
                 MethodInfo m = testRegistration.Info;
                 if (m.ReturnParameter.ParameterType != typeof(void) || m.GetParameters().Length != 0) {
                     UnityEngine.Debug.LogErrorFormat("[SmokeTestMgr] Method '{0}::{1}' does not match required signature of 'void func()'", m.DeclaringType.FullName, m.Name);

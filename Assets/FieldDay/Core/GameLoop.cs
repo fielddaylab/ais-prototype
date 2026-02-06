@@ -106,7 +106,11 @@ namespace FieldDay {
         private GuiMgr.Config m_GuiConfig = new GuiMgr.Config();
 
         [SerializeField]
-        private FileSystem.Config m_FileSystemConfig = new FileSystem.Config();
+        private FileSystem.Config m_FileSystemConfig = new FileSystem.Config() {
+            RetryDelay = 1,
+            MaxInFlightRequests = 4,
+            MaxRetryCount = 8
+        };
 
         [SerializeField]
         private RenderMgr.Config m_RenderConfig = new RenderMgr.Config() {

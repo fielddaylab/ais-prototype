@@ -1,7 +1,7 @@
 // Portions from Unity built-in shader source, under MIT license.
 
-#ifndef FD_EFFECTS_INCLUDED
-#define FD_EFFECTS_INCLUDED
+#ifndef FD_FOG_INCLUDED
+#define FD_FOG_INCLUDED
 
 #include "./Common.cginc"
 
@@ -35,4 +35,4 @@
 
 /// Programs
 
-#endif // FD_EFFECTS_INCLUDED
+#endif // FD_FOG_INCLUDED
