@@ -10,4 +10,9 @@
 @desc		Description here
 @path		img.png
 
+::example-action-card-3
+@title		Title Here (3)
+@desc		Description here
+@path		img.png
+
 // END

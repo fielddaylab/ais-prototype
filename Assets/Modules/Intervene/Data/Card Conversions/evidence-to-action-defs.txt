@@ -1,0 +1,12 @@
+// Evidence To Action Conversions
+
+::
+@from	example-evidence-card-1
+@to		example-action-card-1
+
+::
+@from	example-evidence-card-2
+@to		example-action-card-2, example-action-card-3
+
+
+// END

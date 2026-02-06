@@ -52,12 +52,12 @@ namespace AIS.Intervene
             yield return null;
 
             // Populate Card data
-            var populate = Async.Schedule(CardsUtility.PopulateCards(this), AsyncFlags.HighPriority | AsyncFlags.MainThreadOnly);
+            var populate = Async.Schedule(ActionCardsUtility.PopulateCards(this), AsyncFlags.HighPriority | AsyncFlags.MainThreadOnly);
             Game.Scenes.RegisterLoadDependency(populate);
         }
     }
 
-    static public class CardsUtility
+    static public class ActionCardsUtility
     {
 
         #region Card Definition Parsing
@@ -65,6 +65,8 @@ namespace AIS.Intervene
         private static readonly string TITLE_TAG = "@title";
         private static readonly string DESC_TAG = "@desc";
         private static readonly string IMAGE_PATH_TAG = "@path";
+
+        private static readonly string ENTRY_SEP = "::";
 
         private static readonly char[] END_DELIMS = new char[] { '\r', '\n' };
 
@@ -76,7 +78,7 @@ namespace AIS.Intervene
 
             foreach (TextAsset cardSource in cardsState.CardSources)
             {
-                cardStrings = TextIO.TextAssetToList(cardSource, "::");
+                cardStrings = TextIO.TextAssetToList(cardSource, ENTRY_SEP);
 
                 foreach (string str in cardStrings)
                 {
@@ -194,6 +196,10 @@ namespace AIS.Intervene
                 foreach (var actionId in actionIds)
                 {
                     var actionCard = state.AllActionCards[actionId];
+                    if (relevantCards.Contains(actionCard))
+                    {
+                        // TODO: special handling for duplicates?
+                    }
                     relevantCards.Add(actionCard);
                 }
             }
@@ -228,7 +234,7 @@ namespace AIS.Intervene
             info.AddButton("Unlock All Cards", () => {
                 var c = Game.SharedState.Get<ActionCardsState>();
                 foreach (var cardId in c.AllActionCards.Keys) {
-                    CardsUtility.UnlockCard(c, cardId);
+                    ActionCardsUtility.UnlockCard(c, cardId);
                 }
             }, () => Game.SharedState.TryGet(out ActionCardsState c));
 

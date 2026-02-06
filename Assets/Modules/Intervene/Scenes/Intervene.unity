@@ -180,7 +180,7 @@ GameObject:
   - component: {fileID: 1381339230}
   - component: {fileID: 1381339229}
   m_Layer: 0
-  m_Name: EvidenceToActionCardsConverterState
+  m_Name: EvidenceToActionConverterState
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -198,23 +198,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd2ed0e1169878343a2042b1929899bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ConversionEntries:
-  - EvidenceSource:
-      m_Source: 
-      m_HashValue: 0
-    ActionResultChecks:
-    - ActionCardId:
-        m_Source: example-action-card-1
-        m_HashValue: 2456269585
-      Condition: 0
-  - EvidenceSource:
-      m_Source: 
-      m_HashValue: 0
-    ActionResultChecks:
-    - ActionCardId:
-        m_Source: example-action-card-2
-        m_HashValue: 2405936728
-      Condition: 0
+  ConversionDefs:
+  - {fileID: 4900000, guid: 31818ad25b2e9524e89a1bc0bd838a96, type: 3}
 --- !u!4 &1381339230
 Transform:
   m_ObjectHideFlags: 0
