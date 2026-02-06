@@ -184,14 +184,18 @@ namespace AIS.Intervene
         static public List<ActionCardData> GetCardsFromEvidence(ActionCardsState state, List<StringHash32> evidenceCardIds)
         {
             List<ActionCardData> relevantCards = new List<ActionCardData>();
+            EvidenceToActionConverterState converterState = Find.State<EvidenceToActionConverterState>();
 
             foreach (var evidenceCardId in evidenceCardIds)
             {
-                // TODO:
-                // lookup evidence card
-                // extract action cards it unlocks
+                // lookup evidence card  and extract action cards it unlocks
+                List<SerializedHash32> actionIds = EvidenceActionConvertUtility.ConvertEvidenceToActionCardIds(converterState, evidenceCardId);
                 // add each action card here
-                    // relevantCards.Add(card)
+                foreach (var actionId in actionIds)
+                {
+                    var actionCard = state.AllActionCards[actionId];
+                    relevantCards.Add(actionCard);
+                }
             }
 
             return relevantCards;
