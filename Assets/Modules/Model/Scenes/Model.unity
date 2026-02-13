@@ -300,6 +300,7 @@ Transform:
   m_Children:
   - {fileID: 1892270728}
   - {fileID: 356420024}
+  - {fileID: 1825280328}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1319539060
@@ -929,6 +930,52 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1825280327
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1825280328}
+  - component: {fileID: 1825280329}
+  m_Layer: 0
+  m_Name: SpriteLookup
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1825280328
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1825280327}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 987145766}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1825280329
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1825280327}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a53929a6a205fcb41b7c80b5107be837, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AllSpeciesDefs:
+  - {fileID: 11400000, guid: 00074f573a8314145b68f35bed9e0361, type: 2}
 --- !u!1 &1892270726
 GameObject:
   m_ObjectHideFlags: 0
@@ -961,6 +1008,7 @@ MonoBehaviour:
   EcosystemPrefab: {fileID: 5390868531504753595, guid: c27f25a34ab2adf4d9a6943b544bc42f, type: 3}
   PathwayPrefab: {fileID: 7541161723274794029, guid: 2019c9f95189bc14c992d010a24734f7, type: 3}
   SpeciesClusterPrefab: {fileID: 8153853392820626865, guid: 6766cf8379c1f724b8f6b5c324338bf7, type: 3}
+  TransformPrefab: {fileID: 3176124496557514604, guid: 67e14ac7f869ce04fb353b2ab3d870f8, type: 3}
 --- !u!4 &1892270728
 Transform:
   m_ObjectHideFlags: 0

@@ -43,6 +43,7 @@ namespace AIS.Model
         public void SetModelSetupData(InvasionModelSetupData setupData)
         {
             m_CurrModelSetupData = setupData;
+            InvasionModelContainer.Instance = m_ModelContainer;
         }
 
         #region Setup
@@ -71,8 +72,8 @@ namespace AIS.Model
             foreach (var ecosystemData in m_CurrModelSetupData.Ecosystems)
             {
                 var newEcosystem = Instantiate(m_Prefabs.EcosystemPrefab, m_ModelContainer.transform).GetComponent<Ecosystem>();
-                newEcosystem.LoadData(ecosystemData);
-                m_ModelContainer.AddEcosystem(newEcosystem);
+                newEcosystem.LoadData(ecosystemData, m_Prefabs.TransformPrefab);
+                m_ModelContainer.RegisterEcosystem(newEcosystem);
             }
         }
 
@@ -82,7 +83,7 @@ namespace AIS.Model
             {
                 var newPathway = Instantiate(m_Prefabs.PathwayPrefab, m_ModelContainer.transform).GetComponent<Pathway>();
                 newPathway.LoadData(pathwayData);
-                m_ModelContainer.AddPathway(newPathway);
+                m_ModelContainer.RegisterPathway(newPathway);
             }
         }
 
@@ -98,11 +99,9 @@ namespace AIS.Model
         {
             foreach (var speciesData in curveThreshold.SpeciesSetups)
             {
-                var newSpecies = Instantiate(m_Prefabs.SpeciesClusterPrefab, m_ModelContainer.transform).GetComponent<SpeciesCluster>();
-                // set species at position of relevant ecosystem
-                newSpecies.transform.position = m_ModelContainer.GetEcosystem(speciesData.StartingEcosystemId).transform.position;
-                newSpecies.LoadData(speciesData);
-                m_ModelContainer.AddSpeciesCluster(newSpecies);
+                var relevantEcosystem = m_ModelContainer.GetEcosystem(speciesData.StartingEcosystemId);
+
+                relevantEcosystem.AddPopulation(speciesData.SpeciesId, speciesData.StartingPopulation, speciesData.StartingTravelType);
             }
         }
 

@@ -11,8 +11,14 @@ namespace AIS.Model
     public struct PathwaySetupData
     {
         public SerializedHash32 PathwayId;
+        public SerializedHash32 OrigEcosystemId;
+        public SerializedHash32 DestEcosystemId;
         public Vector2 Pos;
         public Sprite Sprite;
+
+        public RateType TransferRateType;
+        public float StartingTransferRate;
+        public PathwayType PathwayType;
     }
 
     [Flags]
@@ -25,23 +31,53 @@ namespace AIS.Model
         BallastWater = 0x10,
     }
 
+    public enum RateType
+    {
+        Ratio,
+        Fixed
+    }
+
     public class Pathway : MonoBehaviour
     {
         #region Inspector
 
         public SpriteRenderer MainRenderer;
 
-        #endregion // Inspector
+        public SerializedHash32 OrigEcosystemId;
+        public SerializedHash32 DestEcosystemId;
+        public PathwayType PathwayType { get; private set; }
+        public RateType TransferRateType { get; private set; }
+        public float TransferRate { get; private set; }
 
-        public PathwaySetupData CurrSetupData { get; private set; }
+        #endregion // Inspector
 
         public void LoadData(PathwaySetupData setupData)
         {
-            CurrSetupData = setupData;
+            OrigEcosystemId = setupData.OrigEcosystemId;
+            DestEcosystemId = setupData.DestEcosystemId;
+            PathwayType = setupData.PathwayType;
 
-            this.transform.position = CurrSetupData.Pos;
-            MainRenderer.sprite = CurrSetupData.Sprite;
+            this.transform.position = setupData.Pos;
+            MainRenderer.sprite = setupData.Sprite;
             MainRenderer.sortingOrder = InvasionModelSorting.PATHWAY_SORTING;
+
+            TransferRateType = setupData.TransferRateType;
+            SetTransferRate(setupData.StartingTransferRate);
+        }
+
+        public void AddPathwayType(PathwayType type)
+        {
+            PathwayType |= type;
+        }
+
+        public void RemovePathwayType(PathwayType type)
+        {
+            PathwayType &= ~type;
+        }
+
+        public void SetTransferRate(float newRate)
+        {
+            TransferRate = newRate;
         }
     }
 }

@@ -12,8 +12,8 @@ namespace AIS.Model
     {
         public SerializedHash32 SpeciesId;
         public SerializedHash32 StartingEcosystemId;
-        public int Population;
-        public PathwayType TravelType;
+        public int StartingPopulation;
+        public PathwayType StartingTravelType;
 
         public Sprite SpeciesSprite;
     }
@@ -24,23 +24,32 @@ namespace AIS.Model
         public SpriteRenderer IconRenderer;
         public TMP_Text PopulationText;
 
+        public SerializedHash32 SpeciesId;
         [HideInInspector] public int Population;
-
-        public SpeciesSetupData CurrSetupData { get; private set; }
+        public PathwayType TravelType;
 
         public void LoadData(SpeciesSetupData setupData)
         {
-            CurrSetupData = setupData;
+            Init(setupData.SpeciesId, setupData.StartingPopulation, setupData.StartingTravelType);
+        }
 
-            Population = setupData.Population;
+        public void Init(SerializedHash32 speciesId, int population, PathwayType travelType)
+        {
+            SpeciesId = speciesId;
+            Population = population;
+            TravelType = travelType;
 
-            // TODO: assign to pos slot in ecosystem?
-            // this.transform.position = m_CurrSetupData.Pos;
-            IconRenderer.sprite = CurrSetupData.SpeciesSprite;
+            IconRenderer.sprite = ModelSpriteLookup.Instance.LookupSpeciesIcon(speciesId);
             PopulationText.SetText("x" + Population.ToStringLookup());
             BGRenderer.sortingOrder = InvasionModelSorting.SPECIES_SORTING;
             IconRenderer.sortingOrder = InvasionModelSorting.SPECIES_SORTING + 10;
             PopulationText.GetComponent<MeshRenderer>().sortingOrder = InvasionModelSorting.SPECIES_SORTING + 20;
+        }
+
+        public void AdjustPopulation(int amt)
+        {
+            Population += amt;
+            PopulationText.SetText("x" + Population.ToStringLookup());
         }
     }
 }

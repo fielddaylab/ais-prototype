@@ -7,6 +7,8 @@ namespace AIS.Model
 {
     public class InvasionModelContainer : MonoBehaviour
     {
+        public static InvasionModelContainer Instance;
+
         #region Inspector
 
         public SpriteRenderer BGRenderer;
@@ -16,6 +18,11 @@ namespace AIS.Model
         private List<Ecosystem> m_Ecosystems = new List<Ecosystem>();
         private List<Pathway> m_Pathways = new List<Pathway>();
         private List<SpeciesCluster> m_SpeciesClusters = new List<SpeciesCluster>();
+
+        public void InitInstance()
+        {
+            Instance = this;
+        }
 
         #region Remove
 
@@ -42,21 +49,27 @@ namespace AIS.Model
             BGRenderer.sortingOrder = InvasionModelSorting.BG_SORTING;
         }
 
+        public void RemoveSpeciesCluster(SpeciesCluster cluster)
+        {
+            m_SpeciesClusters.Remove(cluster);
+            Destroy(cluster.gameObject);
+        }
+
         #endregion // Remove
 
         #region Add
 
-        public void AddEcosystem(Ecosystem ecosystem)
+        public void RegisterEcosystem(Ecosystem ecosystem)
         {
             m_Ecosystems.Add(ecosystem);
         }
 
-        public void AddPathway(Pathway pathway)
+        public void RegisterPathway(Pathway pathway)
         {
             m_Pathways.Add(pathway);
         }
 
-        public void AddSpeciesCluster(SpeciesCluster cluster)
+        public void RegisterSpeciesCluster(SpeciesCluster cluster)
         {
             m_SpeciesClusters.Add(cluster);
         }
@@ -69,13 +82,18 @@ namespace AIS.Model
         {
             for (int i = 0; i < m_Ecosystems.Count; i++)
             {
-                if (m_Ecosystems[i].CurrSetupData.EcosystemId.Equals(ecosystemId))
+                if (m_Ecosystems[i].EcosystemId.Equals(ecosystemId))
                 {
                     return m_Ecosystems[i];
                 }
             }
 
             return null;
+        }
+
+        public List<Pathway> GetAllPathways()
+        {
+            return m_Pathways;
         }
 
         #endregion // Query
