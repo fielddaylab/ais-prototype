@@ -83,6 +83,11 @@ namespace FieldDay {
         static public RenderMgr Rendering { [MethodImpl(MethodImplOptions.AggressiveInlining)] get; internal set; }
 
         /// <summary>
+        /// Shading manager. Handles shaders and materials.
+        /// </summary>
+        static public ShadingMgr Shading { [MethodImpl(MethodImplOptions.AggressiveInlining)] get; internal set; }
+
+        /// <summary>
         /// Input manager. Maintains input state.
         /// </summary>
         static public InputMgr Input { [MethodImpl(MethodImplOptions.AggressiveInlining)] get; internal set; }

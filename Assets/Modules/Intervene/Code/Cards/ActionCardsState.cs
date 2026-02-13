@@ -52,12 +52,12 @@ namespace AIS.Intervene
             yield return null;
 
             // Populate Card data
-            var populate = Async.Schedule(ActionCardsUtility.PopulateCards(this), AsyncFlags.HighPriority | AsyncFlags.MainThreadOnly);
+            var populate = Async.Schedule(CardsUtility.PopulateCards(this), AsyncFlags.HighPriority | AsyncFlags.MainThreadOnly);
             Game.Scenes.RegisterLoadDependency(populate);
         }
     }
 
-    static public class ActionCardsUtility
+    static public class CardsUtility
     {
 
         #region Card Definition Parsing
@@ -65,8 +65,6 @@ namespace AIS.Intervene
         private static readonly string TITLE_TAG = "@title";
         private static readonly string DESC_TAG = "@desc";
         private static readonly string IMAGE_PATH_TAG = "@path";
-
-        private static readonly string ENTRY_SEP = "::";
 
         private static readonly char[] END_DELIMS = new char[] { '\r', '\n' };
 
@@ -78,7 +76,7 @@ namespace AIS.Intervene
 
             foreach (TextAsset cardSource in cardsState.CardSources)
             {
-                cardStrings = TextIO.TextAssetToList(cardSource, ENTRY_SEP);
+                cardStrings = TextIO.TextAssetToList(cardSource, "::");
 
                 foreach (string str in cardStrings)
                 {
@@ -186,22 +184,14 @@ namespace AIS.Intervene
         static public List<ActionCardData> GetCardsFromEvidence(ActionCardsState state, List<StringHash32> evidenceCardIds)
         {
             List<ActionCardData> relevantCards = new List<ActionCardData>();
-            EvidenceToActionConverterState converterState = Find.State<EvidenceToActionConverterState>();
 
             foreach (var evidenceCardId in evidenceCardIds)
             {
-                // lookup evidence card  and extract action cards it unlocks
-                List<SerializedHash32> actionIds = EvidenceActionConvertUtility.ConvertEvidenceToActionCardIds(converterState, evidenceCardId);
+                // TODO:
+                // lookup evidence card
+                // extract action cards it unlocks
                 // add each action card here
-                foreach (var actionId in actionIds)
-                {
-                    var actionCard = state.AllActionCards[actionId];
-                    if (relevantCards.Contains(actionCard))
-                    {
-                        // TODO: special handling for duplicates?
-                    }
-                    relevantCards.Add(actionCard);
-                }
+                    // relevantCards.Add(card)
             }
 
             return relevantCards;
@@ -234,7 +224,7 @@ namespace AIS.Intervene
             info.AddButton("Unlock All Cards", () => {
                 var c = Game.SharedState.Get<ActionCardsState>();
                 foreach (var cardId in c.AllActionCards.Keys) {
-                    ActionCardsUtility.UnlockCard(c, cardId);
+                    CardsUtility.UnlockCard(c, cardId);
                 }
             }, () => Game.SharedState.TryGet(out ActionCardsState c));
 
