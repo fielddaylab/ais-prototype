@@ -1,6 +1,7 @@
 using ScriptableBake;
 using System.Diagnostics;
 using UnityEngine;
+using System;
 
 namespace FieldDay.Assets {
     /// <summary>
@@ -9,7 +10,7 @@ namespace FieldDay.Assets {
     /// </summary>
     public abstract class EditorNameAsset : ScriptableObject, IBaked {
 #if !UNITY_EDITOR
-        private EditorNameAsset() {
+        protected EditorNameAsset() {
             throw new Exception("EditorNameAsset should not be included in builds!");
         }
 #else
@@ -18,7 +19,7 @@ namespace FieldDay.Assets {
         bool IBaked.Bake(BakeFlags flags, BakeContext context) {
             const BakeFlags targetFlags = BakeFlags.IsBatchMode | BakeFlags.IsBuild;
             if ((flags & targetFlags) == targetFlags) {
-                Baking.Destroy(this);
+                DestroyImmediate(this);
                 return true;
             }
 
