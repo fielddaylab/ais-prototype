@@ -13,6 +13,7 @@ namespace AIS.Model
         public SerializedHash32 EcosystemId;
         public Vector2 Pos;
         public Sprite Sprite;
+        public bool IsExternal;
 
         public Vector2[] MainSlotPoses;
     }
@@ -24,6 +25,7 @@ namespace AIS.Model
         public SpriteRenderer MainRenderer;
 
         public SerializedHash32 EcosystemId;
+        public bool IsExternal;
 
         public List<SerializedHash32> SpeciesInEcosystem = new List<SerializedHash32>();
         public Dictionary<SerializedHash32, SpeciesSlotData> SpeciesSlotDict = new Dictionary<SerializedHash32, SpeciesSlotData>();
@@ -35,6 +37,7 @@ namespace AIS.Model
         public void LoadData(EcosystemSetupData setupData, GameObject transformPrefab)
         {
             EcosystemId = setupData.EcosystemId;
+            IsExternal = setupData.IsExternal;
 
             this.transform.position = setupData.Pos;
             MainRenderer.sprite = setupData.Sprite;
@@ -168,6 +171,9 @@ namespace AIS.Model
             {
                 Debug.LogWarning("[Ecosystem] Tried to release population from a species cluster that does not exist!");
             }
+
+            // Do not modify external
+            if (cluster.Population == -1) { return; }
 
             if (releaseCount < cluster.Population)
             {

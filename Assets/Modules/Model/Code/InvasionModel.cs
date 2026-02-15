@@ -65,6 +65,9 @@ namespace AIS.Model
 
             // Setup Invasion Curve-specific Things
             SetupInvasionCurve(invasionCurve);
+
+            // Setup Shared
+            SetupShared();
         }
 
         private void SetupEcosystems()
@@ -92,17 +95,23 @@ namespace AIS.Model
             var curveThreshold = FindRelevantThreshold(m_CurrModelSetupData.InvasionCurveThresholds, invasionCurve);
 
             // Setup Species
-            SetupSpecies(curveThreshold);
+            SetupSpecies(curveThreshold.SpeciesSetups);
         }
 
-        private void SetupSpecies(InvasionCurveThreshold curveThreshold)
+        private void SetupSpecies(SpeciesSetupData[] setupDatas)
         {
-            foreach (var speciesData in curveThreshold.SpeciesSetups)
+            foreach (var speciesData in setupDatas)
             {
                 var relevantEcosystem = m_ModelContainer.GetEcosystem(speciesData.StartingEcosystemId);
 
                 relevantEcosystem.AddPopulation(speciesData.SpeciesId, speciesData.StartingPopulation, speciesData.StartingTravelType);
             }
+        }
+
+        private void SetupShared()
+        {
+            // Setup Shared Species
+            SetupSpecies(m_CurrModelSetupData.SharedSpeciesSetups);
         }
 
         #endregion // Setup

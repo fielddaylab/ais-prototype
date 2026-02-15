@@ -57,7 +57,11 @@ namespace AIS.Intervene {
                     transferNum = Mathf.FloorToInt(origEco.GetPopulation(speciesPair.Item1) * pathway.TransferRate);
                 }
                 else if (pathway.TransferRateType == RateType.Fixed) {
-                    transferNum = Mathf.FloorToInt(pathway.TransferRate);
+                    int origPop = origEco.GetPopulation(speciesPair.Item1);
+                    if (origEco.IsExternal) {
+                        origPop = int.MaxValue;
+                    }
+                    transferNum = Mathf.FloorToInt(Mathf.Min(origPop, pathway.TransferRate));
                 }
                 transferNum = Mathf.Max(1, transferNum); ; // rounded down, but at least 1
                 // split species, between orig and dest clusters
@@ -72,7 +76,6 @@ namespace AIS.Intervene {
                 // Release species from original ecosystem
                 origEco.ReleasePopulation(speciesPair.Item1, transferNum);
             }
-
         }
 
         private void FinalizePathwayTransfers()

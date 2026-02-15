@@ -18,6 +18,7 @@ MonoBehaviour:
       m_HashValue: 415488260
     Pos: {x: -2.5, y: 2}
     Sprite: {fileID: 21300000, guid: f8f65bee0319a3847a609844f43a46f7, type: 3}
+    IsExternal: 0
     MainSlotPoses:
     - {x: 0, y: 0}
   - EcosystemId:
@@ -25,6 +26,7 @@ MonoBehaviour:
       m_HashValue: 465821117
     Pos: {x: 2.25, y: 0}
     Sprite: {fileID: 21300000, guid: f8f65bee0319a3847a609844f43a46f7, type: 3}
+    IsExternal: 0
     MainSlotPoses:
     - {x: 0, y: 0}
   - EcosystemId:
@@ -32,6 +34,23 @@ MonoBehaviour:
       m_HashValue: 449043498
     Pos: {x: -1.08, y: -2.18}
     Sprite: {fileID: 21300000, guid: f8f65bee0319a3847a609844f43a46f7, type: 3}
+    IsExternal: 0
+    MainSlotPoses:
+    - {x: 0, y: 0}
+  - EcosystemId:
+      m_Source: eco-EXTERN-IN
+      m_HashValue: 848023977
+    Pos: {x: -9, y: 2.35}
+    Sprite: {fileID: 0}
+    IsExternal: 1
+    MainSlotPoses:
+    - {x: 0, y: 0}
+  - EcosystemId:
+      m_Source: eco-EXTERN-OUT
+      m_HashValue: 3287957386
+    Pos: {x: 9, y: -3.54}
+    Sprite: {fileID: 0}
+    IsExternal: 1
     MainSlotPoses:
     - {x: 0, y: 0}
   Pathways:
@@ -63,6 +82,34 @@ MonoBehaviour:
     TransferRateType: 0
     StartingTransferRate: 0.5
     PathwayType: 8
+  - PathwayId:
+      m_Source: path-EXTERN-IN-to-1
+      m_HashValue: 1868001983
+    OrigEcosystemId:
+      m_Source: eco-EXTERN-IN
+      m_HashValue: 848023977
+    DestEcosystemId:
+      m_Source: eco-1
+      m_HashValue: 415488260
+    Pos: {x: -5.2, y: 1.45}
+    Sprite: {fileID: 21300000, guid: 6334e095ddf62704ca31771cac3f0ad5, type: 3}
+    TransferRateType: 1
+    StartingTransferRate: 0
+    PathwayType: 8
+  - PathwayId:
+      m_Source: path-3-to-EXTERN-OUT
+      m_HashValue: 3542182944
+    OrigEcosystemId:
+      m_Source: eco-3
+      m_HashValue: 449043498
+    DestEcosystemId:
+      m_Source: eco-EXTERN-OUT
+      m_HashValue: 3287957386
+    Pos: {x: 2.24, y: -3.82}
+    Sprite: {fileID: 21300000, guid: 212473082a4b11c4f8bb20e89697f17e, type: 3}
+    TransferRateType: 0
+    StartingTransferRate: 0.5
+    PathwayType: 8
   InvasionCurveThresholds:
   - Threshold: 0
     SpeciesSetups:
@@ -84,3 +131,13 @@ MonoBehaviour:
       StartingPopulation: 1
       StartingTravelType: 8
       SpeciesSprite: {fileID: 21300000, guid: 865a1d2b3d332134591f29fcd54f724f, type: 3}
+  SharedSpeciesSetups:
+  - SpeciesId:
+      m_Source: snail
+      m_HashValue: 2331752522
+    StartingEcosystemId:
+      m_Source: eco-EXTERN-IN
+      m_HashValue: 848023977
+    StartingPopulation: -1
+    StartingTravelType: 8
+    SpeciesSprite: {fileID: 21300000, guid: 865a1d2b3d332134591f29fcd54f724f, type: 3}
