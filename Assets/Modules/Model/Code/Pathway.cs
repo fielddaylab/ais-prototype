@@ -18,6 +18,7 @@ namespace AIS.Model
 
         public RateType TransferRateType;
         public float StartingTransferRate;
+        public float StartingTriggerChance;
         public PathwayType PathwayType;
     }
 
@@ -47,6 +48,7 @@ namespace AIS.Model
         public SerializedHash32 DestEcosystemId;
         public PathwayType PathwayType { get; private set; }
         public RateType TransferRateType { get; private set; }
+        public float TransferTriggerChance { get; private set; }
         public float TransferRate { get; private set; }
 
         #endregion // Inspector
@@ -63,6 +65,7 @@ namespace AIS.Model
 
             TransferRateType = setupData.TransferRateType;
             SetTransferRate(setupData.StartingTransferRate);
+            SetTriggerChance(setupData.StartingTriggerChance);
         }
 
         public void AddPathwayType(PathwayType type)
@@ -78,6 +81,11 @@ namespace AIS.Model
         public void SetTransferRate(float newRate)
         {
             TransferRate = newRate;
+        }
+
+        public void SetTriggerChance(float newChance)
+        {
+            TransferTriggerChance = newChance;
         }
     }
 }

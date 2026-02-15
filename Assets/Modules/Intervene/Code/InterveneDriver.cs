@@ -66,6 +66,13 @@ namespace AIS.Intervene {
                 transferNum = Mathf.Max(1, transferNum); ; // rounded down, but at least 1
                 // split species, between orig and dest clusters
 
+                // see if transfer triggers
+                if (Random.Range(0, 1.0f) > pathway.TransferTriggerChance)
+                {
+                    // do not trigger transfer
+                    continue;
+                }
+
                 var transferAlloc = new SpeciesTransferAllocation();
                 transferAlloc.SpeciesId = speciesPair.Item1;
                 transferAlloc.DestEcosystemId = pathway.DestEcosystemId;
@@ -83,7 +90,9 @@ namespace AIS.Intervene {
             for (int i = m_SpeciesTransfers.Count - 1; i >= 0; i--)
             {
                 var destEco = InvasionModelContainer.Instance.GetEcosystem(m_SpeciesTransfers[i].DestEcosystemId);
-                destEco.AddPopulation(m_SpeciesTransfers[i].SpeciesId, m_SpeciesTransfers[i].TransferCount, m_SpeciesTransfers[i].TravelType);
+                if (!destEco.IsExternal) {
+                    destEco.AddPopulation(m_SpeciesTransfers[i].SpeciesId, m_SpeciesTransfers[i].TransferCount, m_SpeciesTransfers[i].TravelType);
+                }
                 m_SpeciesTransfers.RemoveAt(i);
             }
         }

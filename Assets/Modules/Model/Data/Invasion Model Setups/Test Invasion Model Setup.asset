@@ -67,6 +67,7 @@ MonoBehaviour:
     Sprite: {fileID: 21300000, guid: 982d9117f01cacc4c82578bc731ff5c8, type: 3}
     TransferRateType: 0
     StartingTransferRate: 0.5
+    StartingTriggerChance: 1
     PathwayType: 8
   - PathwayId:
       m_Source: path-2-to-3
@@ -81,6 +82,7 @@ MonoBehaviour:
     Sprite: {fileID: 21300000, guid: 982d9117f01cacc4c82578bc731ff5c8, type: 3}
     TransferRateType: 0
     StartingTransferRate: 0.5
+    StartingTriggerChance: 1
     PathwayType: 8
   - PathwayId:
       m_Source: path-EXTERN-IN-to-1
@@ -94,7 +96,8 @@ MonoBehaviour:
     Pos: {x: -5.2, y: 1.45}
     Sprite: {fileID: 21300000, guid: 6334e095ddf62704ca31771cac3f0ad5, type: 3}
     TransferRateType: 1
-    StartingTransferRate: 0
+    StartingTransferRate: 1
+    StartingTriggerChance: 0.5
     PathwayType: 8
   - PathwayId:
       m_Source: path-3-to-EXTERN-OUT
@@ -109,6 +112,7 @@ MonoBehaviour:
     Sprite: {fileID: 21300000, guid: 212473082a4b11c4f8bb20e89697f17e, type: 3}
     TransferRateType: 0
     StartingTransferRate: 0.5
+    StartingTriggerChance: 0.5
     PathwayType: 8
   InvasionCurveThresholds:
   - Threshold: 0
