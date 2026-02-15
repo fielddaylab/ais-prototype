@@ -12,6 +12,7 @@ namespace AIS.Intervene {
         public TMP_Text Title;
         public TMP_Text Description;
         public Image Img;
+        public Image Highlight;
     }
 
     public static class CardUIUtility

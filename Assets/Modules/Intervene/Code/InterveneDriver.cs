@@ -51,6 +51,12 @@ namespace AIS.Intervene {
 
             foreach (var speciesPair in relevantSpecies)
             {
+                // see if transfer triggers
+                if (Random.Range(0, 1.0f) > pathway.TransferTriggerChance) {
+                    // do not trigger transfer
+                    continue;
+                }
+
                 // allocate species according to pathway rates
                 int transferNum = 0;
                 if (pathway.TransferRateType == RateType.Ratio) {
@@ -64,15 +70,8 @@ namespace AIS.Intervene {
                     transferNum = Mathf.FloorToInt(Mathf.Min(origPop, pathway.TransferRate));
                 }
                 transferNum = Mathf.Max(1, transferNum); ; // rounded down, but at least 1
+
                 // split species, between orig and dest clusters
-
-                // see if transfer triggers
-                if (Random.Range(0, 1.0f) > pathway.TransferTriggerChance)
-                {
-                    // do not trigger transfer
-                    continue;
-                }
-
                 var transferAlloc = new SpeciesTransferAllocation();
                 transferAlloc.SpeciesId = speciesPair.Item1;
                 transferAlloc.DestEcosystemId = pathway.DestEcosystemId;
