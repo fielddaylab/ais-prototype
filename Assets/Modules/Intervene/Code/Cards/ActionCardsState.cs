@@ -41,10 +41,21 @@ namespace AIS.Intervene
 
         public TextAsset[] CardSources;
 
+        private void Awake()
+        {
+            // Initialize Lists
+            AllActionCards = new Dictionary<StringHash32, ActionCardData>();
+            UnlockedActionCards = new List<StringHash32>();
+
+            // Populate Card data
+            ActionCardsUtility.PopulateCards(this);
+        }
+
         public IEnumerator<WorkSlicer.Result?> Preload()
         {
             yield return null;
 
+            /*
             // Initialize Lists
             AllActionCards = new Dictionary<StringHash32, ActionCardData>();
             UnlockedActionCards = new List<StringHash32>();
@@ -54,6 +65,7 @@ namespace AIS.Intervene
             // Populate Card data
             var populate = Async.Schedule(ActionCardsUtility.PopulateCards(this), AsyncFlags.HighPriority | AsyncFlags.MainThreadOnly);
             Game.Scenes.RegisterLoadDependency(populate);
+            */
         }
     }
 
@@ -72,7 +84,7 @@ namespace AIS.Intervene
 
         #endregion // Card Definition Parsing
 
-        static public IEnumerator PopulateCards(ActionCardsState cardsState)
+        static public void PopulateCards(ActionCardsState cardsState)
         {
             List<string> cardStrings;
 
@@ -94,7 +106,7 @@ namespace AIS.Intervene
                     {
                         Debug.Log("[CardUtility] Parsing error! " + e.Message);
                     }
-                    yield return null;
+                   // yield return null;
                 }
             }
         }

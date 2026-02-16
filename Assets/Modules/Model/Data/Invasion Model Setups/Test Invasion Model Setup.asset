@@ -16,7 +16,7 @@ MonoBehaviour:
   - EcosystemId:
       m_Source: eco-1
       m_HashValue: 415488260
-    Pos: {x: -2.5, y: 2}
+    Pos: {x: -2.5, y: 2.8}
     Sprite: {fileID: 21300000, guid: f8f65bee0319a3847a609844f43a46f7, type: 3}
     IsExternal: 0
     MainSlotPoses:
@@ -24,7 +24,7 @@ MonoBehaviour:
   - EcosystemId:
       m_Source: eco-2
       m_HashValue: 465821117
-    Pos: {x: 2.25, y: 0}
+    Pos: {x: 2.25, y: 0.8}
     Sprite: {fileID: 21300000, guid: f8f65bee0319a3847a609844f43a46f7, type: 3}
     IsExternal: 0
     MainSlotPoses:
@@ -32,7 +32,7 @@ MonoBehaviour:
   - EcosystemId:
       m_Source: eco-3
       m_HashValue: 449043498
-    Pos: {x: -1.08, y: -2.18}
+    Pos: {x: -1.08, y: -1.38}
     Sprite: {fileID: 21300000, guid: f8f65bee0319a3847a609844f43a46f7, type: 3}
     IsExternal: 0
     MainSlotPoses:
@@ -40,7 +40,7 @@ MonoBehaviour:
   - EcosystemId:
       m_Source: eco-EXTERN-IN
       m_HashValue: 848023977
-    Pos: {x: -9, y: 2.35}
+    Pos: {x: -9, y: 3.15}
     Sprite: {fileID: 0}
     IsExternal: 1
     MainSlotPoses:
@@ -48,7 +48,7 @@ MonoBehaviour:
   - EcosystemId:
       m_Source: eco-EXTERN-OUT
       m_HashValue: 3287957386
-    Pos: {x: 9, y: -3.54}
+    Pos: {x: 9, y: -2.74}
     Sprite: {fileID: 0}
     IsExternal: 1
     MainSlotPoses:
@@ -63,7 +63,7 @@ MonoBehaviour:
     DestEcosystemId:
       m_Source: eco-2
       m_HashValue: 465821117
-    Pos: {x: 0, y: 1}
+    Pos: {x: 0, y: 1.8}
     Sprite: {fileID: 21300000, guid: 982d9117f01cacc4c82578bc731ff5c8, type: 3}
     TransferRateType: 0
     StartingTransferRate: 0.5
@@ -78,7 +78,7 @@ MonoBehaviour:
     DestEcosystemId:
       m_Source: eco-3
       m_HashValue: 449043498
-    Pos: {x: 1.07, y: -1.25}
+    Pos: {x: 1.07, y: -0.45}
     Sprite: {fileID: 21300000, guid: 982d9117f01cacc4c82578bc731ff5c8, type: 3}
     TransferRateType: 0
     StartingTransferRate: 0.5
@@ -93,7 +93,7 @@ MonoBehaviour:
     DestEcosystemId:
       m_Source: eco-1
       m_HashValue: 415488260
-    Pos: {x: -5.2, y: 1.45}
+    Pos: {x: -5.2, y: 2.25}
     Sprite: {fileID: 21300000, guid: 6334e095ddf62704ca31771cac3f0ad5, type: 3}
     TransferRateType: 1
     StartingTransferRate: 1
@@ -108,7 +108,7 @@ MonoBehaviour:
     DestEcosystemId:
       m_Source: eco-EXTERN-OUT
       m_HashValue: 3287957386
-    Pos: {x: 2.24, y: -3.82}
+    Pos: {x: 2.24, y: -3.02}
     Sprite: {fileID: 21300000, guid: 212473082a4b11c4f8bb20e89697f17e, type: 3}
     TransferRateType: 0
     StartingTransferRate: 0.5

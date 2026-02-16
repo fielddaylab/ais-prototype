@@ -4,24 +4,24 @@ using UnityEngine;
 
 namespace AIS.Intervene
 {
+    public enum StackOrientation
+    {
+        Stacked,
+        Spread,
+    }
+
+    public enum CardFaceDir
+    {
+        Visible,
+        Hidden,
+        Mixed
+    }
+
     public class CardStack : MonoBehaviour
     {
         // Card at last index is top of deck
         public List<CardBase> Cards = new List<CardBase>();
-
-        public enum StackOrientation
-        {
-            Vertical,
-            Horizontal,
-            Spread,
-        }
-
-        public enum CardFaceDir
-        {
-            Visible,
-            Hidden,
-            Mixed
-        }
+        public CardStackVisualsBase Visuals;
 
         public StackOrientation Orientation;     // rotation (vertical, horizontal)
         public CardFaceDir FacingDir;            // face-up or face-down
@@ -34,6 +34,8 @@ namespace AIS.Intervene
             if (toTop)
             {
                 destStack.Cards.AddRange(srcStack.Cards);
+
+                srcStack.Cards.Clear();
             }
             else
             {
@@ -43,12 +45,18 @@ namespace AIS.Intervene
                 newDestStack.AddRange(destStack.Cards);
 
                 destStack.Cards = newDestStack;
+
+                srcStack.Cards.Clear();
             }
+
+            CardStackVisualsUtility.RefreshVisuals(srcStack.Visuals, srcStack);
+            CardStackVisualsUtility.RefreshVisuals(destStack.Visuals, destStack);
         }
 
         public static void ShuffleStack(CardStack toShuffle)
         {
             toShuffle.Cards = ListUtility.ShuffleList<CardBase>(toShuffle.Cards);
+            CardStackVisualsUtility.RefreshVisuals(toShuffle.Visuals, toShuffle);
         }
 
         public static CardBase TopCard(CardStack stack)
@@ -69,12 +77,17 @@ namespace AIS.Intervene
             if (drawn == null) return false;
 
             toDrawFrom.Cards.RemoveAt(toDrawFrom.Cards.Count - 1);
+            CardStackVisualsUtility.RefreshVisuals(toDrawFrom.Visuals, toDrawFrom);
             return true;
         }
 
-        public static void AddToTop(CardStack toAddTo, CardBase toAdd)
+        public static void AddToTop(CardStack toAddTo, CardBase toAdd, bool refreshVisuals = true)
         {
             toAddTo.Cards.Add(toAdd);
+            if (refreshVisuals)
+            {
+                CardStackVisualsUtility.RefreshVisuals(toAddTo.Visuals, toAddTo);
+            }
         }
 
         public static void RemoveCards(CardStack stack, List<int> indices)
@@ -101,6 +114,8 @@ namespace AIS.Intervene
                     }
                 }
             }
+
+            CardStackVisualsUtility.RefreshVisuals(stack.Visuals, stack);
         }
     }
 

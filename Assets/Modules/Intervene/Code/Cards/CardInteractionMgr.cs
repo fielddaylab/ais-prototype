@@ -1,3 +1,5 @@
+using BeauUtil;
+using FieldDay;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,11 +8,15 @@ namespace AIS.Intervene
 {
     public class CardInteractionMgr : MonoBehaviour
     {
+        public static CardInteractionMgr Instance;
+
         #region Inspector
 
         public PlayerHand Hand;
         public PlayerActionDeck ActionDeck;
         public PlayerDiscard Discard;
+
+        public GameObject UICardPrefab;
 
         #endregion // Inspector
 
@@ -18,10 +24,18 @@ namespace AIS.Intervene
 
         private void Awake()
         {
+            Instance = this;
+
             AisGame.Events.Register(InterveneEvents.OnShuffleActionDeck, HandleOnShuffleActionDeck);
             AisGame.Events.Register(InterveneEvents.OnDrawFromActionDeck, HandleOnDrawFromActionDeck);
             AisGame.Events.Register(InterveneEvents.OnUseSelectedCards, HandleOnUseSelectedCards);
             AisGame.Events.Register(InterveneEvents.OnRecycleDiscard, HandleOnRecycleDiscard);
+        }
+
+        private void Start()
+        {
+            SetupData();
+            SetupVisuals();
         }
 
         private void OnDisable()
@@ -80,6 +94,33 @@ namespace AIS.Intervene
         }
 
         #endregion // Core Card Mechanics
+
+        #region Setup
+
+        private void SetupData()
+        {
+            List<StringHash32> evidenceIds = new List<StringHash32>();
+            // TODO: get curr evidence cards
+
+            // TEMP DEBUG
+            evidenceIds = new List<StringHash32>() {
+                "example-evidence-card-1",
+                "example-evidence-card-2",
+            };
+
+            var actionCardsState = Find.State<ActionCardsState>();
+            var actionCards = ActionCardsUtility.GetCardsFromEvidence(actionCardsState, evidenceIds);
+            ActionDeck.PopulateDeck(actionCards);
+        }
+
+        private void SetupVisuals()
+        {
+            CardStackVisualsUtility.RefreshVisuals(Hand.Visuals, Hand);
+            CardStackVisualsUtility.RefreshVisuals(ActionDeck.Visuals, ActionDeck);
+            CardStackVisualsUtility.RefreshVisuals(Discard.Visuals, Discard);
+        }
+
+        #endregion // Setup
 
         #region Handlers
 

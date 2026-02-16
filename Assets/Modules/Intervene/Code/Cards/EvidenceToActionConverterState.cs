@@ -47,15 +47,25 @@ namespace AIS.Intervene
 
         #region IPreload
 
+        private void Awake()
+        {
+            ConversionEntriesMap = new Dictionary<SerializedHash32, ConversionEntry>();
+
+            // Populate Card data
+            EvidenceActionConvertUtility.PopulateConversions(this);
+        }
+
         public IEnumerator<WorkSlicer.Result?> Preload()
         {
             yield return null;
 
+            /*
             ConversionEntriesMap = new Dictionary<SerializedHash32, ConversionEntry>();
 
             // Populate Card data
             var populate = Async.Schedule(EvidenceActionConvertUtility.PopulateConversions(this), AsyncFlags.HighPriority | AsyncFlags.MainThreadOnly);
             Game.Scenes.RegisterLoadDependency(populate);
+            */
         }
 
         #endregion // IPreload
@@ -119,7 +129,7 @@ namespace AIS.Intervene
 
         #endregion // Card Definition Parsing
 
-        static public IEnumerator PopulateConversions(EvidenceToActionConverterState converterState)
+        static public void PopulateConversions(EvidenceToActionConverterState converterState)
         {
             List<string> conversionStrings;
 
@@ -141,7 +151,7 @@ namespace AIS.Intervene
                     {
                         Debug.Log("[EvidenceToActionConvertUtility] Parsing error! " + e.Message);
                     }
-                    yield return null;
+                    // yield return null;
                 }
             }
         }

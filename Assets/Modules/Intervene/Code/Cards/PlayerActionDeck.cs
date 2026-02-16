@@ -6,9 +6,22 @@ namespace AIS.Intervene
 {
     public class PlayerActionDeck : CardStack
     {
-        public void PopulateDeck()
+        public void PopulateDeck(List<ActionCardData> actionCardDatas)
         {
-            // TODO
+            foreach(var cardData in actionCardDatas)
+            {
+                ActionCard newCard = new ActionCard();
+
+                // populate data
+                newCard.Attributes |= CardAttributes.Action;
+
+                newCard.CardID = cardData.CardID;
+                newCard.Title = cardData.Title;
+                newCard.Description = cardData.Description;
+                newCard.ImgPath = cardData.ImgPath;
+
+                CardStackUtility.AddToTop(this, newCard, false);
+            }
         }
 
         public void Shuffle()

@@ -9,10 +9,16 @@ namespace AIS.Intervene {
     public class UICard : MonoBehaviour
     {
         [HideInInspector] public SerializedHash32 CardID;
+        [Header("Front")]
+        public CanvasGroup FrontGroup;
         public TMP_Text Title;
         public TMP_Text Description;
         public Image Img;
         public Image Highlight;
+
+        [Header("Back")]
+        public CanvasGroup BackGroup;
+        public Image BackImg;
     }
 
     public static class CardUIUtility
