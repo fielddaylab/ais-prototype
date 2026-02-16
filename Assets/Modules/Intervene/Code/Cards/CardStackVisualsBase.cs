@@ -54,15 +54,11 @@ namespace AIS.Intervene
 
             if (stack.FacingDir == CardFaceDir.Visible)
             {
-                // populate card
-                visuals.CardVisuals[0].FrontGroup.alpha = 1;
-                visuals.CardVisuals[0].BackGroup.alpha = 0;
+                PopulateCardFront(stack, visuals.CardVisuals[0]);
             }
             else if (stack.FacingDir == CardFaceDir.Hidden)
             {
-                // TODO: determine card back according to card attributes
-                visuals.CardVisuals[0].BackGroup.alpha = 1;
-                visuals.CardVisuals[0].FrontGroup.alpha = 0;
+                PopulateCardBack(stack, visuals.CardVisuals[0]);
             }
             else if (stack.FacingDir == CardFaceDir.Mixed)
             {
@@ -72,18 +68,62 @@ namespace AIS.Intervene
 
         private static void RefreshAllSpreadVisuals(CardStackVisualsBase visuals, CardStack stack)
         {
-            if (stack.FacingDir == CardFaceDir.Visible)
+            for (int i = 0; i < stack.Cards.Count; i++)
             {
-                // populate card
+                // determine if a visual card needs to be added
+                if (i > visuals.CardVisuals.Count - 1)
+                {
+                    var newCard = UnityEngine.Object.Instantiate(CardInteractionMgr.Instance.UICardHoverablePrefab, visuals.CardContainer).GetComponent<UICard>();
+                    newCard.StackIndex = i;
+                    visuals.CardVisuals.Add(newCard);
+                }
+
+                if (stack.FacingDir == CardFaceDir.Visible)
+                {
+                    PopulateCardFront(stack, visuals.CardVisuals[i]);
+                }
+                else if (stack.FacingDir == CardFaceDir.Hidden)
+                {
+                    PopulateCardBack(stack, visuals.CardVisuals[i]);
+                }
+                else if (stack.FacingDir == CardFaceDir.Mixed)
+                {
+                    // TODO -- IF NEEDED
+                }
             }
-            else if (stack.FacingDir == CardFaceDir.Hidden)
+
+            // remove excess visual cards
+            for (int i = visuals.CardVisuals.Count - 1; i >= stack.Cards.Count; i--)
             {
-                // determine card back according to card attributes
+                GameObject.Destroy(visuals.CardVisuals[i].gameObject);
+                visuals.CardVisuals.RemoveAt(i);
             }
-            else if (stack.FacingDir == CardFaceDir.Mixed)
+        }
+
+        private static void PopulateCardFront(CardStack stack, UICard card)
+        {
+            card.FrontGroup.alpha = 1;
+            card.FrontGroup.gameObject.SetActive(true);
+            card.BackGroup.alpha = 0;
+            card.BackGroup.gameObject.SetActive(false);
+
+            // TODO: remaining data
+        }
+
+        private static void PopulateCardBack(CardStack stack, UICard card)
+        {
+            card.BackGroup.alpha = 1;
+            card.BackGroup.gameObject.SetActive(true);
+            card.FrontGroup.alpha = 0;
+            card.FrontGroup.gameObject.SetActive(false);
+
+            // determine card back according to card attributes
+            Sprite backSprite = null;
+            if ((stack.Cards[0].Attributes & CardAttributes.Action) != 0)
             {
-                // TODO -- IF NEEDED
+                backSprite = CardInteractionMgr.Instance.CardBackActionSprite;
             }
+            card.BackImg.sprite = backSprite;
         }
 
         private static void RefreshSpreadVisualsAt(CardStackVisualsBase visuals, CardStack stack, int targetIndex)

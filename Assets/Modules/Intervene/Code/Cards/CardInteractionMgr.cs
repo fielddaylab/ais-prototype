@@ -16,7 +16,10 @@ namespace AIS.Intervene
         public PlayerActionDeck ActionDeck;
         public PlayerDiscard Discard;
 
+        [Header("Visuals DB")]
         public GameObject UICardPrefab;
+        public GameObject UICardHoverablePrefab;
+        public Sprite CardBackActionSprite;
 
         #endregion // Inspector
 

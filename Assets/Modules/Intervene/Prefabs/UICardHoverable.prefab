@@ -665,8 +665,10 @@ GameObject:
   - component: {fileID: 8525198350480735431}
   - component: {fileID: 1671671579977900214}
   - component: {fileID: 8140342698636322679}
+  - component: {fileID: 5879576103471051114}
+  - component: {fileID: 6528464507353752827}
   m_Layer: 5
-  m_Name: UICard
+  m_Name: UICardHoverable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -723,11 +725,51 @@ MonoBehaviour:
   Img: {fileID: 539388177470372488}
   Highlight: {fileID: 7329351257558610628}
   HoverBtn: {fileID: 7449675756574191004}
-  CanvasOverride: {fileID: 0}
-  RaycasterOverride: {fileID: 0}
+  CanvasOverride: {fileID: 5879576103471051114}
+  RaycasterOverride: {fileID: 6528464507353752827}
   BackGroup: {fileID: 1798448742629513539}
   BackImg: {fileID: 8681436099843358219}
   StackIndex: 0
+--- !u!223 &5879576103471051114
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6124728961818723533}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 2
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 1
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_VertexColorAlwaysGammaSpace: 0
+  m_AdditionalShaderChannelsFlag: 25
+  m_UpdateRectTransformForStandalone: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 1
+  m_TargetDisplay: 0
+--- !u!114 &6528464507353752827
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6124728961818723533}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
 --- !u!1 &7277313809028422661
 GameObject:
   m_ObjectHideFlags: 0

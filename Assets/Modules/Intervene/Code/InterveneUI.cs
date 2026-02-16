@@ -7,8 +7,17 @@ using UnityEngine.UI;
 namespace AIS.Intervene {
     public class InterveneUI : MonoBehaviour
     {
+        public static InterveneUI Instance;
+
         [SerializeField] private Button m_TickSimButton;
         [SerializeField] private InterveneDriver m_Driver;
+
+        public GraphicRaycaster Raycaster;
+
+        private void Awake()
+        {
+            Instance = this;
+        }
 
         private void Start()
         {
