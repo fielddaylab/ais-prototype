@@ -81,6 +81,8 @@ namespace AIS.Intervene
         public void DiscardSelectedCards()
         {
             List<CardBase> selectedCards = Hand.GetSelectedCards();
+            if (selectedCards.Count == 0) { return; }
+
             CardStackUtility.RemoveCards(Hand, Hand.SelectedCardIndices);
             Hand.SelectedCardIndices.Clear();
 
@@ -114,6 +116,8 @@ namespace AIS.Intervene
             var actionCardsState = Find.State<ActionCardsState>();
             var actionCards = ActionCardsUtility.GetCardsFromEvidence(actionCardsState, evidenceIds);
             ActionDeck.PopulateDeck(actionCards);
+
+            Hand.ClickCall = (index) => { ToggleSelectHandAtIndex(index); };
         }
 
         private void SetupVisuals()
@@ -148,5 +152,14 @@ namespace AIS.Intervene
         }
 
         #endregion // Handlers
+
+        #region Stack Calls
+
+        private void ToggleSelectHandAtIndex(int index)
+        {
+            Hand.ToggleSelectAtIndex(index);
+        }
+
+        #endregion // Stack Calls
     }
 }

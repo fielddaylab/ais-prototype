@@ -2346,7 +2346,7 @@ MonoBehaviour:
   ActionDeck: {fileID: 1677040892}
   Discard: {fileID: 915991277}
   UICardPrefab: {fileID: 6124728961818723533, guid: 4fba0b99a65ac2847aa883cc4df70ebd, type: 3}
-  UICardHoverablePrefab: {fileID: 6124728961818723533, guid: 12bb41b27a29de643bc53e4b009bb4b5, type: 3}
+  UICardHoverablePrefab: {fileID: 5501114549138538821, guid: f51fb926770e9e648954acdfd364fb19, type: 3}
   CardBackActionSprite: {fileID: 21300000, guid: e783704f81fd50e4bbd851d6fe38f6f9, type: 3}
 --- !u!1001 &3469119855568901405
 PrefabInstance:

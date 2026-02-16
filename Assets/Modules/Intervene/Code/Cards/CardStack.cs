@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace AIS.Intervene
 {
@@ -17,6 +19,15 @@ namespace AIS.Intervene
         Mixed
     }
 
+    /*
+    [Flags]
+    public enum StackAttributes
+    {
+        Selectable = 0x01,
+        MultiSelectable = 0x02,
+    }
+    */
+
     public class CardStack : MonoBehaviour
     {
         // Card at last index is top of deck
@@ -25,6 +36,9 @@ namespace AIS.Intervene
 
         public StackOrientation Orientation;     // rotation (vertical, horizontal)
         public CardFaceDir FacingDir;            // face-up or face-down
+        // public StackAttributes Attributes;
+
+        public UnityAction<int> ClickCall;
     }
 
     public static class CardStackUtility
@@ -125,7 +139,7 @@ namespace AIS.Intervene
         {
             for (int i = list.Count - 1; i > 0; i--)
             {
-                int j = Random.Range(0, i + 1);
+                int j = UnityEngine.Random.Range(0, i + 1);
                 T temp = list[i];
                 list[i] = list[j];
                 list[j] = temp;

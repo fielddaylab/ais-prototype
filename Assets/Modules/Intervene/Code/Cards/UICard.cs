@@ -16,7 +16,7 @@ namespace AIS.Intervene {
         public TMP_Text Description;
         public Image Img;
         public Image Highlight;
-        public CardHoverZone HoverBtn;
+        public Button ClickBtn;
         public Canvas CanvasOverride;
         public GraphicRaycaster RaycasterOverride;
 

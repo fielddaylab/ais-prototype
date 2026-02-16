@@ -7,57 +7,50 @@ using UnityEngine.UI;
 
 namespace AIS.Intervene
 {
-    public class StackHoverZone : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+    [RequireComponent(typeof(HoverZone))]
+    public class StackHoverZone : MonoBehaviour
     {
         public Routine MoveRoutine;
         public Transform ToMove;
         public float HiddenY;
         public float FocusedY;
 
-        private bool Hovering = false;
+        private HoverZone m_hoverZone;
 
-        private void Update()
+        private void Awake()
         {
-            bool isHoveringThisFrame = IsPointerOverSpecificElement(this.gameObject);
+            m_hoverZone = GetComponent<HoverZone>();
 
-            if (isHoveringThisFrame && !Hovering)
-            {
-                MoveRoutine.Replace(Focus());
-            }
-            else if (!isHoveringThisFrame && Hovering)
-            {
-                MoveRoutine.Replace(Hide());
-            }
-            Hovering = isHoveringThisFrame;
+            m_hoverZone.OnHoverEnter.AddListener(HandleHoverEnter);
+            m_hoverZone.OnHoverExit.AddListener(HandleHoverExit);
         }
 
-        private bool IsPointerOverSpecificElement(GameObject targetGameObject)
+        public void Update()
         {
-            PointerEventData pointerData = new PointerEventData(EventSystem.current)
-            {
-                position = Input.mousePosition
-            };
-            List<RaycastResult> results = new List<RaycastResult>();
-            InterveneUI.Instance.Raycaster.Raycast(pointerData, results);
-            foreach (RaycastResult raycastResult in results)
-            {
-                if (raycastResult.gameObject == targetGameObject)
-                {
-                    return true;
-                }
-            }
-            return false;
+            m_hoverZone.ManualUpdate(InterveneUI.Instance.Raycaster);
         }
 
-        public void OnPointerEnter(PointerEventData eventData)
+        private void OnDisable()
         {
-            //MoveRoutine.Replace(Focus());
+            if (AisGame.IsShuttingDown) { return; }
+
+            m_hoverZone.OnHoverEnter.RemoveAllListeners();
+            m_hoverZone.OnHoverExit.RemoveAllListeners();
         }
 
-        public void OnPointerExit(PointerEventData eventData)
+        #region Handlers
+
+        private void HandleHoverEnter()
         {
-            //MoveRoutine.Replace(Hide());
+            MoveRoutine.Replace(Focus());
         }
+
+        private void HandleHoverExit()
+        {
+            MoveRoutine.Replace(Hide());
+        }
+
+        #endregion // Handlers
 
         #region Routines
 

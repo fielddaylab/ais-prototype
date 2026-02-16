@@ -75,8 +75,12 @@ namespace AIS.Intervene
                 {
                     var newCard = UnityEngine.Object.Instantiate(CardInteractionMgr.Instance.UICardHoverablePrefab, visuals.CardContainer).GetComponent<UICard>();
                     newCard.StackIndex = i;
+                    int tempIndex = i;
+                    newCard.ClickBtn.onClick.AddListener(() => { stack.ClickCall(tempIndex); });
                     visuals.CardVisuals.Add(newCard);
                 }
+
+                ClearCard(visuals.CardVisuals[i]);
 
                 if (stack.FacingDir == CardFaceDir.Visible)
                 {
@@ -98,6 +102,11 @@ namespace AIS.Intervene
                 GameObject.Destroy(visuals.CardVisuals[i].gameObject);
                 visuals.CardVisuals.RemoveAt(i);
             }
+        }
+
+        private static void ClearCard(UICard card)
+        {
+            card.Highlight.enabled = false;
         }
 
         private static void PopulateCardFront(CardStack stack, UICard card)

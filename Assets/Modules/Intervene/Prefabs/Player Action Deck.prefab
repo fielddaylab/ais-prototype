@@ -364,6 +364,7 @@ GameObject:
   - component: {fileID: 5817918764532942407}
   - component: {fileID: 2366751915587402174}
   - component: {fileID: 6573950075564952349}
+  - component: {fileID: 3149372913052409240}
   m_Layer: 5
   m_Name: Hover Zone
   m_TagString: Untagged
@@ -405,7 +406,6 @@ MonoBehaviour:
   ToMove: {fileID: 7442631009427302097}
   HiddenY: -80
   FocusedY: 150
-  Raycaster: {fileID: 0}
 --- !u!222 &5817918764532942407
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -486,6 +486,24 @@ MonoBehaviour:
   m_Interactable: 1
   m_TargetGraphic: {fileID: 2366751915587402174}
   m_OnClick:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &3149372913052409240
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5877513276644627396}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b1056de89b783c47b5e70e02f9bb391, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnHoverEnter:
+    m_PersistentCalls:
+      m_Calls: []
+  OnHoverExit:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &8439361350102101798
