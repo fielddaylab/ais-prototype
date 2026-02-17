@@ -88,4 +88,19 @@ namespace AIS.Model
             TransferTriggerChance = newChance;
         }
     }
+
+    public static class PathwayUtility
+    {
+        public static PathwayType StrToPathwayType(string toParse)
+        {
+            PathwayType type = 0;
+
+            if (Enum.TryParse<PathwayType>(toParse, true, out PathwayType result))
+            {
+                return result;
+            }
+
+            return type;
+        }
+    }
 }

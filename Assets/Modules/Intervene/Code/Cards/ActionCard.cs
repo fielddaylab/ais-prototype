@@ -1,3 +1,4 @@
+using AIS.Model;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -99,6 +100,41 @@ namespace AIS.Intervene {
             toPopulate.Description.SetText(Description);
             // TODO: img
             // toPopulate.Img.SetText(Title);
+        }
+    }
+
+    public static class ActionCardUtility
+    {
+        public static bool Evaluate(ActionTargetCondition condition, ModelTag tag)
+        {
+            switch (condition.Condition)
+            {
+                case ActionCondition.PathwayType:
+                    return EvaluatePathway(condition, tag);
+                // TODO: many more
+                default:
+                    Debug.LogWarning("[ActionCard] No condition matching to evaluate " + condition.Condition.ToString() + "!");
+                    return true;
+            }
+        }
+
+        private static bool EvaluatePathway(ActionTargetCondition condition, ModelTag tag)
+        {
+            // check if pathway
+            if (((tag.TargetType & ActionTarget.Pathway) != 0))
+            {
+                // check if type matches
+                Pathway pathway = tag.QueriableObj.GetComponent<Pathway>();
+                if (pathway != null)
+                {
+                    if ((pathway.PathwayType & PathwayUtility.StrToPathwayType(condition.StrCheck)) != 0)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
         }
     }
 }

@@ -390,6 +390,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TargetType: 0
   Highlight: {fileID: 5152641358634474802}
+  QueriableObj: {fileID: 8153853392820626865}
 --- !u!1 &8153853392820626865
 GameObject:
   m_ObjectHideFlags: 0

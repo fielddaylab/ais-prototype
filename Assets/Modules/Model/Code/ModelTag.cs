@@ -1,4 +1,5 @@
 using AIS.Intervene;
+using BeauUtil;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,6 +15,7 @@ namespace AIS.Model
     {
         public ActionTarget TargetType;
         public SpriteRenderer Highlight;
+        [Required] public GameObject QueriableObj;
 
         #region Unity Callbacks
 

@@ -22,8 +22,52 @@ namespace AIS.Model
 
         #endregion // Unity Callbacks
 
+        #region Queries 
+
+        public List<ModelTag> FilterTagsByTargetDetails(ActionTargetDetails[] allTargetDetails, List<ModelTag> toFilter = null)
+        {
+            List<ModelTag> filtered = new List<ModelTag>();
+            if (toFilter == null)
+            {
+                // by default use full set
+                toFilter = new List<ModelTag>();
+                toFilter.AddRange(RegisteredTags);
+            }
+
+            foreach (var targetDetails in allTargetDetails)
+            {
+                foreach (var tag in toFilter)
+                {
+                    // match target type
+                    if ((tag.TargetType & targetDetails.Target) != 0)
+                    {
+                        // match conditions
+                        bool allTrue = true;
+                        foreach (var condition in targetDetails.Conditions)
+                        {
+                            if (!ActionCardUtility.Evaluate(condition, tag))
+                            {
+                                allTrue = false;
+                                break;
+                            }
+                        }
+                        if (allTrue)
+                        {
+                            filtered.Add(tag);
+                        }
+                    }
+                }
+            }
+
+
+            return filtered;
+        }
+
+        #endregion // Queries
+
         #region Visuals
 
+        /*
         public void HighlightByTarget(ActionTarget target, bool clearExisting = true)
         {
             if (clearExisting)
@@ -38,6 +82,21 @@ namespace AIS.Model
                     tag.ShowHighlight();
                     HighlightedTags.Add(tag);
                 }
+            }
+        }
+        */
+
+        public void HighlightTags(List<ModelTag> toHighlight, bool clearExisting = true)
+        {
+            if (clearExisting)
+            {
+                ClearExistingHighlights();
+            }
+
+            foreach (var tag in toHighlight)
+            {
+                tag.ShowHighlight();
+                HighlightedTags.Add(tag);
             }
         }
 

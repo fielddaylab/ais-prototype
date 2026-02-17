@@ -10,4 +10,14 @@
     target: invasive, specific, 1
     verb: reduce, 2, fixed
 
+::query-pathway
+@title		Find Bait Bucket Pathway
+@desc		Highlight bait Bucket paths in pathway
+@path		pathway-find.png
+@cost		2
+
+@effect
+    target: pathway, specific, 1, if type = BaitBuckets
+    verb: increase, 1, fixed
+
 // END

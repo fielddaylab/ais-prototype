@@ -16,5 +16,11 @@ namespace AIS.Intervene
         public static StringHash32 OnEffectSpecifyCancel = "on-effect-specify-cancel";
         public static StringHash32 OnEffectSpecifyConfirm = "on-effect-specify-confirm";
 
+        public static StringHash32 OnEffectChunkBegin = "on-effect-chunk-begin";
+        public static StringHash32 OnEffectChunkComplete = "on-effect-chunk-complete";
+        public static StringHash32 OnEffectChunkCancel = "on-effect-chunk-cancel";
+
+        public static StringHash32 OnEffectSpecifyAllActionsProcessed = "on-effect-specify-all-actions-processed";
+
     }
 }

@@ -20,6 +20,7 @@ namespace AIS.Intervene
             CancelAllBtn.onClick.AddListener(HandleCancelAllClicked);
 
             AisGame.Events.Register(InterveneEvents.OnEffectSpecifyBegin, HandleEffectSpecifyBegin);
+            AisGame.Events.Register(InterveneEvents.OnEffectSpecifyAllActionsProcessed, HandleEffectSpecifyAllActionsProcessed);
         }
 
         private void OnDisable()
@@ -35,6 +36,11 @@ namespace AIS.Intervene
         private void HandleEffectSpecifyBegin()
         {
             SetUIElementsActive(true);
+        }
+
+        private void HandleEffectSpecifyAllActionsProcessed()
+        {
+            ConfirmBtn.interactable = true;
         }
 
         private void HandleConfirmClicked()
