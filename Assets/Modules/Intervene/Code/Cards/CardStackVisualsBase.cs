@@ -52,6 +52,8 @@ namespace AIS.Intervene
                 visuals.CardVisuals.Add(newCard);
             }
 
+            visuals.CardVisuals[0].StackIndex = stack.Cards.Count - 1;
+
             if (stack.FacingDir == CardFaceDir.Visible)
             {
                 PopulateCardFront(stack, visuals.CardVisuals[0]);
@@ -116,7 +118,7 @@ namespace AIS.Intervene
             card.BackGroup.alpha = 0;
             card.BackGroup.gameObject.SetActive(false);
 
-            // TODO: remaining data
+            stack.Cards[card.StackIndex].PopulateCardUI(card);
         }
 
         private static void PopulateCardBack(CardStack stack, UICard card)
@@ -128,7 +130,7 @@ namespace AIS.Intervene
 
             // determine card back according to card attributes
             Sprite backSprite = null;
-            if ((stack.Cards[0].Attributes & CardAttributes.Action) != 0)
+            if ((CardStackUtility.TopCard(stack).Attributes & CardAttributes.Action) != 0)
             {
                 backSprite = CardInteractionMgr.Instance.CardBackActionSprite;
             }

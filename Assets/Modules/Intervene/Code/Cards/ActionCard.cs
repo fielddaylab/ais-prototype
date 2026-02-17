@@ -8,5 +8,13 @@ namespace AIS.Intervene {
         public string Title;
         public string Description;
         public string ImgPath;
+
+        public override void PopulateCardUI(UICard toPopulate)
+        {
+            toPopulate.Title.SetText(Title);
+            toPopulate.Description.SetText(Description);
+            // TODO: img
+            // toPopulate.Img.SetText(Title);
+        }
     }
 }

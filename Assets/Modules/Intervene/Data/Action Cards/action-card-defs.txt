@@ -1,18 +1,18 @@
 // Action Cards
 
 ::example-action-card-1
-@title		Title Here (1)
-@desc		Description here
+@title		Action 1
+@desc		Perform an action!
 @path		img.png
 
 ::example-action-card-2
-@title		Title Here (2)
-@desc		Description here
+@title		Second Action
+@desc		Perform action #2.
 @path		img.png
 
 ::example-action-card-3
-@title		Title Here (3)
-@desc		Description here
+@title		Action the Third
+@desc		The world is not ready for what this card can do.
 @path		img.png
 
 // END
