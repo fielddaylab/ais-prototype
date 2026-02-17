@@ -15,6 +15,8 @@ namespace AIS.Model
     {
         public ActionTarget TargetType;
         public SpriteRenderer Highlight;
+        public Color NormalColor; // TODO: move to lookup
+        public Color SelectedColor;  // TODO: move to lookup
         [Required] public GameObject QueriableObj;
 
         #region Unity Callbacks
@@ -38,11 +40,23 @@ namespace AIS.Model
         public void ShowHighlight()
         {
             Highlight.enabled = true;
+            SetNormalHighlight();
         }
 
         public void HideHighlight()
         {
             Highlight.enabled = false;
+            SetNormalHighlight();
+        }
+
+        public void SetNormalHighlight()
+        {
+            Highlight.color = NormalColor;
+        }
+
+        public void SetSelectedHighlight()
+        {
+            Highlight.color = SelectedColor;
         }
 
         #endregion // Visuals

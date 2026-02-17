@@ -59,7 +59,6 @@ namespace AIS.Model
                 }
             }
 
-
             return filtered;
         }
 

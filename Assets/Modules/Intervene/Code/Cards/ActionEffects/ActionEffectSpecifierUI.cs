@@ -21,6 +21,10 @@ namespace AIS.Intervene
 
             AisGame.Events.Register(InterveneEvents.OnEffectSpecifyBegin, HandleEffectSpecifyBegin);
             AisGame.Events.Register(InterveneEvents.OnEffectSpecifyAllActionsProcessed, HandleEffectSpecifyAllActionsProcessed);
+        
+            AisGame.Events.Register(InterveneEvents.OnEffectChunkBegin, HandleOnEffectChunkBegin);
+            AisGame.Events.Register(InterveneEvents.OnEffectChunkCancel, HandleOnEffectChunkCancel);
+            AisGame.Events.Register(InterveneEvents.OnEffectChunkComplete, HandleOnEffectChunkComplete);
         }
 
         private void OnDisable()
@@ -29,6 +33,13 @@ namespace AIS.Intervene
 
             ConfirmBtn.onClick.RemoveAllListeners();
             CancelAllBtn.onClick.RemoveAllListeners();
+
+            AisGame.Events.Deregister(InterveneEvents.OnEffectSpecifyBegin, HandleEffectSpecifyBegin);
+            AisGame.Events.Deregister(InterveneEvents.OnEffectSpecifyAllActionsProcessed, HandleEffectSpecifyAllActionsProcessed);
+
+            AisGame.Events.Deregister(InterveneEvents.OnEffectChunkBegin, HandleOnEffectChunkBegin);
+            AisGame.Events.Deregister(InterveneEvents.OnEffectChunkCancel, HandleOnEffectChunkCancel);
+            AisGame.Events.Deregister(InterveneEvents.OnEffectChunkComplete, HandleOnEffectChunkComplete);
         }
 
         #region Handlers
@@ -57,6 +68,20 @@ namespace AIS.Intervene
             AisGame.Events.Dispatch(InterveneEvents.OnEffectSpecifyCancel);
         }
 
+        private void HandleOnEffectChunkBegin() {
+            SetUIElementsActiveForChunking(true);
+        }
+
+        private void HandleOnEffectChunkComplete()
+        {
+            SetUIElementsActiveForChunking(false);
+        }
+
+        private void HandleOnEffectChunkCancel()
+        {
+            SetUIElementsActiveForChunking(false);
+        }
+
         #endregion // Handlers
 
         #region Helpers
@@ -68,6 +93,12 @@ namespace AIS.Intervene
             CancelAllBtn.gameObject.SetActive(effectSpecifyActive);
 
             BeginEffectSpecifyBtn.gameObject.SetActive(!effectSpecifyActive);
+        }
+
+        private void SetUIElementsActiveForChunking(bool chunkingActive)
+        {
+            ConfirmBtn.gameObject.SetActive(!chunkingActive);
+            CancelAllBtn.gameObject.SetActive(!chunkingActive);
         }
 
         #endregion // Helpers

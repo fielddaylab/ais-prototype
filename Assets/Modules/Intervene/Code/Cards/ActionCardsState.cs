@@ -1,15 +1,12 @@
-﻿using FieldDay.SharedState;
+﻿using BeauUtil;
+using BeauUtil.Debugger;
 using FieldDay;
-using System.Collections;
+using FieldDay.Debugging;
+using FieldDay.SharedState;
+using Leaf.Runtime;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
-using BeauUtil;
-using Leaf.Runtime;
-using BeauUtil.Debugger;
-using FieldDay.Debugging;
-using FieldDay.Scenes;
-using BeauRoutine;
 
 namespace AIS.Intervene
 {
@@ -71,6 +68,8 @@ namespace AIS.Intervene
 
         private static readonly string TARGET_LINE = "target:";
         private static readonly string VERB_LINE = "verb:";
+        private static readonly string SPEC_LINE = "specificity:";
+        private static readonly string MAX_TARGETS_LINE = "maxtargets:";
         private static readonly string IF_KEYWORD = "if";
 
         private static readonly string ENTRY_SEP = "::";
@@ -241,6 +240,8 @@ namespace AIS.Intervene
         static private ActionEffect ParseSingleEffect(string effectBlock)
         {
             List<ActionTargetDetails> targets = new List<ActionTargetDetails>();
+            ActionSpecificity specificity = ActionSpecificity.Specific;
+            int maxTargets = 1;
             List<ActionVerbDetails> verbs = new List<ActionVerbDetails>();
 
             // Split into lines
@@ -262,11 +263,26 @@ namespace AIS.Intervene
                     ActionVerbDetails verb = ParseVerb(verbContent);
                     verbs.Add(verb);
                 }
+                else if (trimmedLine.StartsWith(SPEC_LINE))
+                {
+                    string specificityContent = line.Substring(line.ToLower().IndexOf(SPEC_LINE) + SPEC_LINE.Length).Trim();
+                    specificity = ParseActionSpecificity(specificityContent.Trim());
+                }
+                else if (trimmedLine.StartsWith(MAX_TARGETS_LINE))
+                {
+                    string maxTargetContent = line.Substring(line.ToLower().IndexOf(MAX_TARGETS_LINE) + MAX_TARGETS_LINE.Length).Trim();
+                    if (int.TryParse(maxTargetContent, out int count))
+                    {
+                        maxTargets = count;
+                    }
+                }
             }
 
             ActionEffect effect = new ActionEffect
             {
                 AllTargets = targets.ToArray(),
+                Specificity = specificity,
+                MaxTargets = maxTargets,
                 Verbs = verbs.ToArray()
             };
 
@@ -275,8 +291,8 @@ namespace AIS.Intervene
 
         static private ActionTargetDetails ParseTarget(string targetContent)
         {
-            // Format: [type], [specificity], [count], [optional conditions]
-            // Example: "invasive, specific, 1, if population < 5"
+            // Format: [type], [optional conditions]
+            // Example: "invasive, if population < 5"
 
             string[] parts = targetContent.Split(COMMA_DELIM, StringSplitOptions.RemoveEmptyEntries);
 
@@ -288,29 +304,8 @@ namespace AIS.Intervene
                 targetDetails.Target = ParseActionTarget(parts[0].Trim());
             }
 
-            // Parse specificity (required)
-            if (parts.Length > 1)
-            {
-                targetDetails.Specificity = ParseActionSpecificity(parts[1].Trim());
-            }
-
             // Check if next part is a number (count) or a condition
             int conditionStartIndex = 2;
-            targetDetails.NumTargets = 1; // default
-
-            if (parts.Length > 2)
-            {
-                string potentialNumber = parts[2].Trim().ToLower();
-                // Check if this is NOT a condition (doesn't start with "if")
-                if (!potentialNumber.StartsWith(IF_KEYWORD))
-                {
-                    if (float.TryParse(potentialNumber, out float count))
-                    {
-                        targetDetails.NumTargets = count;
-                        conditionStartIndex = 3;
-                    }
-                }
-            }
 
             // Parse conditions (everything after count that starts with "if")
             List<ActionTargetCondition> conditions = new List<ActionTargetCondition>();

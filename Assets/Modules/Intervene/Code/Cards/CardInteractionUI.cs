@@ -44,6 +44,8 @@ namespace AIS.Intervene
 
         private void HandleUseClicked()
         {
+            if (CardInteractionMgr.Instance.Hand.GetSelectedCards().Count == 0) { return; }
+
             AisGame.Events.Dispatch(InterveneEvents.OnEffectSpecifyBegin);
         }
 

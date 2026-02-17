@@ -65,8 +65,6 @@ namespace AIS.Intervene {
     public struct ActionTargetDetails
     {
         public ActionTarget Target;
-        public ActionSpecificity Specificity;
-        public float NumTargets; // up to
         public ActionTargetCondition[] Conditions;
     }
 
@@ -80,6 +78,8 @@ namespace AIS.Intervene {
     public struct ActionEffect
     {
         public ActionTargetDetails[] AllTargets;
+        public ActionSpecificity Specificity;
+        public float MaxTargets; // up to
         public ActionVerbDetails[] Verbs;
     }
 

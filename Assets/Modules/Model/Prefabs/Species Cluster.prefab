@@ -267,7 +267,7 @@ GameObject:
   - component: {fileID: 5152641358634474802}
   - component: {fileID: 7329239175542499826}
   - component: {fileID: 6769573476877274509}
-  m_Layer: 0
+  m_Layer: 20
   m_Name: Model Tag
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -390,6 +390,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TargetType: 0
   Highlight: {fileID: 5152641358634474802}
+  NormalColor: {r: 0, g: 0.7411765, b: 1, a: 1}
+  SelectedColor: {r: 0, g: 0.8113208, b: 0.048806094, a: 1}
   QueriableObj: {fileID: 8153853392820626865}
 --- !u!1 &8153853392820626865
 GameObject:

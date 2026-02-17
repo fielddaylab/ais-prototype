@@ -8,6 +8,22 @@ namespace AIS.Intervene
 {
     /// <summary>
     /// System that enables the player to specify how to use their actions.
+    ///
+    /// For each action card selected:
+    ///     TODO: modify cards according to synergies
+    ///     For each action effect in card:
+    ///         // Pass control to EffectChunkMgr
+    ///             // Keeps track of selectedTargets
+    ///             // Allows effect-level cancel and confirm
+    ///         // Highlight Valid Targets
+    ///         // On Click:
+    ///             // Check for first valid ModelTag under mouse
+    ///             // If ModelTag already selected, deselect and modify highlight (normal color)
+    ///             // Else if MaxTargets is reached, do not select
+    ///             // Else if more selections allowed, select and modify highlight (selected color)
+    ///         // Return FinalizedEffectChunk
+    ///             // Contains List of Targets for the given Effect
+    /// Execute the FinalizedEffectChunks in order created
     /// </summary>
     public class ActionEffectSpecifierSystem : MonoBehaviour
     {
@@ -21,6 +37,8 @@ namespace AIS.Intervene
         private List<EffectChunk> ProcessedEffects = new List<EffectChunk>();
 
         public Routine ChunkTransitionRoutine;
+
+        public Routine ExecuteRoutine;
 
         #region Unity Callbacks
 
@@ -79,26 +97,7 @@ namespace AIS.Intervene
 
             CurrActionIndex = 0;
             CurrEffectIndex = 0;
-        }
-
-        /// <summary>
-        /// For each action card selected:
-        ///     TODO: modify cards according to synergies
-        ///     For each action effect in card:
-        ///         // Pass control to EffectChunkMgr
-        ///             // Keeps track of selectedTargets
-        ///             // Allows effect-level cancel and confirm
-        ///         // Highlight Valid Targets
-        ///         // On Click:
-        ///             // Check for first valid ModelTag under mouse
-        ///             // If ModelTag already selected, deselect and modify highlight (normal color)
-        ///             // Else if MaxTargets is reached, do not select
-        ///             // Else if more selections allowed, select and modify highlight (selected color)
-        ///         // Return FinalizedEffectChunk
-        ///             // Contains List of Targets for the given Effect
-        /// Execute the FinalizedEffectChunks in order created
-        /// </summary>
-       
+        }      
 
         private void ProcessNextEffect()
         {
@@ -126,7 +125,7 @@ namespace AIS.Intervene
         {
             if (ChunkMgr.IsActive)
             {
-                ChunkMgr.Cancel();
+                ChunkMgr.ExternForceCancel();
             }
             ActionsProcessList.Clear();
             SelectedActionCards.Clear();
@@ -141,6 +140,7 @@ namespace AIS.Intervene
         {
             CurrActionIndex++;
             CurrEffectIndex = 0;
+            ProcessNextEffect();
         }
 
         #endregion // Phase Management
@@ -163,8 +163,9 @@ namespace AIS.Intervene
         /// </summary>
         private void HandleEffectSpecifyConfirm()
         {
-            // TODO: Execute Effects
-            Exit();
+            // Execute Effects
+            ExecuteRoutine.Replace(ExecuteEffectsRoutine())
+                .OnComplete(() => Exit());
         }
 
         /// <summary>
@@ -172,6 +173,7 @@ namespace AIS.Intervene
         /// </summary>
         private void HandleEffectSpecifyCancel()
         {
+            ChunkTransitionRoutine.Stop();
             Exit();
         }
 
@@ -215,6 +217,11 @@ namespace AIS.Intervene
 
             // re-trigger current index
             ProcessNextEffect();
+        }
+
+        private IEnumerator ExecuteEffectsRoutine()
+        {
+            yield return null;
         }
 
         #endregion // Routines
