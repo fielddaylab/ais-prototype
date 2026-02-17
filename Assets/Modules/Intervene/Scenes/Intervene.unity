@@ -543,6 +543,7 @@ MonoBehaviour:
   UnlockedActionCards: []
   CardSources:
   - {fileID: 4900000, guid: 609aad634da28994d8f679b701de0002, type: 3}
+  - {fileID: 4900000, guid: 50d5169a0a4e1344480b3a15f5c7b9e1, type: 3}
 --- !u!4 &367910946
 Transform:
   m_ObjectHideFlags: 0

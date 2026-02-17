@@ -121,7 +121,9 @@ namespace AIS.Intervene
             };
 
             var actionCardsState = Find.State<ActionCardsState>();
-            var actionCards = ActionCardsUtility.GetCardsFromEvidence(actionCardsState, evidenceIds);
+            //var actionCards = ActionCardsUtility.GetCardsFromEvidence(actionCardsState, evidenceIds);
+            var actionCards = ActionCardsUtility.GetAllCards(actionCardsState);
+            
             ActionDeck.PopulateDeck(actionCards);
             ShuffleActionDeck();
 
