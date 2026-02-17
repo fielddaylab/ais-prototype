@@ -40,7 +40,7 @@ namespace AIS.Intervene
     }
 
     [SharedStateInitOrder(10)]
-    public sealed class ActionCardsState : SharedStateComponent, IScenePreload
+    public sealed class ActionCardsState : SharedStateComponent
     {
         [HideInInspector] public Dictionary<StringHash32, ActionCardData> AllActionCards;
         [HideInInspector] public List<StringHash32> UnlockedActionCards;
@@ -55,23 +55,6 @@ namespace AIS.Intervene
 
             // Populate Card data
             ActionCardsUtility.PopulateCards(this);
-        }
-
-        public IEnumerator<WorkSlicer.Result?> Preload()
-        {
-            yield return null;
-
-            /*
-            // Initialize Lists
-            AllActionCards = new Dictionary<StringHash32, ActionCardData>();
-            UnlockedActionCards = new List<StringHash32>();
-
-            yield return null;
-
-            // Populate Card data
-            var populate = Async.Schedule(ActionCardsUtility.PopulateCards(this), AsyncFlags.HighPriority | AsyncFlags.MainThreadOnly);
-            Game.Scenes.RegisterLoadDependency(populate);
-            */
         }
     }
 

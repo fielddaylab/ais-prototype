@@ -9,9 +9,27 @@ namespace AIS.Intervene
     /// </summary>
     public class ActionEffectSpecifierSystem : MonoBehaviour
     {
+        #region Unity Callbacks
+
+        private void Awake()
+        {
+            AisGame.Events.Register(InterveneEvents.OnEffectSpecifyCancel, HandleEffectSpecifyCancel);
+        }
+
+        #endregion // Unity Callbacks
+
         public void ResetChoices()
         {
             
         }
+
+        #region Handlers
+
+        private void HandleEffectSpecifyCancel()
+        {
+            ResetChoices();
+        }
+
+        #endregion // Handlers
     }
 }
