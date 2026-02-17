@@ -47,13 +47,19 @@ namespace AIS.Intervene
             SelectedCardIndices.Remove(index);
         }
 
+        public void ClearSelections()
+        {
+            SelectedCardIndices.Clear();
+
+            UpdateSelectVisuals();
+        }
+
         private void UpdateSelectVisuals()
         {
             for (int i = 0; i < Visuals.CardVisuals.Count; i++)
             {
                 Visuals.CardVisuals[i].Highlight.enabled = SelectedCardIndices.Contains(i);
             }
-
         }
 
         #region Queries

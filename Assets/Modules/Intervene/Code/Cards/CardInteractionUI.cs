@@ -44,7 +44,7 @@ namespace AIS.Intervene
 
         private void HandleUseClicked()
         {
-            AisGame.Events.Dispatch(InterveneEvents.OnUseSelectedCards);
+            AisGame.Events.Dispatch(InterveneEvents.OnEffectSpecifyBegin);
         }
 
         private void HandleRecycleClicked()

@@ -20,6 +20,8 @@ namespace AIS.Intervene
                 newCard.Description = cardData.Description;
                 newCard.ImgPath = cardData.ImgPath;
 
+                newCard.Effects = cardData.Effects;
+
                 CardStackUtility.AddToTop(this, newCard, false);
             }
         }

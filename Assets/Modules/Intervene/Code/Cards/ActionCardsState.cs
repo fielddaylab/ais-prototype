@@ -19,15 +19,21 @@ namespace AIS.Intervene
         public string Title;
         public string Description;
         public string ImgPath;
+
+        public float Cost;
+        public ActionEffect[] Effects;
         
         public bool IsValid;
 
-        public ActionCardData(SerializedHash32 cardID, string title, string desc, string imgPath)
+        public ActionCardData(SerializedHash32 cardID, string title, string desc, string imgPath, float cost, ActionEffect[] effects)
         {
             CardID = cardID;
             Title = title;
             Description = desc;
             ImgPath = imgPath;
+
+            Cost = cost;
+            Effects = effects;
 
             IsValid = true;
         }
@@ -178,7 +184,13 @@ namespace AIS.Intervene
                 throw new Exception("Image Path");
             }
 
-            return new ActionCardData(cardID, title, desc, imgPath);
+            // TODO: Cost
+            float cost = 0;
+
+            // TODO: Action Effects
+            ActionEffect[] effects = new ActionEffect[0];
+
+            return new ActionCardData(cardID, title, desc, imgPath, cost, effects);
         }
 
         static public List<ActionCardData> GetUnlockedCards(ActionCardsState state)

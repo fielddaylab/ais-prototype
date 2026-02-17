@@ -31,8 +31,11 @@ namespace AIS.Intervene
 
             AisGame.Events.Register(InterveneEvents.OnShuffleActionDeck, HandleOnShuffleActionDeck);
             AisGame.Events.Register(InterveneEvents.OnDrawFromActionDeck, HandleOnDrawFromActionDeck);
-            AisGame.Events.Register(InterveneEvents.OnUseSelectedCards, HandleOnUseSelectedCards);
             AisGame.Events.Register(InterveneEvents.OnRecycleDiscard, HandleOnRecycleDiscard);
+
+            AisGame.Events.Register(InterveneEvents.OnEffectSpecifyBegin, HandleOnEffectSpecifyBegin);
+            AisGame.Events.Register(InterveneEvents.OnEffectSpecifyCancel, HandleOnEffectSpecifyCancel);
+            AisGame.Events.Register(InterveneEvents.OnEffectSpecifyConfirm, HandleOnEffectSpecifyConfirm);
         }
 
         private void Start()
@@ -47,8 +50,11 @@ namespace AIS.Intervene
 
             AisGame.Events.Deregister(InterveneEvents.OnShuffleActionDeck, HandleOnShuffleActionDeck);
             AisGame.Events.Deregister(InterveneEvents.OnDrawFromActionDeck, HandleOnDrawFromActionDeck);
-            AisGame.Events.Deregister(InterveneEvents.OnUseSelectedCards, HandleOnUseSelectedCards);
             AisGame.Events.Deregister(InterveneEvents.OnRecycleDiscard, HandleOnRecycleDiscard);
+
+            AisGame.Events.Deregister(InterveneEvents.OnEffectSpecifyBegin, HandleOnEffectSpecifyBegin);
+            AisGame.Events.Deregister(InterveneEvents.OnEffectSpecifyCancel, HandleOnEffectSpecifyCancel);
+            AisGame.Events.Deregister(InterveneEvents.OnEffectSpecifyConfirm, HandleOnEffectSpecifyConfirm);
         }
 
         #endregion // Unity Callbacks
@@ -84,7 +90,7 @@ namespace AIS.Intervene
             if (selectedCards.Count == 0) { return; }
 
             CardStackUtility.RemoveCards(Hand, Hand.SelectedCardIndices);
-            Hand.SelectedCardIndices.Clear();
+            Hand.ClearSelections();
 
             foreach(var discarded in selectedCards)
             {
@@ -111,11 +117,13 @@ namespace AIS.Intervene
             evidenceIds = new List<StringHash32>() {
                 "example-evidence-card-1",
                 "example-evidence-card-2",
+                "example-evidence-card-3",
             };
 
             var actionCardsState = Find.State<ActionCardsState>();
             var actionCards = ActionCardsUtility.GetCardsFromEvidence(actionCardsState, evidenceIds);
             ActionDeck.PopulateDeck(actionCards);
+            ShuffleActionDeck();
 
             Hand.ClickCall = (index) => { ToggleSelectHandAtIndex(index); };
         }
@@ -141,14 +149,24 @@ namespace AIS.Intervene
             DrawCard();
         }
 
-        private void HandleOnUseSelectedCards()
-        {
-            DiscardSelectedCards();
-        }
-
         private void HandleOnRecycleDiscard()
         {
             RecycleDiscard();
+        }
+
+        private void HandleOnEffectSpecifyBegin()
+        {
+            
+        }
+
+        private void HandleOnEffectSpecifyCancel()
+        {
+            Hand.ClearSelections();
+        }
+
+        private void HandleOnEffectSpecifyConfirm()
+        {
+            DiscardSelectedCards();
         }
 
         #endregion // Handlers

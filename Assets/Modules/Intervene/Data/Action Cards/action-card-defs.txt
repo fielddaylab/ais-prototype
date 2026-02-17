@@ -15,4 +15,14 @@
 @desc		The world is not ready for what this card can do.
 @path		img.png
 
+::example-action-card-4
+@title		Action 4
+@desc		Another action you can play.
+@path		img.png
+
+::example-action-card-5
+@title		Action 5
+@desc		Plan E, anyone?
+@path		img.png
+
 // END
