@@ -17,6 +17,7 @@ namespace AIS.Intervene {
             public SerializedHash32 DestEcosystemId;
             public int TransferCount;
             public PathwayType TravelType;
+            public ActionTarget TargetType;
         }
 
         #endregion // Structs and Enums
@@ -77,6 +78,7 @@ namespace AIS.Intervene {
                 transferAlloc.DestEcosystemId = pathway.DestEcosystemId;
                 transferAlloc.TransferCount = transferNum;
                 transferAlloc.TravelType = speciesPair.Item2;
+                transferAlloc.TargetType = speciesPair.Item3;
                 m_SpeciesTransfers.Add(transferAlloc);
 
                 // Release species from original ecosystem
@@ -90,7 +92,7 @@ namespace AIS.Intervene {
             {
                 var destEco = InvasionModelContainer.Instance.GetEcosystem(m_SpeciesTransfers[i].DestEcosystemId);
                 if (!destEco.IsExternal) {
-                    destEco.AddPopulation(m_SpeciesTransfers[i].SpeciesId, m_SpeciesTransfers[i].TransferCount, m_SpeciesTransfers[i].TravelType);
+                    destEco.AddPopulation(m_SpeciesTransfers[i].SpeciesId, m_SpeciesTransfers[i].TransferCount, m_SpeciesTransfers[i].TravelType, m_SpeciesTransfers[i].TargetType);
                 }
                 m_SpeciesTransfers.RemoveAt(i);
             }

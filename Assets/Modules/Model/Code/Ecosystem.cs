@@ -1,3 +1,4 @@
+using AIS.Intervene;
 using BeauUtil;
 using System;
 using System.Collections;
@@ -68,9 +69,9 @@ namespace AIS.Model
             return lowestIndex;
         }
 
-        public List<Tuple<SerializedHash32, PathwayType>> FindSpeciesWhichTravelBy(PathwayType travelType)
+        public List<Tuple<SerializedHash32, PathwayType, ActionTarget>> FindSpeciesWhichTravelBy(PathwayType travelType)
         {
-            List<Tuple<SerializedHash32, PathwayType>> foundSpecies = new List<Tuple<SerializedHash32, PathwayType>>();
+            List<Tuple<SerializedHash32, PathwayType, ActionTarget>> foundSpecies = new List<Tuple<SerializedHash32, PathwayType, ActionTarget>>();
 
             foreach (var speciesId in SpeciesInEcosystem)
             {
@@ -80,7 +81,7 @@ namespace AIS.Model
                 {
                     if ((speciesCluster.TravelType & travelType) != 0)
                     {
-                        foundSpecies.Add(new Tuple<SerializedHash32, PathwayType>(speciesCluster.SpeciesId, speciesCluster.TravelType));
+                        foundSpecies.Add(new Tuple<SerializedHash32, PathwayType, ActionTarget>(speciesCluster.SpeciesId, speciesCluster.TravelType, speciesCluster.TargetType));
                     }
                 }
             }
@@ -88,7 +89,7 @@ namespace AIS.Model
             return foundSpecies;
         }
 
-        public void AddPopulation(SerializedHash32 speciesId, int addCount, PathwayType travelType)
+        public void AddPopulation(SerializedHash32 speciesId, int addCount, PathwayType travelType, ActionTarget targetType)
         {
             if (addCount == 0) { return; }
 
@@ -114,7 +115,7 @@ namespace AIS.Model
                 var speciesSlot = MainSlots[slotIndex];
 
                 var newCluster = InvasionModelPrefabs.Instance.CreateSpeciesCluster(InvasionModelContainer.Instance.transform);
-                newCluster.Init(speciesId, addCount, travelType);
+                newCluster.Init(speciesId, addCount, travelType, targetType);
 
                 var targetPos = speciesSlot.transform.position;
                 var yOffset = 1;

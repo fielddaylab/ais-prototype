@@ -1,3 +1,4 @@
+using AIS.Intervene;
 using BeauUtil;
 using System;
 using System.Collections;
@@ -14,6 +15,7 @@ namespace AIS.Model
         public SerializedHash32 StartingEcosystemId;
         public int StartingPopulation;
         public PathwayType StartingTravelType;
+        public ActionTarget StartingTargetType;
 
         public Sprite SpeciesSprite;
     }
@@ -24,25 +26,32 @@ namespace AIS.Model
         public SpriteRenderer IconRenderer;
         public TMP_Text PopulationText;
 
+        public ModelTag ActionTag;
+
         public SerializedHash32 SpeciesId;
         [HideInInspector] public int Population;
         public PathwayType TravelType;
+        public ActionTarget TargetType;
 
         public void LoadData(SpeciesSetupData setupData)
         {
-            Init(setupData.SpeciesId, setupData.StartingPopulation, setupData.StartingTravelType);
+            Init(setupData.SpeciesId, setupData.StartingPopulation, setupData.StartingTravelType, setupData.StartingTargetType);
         }
 
-        public void Init(SerializedHash32 speciesId, int population, PathwayType travelType)
+        public void Init(SerializedHash32 speciesId, int population, PathwayType travelType, ActionTarget targetType)
         {
             SpeciesId = speciesId;
             Population = population;
             TravelType = travelType;
+            TargetType = targetType;
+
+            ActionTag.TargetType = TargetType;
 
             IconRenderer.sprite = ModelSpriteLookup.Instance.LookupSpeciesIcon(speciesId);
             PopulationText.SetText("x" + Population.ToStringLookup());
-            BGRenderer.sortingOrder = InvasionModelSorting.SPECIES_SORTING;
-            IconRenderer.sortingOrder = InvasionModelSorting.SPECIES_SORTING + 10;
+            ActionTag.Highlight.sortingOrder = InvasionModelSorting.SPECIES_SORTING;
+            BGRenderer.sortingOrder = InvasionModelSorting.SPECIES_SORTING + 10;
+            IconRenderer.sortingOrder = InvasionModelSorting.SPECIES_SORTING + 20;
             PopulationText.GetComponent<MeshRenderer>().sortingOrder = InvasionModelSorting.SPECIES_SORTING + 20;
         }
 

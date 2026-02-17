@@ -423,32 +423,52 @@ namespace AIS.Intervene
                 }
                 else if (operatorChar == GR_CHAR || operatorChar == '≥')
                 {
-                    // Note: You'll need to add PopulationGreaterThan to ActionCondition enum
-                    // For now, using PopulationLessThan as placeholder
-                    Debug.LogWarning("[CardUtility] Population > operator detected. Consider adding PopulationGreaterThan to ActionCondition enum.");
-                    condition.Condition = ActionCondition.PopulationLessThan; // Placeholder
+                    condition.Condition = ActionCondition.PopulationGreaterThan;
                 }
                 else if (operatorChar == EQ_CHAR)
                 {
-                    // Note: You'll need to add PopulationEquals to ActionCondition enum
-                    Debug.LogWarning("[CardUtility] Population = operator detected. Consider adding PopulationEquals to ActionCondition enum.");
-                    condition.Condition = ActionCondition.PopulationLessThan; // Placeholder
+                    condition.Condition = ActionCondition.PopulationEqualTo;
                 }
 
                 if (float.TryParse(valueStr, out float numValue))
                 {
+                    if (operatorChar == '≤')
+                    {
+                        numValue++;
+                    }
+                    else if (operatorChar == '≥')
+                    {
+                        numValue--;
+                    }
                     condition.NumericalCheck = numValue;
                 }
             }
             // Awareness conditions
             else if (variableName.Contains("aware") || variableName.Contains("awareness"))
             {
-                // Note: You'll need to add AwarenessLessThan, AwarenessGreaterThan, etc. to ActionCondition enum
-                Debug.LogWarning("[CardUtility] Awareness condition detected. Consider adding Awareness-specific conditions to ActionCondition enum.");
-                condition.Condition = ActionCondition.None; // Placeholder until enum is expanded
+                if (operatorChar == LE_CHAR || operatorChar == '≤')
+                {
+                    condition.Condition = ActionCondition.AwarenessLessThan;
+                }
+                else if (operatorChar == GR_CHAR || operatorChar == '≥')
+                {
+                    condition.Condition = ActionCondition.AwarenessGreaterThan;
+                }
+                else if (operatorChar == EQ_CHAR)
+                {
+                    condition.Condition = ActionCondition.AwarenessEqualTo;
+                }
 
                 if (float.TryParse(valueStr, out float numValue))
                 {
+                    if (operatorChar == '≤')
+                    {
+                        numValue++;
+                    }
+                    else if (operatorChar == '≥')
+                    {
+                        numValue--;
+                    }
                     condition.NumericalCheck = numValue;
                 }
             }

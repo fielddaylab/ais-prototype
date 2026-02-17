@@ -125,6 +125,7 @@ MonoBehaviour:
         m_HashValue: 415488260
       StartingPopulation: 4
       StartingTravelType: 8
+      StartingTargetType: 1
       SpeciesSprite: {fileID: 21300000, guid: 865a1d2b3d332134591f29fcd54f724f, type: 3}
     - SpeciesId:
         m_Source: snail
@@ -134,6 +135,7 @@ MonoBehaviour:
         m_HashValue: 465821117
       StartingPopulation: 1
       StartingTravelType: 8
+      StartingTargetType: 1
       SpeciesSprite: {fileID: 21300000, guid: 865a1d2b3d332134591f29fcd54f724f, type: 3}
   SharedSpeciesSetups:
   - SpeciesId:
@@ -144,4 +146,5 @@ MonoBehaviour:
       m_HashValue: 848023977
     StartingPopulation: -1
     StartingTravelType: 8
+    StartingTargetType: 1
     SpeciesSprite: {fileID: 21300000, guid: 865a1d2b3d332134591f29fcd54f724f, type: 3}

@@ -542,8 +542,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UnlockedActionCards: []
   CardSources:
-  - {fileID: 4900000, guid: 609aad634da28994d8f679b701de0002, type: 3}
-  - {fileID: 4900000, guid: 50d5169a0a4e1344480b3a15f5c7b9e1, type: 3}
+  - {fileID: 4900000, guid: f895ea2fe8ea1054dae1b767b1f38a09, type: 3}
 --- !u!4 &367910946
 Transform:
   m_ObjectHideFlags: 0
@@ -1080,7 +1079,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 9.9999695, y: -373}
+  m_AnchoredPosition: {x: 10, y: -373}
   m_SizeDelta: {x: 120, y: 40}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &621072602
@@ -2267,7 +2266,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 9.9999695, y: -308}
+  m_AnchoredPosition: {x: 10, y: -308}
   m_SizeDelta: {x: 120, y: 40}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1693134371

@@ -18,6 +18,7 @@ namespace AIS.Intervene {
     [Flags]
     public enum ActionTarget
     {
+        None,
         Invasive,
         Predator,
         Prey,
@@ -39,6 +40,11 @@ namespace AIS.Intervene {
     {
         None,
         PopulationLessThan,
+        PopulationEqualTo,
+        PopulationGreaterThan,
+        AwarenessLessThan,
+        AwarenessEqualTo,
+        AwarenessGreaterThan,
         PathwayType,
     }
 

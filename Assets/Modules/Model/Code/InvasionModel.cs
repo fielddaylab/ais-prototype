@@ -104,7 +104,7 @@ namespace AIS.Model
             {
                 var relevantEcosystem = m_ModelContainer.GetEcosystem(speciesData.StartingEcosystemId);
 
-                relevantEcosystem.AddPopulation(speciesData.SpeciesId, speciesData.StartingPopulation, speciesData.StartingTravelType);
+                relevantEcosystem.AddPopulation(speciesData.SpeciesId, speciesData.StartingPopulation, speciesData.StartingTravelType, speciesData.StartingTargetType);
             }
         }
 
