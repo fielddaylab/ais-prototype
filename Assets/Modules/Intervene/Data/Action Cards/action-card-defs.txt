@@ -1,7 +1,7 @@
 // Action Cards With Effects
 
 ::reduce-snails-1
-@title		Reduce Snail Population in 1 Eco
+@title		Reduce Snails 1
 @desc		Reduce an invasive population by up to 2 in one ecosystem
 @path		invasive-reduction.png
 @cost		2
@@ -13,7 +13,7 @@
     maxtargets: 1
 
 ::reduce-snails-2
-@title		Reduce Snail Population in 2 Ecos
+@title		Reduce Snails 2
 @desc		Reduce an invasive population by up to 1 in each of 2 ecosystems.
 @path		invasive-reduction.png
 @cost		2
@@ -25,8 +25,8 @@
     maxtargets: 2
 
 ::query-pathway
-@title		Find Bait Bucket Pathway
-@desc		Highlight bait Bucket paths in pathway
+@title		Find Bait Path
+@desc		Highlight Bait Bucket paths in pathway
 @path		pathway-find.png
 @cost		2
 
@@ -36,8 +36,21 @@
     specificity: specific
     maxtargets: 1
 
+::query-pathway-or-invasive
+@title		Find Path or Invasive
+@desc		Highlight invasives and pathways, pick one.
+@path		pathway-find.png
+@cost		2
+
+@effect
+    target: pathway, if type = BaitBuckets
+    target: invasive
+    verb: increase, 1, fixed
+    specificity: specific
+    maxtargets: 1
+
 ::reduce-snails-and-pathway
-@title		Reduce Snail and find Paths
+@title		Reduce Snail, Path
 @desc		Reduce an invasive population by up to 1 in 1 ecosystem. Also Find a BaitBucket path.
 @path		invasive-reduction.png
 @cost		2
