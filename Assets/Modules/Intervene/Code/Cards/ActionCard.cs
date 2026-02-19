@@ -74,6 +74,7 @@ namespace AIS.Intervene {
         public ActionVerb Verb;
         public float Value;
         public ModifierType ModType;
+        public float Odds; // odds of triggering
     }
 
     public struct ActionEffect

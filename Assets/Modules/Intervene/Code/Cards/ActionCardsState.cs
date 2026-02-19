@@ -325,12 +325,13 @@ namespace AIS.Intervene
 
         static private ActionVerbDetails ParseVerb(string verbContent)
         {
-            // Format: [verb], [value], [modifierType]
-            // Example: "reduce, 10, fixed" or "reveal" (no value/modifier)
+            // Format: [verb], [value], [modifierType], odds [oddsValue]
+            // Example: "reduce, 10, fixed, odds 0.75" or "reveal, odds 0.5" or "reduce, 10, fixed"
 
             string[] parts = verbContent.Split(COMMA_DELIM, StringSplitOptions.RemoveEmptyEntries);
 
             ActionVerbDetails verbDetails = new ActionVerbDetails();
+            verbDetails.Odds = 1; // 100% by default
 
             // Parse verb type (required)
             if (parts.Length > 0)
@@ -338,23 +339,41 @@ namespace AIS.Intervene
                 verbDetails.Verb = ParseActionVerb(parts[0].Trim());
             }
 
-            // Parse value (optional)
-            if (parts.Length > 1)
+            // Process remaining parts, looking for "odds" keyword
+            for (int i = 1; i < parts.Length; i++)
             {
-                if (float.TryParse(parts[1].Trim(), out float value))
+                string part = parts[i].Trim().ToLower();
+
+                // Check if this part starts with "odds"
+                if (part.StartsWith("odds"))
+                {
+                    // Extract the odds value after "odds"
+                    string oddsStr = parts[i].Trim().Substring(4).Trim(); // Remove "odds" keyword
+                    if (float.TryParse(oddsStr, out float odds))
+                    {
+                        verbDetails.Odds = odds;
+                    }
+                    else
+                    {
+                        Debug.LogWarning("[CardUtility] Could not parse odds value: " + oddsStr + ". Defaulting to 1.0 (100%).");
+                    }
+                }
+                // Parse value (first non-odds number)
+                else if (i == 1 && float.TryParse(part, out float value))
                 {
                     verbDetails.Value = value;
                 }
+                // Parse modifier type (second non-odds parameter)
+                else if (i == 2)
+                {
+                    verbDetails.ModType = ParseModifierType(part);
+                }
             }
 
-            // Parse modifier type (optional)
-            if (parts.Length > 2)
+            // Set default modifier if not specified
+            if (parts.Length <= 2 || (parts.Length == 3 && parts[2].Trim().ToLower().StartsWith("odds")))
             {
-                verbDetails.ModType = ParseModifierType(parts[2].Trim());
-            }
-            else
-            {
-                verbDetails.ModType = ModifierType.Fixed; // default
+                verbDetails.ModType = ModifierType.Fixed;
             }
 
             return verbDetails;

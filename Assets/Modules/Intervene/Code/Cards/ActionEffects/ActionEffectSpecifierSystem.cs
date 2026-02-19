@@ -32,6 +32,7 @@ namespace AIS.Intervene
 
         public List<ActionCard> SelectedActionCards = new List<ActionCard>();
         public List<ActionCard> ActionsProcessList = new List<ActionCard>();
+        public List<EffectChunk> PostConfirmChunks = new List<EffectChunk>();
 
         private int CurrActionIndex;
         private int CurrEffectIndex;
@@ -226,6 +227,14 @@ namespace AIS.Intervene
             {
                 foreach (var verb in effect.Verbs)
                 {
+                    if (verb.Odds != 1)
+                    {
+                        // TODO: roll dice animation
+                        var success = Random.Range(0, 1.0f) >= verb.Odds;
+                        // Evaluate odds to see if effect triggers
+                        if (!success) { continue; }
+                    }
+
                     foreach (var target in effect.SelectedTargets)
                     {
                         switch (verb.Verb)

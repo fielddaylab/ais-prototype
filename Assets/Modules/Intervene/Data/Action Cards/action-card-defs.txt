@@ -140,5 +140,17 @@
     specificity: all
     maxtargets: -1
 
+::snail-extinction-odds
+@title		Snail Extinction 50%
+@desc		Remove ALL snails from ALL ecosystems. Flip a coin.
+@path		pathway-find.png
+@cost		2
+
+@effect
+    target: invasive
+    verb: remove, -1, fixed, odds 0.5
+    specificity: all
+    maxtargets: -1
+
 
 // END
