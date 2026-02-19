@@ -283,6 +283,7 @@ MonoBehaviour:
     DefaultGraphicMaterial: {fileID: 2100000, guid: f7122e1f658491340a2fb026127f9f84, type: 2}
   m_GlobalAssetPacks:
   - {fileID: 11400000, guid: 371f0528f8a907a46a056b5d0a234df9, type: 2}
+  - {fileID: 11400000, guid: a70f7fa383a4a494196b841fb57b4b78, type: 2}
 --- !u!114 &5275908518141804594
 MonoBehaviour:
   m_ObjectHideFlags: 0

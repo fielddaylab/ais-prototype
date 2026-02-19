@@ -10,13 +10,14 @@ namespace FieldDay.UI {
     public sealed class LayoutSizeGroup : MonoBehaviour {
         public enum SyncMode {
             Size,
-            PreferredSize
+            PreferredSize,
+            PreferredSizeUpdateRoot,
         }
         
         [Required] public RectTransform Root;
         public SyncMode Mode;
-        public Vector2 Padding;
 
+        public Vector2 Padding;
         [Required] public RectTransform[] Children;
 
         [NonSerialized] private Vector2 m_LastKnownSize;
@@ -39,22 +40,31 @@ namespace FieldDay.UI {
                     height = localSize.y;
                     break;
                 }
-                case SyncMode.PreferredSize: {
+                case SyncMode.PreferredSize:
+                case SyncMode.PreferredSizeUpdateRoot: {
                     width = LayoutUtility.GetPreferredWidth(root);
                     height = LayoutUtility.GetPreferredHeight(root);
                     break;
                 }
             }
 
-            width += Padding.x;
-            height += Padding.y;
-
             SetSize(new Vector2(width, height));
         }
 
         public void SetSize(Vector2 size) {
+            size.x = Mathf.Ceil(size.x);
+            size.y = Mathf.Ceil(size.y);
+
             if (m_LastKnownSize != size) {
                 m_LastKnownSize = size;
+
+                if (Root && Mode == SyncMode.PreferredSizeUpdateRoot) {
+                    Root.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, size.x);
+                    Root.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, size.y);
+                }
+
+                size.x = Mathf.Ceil(size.x + Padding.x);
+                size.y = Mathf.Ceil(size.y + Padding.y);
 
                 foreach (var child in Children) {
                     if (!child) {

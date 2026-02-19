@@ -1,5 +1,6 @@
 using BeauPools;
 using BeauUtil;
+using FieldDay.Assets;
 using BeauUtil.Debugger;
 using FieldDay.HID;
 using FieldDay.Collections;
@@ -14,7 +15,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using ModuleIndex = BeauUtil.TypeIndex<FieldDay.UI.IGuiModule>;
 using PanelIndex = BeauUtil.TypeIndex<FieldDay.UI.IGuiPanel>;
-using FieldDay.Assets;
 
 namespace FieldDay.UI {
     /// <summary>

@@ -25,7 +25,7 @@ inline void LayerPaletteTextureComponents(sampler2D intensityTexture, float2 int
     alphaComponent = saturate(intensity / _PaletteAlphaThreshold);
 #else
     alphaComponent = 1;
-#endif // FD_INTENSITY_COLOR || FD_INTENSITY_COLOR_ALPHA
+#endif // FD_PALETTE_ATTENUATE_ALPHA
 }
 
 inline float4 LayerPaletteTexture(sampler2D intensityTexture, float2 uv, sampler2D paletteTexture)

@@ -9,6 +9,14 @@ namespace FieldDay.UI {
         InputLayerMask InputMask { get; set; }
         bool IsInputEnabled();
         void UpdateInputEnabled(bool enabled);
+
+        static public IInputLayer Find(GameObject go) {
+            return go.GetComponentInParent<IInputLayer>();
+        }
+
+        static public IInputLayer Find(Component component) {
+            return component.GetComponentInParent<IInputLayer>();
+        }
     }
 
     public struct InputLayerMask {

@@ -25,11 +25,11 @@ inline void LayerIntensityTextureComponents(sampler2D intensityTexture, float2 u
     colorComponent = 1;
 #endif // FD_INTENSITY_COLOR || FD_INTENSITY_COLOR_ALPHA
     
-#if FD_INTENSITY_COLOR || FD_INTENSITY_COLOR_ALPHA
+#if FD_INTENSITY_ALPHA || FD_INTENSITY_COLOR_ALPHA
     alphaComponent = saturate(intensity / _IntensityAlphaThreshold);
 #else
     alphaComponent = 1;
-#endif // FD_INTENSITY_COLOR || FD_INTENSITY_COLOR_ALPHA
+#endif // FD_INTENSITY_ALPHA || FD_INTENSITY_COLOR_ALPHA
 }
 
 inline float4 LayerIntensityTexture(sampler2D intensityTexture, float2 uv)
