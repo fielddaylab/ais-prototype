@@ -71,6 +71,12 @@ namespace AIS.Intervene
                 // TODO: auto-highlight all and await continue
                 if (EffectChunk.SelectedTargets.Count != 0) { return; }
 
+                List<ModelTag> filteredTags = ModelTagMgr.Instance.FilterTagsByTargetDetails(m_EffectToProcess.AllTargets);
+                foreach (var tag in filteredTags)
+                {
+                    AddTagToChunk(tag);
+                    tag.SetSelectedHighlight();
+                }
             }
             else if (m_EffectToProcess.Specificity == ActionSpecificity.Random)
             {

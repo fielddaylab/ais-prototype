@@ -20,7 +20,7 @@ namespace AIS.Model
         public Sprite SpeciesSprite;
     }
 
-    public class SpeciesCluster : MonoBehaviour, IReducible, IIncreasable
+    public class SpeciesCluster : MonoBehaviour, IReducible, IIncreasable, IRemovable
     {
         public SpriteRenderer BGRenderer;
         public SpriteRenderer IconRenderer;
@@ -82,8 +82,8 @@ namespace AIS.Model
             }
             else if (modType == ModifierType.Ratio)
             {
-                int releaseAmt = Mathf.FloorToInt(Population * amt);
-                // rounded down, but at least 1
+                int releaseAmt = Mathf.CeilToInt(Population * amt);
+                // rounded up, at least 1
                 releaseAmt = Mathf.Max(1, releaseAmt);
 
                 ParentEcosystem.ReleasePopulation(SpeciesId, (int)releaseAmt);
@@ -116,6 +116,15 @@ namespace AIS.Model
             }
 
             return false;
+        }
+
+        // IRemovable
+
+        public bool TryRemove()
+        {
+            ParentEcosystem.ReleasePopulation(SpeciesId, Population);
+
+            return true;
         }
 
         #endregion // Interfaces

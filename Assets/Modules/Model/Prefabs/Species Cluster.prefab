@@ -388,8 +388,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 786c19e67f962294eae07603090e01a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TargetType: 0
+  TargetType: 1
   Highlight: {fileID: 5152641358634474802}
+  UIHighlight: {fileID: 0}
   NormalColor: {r: 0, g: 0.7411765, b: 1, a: 1}
   SelectedColor: {r: 0, g: 0.8113208, b: 0.048806094, a: 1}
   QueriableObj: {fileID: 8153853392820626865}
@@ -451,6 +452,7 @@ MonoBehaviour:
   Population: 0
   TravelType: 0
   TargetType: 0
+  ParentEcosystem: {fileID: 0}
 --- !u!212 &7447373408981766623
 SpriteRenderer:
   m_ObjectHideFlags: 0

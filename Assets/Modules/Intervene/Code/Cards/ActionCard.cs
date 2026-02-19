@@ -12,6 +12,7 @@ namespace AIS.Intervene {
     {
         Reduce,
         Increase,
+        Remove,
         Reveal,
         AddTrap,
     }
@@ -19,15 +20,15 @@ namespace AIS.Intervene {
     [Flags]
     public enum ActionTarget
     {
-        None,
-        Invasive,
-        Predator,
-        Prey,
-        Pathway,
-        Ecosystem,
-        Nest,
-        Awareness,
-        Budget
+        None = 0x0,
+        Invasive = 0x01,
+        Predator = 0x02,
+        Prey = 0x04,
+        Pathway = 0x08,
+        Ecosystem = 0x10,
+        Nest = 0x20,
+        Awareness = 0x40,
+        Budget = 0x80,
     }
 
     public enum ActionSpecificity

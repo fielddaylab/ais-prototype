@@ -236,6 +236,9 @@ namespace AIS.Intervene
                             case ActionVerb.Increase:
                                 TryIncrease(target.QueriableObj, verb);
                                 break;
+                            case ActionVerb.Remove:
+                                TryRemove(target.QueriableObj, verb);
+                                break;
                             case ActionVerb.Reveal:
                                 break;
                             case ActionVerb.AddTrap:
@@ -280,6 +283,21 @@ namespace AIS.Intervene
             else
             {
                 Debug.LogWarning("[Increasable] Tried to increase on a tag (" + queriable.name + ") that does not support it!");
+                return false;
+            }
+        }
+
+        private bool TryRemove(GameObject queriable, ActionVerbDetails verbDetails)
+        {
+            var toRemove = queriable.GetComponent<IRemovable>();
+
+            if (toRemove != null)
+            {
+                return toRemove.TryRemove();
+            }
+            else
+            {
+                Debug.LogWarning("[Increasable] Tried to remove on a tag (" + queriable.name + ") that does not support it!");
                 return false;
             }
         }

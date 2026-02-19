@@ -564,6 +564,9 @@ namespace AIS.Intervene
                 case "increase":
                 case "inc":
                     return ActionVerb.Increase;
+                case "remove":
+                case "rem":
+                    return ActionVerb.Remove;
                 case "reveal":
                 case "rev":
                     return ActionVerb.Reveal;

@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 namespace AIS.Model
 {
@@ -15,6 +16,7 @@ namespace AIS.Model
     {
         public ActionTarget TargetType;
         public SpriteRenderer Highlight;
+        public Image UIHighlight;
         public Color NormalColor; // TODO: move to lookup
         public Color SelectedColor;  // TODO: move to lookup
         [Required] public GameObject QueriableObj;
@@ -39,24 +41,45 @@ namespace AIS.Model
 
         public void ShowHighlight()
         {
-            Highlight.enabled = true;
+            if (Highlight != null) {
+                Highlight.enabled = true;
+            }
+            else if (UIHighlight != null)
+            {
+                UIHighlight.enabled = true;
+            }
             SetNormalHighlight();
         }
 
         public void HideHighlight()
         {
-            Highlight.enabled = false;
+            if (Highlight != null) {
+                Highlight.enabled = false;
+            }
+            else if (UIHighlight != null) {
+                UIHighlight.enabled = false;
+            }
             SetNormalHighlight();
         }
 
         public void SetNormalHighlight()
         {
-            Highlight.color = NormalColor;
+            if (Highlight != null) {
+                Highlight.color = NormalColor;
+            }
+            else if (UIHighlight != null) {
+                UIHighlight.color = NormalColor;
+            }
         }
 
         public void SetSelectedHighlight()
         {
-            Highlight.color = SelectedColor;
+            if (Highlight != null) {
+                Highlight.color = SelectedColor;
+            }
+            else if (UIHighlight != null) {
+                UIHighlight.color = SelectedColor;
+            }
         }
 
         #endregion // Visuals

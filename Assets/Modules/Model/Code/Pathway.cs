@@ -39,7 +39,7 @@ namespace AIS.Model
         Fixed
     }
 
-    public class Pathway : MonoBehaviour, IReducible, IIncreasable
+    public class Pathway : MonoBehaviour, IReducible, IIncreasable, IRemovable
     {
         #region Inspector
 
@@ -148,6 +148,15 @@ namespace AIS.Model
             }
 
             return false;
+        }
+
+        // IRemovable
+
+        public bool TryRemove()
+        {
+            AdjustTransferRate(TransferRate);
+
+            return true;
         }
 
         #endregion // Interfaces

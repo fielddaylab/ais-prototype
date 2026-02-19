@@ -103,4 +103,42 @@
     specificity: specific
     maxtargets: 2
 
+::raise-budget
+@title		Increase Budget
+@desc		Increase Budget by 2.
+@path		pathway-find.png
+@cost		2
+
+@effect
+    target: budget
+    verb: increase, 2, fixed
+    specificity: all
+    maxtargets: 1
+
+::raise-awareness
+@title		Increase Awareness
+@desc		Increase Awareness by 2.
+@path		pathway-find.png
+@cost		2
+
+@effect
+    target: awareness
+    verb: increase, 2, fixed
+    specificity: all
+    maxtargets: 1
+
+
+::snail-extinction
+@title		Snail Extinction
+@desc		Remove ALL snails from ALL ecosystems.
+@path		pathway-find.png
+@cost		2
+
+@effect
+    target: invasive
+    verb: remove, -1, fixed
+    specificity: all
+    maxtargets: -1
+
+
 // END
