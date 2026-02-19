@@ -50,6 +50,8 @@ namespace AIS.Model
                                 allTrue = false;
                                 break;
                             }
+
+                            // TODO: check if hidden information from player
                         }
                         if (allTrue)
                         {

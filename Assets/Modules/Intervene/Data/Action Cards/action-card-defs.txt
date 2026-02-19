@@ -24,9 +24,21 @@
     specificity: specific
     maxtargets: 2
 
+::reduce-snails-3
+@title		Reduce Snails Half
+@desc		Reduce an invasive population by half in each of 2 ecosystems.
+@path		invasive-reduction.png
+@cost		2
+
+@effect
+    target: invasive
+    verb: reduce, 0.5, ratio
+    specificity: specific
+    maxtargets: 2
+
 ::query-pathway
-@title		Find Bait Path
-@desc		Highlight Bait Bucket paths in pathway
+@title		Worsen Bait Path
+@desc		Transfer 1 more along selected BaitBucket path.
 @path		pathway-find.png
 @cost		2
 
@@ -36,9 +48,33 @@
     specificity: specific
     maxtargets: 1
 
+::query-pathway-2
+@title		Worsen Bait Path
+@desc		Make a BaitBucket path twice as bad.
+@path		pathway-find.png
+@cost		2
+
+@effect
+    target: pathway, if type = BaitBuckets
+    verb: increase, 1, ratio
+    specificity: specific
+    maxtargets: 1
+
+::query-pathway-3
+@title		Improve Bait Path
+@desc		Make a BaitBucket path half as bad.
+@path		pathway-find.png
+@cost		2
+
+@effect
+    target: pathway, if type = BaitBuckets
+    verb: reduce, 0.5, ratio
+    specificity: specific
+    maxtargets: 1
+
 ::query-pathway-or-invasive
-@title		Find Path or Invasive
-@desc		Highlight invasives and pathways, pick one.
+@title		Increase Path and/or Invasive
+@desc		Increase two invasives and/or pathway by 1.
 @path		pathway-find.png
 @cost		2
 
@@ -47,11 +83,11 @@
     target: invasive
     verb: increase, 1, fixed
     specificity: specific
-    maxtargets: 1
+    maxtargets: 2
 
 ::reduce-snails-and-pathway
 @title		Reduce Snail, Path
-@desc		Reduce an invasive population by up to 1 in 1 ecosystem. Also Find a BaitBucket path.
+@desc		Reduce an invasive population by up to 1 in 1 ecosystem. Also worsen up to two BaitBucket paths by 1.
 @path		invasive-reduction.png
 @cost		2
 

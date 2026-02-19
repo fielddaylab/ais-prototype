@@ -115,7 +115,7 @@ namespace AIS.Model
                 var speciesSlot = MainSlots[slotIndex];
 
                 var newCluster = InvasionModelPrefabs.Instance.CreateSpeciesCluster(InvasionModelContainer.Instance.transform);
-                newCluster.Init(speciesId, addCount, travelType, targetType);
+                newCluster.Init(speciesId, addCount, travelType, targetType, this);
 
                 var targetPos = speciesSlot.transform.position;
                 var yOffset = 1;

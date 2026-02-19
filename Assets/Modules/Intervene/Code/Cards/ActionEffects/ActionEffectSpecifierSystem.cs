@@ -3,6 +3,7 @@ using BeauRoutine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 namespace AIS.Intervene
 {
@@ -221,9 +222,68 @@ namespace AIS.Intervene
 
         private IEnumerator ExecuteEffectsRoutine()
         {
-            yield return null;
+            foreach (var effect in ProcessedEffects)
+            {
+                foreach (var verb in effect.Verbs)
+                {
+                    foreach (var target in effect.SelectedTargets)
+                    {
+                        switch (verb.Verb)
+                        {
+                            case ActionVerb.Reduce:
+                                TryReduce(target.QueriableObj, verb);
+                                break;
+                            case ActionVerb.Increase:
+                                TryIncrease(target.QueriableObj, verb);
+                                break;
+                            case ActionVerb.Reveal:
+                                break;
+                            case ActionVerb.AddTrap:
+                                break;
+                            default:
+                                continue;
+                        }
+                    }
+                }
+
+                yield return 1;
+            }
         }
 
         #endregion // Routines
+
+        #region Effect Execution
+
+        private bool TryReduce(GameObject queriable, ActionVerbDetails verbDetails)
+        {
+            var toReduce = queriable.GetComponent<IReducible>();
+
+            if (toReduce != null)
+            {
+                return toReduce.TryReduce(verbDetails.Value, verbDetails.ModType);
+            }
+            else
+            {
+                Debug.LogWarning("[Reducible] Tried to reduce on a tag (" + queriable.name + ") that does not support it!");
+                return false;
+            }
+        }
+
+        private bool TryIncrease(GameObject queriable, ActionVerbDetails verbDetails)
+        {
+            var toIncrease = queriable.GetComponent<IIncreasable>();
+
+            if (toIncrease != null)
+            {
+                return toIncrease.TryIncrease(verbDetails.Value, verbDetails.ModType);
+            }
+            else
+            {
+                Debug.LogWarning("[Increasable] Tried to increase on a tag (" + queriable.name + ") that does not support it!");
+                return false;
+            }
+        }
+
+        #endregion // Effect Execution
     }
 }

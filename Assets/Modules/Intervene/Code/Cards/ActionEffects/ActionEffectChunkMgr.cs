@@ -21,6 +21,8 @@ namespace AIS.Intervene
         public Button ConfirmChunkBtn;
         public Button CancelChunkBtn;
 
+        public bool RequireAtLeastOne = false;
+
         public LayerMask ModelTagLayer;
 
         private ActionEffect m_EffectToProcess;
@@ -30,7 +32,10 @@ namespace AIS.Intervene
             ConfirmChunkBtn.onClick.AddListener(HandleConfirmChunkClicked);
             CancelChunkBtn.onClick.AddListener(HandleCancelChunkClicked);
 
-            ConfirmChunkBtn.interactable = false;
+            if (RequireAtLeastOne)
+            {
+                ConfirmChunkBtn.interactable = false;
+            }
 
             EffectChunk = new EffectChunk();
             EffectChunk.SelectedTargets = new List<ModelTag>();
@@ -45,7 +50,10 @@ namespace AIS.Intervene
             ConfirmChunkBtn.onClick.RemoveAllListeners();
             CancelChunkBtn.onClick.RemoveAllListeners();
 
-            ConfirmChunkBtn.interactable = false;
+            if (RequireAtLeastOne)
+            {
+                ConfirmChunkBtn.interactable = false;
+            }
         }
 
         private void Update()
@@ -142,13 +150,19 @@ namespace AIS.Intervene
         private void AddTagToChunk(ModelTag tag)
         {
             EffectChunk.SelectedTargets.Add(tag);
-            ConfirmChunkBtn.interactable = EffectChunk.SelectedTargets.Count > 0;
+            if (RequireAtLeastOne)
+            {
+                ConfirmChunkBtn.interactable = EffectChunk.SelectedTargets.Count > 0;
+            }
         }
 
         private void RemoveTagFromChunk(ModelTag tag)
         {
             EffectChunk.SelectedTargets.Remove(tag);
-            ConfirmChunkBtn.interactable = EffectChunk.SelectedTargets.Count > 0;
+            if (RequireAtLeastOne)
+            {
+                ConfirmChunkBtn.interactable = EffectChunk.SelectedTargets.Count > 0;
+            }
         }
 
         private void RefreshUIElements()
@@ -168,7 +182,10 @@ namespace AIS.Intervene
             m_EffectToProcess = effectToProcess;
 
             EffectChunk.SelectedTargets.Clear();
-            ConfirmChunkBtn.interactable = false;
+            if (RequireAtLeastOne)
+            {
+                ConfirmChunkBtn.interactable = false;
+            }
 
             EffectChunk.Verbs = effectToProcess.Verbs;
 
@@ -188,7 +205,10 @@ namespace AIS.Intervene
         {
             IsActive = false;
             EffectChunk.SelectedTargets.Clear();
-            ConfirmChunkBtn.interactable = false;
+            if (RequireAtLeastOne)
+            {
+                ConfirmChunkBtn.interactable = false;
+            }
 
             AisGame.Events.Dispatch(InterveneEvents.OnEffectChunkCancel);
             RefreshUIElements();

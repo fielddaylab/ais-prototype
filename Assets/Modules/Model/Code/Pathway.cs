@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using AIS.Intervene;
 
 namespace AIS.Model
 {
@@ -38,7 +39,7 @@ namespace AIS.Model
         Fixed
     }
 
-    public class Pathway : MonoBehaviour
+    public class Pathway : MonoBehaviour, IReducible, IIncreasable
     {
         #region Inspector
 
@@ -83,10 +84,73 @@ namespace AIS.Model
             TransferRate = newRate;
         }
 
+        public void AdjustTransferRate(float adjustAmt)
+        {
+            bool wasShut = TransferRate == 0;
+
+            TransferRate += adjustAmt;
+            TransferRate = Mathf.Max(TransferRate, 0);
+            
+            if (!wasShut && TransferRate == 0)
+            {
+                // TODO: trigger pathway shutting visuals
+            }
+            else if (wasShut && TransferRate != 0)
+            {
+                // TODO: trigger pathway opening visuals
+            }
+        }
+
         public void SetTriggerChance(float newChance)
         {
             TransferTriggerChance = newChance;
         }
+
+        #region Interfaces
+
+        // IReducible
+
+        public bool TryReduce(float amt, ModifierType modType)
+        {
+            if (modType == ModifierType.Fixed)
+            {
+                AdjustTransferRate(-amt);
+
+                return true;
+            }
+            else if (modType == ModifierType.Ratio)
+            {
+                float newRate = TransferRate - TransferRate * amt;
+                SetTransferRate(newRate);
+
+                return true;
+            }
+
+            return false;
+        }
+
+        // IIncreasable
+
+        public bool TryIncrease(float amt, ModifierType modType)
+        {
+            if (modType == ModifierType.Fixed)
+            {
+                AdjustTransferRate(amt);
+
+                return true;
+            }
+            else if (modType == ModifierType.Ratio)
+            {
+                float newRate = TransferRate + TransferRate * amt;
+                SetTransferRate(newRate);
+
+                return true;
+            }
+
+            return false;
+        }
+
+        #endregion // Interfaces
     }
 
     public static class PathwayUtility
