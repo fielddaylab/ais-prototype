@@ -1,16 +1,55 @@
 // Evidence To Action Conversions
 
 ::
+@from	example-evidence-card-0
+@to		example-action-card-0
+
+::
 @from	example-evidence-card-1
 @to		example-action-card-1
 
 ::
 @from	example-evidence-card-2
-@to		example-action-card-2, example-action-card-3
+@to		example-action-card-2
 
 ::
 @from	example-evidence-card-3
-@to		example-action-card-4, example-action-card-5
+@to		example-action-card-3
 
+::
+@from	example-evidence-card-4
+@to		example-action-card-4
+
+::
+@from	example-evidence-card-5
+@to		example-action-card-5
+
+::
+@from	example-evidence-card-6
+@to		example-action-card-6
+
+::
+@from	example-evidence-card-7
+@to		example-action-card-7
+
+::
+@from	example-evidence-card-8
+@to		example-action-card-8
+
+::
+@from	example-evidence-card-9
+@to		example-action-card-9
+
+::
+@from	example-evidence-card-10
+@to		example-action-card-10
+
+::
+@from	example-evidence-card-11
+@to		example-action-card-11
+
+::
+@from	example-evidence-card-12
+@to		example-action-card-12
 
 // END

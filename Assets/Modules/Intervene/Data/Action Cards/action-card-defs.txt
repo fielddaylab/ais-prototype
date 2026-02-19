@@ -1,95 +1,68 @@
 // Action Cards With Effects
 
-::reduce-snails-1
-@title		Reduce Snails 1
-@desc		Reduce an invasive population by up to 2 in one ecosystem
-@path		invasive-reduction.png
+::example-action-card-0
+@title		Aquaculturist Outreach
+@desc		Roll 1d6. If below Awareness, decrease all Aquarium pathways. // TODO
+@path		temp.png
+@cost		1
+
+@effect
+    target: path, if type = CaptivityTrade
+    verb: reduce, 1, fixed, odds 0.16667
+    specificity: all
+
+
+::example-action-card-1
+@title		Outreach Campaign
+@desc		+1 Awareness
+@path		temp.png
+@cost		2
+
+@effect
+    target: aware
+    verb: increase, 1, fixed
+    specificity: all
+
+::example-action-card-2
+@title		Boat Washing Stations
+@desc		Decrease all "Boat Hulls" pathways by 1.
+@path		temp.png
+@cost		3
+
+@effect
+    target: pathway, if type = BoatHulls
+    verb: reduce, 1, fixed
+    specificity: all
+
+::example-action-card-3
+@title		Angler Outreach
+@desc		Roll 1d6. If below Awareness, decrease all Bait Bucket pathways by 1. // TODO
+@path		temp.png
+@cost		1
+
+@effect
+    target: pathway, if type = BaitBuckets
+    verb: reduce, 1, fixed
+    specificity: all
+
+::example-action-card-4
+@title		Manual Removal
+@desc		-1 Invasive OR -1 Nest.
+@path		temp.png
 @cost		2
 
 @effect
     target: invasive
-    verb: reduce, 2, fixed
-    specificity: specific
-    maxtargets: 1
-
-::reduce-snails-2
-@title		Reduce Snails 2
-@desc		Reduce an invasive population by up to 1 in each of 2 ecosystems.
-@path		invasive-reduction.png
-@cost		2
-
-@effect
-    target: invasive
+    target: nest
     verb: reduce, 1, fixed
     specificity: specific
-    maxtargets: 2
-
-::reduce-snails-3
-@title		Reduce Snails Half
-@desc		Reduce an invasive population by half in each of 2 ecosystems.
-@path		invasive-reduction.png
-@cost		2
-
-@effect
-    target: invasive
-    verb: reduce, 0.5, ratio
-    specificity: specific
-    maxtargets: 2
-
-::query-pathway
-@title		Worsen Bait Path
-@desc		Transfer 1 more along selected BaitBucket path.
-@path		pathway-find.png
-@cost		2
-
-@effect
-    target: pathway, if type = BaitBuckets
-    verb: increase, 1, fixed
-    specificity: specific
     maxtargets: 1
 
-::query-pathway-2
-@title		Worsen Bait Path
-@desc		Make a BaitBucket path twice as bad.
-@path		pathway-find.png
-@cost		2
-
-@effect
-    target: pathway, if type = BaitBuckets
-    verb: increase, 1, ratio
-    specificity: specific
-    maxtargets: 1
-
-::query-pathway-3
-@title		Improve Bait Path
-@desc		Make a BaitBucket path half as bad.
-@path		pathway-find.png
-@cost		2
-
-@effect
-    target: pathway, if type = BaitBuckets
-    verb: reduce, 0.5, ratio
-    specificity: specific
-    maxtargets: 1
-
-::query-pathway-or-invasive
-@title		Increase Path and/or Invasive
-@desc		Increase two invasives and/or pathway by 1.
-@path		pathway-find.png
-@cost		2
-
-@effect
-    target: pathway, if type = BaitBuckets
-    target: invasive
-    verb: increase, 1, fixed
-    specificity: specific
-    maxtargets: 2
-
-::reduce-snails-and-pathway
-@title		Reduce Snail, Path
-@desc		Reduce an invasive population by up to 1 in 1 ecosystem. Also worsen up to two BaitBucket paths by 1.
-@path		invasive-reduction.png
-@cost		2
+::example-action-card-5
+@title		Eat the Invasive
+@desc		For every 2 Awareness, remove 1 Invasive. // TODO
+@path		temp.png
+@cost		3
 
 @effect
     target: invasive
@@ -97,60 +70,41 @@
     specificity: specific
     maxtargets: 1
 
+
+::example-action-card-6
+@title		Place Trap
+@desc		For every 2 Awareness, remove 1 Invasive. // TODO
+@path		temp.png
+@cost		1
+
 @effect
-    target: pathway, if type = BaitBuckets
-    verb: increase, 1, fixed
+    target: invasive
+    verb: reduce, 1, fixed
     specificity: specific
-    maxtargets: 2
-
-::raise-budget
-@title		Increase Budget
-@desc		Increase Budget by 2.
-@path		pathway-find.png
-@cost		2
-
-@effect
-    target: budget
-    verb: increase, 2, fixed
-    specificity: all
     maxtargets: 1
 
-::raise-awareness
-@title		Increase Awareness
-@desc		Increase Awareness by 2.
-@path		pathway-find.png
+::example-action-card-7
+@title		Electric Barrier
+@desc		Remove one "Currents" pathway.
+@path		temp.png
 @cost		2
 
 @effect
-    target: awareness
-    verb: increase, 2, fixed
-    specificity: all
+    target: pathway, type = Currents
+    verb: remove, 1, fixed
+    specificity: specific
     maxtargets: 1
 
-
-::snail-extinction
-@title		Snail Extinction
-@desc		Remove ALL snails from ALL ecosystems.
-@path		pathway-find.png
-@cost		2
-
-@effect
-    target: invasive
-    verb: remove, -1, fixed
-    specificity: all
-    maxtargets: -1
-
-::snail-extinction-odds
-@title		Snail Extinction 50%
-@desc		Remove ALL snails from ALL ecosystems. Flip a coin.
-@path		pathway-find.png
-@cost		2
+::example-action-card-8
+@title		Ballast Treatment
+@desc		When a "Ballast" pathway activates, -1 Invasive from source instead of moving. // TODO
+@path		temp.png
+@cost		3
 
 @effect
-    target: invasive
-    verb: remove, -1, fixed, odds 0.5
-    specificity: all
-    maxtargets: -1
-
+    target: pathway, type = Ballast
+    verb: modify, 1, fixed
+    specificity: specific
+    maxtargets: 1
 
 // END

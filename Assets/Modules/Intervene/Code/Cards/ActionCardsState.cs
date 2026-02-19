@@ -328,6 +328,8 @@ namespace AIS.Intervene
             // Format: [verb], [value], [modifierType], odds [oddsValue]
             // Example: "reduce, 10, fixed, odds 0.75" or "reveal, odds 0.5" or "reduce, 10, fixed"
 
+            // TODO: roll dice, check against val
+
             string[] parts = verbContent.Split(COMMA_DELIM, StringSplitOptions.RemoveEmptyEntries);
 
             ActionVerbDetails verbDetails = new ActionVerbDetails();

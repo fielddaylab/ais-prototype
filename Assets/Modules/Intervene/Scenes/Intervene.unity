@@ -1120,7 +1120,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UnlockedActionCards: []
   CardSources:
-  - {fileID: 4900000, guid: f895ea2fe8ea1054dae1b767b1f38a09, type: 3}
+  - {fileID: 4900000, guid: 28e89f5def105324eb7c2026585147ea, type: 3}
 --- !u!4 &367910946
 Transform:
   m_ObjectHideFlags: 0
