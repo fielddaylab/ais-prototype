@@ -30,6 +30,12 @@ namespace AIS.Intervene {
 
             // TODO: predator / prey dynamics
 
+            // Trigger Traps
+            foreach (var ecosystem in InvasionModelContainer.Instance.GetAllEcosystems())
+            {
+                TriggerTraps(ecosystem);
+            }
+
             // Transfer species along pathways
             foreach (var pathway in InvasionModelContainer.Instance.GetAllPathways())
             {
@@ -78,8 +84,6 @@ namespace AIS.Intervene {
                 }
                 transferNum = Mathf.Max(1, transferNum); // rounded down, but at least 1
 
-                // TODO: remove at trap
-
                 // split species, between orig and dest clusters
                 var transferAlloc = new SpeciesTransferAllocation();
                 transferAlloc.SpeciesId = speciesPair.Item1;
@@ -117,10 +121,30 @@ namespace AIS.Intervene {
                         var nest = cluster.GetComponent<Nest>();
                         if (nest != null)
                         {
-                            nest.TriggerOdds = 1;
                             if (Random.Range(0, 1f) < nest.TriggerOdds)
                             {
-                                eco.AddPopulation(nest.SpawnSpeciesId, nest.SpawnAmt, nest.SpawnTravelType, nest.SpawnTargetType);
+                                eco.AddPopulation(nest.SpawnSpeciesId, nest.SpawnAmt * cluster.Population, nest.SpawnTravelType, nest.SpawnTargetType);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private void TriggerTraps(Ecosystem eco)
+        {
+            foreach (var slot in eco.SecondarySlots)
+            {
+                foreach (var cluster in slot.Clusters)
+                {
+                    if (cluster.TargetType == ActionTarget.Trap)
+                    {
+                        var trap = cluster.GetComponent<Trap>();
+                        if (trap != null)
+                        {
+                            if (Random.Range(0, 1f) < trap.TriggerOdds)
+                            {
+                                eco.ReleasePopulation(trap.TrapSpeciesId, trap.TrapAmt * cluster.Population);
                             }
                         }
                     }

@@ -195,6 +195,8 @@ namespace AIS.Model
 
             Dictionary<SerializedHash32, ClusterSlotData> slotDict = isSecondary ? SecondarySlotDict : SpeciesSlotDict;
 
+            if (!slotDict.ContainsKey(clusterContentsId)) { return; }
+
             int slotIndex = slotDict[clusterContentsId].SlotIndex;
             var clusterSlot = isSecondary ? SecondarySlots[slotIndex] : MainSlots[slotIndex];
 

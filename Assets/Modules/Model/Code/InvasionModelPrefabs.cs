@@ -35,6 +35,9 @@ namespace AIS.Model
                     break;
                 case ActionTarget.Trap:
                     var trap = newCluster.gameObject.AddComponent<Trap>();
+                    trap.TrapSpeciesId = InvasionModel.Instance.m_CurrModelSetupData.DefaultInvasive.SpeciesId;
+                    trap.TrapAmt = 1;
+                    trap.TriggerOdds = 1 / 6f;
                     break;
                 default:
                     break;
