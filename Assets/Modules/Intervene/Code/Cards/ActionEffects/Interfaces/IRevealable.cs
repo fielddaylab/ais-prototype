@@ -4,8 +4,8 @@ using UnityEngine;
 
 namespace AIS.Intervene
 {
-    public class ActionEffectHighlightSystem : MonoBehaviour
+    public interface IRevealable
     {
-        
+        public bool TryReveal();
     }
 }

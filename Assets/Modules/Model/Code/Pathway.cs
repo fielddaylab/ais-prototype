@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 using AIS.Intervene;
+using TMPro;
 
 namespace AIS.Model
 {
@@ -21,6 +22,7 @@ namespace AIS.Model
         public float StartingTransferRate;
         public float StartingTriggerChance;
         public PathwayType PathwayType;
+        public bool IsNotHidden;
     }
 
     [Flags]
@@ -39,11 +41,14 @@ namespace AIS.Model
         Fixed
     }
 
-    public class Pathway : MonoBehaviour, IReducible, IIncreasable, IRemovable
+    public class Pathway : MonoBehaviour, IReducible, IIncreasable, IRemovable, IRevealable
     {
         #region Inspector
 
         public SpriteRenderer MainRenderer;
+        public SpriteRenderer PathwayTypeBGRenderer;
+        public SpriteRenderer PathwayTypeRenderer;
+        public TMP_Text TransferRateText;
 
         public SerializedHash32 OrigEcosystemId;
         public SerializedHash32 DestEcosystemId;
@@ -51,6 +56,7 @@ namespace AIS.Model
         public RateType TransferRateType { get; private set; }
         public float TransferTriggerChance { get; private set; }
         public float TransferRate { get; private set; }
+        public bool IsHidden { get; private set; }
 
         #endregion // Inspector
 
@@ -59,29 +65,40 @@ namespace AIS.Model
             OrigEcosystemId = setupData.OrigEcosystemId;
             DestEcosystemId = setupData.DestEcosystemId;
             PathwayType = setupData.PathwayType;
+            SetIsHidden(!setupData.IsNotHidden);
 
             this.transform.position = setupData.Pos;
             MainRenderer.sprite = setupData.Sprite;
             MainRenderer.sortingOrder = InvasionModelSorting.PATHWAY_SORTING;
+            PathwayTypeBGRenderer.sortingOrder = InvasionModelSorting.PATHWAY_ICON_BG_SORTING;
+            PathwayTypeRenderer.sortingOrder = InvasionModelSorting.PATHWAY_ICON_SORTING;
 
             TransferRateType = setupData.TransferRateType;
             SetTransferRate(setupData.StartingTransferRate);
             SetTriggerChance(setupData.StartingTriggerChance);
+
+            UpdateVisuals();
         }
 
         public void AddPathwayType(PathwayType type)
         {
             PathwayType |= type;
+
+            UpdateVisuals();
         }
 
         public void RemovePathwayType(PathwayType type)
         {
             PathwayType &= ~type;
+
+            UpdateVisuals();
         }
 
         public void SetTransferRate(float newRate)
         {
             TransferRate = newRate;
+
+            UpdateVisuals();
         }
 
         public void AdjustTransferRate(float adjustAmt)
@@ -99,11 +116,20 @@ namespace AIS.Model
             {
                 // TODO: trigger pathway opening visuals
             }
+
+            UpdateVisuals();
         }
 
         public void SetTriggerChance(float newChance)
         {
             TransferTriggerChance = newChance;
+        }
+
+        public void SetIsHidden(bool isHidden)
+        {
+            IsHidden = isHidden;
+
+            UpdateVisuals();
         }
 
         #region Interfaces
@@ -159,7 +185,43 @@ namespace AIS.Model
             return true;
         }
 
+        // IRevealable
+
+        public bool TryReveal()
+        {
+            SetIsHidden(false);
+
+            return true;
+        }
+
         #endregion // Interfaces
+
+        #region Visuals
+
+        private void UpdateVisuals()
+        {
+            if (IsHidden)
+            {
+                // update icon to hidden
+                PathwayTypeRenderer.sprite = ModelSpriteLookup.Instance.LookupPathwayIcon(PathwayType, true);
+                // hide transfer rate
+                TransferRateText.gameObject.SetActive(false);
+            }
+            else
+            {
+                // update icon
+                PathwayTypeRenderer.sprite = ModelSpriteLookup.Instance.LookupPathwayIcon(PathwayType);
+                // update transfer rate
+                TransferRateText.gameObject.SetActive(true);
+                string text = TransferRate + " per turn";
+                if (TransferRateType == RateType.Ratio) {
+                    text = TransferRate * 100 + "% per turn";
+                }
+                TransferRateText.SetText(text);
+            }
+        }
+
+        #endregion // Visuals
     }
 
     public static class PathwayUtility

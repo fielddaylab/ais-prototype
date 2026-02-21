@@ -1025,6 +1025,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_AllSpeciesDefs:
   - {fileID: 11400000, guid: 00074f573a8314145b68f35bed9e0361, type: 2}
+  m_AllPathwayDefs:
+  - {fileID: 11400000, guid: 648d9471692cea34f8cae882e4abb26b, type: 2}
+  - {fileID: 11400000, guid: c4b372aa1c2fc6e428daeca5a0f65b55, type: 2}
+  - {fileID: 11400000, guid: 5b85eb009808ac2488a9d05228de13ef, type: 2}
+  - {fileID: 11400000, guid: 8f9d7e4e9f0aeeb499e83e6ee22f6ff1, type: 2}
+  - {fileID: 11400000, guid: f4cd6e516c7f6e24e9e9bef034f3957b, type: 2}
+  - {fileID: 11400000, guid: 1b6b8e632eafc694184f75bfe87e8c99, type: 2}
 --- !u!1 &1892270726
 GameObject:
   m_ObjectHideFlags: 0

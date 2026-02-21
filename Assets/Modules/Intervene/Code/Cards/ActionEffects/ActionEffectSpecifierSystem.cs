@@ -223,7 +223,7 @@ namespace AIS.Intervene
 
         private IEnumerator ChunkCancelRoutine()
         {
-            yield return 1f;
+            yield return 2f;
 
             // re-trigger current index
             ProcessNextEffect();

@@ -39,6 +39,8 @@ namespace AIS.Intervene {
             // Finalize species movements
             FinalizePathwayTransfers();
 
+            // TODO: Spawn at Nests
+
             Debug.Log("[InterveneDriver] Sim Progressed by 1 tick");
         }
 

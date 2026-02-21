@@ -41,6 +41,14 @@ namespace AIS.Model
                     // match target type
                     if ((tag.TargetType & targetDetails.Target) != 0)
                     {
+                        // skip hidden pathways
+                        if ((tag.TargetType & ActionTarget.Pathway) != 0) {
+                            Pathway path = tag.QueriableObj.GetComponent<Pathway>();
+                            if (path != null && path.IsHidden) {
+                                continue;
+                            }
+                        }
+
                         // match conditions
                         bool allTrue = true;
                         foreach (var condition in targetDetails.Conditions)
