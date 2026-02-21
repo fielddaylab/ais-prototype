@@ -73,13 +73,13 @@
 
 ::example-action-card-6
 @title		Place Trap
-@desc		For every 2 Awareness, remove 1 Invasive. // TODO
+@desc		Place a trap in a Lake. It has a 1/6 chance of triggering per round. // TODO
 @path		temp.png
 @cost		1
 
 @effect
-    target: invasive
-    verb: reduce, 1, fixed
+    target: ecosystem
+    verb: addTrap, 1, fixed
     specificity: specific
     maxtargets: 1
 
@@ -97,7 +97,7 @@
 
 ::example-action-card-8
 @title		Ballast Treatment
-@desc		When a "Ballast" pathway activates, -1 Invasive from source instead of moving. // TODO
+@desc		When a "Ballast" pathway activates, -1 Invasive from source instead of moving. // TODO STRETCH
 @path		temp.png
 @cost		3
 
@@ -106,5 +106,54 @@
     verb: modify, 1, fixed
     specificity: specific
     maxtargets: 1
+
+::example-action-card-9
+@title		Field Research
+@desc		Flip one unknown Pathway. // TODO
+@path		temp.png
+@cost		1
+
+@effect
+    target: pathway, type = unknown
+    verb: reveal, 0, fixed
+    specificity: specific
+    maxtargets: 1
+
+::example-action-card-10
+@title		Chemical Removal
+@desc		In one Ecosystem: -2 Invasive, -1 Predator, -1 Prey // TODO
+@path		temp.png
+@cost		2
+
+@effect
+    target: ecosystem
+    verb: modify, -2, -1, -1, fixed
+    specificity: specific
+    maxtargets: 1
+
+
+::example-action-card-11
+@title		Reproduction Supressor
+@desc		Decrease all Nests by 1. // TODO
+@path		temp.png
+@cost		3
+
+@effect
+    target: nest
+    verb: reduce, 1, fixed
+    specificity: all
+    maxtargets: -1
+
+::example-action-card-12
+@title		Fundraising
+@desc		Set Budget equal to Awareness. // TODO
+@path		temp.png
+@cost		1
+
+@effect
+    target: budget
+    verb: match, awareness, 0
+    specificity: all
+    maxtargets: -1
 
 // END

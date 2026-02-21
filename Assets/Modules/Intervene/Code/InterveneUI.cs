@@ -11,6 +11,7 @@ namespace AIS.Intervene {
 
         [SerializeField] private Button m_TickSimButton;
         [SerializeField] private InterveneDriver m_Driver;
+        [SerializeField] private InterveneBudgetInterfacer m_BudgetInterfacer;
 
         public GraphicRaycaster Raycaster;
 
@@ -33,6 +34,7 @@ namespace AIS.Intervene {
         private void HandleTickSimClicked()
         {
             m_Driver.TickSim();
+            m_BudgetInterfacer.BestowBudget();
         }
     }
 }

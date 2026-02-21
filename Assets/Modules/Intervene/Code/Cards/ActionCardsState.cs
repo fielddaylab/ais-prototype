@@ -17,12 +17,12 @@ namespace AIS.Intervene
         public string Description;
         public string ImgPath;
 
-        public float Cost;
+        public int Cost;
         public ActionEffect[] Effects;
 
         public bool IsValid;
 
-        public ActionCardData(SerializedHash32 cardID, string title, string desc, string imgPath, float cost, ActionEffect[] effects)
+        public ActionCardData(SerializedHash32 cardID, string title, string desc, string imgPath, int cost, ActionEffect[] effects)
         {
             CardID = cardID;
             Title = title;
@@ -180,7 +180,7 @@ namespace AIS.Intervene
             }
 
             // Cost parsing
-            float cost = 0;
+            int cost = 0;
             int costIndex = cardDef.ToLower().IndexOf(COST_TAG);
             if (costIndex != -1)
             {
@@ -188,7 +188,7 @@ namespace AIS.Intervene
                 int offset = COST_TAG.Length;
                 string costStr = cardDef.Substring(costIndex + offset, afterCost.IndexOfAny(END_DELIMS) - offset).Trim();
 
-                if (!float.TryParse(costStr, out cost))
+                if (!int.TryParse(costStr, out cost))
                 {
                     Debug.LogWarning("[CardUtility] Could not parse cost value: " + costStr + ". Defaulting to 0.");
                     cost = 0;

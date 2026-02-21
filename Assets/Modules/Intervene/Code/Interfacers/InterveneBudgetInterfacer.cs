@@ -8,26 +8,72 @@ namespace AIS.Intervene
 {
     public class InterveneBudgetInterfacer : MonoBehaviour, IReducible, IIncreasable
     {
+        #region Structs
+
         public struct InterveneBudget
         {
+            public int BudgetLevel;
             public int Budget;
         }
 
+        #endregion // Structs
+
+        public static InterveneBudgetInterfacer Instance;
+
+        #region Inspector
+
+        public TMP_Text LevelValueText;
         public TMP_Text ValueText;
+        public int StartingBudget;
 
-        public InterveneBudget WorkingBudget = new InterveneBudget();
+        #endregion // Inspector
 
-        public void LoadPlayerBudget(int budget)
+        [HideInInspector] public InterveneBudget WorkingBudget = new InterveneBudget();
+
+        #region Unity Callbacks
+
+        private void Awake()
         {
-            WorkingBudget.Budget = budget;
+            Instance = this;
         }
 
-        public void AdjustBudget(int amt)
+        private void Start()
+        {
+            LoadPlayerBudget(StartingBudget);
+        }
+
+        #endregion // Unity Callbacks
+
+        public void LoadPlayerBudget(int budgetLevel)
+        {
+            AdjustBudgetLevel(budgetLevel);
+            BestowBudget();
+        }
+
+        public void AdjustBudgetLevel(int amt)
+        {
+            WorkingBudget.BudgetLevel += amt;
+
+            LevelValueText.SetText("$" + WorkingBudget.BudgetLevel.ToStringLookup() + " per turn");
+        }
+
+        public void AdjustBudgetValue(int amt)
         {
             WorkingBudget.Budget += amt;
 
             ValueText.SetText("$" + WorkingBudget.Budget.ToStringLookup());
         }
+
+        public void BestowBudget()
+        {
+            AdjustBudgetValue(WorkingBudget.BudgetLevel);
+        }
+
+        public void Spend(int amt)
+        {
+            AdjustBudgetValue(-amt);
+        }
+
 
         #region Interfaces
 
@@ -35,7 +81,7 @@ namespace AIS.Intervene
         {
             if (modType == ModifierType.Fixed)
             {
-                AdjustBudget((int)amt);
+                AdjustBudgetLevel((int)amt);
 
                 return true;
             }
@@ -43,7 +89,7 @@ namespace AIS.Intervene
             {
                 int addAmt = Mathf.FloorToInt(WorkingBudget.Budget * amt);
 
-                AdjustBudget(addAmt);
+                AdjustBudgetLevel(addAmt);
 
                 return true;
             }
@@ -55,7 +101,7 @@ namespace AIS.Intervene
         {
             if (modType == ModifierType.Fixed)
             {
-                AdjustBudget(-(int)amt);
+                AdjustBudgetLevel(-(int)amt);
 
                 return true;
             }
@@ -63,7 +109,7 @@ namespace AIS.Intervene
             {
                 int reduceAmt = Mathf.FloorToInt(WorkingBudget.Budget * amt);
 
-                AdjustBudget((int)-reduceAmt);
+                AdjustBudgetLevel((int)-reduceAmt);
 
                 return true;
             }
@@ -72,5 +118,26 @@ namespace AIS.Intervene
         }
 
         #endregion // Interfaces
+
+    }
+
+    public static class BudgetUtility
+    {
+        public static bool CanAfford(InterveneBudgetInterfacer budget, List<CardBase> toAfford)
+        {
+            int totalCost = 0;
+
+            foreach (var card in toAfford)
+            {
+                totalCost += card.Cost;
+            }
+
+            return totalCost <= budget.WorkingBudget.Budget;
+        }
+
+        public static void Spend(InterveneBudgetInterfacer budget, int amt)
+        {
+            budget.Spend(amt);
+        }
     }
 }

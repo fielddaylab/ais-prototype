@@ -44,7 +44,10 @@ namespace AIS.Intervene
 
         private void HandleUseClicked()
         {
-            if (CardInteractionMgr.Instance.Hand.GetSelectedCards().Count == 0) { return; }
+            var selectedCards = CardInteractionMgr.Instance.Hand.GetSelectedCards();
+            if (selectedCards.Count == 0) { return; }
+
+            if (!BudgetUtility.CanAfford(InterveneBudgetInterfacer.Instance, selectedCards)) { return; }
 
             AisGame.Events.Dispatch(InterveneEvents.OnEffectSpecifyBegin);
         }

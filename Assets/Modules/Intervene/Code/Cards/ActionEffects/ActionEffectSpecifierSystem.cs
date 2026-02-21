@@ -34,6 +34,7 @@ namespace AIS.Intervene
         public List<ActionCard> ActionsProcessList = new List<ActionCard>();
         public List<EffectChunk> PostConfirmChunks = new List<EffectChunk>();
 
+        private int ProcessCost;
         private int CurrActionIndex;
         private int CurrEffectIndex;
         private List<EffectChunk> ProcessedEffects = new List<EffectChunk>();
@@ -90,9 +91,12 @@ namespace AIS.Intervene
 
         private void LoadProcessList()
         {
+            ProcessCost = 0;
+
             foreach (var toProcess in SelectedActionCards)
             {
                 ActionsProcessList.Add(toProcess);
+                ProcessCost += toProcess.Cost;
             }
 
             ProcessedEffects.Clear();
@@ -165,6 +169,10 @@ namespace AIS.Intervene
         /// </summary>
         private void HandleEffectSpecifyConfirm()
         {
+            // Pay Costs
+            BudgetUtility.Spend(InterveneBudgetInterfacer.Instance, ProcessCost);
+            ProcessCost = 0;
+
             // Execute Effects
             ExecuteRoutine.Replace(ExecuteEffectsRoutine())
                 .OnComplete(() => Exit());

@@ -8,14 +8,32 @@ namespace AIS.Intervene
 {
     public class InterveneAwarenessInterfacer : MonoBehaviour, IReducible, IIncreasable
     {
+        #region Structs
+
         public struct InterveneAwareness
         {
             public int Awareness;
         }
 
-        public TMP_Text ValueText;
+        #endregion // Structs
 
-        public InterveneAwareness WorkingAwareness = new InterveneAwareness();
+        #region Inspector
+
+        public TMP_Text ValueText;
+        public int StartingAwareness;
+
+        #endregion // Inspector
+
+        [HideInInspector] public InterveneAwareness WorkingAwareness = new InterveneAwareness();
+
+        #region Unity Callbacks
+
+        private void Start()
+        {
+            LoadPlayerAwareness(StartingAwareness);
+        }
+
+        #endregion // Unity Callbacks
 
         public void LoadPlayerAwareness(int awarenessLevel)
         {

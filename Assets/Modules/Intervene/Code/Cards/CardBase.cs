@@ -16,6 +16,7 @@ namespace AIS.Intervene {
         public CardAttributes Attributes;
 
         public SerializedHash32 CardID;
+        public int Cost;
 
         public abstract void PopulateCardUI(UICard toPopulate);
     }

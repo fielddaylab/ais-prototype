@@ -1,4 +1,5 @@
 using AIS.Model;
+using BeauUtil;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -15,6 +16,7 @@ namespace AIS.Intervene {
         Remove,
         Reveal,
         AddTrap,
+        Modify,
     }
 
     [Flags]
@@ -93,12 +95,12 @@ namespace AIS.Intervene {
         public string Description;
         public string ImgPath;
 
-        public int Cost;
         public ActionEffect[] Effects;
 
         public override void PopulateCardUI(UICard toPopulate)
         {
             toPopulate.Title.SetText(Title);
+            toPopulate.CostText.SetText("$" + Cost.ToStringLookup());
             toPopulate.Description.SetText(Description);
             // TODO: img
             // toPopulate.Img.SetText(Title);

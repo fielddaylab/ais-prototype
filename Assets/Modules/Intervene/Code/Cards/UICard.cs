@@ -13,6 +13,7 @@ namespace AIS.Intervene {
         [Header("Front")]
         public CanvasGroup FrontGroup;
         public TMP_Text Title;
+        public TMP_Text CostText;
         public TMP_Text Description;
         public Image Img;
         public Image Highlight;
@@ -29,12 +30,15 @@ namespace AIS.Intervene {
 
     public static class CardUIUtility
     {
+        /*
         public static void PopulateCard(UICard card, ActionCardData cardData)
         {
             card.CardID = cardData.CardID;
             card.Title.SetText(cardData.Title);
+            card.CostText.SetText("$" + cardData.Cost.ToStringLookup());
             card.Description.SetText(cardData.Description);
             card.Img.sprite = null; // cardData.ImgPath;
         }
+        */
     }
 }
