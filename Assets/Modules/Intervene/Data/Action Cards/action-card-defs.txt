@@ -73,13 +73,13 @@
 
 ::example-action-card-6
 @title		Place Trap
-@desc		Place a trap in a Lake. It has a 1/6 chance of triggering per round. // TODO
+@desc		Place a trap in an Ecosystem. It has a 1/6 chance of triggering per round.
 @path		temp.png
 @cost		1
 
 @effect
     target: ecosystem
-    verb: addTrap, 1, fixed
+    verb: addtrap, 1, fixed
     specificity: specific
     maxtargets: 1
 

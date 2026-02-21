@@ -16,7 +16,7 @@ namespace AIS.Intervene {
         Remove,
         Reveal,
         AddTrap,
-        Modify,
+        AddNest,
     }
 
     [Flags]
@@ -31,6 +31,7 @@ namespace AIS.Intervene {
         Nest = 0x20,
         Awareness = 0x40,
         Budget = 0x80,
+        Trap = 0x100,
     }
 
     public enum ActionSpecificity

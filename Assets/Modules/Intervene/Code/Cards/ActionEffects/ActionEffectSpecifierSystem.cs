@@ -257,8 +257,13 @@ namespace AIS.Intervene
                                 TryRemove(target.QueriableObj, verb);
                                 break;
                             case ActionVerb.Reveal:
+                                TryReveal(target.QueriableObj, verb);
                                 break;
                             case ActionVerb.AddTrap:
+                                TryAddTrap(target.QueriableObj, verb);
+                                break;
+                            case ActionVerb.AddNest:
+                                TryAddNest(target.QueriableObj, verb);
                                 break;
                             default:
                                 continue;
@@ -315,6 +320,51 @@ namespace AIS.Intervene
             else
             {
                 Debug.LogWarning("[Increasable] Tried to remove on a tag (" + queriable.name + ") that does not support it!");
+                return false;
+            }
+        }
+
+        private bool TryReveal(GameObject queriable, ActionVerbDetails verbDetails)
+        {
+            var toReveal = queriable.GetComponent<IRevealable>();
+
+            if (toReveal != null)
+            {
+                return toReveal.TryReveal();
+            }
+            else
+            {
+                Debug.LogWarning("[Increasable] Tried to reveal on a tag (" + queriable.name + ") that does not support it!");
+                return false;
+            }
+        }
+
+        private bool TryAddTrap(GameObject queriable, ActionVerbDetails verbDetails)
+        {
+            var toAddTrapTo = queriable.GetComponent<IAddTrapable>();
+
+            if (toAddTrapTo != null)
+            {
+                return toAddTrapTo.TryAddTrap((int)verbDetails.Value);
+            }
+            else
+            {
+                Debug.LogWarning("[Increasable] Tried to add trap on a tag (" + queriable.name + ") that does not support it!");
+                return false;
+            }
+        }
+
+        private bool TryAddNest(GameObject queriable, ActionVerbDetails verbDetails)
+        {
+            var toAddNestTo = queriable.GetComponent<IAddNestable>();
+
+            if (toAddNestTo != null)
+            {
+                return toAddNestTo.TryAddNest((int)verbDetails.Value);
+            }
+            else
+            {
+                Debug.LogWarning("[Increasable] Tried to add nest on a tag (" + queriable.name + ") that does not support it!");
                 return false;
             }
         }

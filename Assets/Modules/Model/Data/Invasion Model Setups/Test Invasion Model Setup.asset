@@ -21,6 +21,9 @@ MonoBehaviour:
     IsExternal: 0
     MainSlotPoses:
     - {x: 0, y: 0}
+    SecondarySlotPoses:
+    - {x: 1, y: -1}
+    - {x: 2, y: -1}
   - EcosystemId:
       m_Source: eco-2
       m_HashValue: 465821117
@@ -29,6 +32,9 @@ MonoBehaviour:
     IsExternal: 0
     MainSlotPoses:
     - {x: 0, y: 0}
+    SecondarySlotPoses:
+    - {x: 1, y: -1}
+    - {x: 2, y: -1}
   - EcosystemId:
       m_Source: eco-3
       m_HashValue: 449043498
@@ -37,6 +43,9 @@ MonoBehaviour:
     IsExternal: 0
     MainSlotPoses:
     - {x: 0, y: 0}
+    SecondarySlotPoses:
+    - {x: 1, y: -1}
+    - {x: 2, y: -1}
   - EcosystemId:
       m_Source: eco-EXTERN-IN
       m_HashValue: 848023977
@@ -45,6 +54,9 @@ MonoBehaviour:
     IsExternal: 1
     MainSlotPoses:
     - {x: 0, y: 0}
+    SecondarySlotPoses:
+    - {x: 1, y: -1}
+    - {x: 2, y: -1}
   - EcosystemId:
       m_Source: eco-EXTERN-OUT
       m_HashValue: 3287957386
@@ -53,6 +65,9 @@ MonoBehaviour:
     IsExternal: 1
     MainSlotPoses:
     - {x: 0, y: 0}
+    SecondarySlotPoses:
+    - {x: 1, y: -1}
+    - {x: 2, y: -1}
   Pathways:
   - PathwayId:
       m_Source: path-1-to-2
