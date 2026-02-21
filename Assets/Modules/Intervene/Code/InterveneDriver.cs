@@ -1,6 +1,7 @@
 using AIS.Model;
 using BeauUtil;
 using FieldDay;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -28,7 +29,12 @@ namespace AIS.Intervene {
         {
             if (InvasionModelContainer.Instance == null) { return; }
 
-            // TODO: predator / prey dynamics
+            // predator / prey dynamics
+            foreach (var ecosystem in InvasionModelContainer.Instance.GetAllEcosystems())
+            {
+                if (ecosystem.IsExternal) { continue; }
+                ProcessInterspeciesDynamics(ecosystem);
+            }
 
             // Trigger Traps
             foreach (var ecosystem in InvasionModelContainer.Instance.GetAllEcosystems())
@@ -56,6 +62,159 @@ namespace AIS.Intervene {
 
         #region Simulate & Modify
 
+        private void ProcessInterspeciesDynamics(Ecosystem eco)
+        {
+            ProcessInvasiveDynamics(eco);
+            ProcessPredatorDynamics(eco);
+            ProcessPreyDynamics(eco);
+        }
+
+        private void ProcessInvasiveDynamics(Ecosystem eco)
+        {
+            /*
+            Hunt: Roll d6 equal to invasive population. For each result lower than the prey population, remove 1 prey and add it to “bank.”
+            Starve: If 0 banked prey, roll d12. If the result is less than or equal to invasive population, decrease population by 1.
+            Reproduce: If the invasive population is 1, add 1 invasive population for each banked prey. Otherwise, add 1 invasive population for every 2 banked prey.
+            */
+            List<Tuple<SerializedHash32, int, PathwayType, ActionTarget>> preyCounts;
+            eco.FindByTargetType(ActionTarget.Prey, out preyCounts);
+            int totalPrey = 0;
+            foreach (var count in preyCounts) {
+                totalPrey += count.Item2;
+            }
+
+            List<Tuple<SerializedHash32, int, PathwayType, ActionTarget>> invasiveCounts;
+            eco.FindByTargetType(ActionTarget.Invasive, out invasiveCounts);
+            int totalInvasives = 0;
+            foreach (var count in invasiveCounts)
+            {
+                totalInvasives += count.Item2;
+            }
+
+            // Hunt
+            int totalPreyConsumed = 0;
+            for (int i = 0; i < totalInvasives; i++)
+            {
+                int rollResult = UnityEngine.Random.Range(1, 7);
+                if (rollResult <= totalPrey)
+                {
+                    totalPreyConsumed++;
+                }
+            }
+            totalPreyConsumed = Mathf.Min(totalPreyConsumed, totalPrey);
+
+            Debug.Log("[InterveneDriver] [InterspeciesDynamics] eco " + eco.EcosystemId + " invasives consumed " + totalPreyConsumed);
+
+            // Starve
+            if (totalPreyConsumed == 0)
+            {
+                int rollResult = UnityEngine.Random.Range(1, 13);
+                if (rollResult <= totalInvasives)
+                {
+                    eco.ReleasePopulation(invasiveCounts[0].Item1, 1);
+                    Debug.Log("[InterveneDriver] [InterspeciesDynamics] eco " + eco.EcosystemId + " invasives starved 1");
+                }
+            }
+
+            // Reproduce
+            int reproduceNum = totalPreyConsumed;
+            if (totalInvasives > 1)
+            {
+                reproduceNum = Mathf.FloorToInt(totalPreyConsumed / 2);
+            }
+
+            for (int i = 0; i < reproduceNum; i++)
+            {
+                eco.AddPopulation(invasiveCounts[0].Item1, 1, invasiveCounts[0].Item3, invasiveCounts[0].Item4);
+            }
+            Debug.Log("[InterveneDriver] [InterspeciesDynamics] eco " + eco.EcosystemId + " invasives reproduced " + reproduceNum);
+        }
+
+        private void ProcessPredatorDynamics(Ecosystem eco)
+        {
+            /*
+            Hunt: Roll d6 equal to predator population. For each result lower than the prey population, remove 1 prey and add it to “bank.” 
+            Starve: If 0 banked prey, roll d12. If the result is less than or equal to predator population, decrease population by 1.
+            Reproduce: If the predator population is 1, add 1 predator population for each banked prey. Otherwise, add 1 predator population for every 2 banked prey.
+            */
+            List<Tuple<SerializedHash32, int, PathwayType, ActionTarget>> preyCounts;
+            eco.FindByTargetType(ActionTarget.Prey, out preyCounts);
+            int totalPrey = 0;
+            foreach (var count in preyCounts)
+            {
+                totalPrey += count.Item2;
+            }
+
+            List<Tuple<SerializedHash32, int, PathwayType, ActionTarget>> predatorCounts;
+            eco.FindByTargetType(ActionTarget.Predator, out predatorCounts);
+            int totalPredators = 0;
+            foreach (var count in predatorCounts)
+            {
+                totalPredators += count.Item2;
+            }
+
+            // Hunt
+            int totalPreyConsumed = 0;
+            for (int i = 0; i < totalPredators; i++)
+            {
+                int rollResult = UnityEngine.Random.Range(1, 7);
+                if (rollResult <= totalPrey)
+                {
+                    totalPreyConsumed++;
+                }
+            }
+            totalPreyConsumed = Mathf.Min(totalPreyConsumed, totalPrey);
+
+            Debug.Log("[InterveneDriver] [InterspeciesDynamics] eco " + eco.EcosystemId + " predators consumed " + totalPreyConsumed);
+
+            // Starve
+            if (totalPreyConsumed == 0)
+            {
+                int rollResult = UnityEngine.Random.Range(1, 13);
+                if (rollResult <= totalPredators)
+                {
+                    eco.ReleasePopulation(predatorCounts[0].Item1, 1);
+                    Debug.Log("[InterveneDriver] [InterspeciesDynamics] eco " + eco.EcosystemId + " predators starved 1");
+                }
+            }
+
+            // Reproduce
+            int reproduceNum = totalPreyConsumed;
+            if (totalPredators > 1)
+            {
+                reproduceNum = Mathf.FloorToInt(totalPreyConsumed / 2);
+            }
+
+            for (int i = 0; i < reproduceNum; i++)
+            {
+                eco.AddPopulation(predatorCounts[0].Item1, 1, predatorCounts[0].Item3, predatorCounts[0].Item4);
+            }
+            Debug.Log("[InterveneDriver] [InterspeciesDynamics] eco " + eco.EcosystemId + " predator reproduced " + reproduceNum);
+        }
+
+        private void ProcessPreyDynamics(Ecosystem eco)
+        {
+            /*
+            Reproduce: Roll 1d6. If the result is less than or equal to the current prey population, add 1 prey population.
+            */
+            List<Tuple<SerializedHash32, int, PathwayType, ActionTarget>> preyCounts;
+            eco.FindByTargetType(ActionTarget.Prey, out preyCounts);
+            int totalPrey = 0;
+            foreach (var count in preyCounts)
+            {
+                totalPrey += count.Item2;
+            }
+
+            // Reproduce
+            int rollResult = UnityEngine.Random.Range(1, 7);
+            if (rollResult <= totalPrey)
+            {
+                // TODO: how to divvy if multiple types of prey?
+                eco.AddPopulation(preyCounts[0].Item1, 1, preyCounts[0].Item3, preyCounts[0].Item4);
+                Debug.Log("[InterveneDriver] [InterspeciesDynamics] eco " + eco.EcosystemId + " prey reproduced 1");
+            }
+        }
+
         private void StagePathwayTransfer(Pathway pathway)
         {
             // for each species in origin which travels along pathway
@@ -65,7 +224,7 @@ namespace AIS.Intervene {
             foreach (var speciesPair in relevantSpecies)
             {
                 // see if transfer triggers
-                if (Random.Range(0, 1.0f) > pathway.TransferTriggerChance) {
+                if (UnityEngine.Random.Range(0, 1.0f) > pathway.TransferTriggerChance) {
                     // do not trigger transfer
                     continue;
                 }
@@ -121,7 +280,7 @@ namespace AIS.Intervene {
                         var nest = cluster.GetComponent<Nest>();
                         if (nest != null)
                         {
-                            if (Random.Range(0, 1f) < nest.TriggerOdds)
+                            if (UnityEngine.Random.Range(0, 1f) < nest.TriggerOdds)
                             {
                                 eco.AddPopulation(nest.SpawnSpeciesId, nest.SpawnAmt * cluster.Population, nest.SpawnTravelType, nest.SpawnTargetType);
                             }
@@ -142,7 +301,7 @@ namespace AIS.Intervene {
                         var trap = cluster.GetComponent<Trap>();
                         if (trap != null)
                         {
-                            if (Random.Range(0, 1f) < trap.TriggerOdds)
+                            if (UnityEngine.Random.Range(0, 1f) < trap.TriggerOdds)
                             {
                                 eco.ReleasePopulation(trap.TrapSpeciesId, trap.TrapAmt * cluster.Population);
                             }

@@ -156,17 +156,4 @@
     specificity: all
     maxtargets: -1
 
-::example-action-card-13
-@title		Place Nest
-@desc		Place a Nest in an Ecosystem.
-@path		temp.png
-@cost		1
-
-@effect
-    target: ecosystem
-    verb: addnest, 1, fixed
-    specificity: specific
-    maxtargets: 1
-
-
 // END

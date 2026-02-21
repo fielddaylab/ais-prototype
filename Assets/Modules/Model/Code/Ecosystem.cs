@@ -118,6 +118,26 @@ namespace AIS.Model
             return foundSpecies;
         }
 
+        public void FindByTargetType(ActionTarget targetType, out List<Tuple<SerializedHash32, int, PathwayType, ActionTarget>> targetCounts)
+        {
+            targetCounts = new List<Tuple<SerializedHash32, int, PathwayType, ActionTarget>>();
+
+            foreach (var speciesId in SpeciesInEcosystem)
+            {
+                if (!SpeciesSlotDict.ContainsKey(speciesId)) { continue; }
+
+                var slotIndex = SpeciesSlotDict[speciesId].SlotIndex;
+                var slot = MainSlots[slotIndex];
+                foreach (var speciesCluster in slot.Clusters)
+                {
+                    if ((speciesCluster.TargetType & targetType) != 0)
+                    {
+                        targetCounts.Add(new Tuple<SerializedHash32, int, PathwayType, ActionTarget>(speciesCluster.ContentsId, speciesCluster.Population, speciesCluster.TravelType, speciesCluster.TargetType));
+                    }
+                }
+            }
+        }
+
         public void AddPopulation(SerializedHash32 clusterContentsId, int addCount, PathwayType travelType, ActionTarget targetType, bool isSecondary = false)
         {
             if (addCount == 0) { return; }

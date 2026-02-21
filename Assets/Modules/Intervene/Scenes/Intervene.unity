@@ -2186,7 +2186,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LevelValueText: {fileID: 599112455}
   ValueText: {fileID: 785384552}
-  StartingBudget: 2
+  StartingBudget: 3
 --- !u!224 &691021998 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6746020108103461400, guid: 09e431a58959a4048b62270e719951be, type: 3}
@@ -2254,7 +2254,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ValueText: {fileID: 1911674756}
-  StartingAwareness: 1
+  StartingAwareness: 3
 --- !u!1 &785384550
 GameObject:
   m_ObjectHideFlags: 0
