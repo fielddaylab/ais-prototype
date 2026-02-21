@@ -71,7 +71,7 @@ namespace AIS.Intervene
                 // TODO: auto-highlight all and await continue
                 if (EffectChunk.SelectedTargets.Count != 0) { return; }
 
-                List<ModelTag> filteredTags = ModelTagMgr.Instance.FilterTagsByTargetDetails(m_EffectToProcess.AllTargets);
+                List<ModelTag> filteredTags = ModelTagMgr.Instance.FilterTagsByTargetDetails(m_EffectToProcess.AllTargets, m_EffectToProcess.GetAllVerbs());
                 foreach (var tag in filteredTags)
                 {
                     AddTagToChunk(tag);
@@ -121,7 +121,7 @@ namespace AIS.Intervene
                         // if clicked over a valid tag
                         var tag = highestPriorityHit.GetComponent<ModelTag>();
 
-                        List<ModelTag> validTags = ModelTagMgr.Instance.FilterTagsByTargetDetails(m_EffectToProcess.AllTargets);
+                        List<ModelTag> validTags = ModelTagMgr.Instance.FilterTagsByTargetDetails(m_EffectToProcess.AllTargets, m_EffectToProcess.GetAllVerbs());
                         if (validTags.Contains(tag))
                         {
                             ToggleTagSelected(tag);
@@ -235,7 +235,7 @@ namespace AIS.Intervene
 
         private void SummonHighlights()
         {
-            List<ModelTag> filteredTags = ModelTagMgr.Instance.FilterTagsByTargetDetails(m_EffectToProcess.AllTargets);
+            List<ModelTag> filteredTags = ModelTagMgr.Instance.FilterTagsByTargetDetails(m_EffectToProcess.AllTargets, m_EffectToProcess.GetAllVerbs());
 
             ModelTagMgr.Instance.HighlightTags(filteredTags);
         }

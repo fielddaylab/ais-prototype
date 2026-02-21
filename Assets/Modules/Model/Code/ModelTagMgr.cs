@@ -24,7 +24,7 @@ namespace AIS.Model
 
         #region Queries 
 
-        public List<ModelTag> FilterTagsByTargetDetails(ActionTargetDetails[] allTargetDetails, List<ModelTag> toFilter = null)
+        public List<ModelTag> FilterTagsByTargetDetails(ActionTargetDetails[] allTargetDetails, List<ActionVerb> allVerbs, List<ModelTag> toFilter = null)
         {
             List<ModelTag> filtered = new List<ModelTag>();
             if (toFilter == null)
@@ -41,11 +41,28 @@ namespace AIS.Model
                     // match target type
                     if ((tag.TargetType & targetDetails.Target) != 0)
                     {
-                        // skip hidden pathways
-                        if ((tag.TargetType & ActionTarget.Pathway) != 0) {
-                            Pathway path = tag.QueriableObj.GetComponent<Pathway>();
-                            if (path != null && path.IsHidden) {
-                                continue;
+                        if (allVerbs.Contains(ActionVerb.Reveal))
+                        {
+                            // skip revealed pathways
+                            if ((tag.TargetType & ActionTarget.Pathway) != 0)
+                            {
+                                Pathway path = tag.QueriableObj.GetComponent<Pathway>();
+                                if (path != null && !path.IsHidden)
+                                {
+                                    continue;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            // skip hidden pathways
+                            if ((tag.TargetType & ActionTarget.Pathway) != 0)
+                            {
+                                Pathway path = tag.QueriableObj.GetComponent<Pathway>();
+                                if (path != null && path.IsHidden)
+                                {
+                                    continue;
+                                }
                             }
                         }
 

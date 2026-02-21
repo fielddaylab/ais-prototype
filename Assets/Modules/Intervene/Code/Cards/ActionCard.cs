@@ -86,6 +86,20 @@ namespace AIS.Intervene {
         public ActionSpecificity Specificity;
         public float MaxTargets; // up to
         public ActionVerbDetails[] Verbs;
+
+        public List<ActionVerb> GetAllVerbs()
+        {
+            List<ActionVerb> verbs = new List<ActionVerb>();
+            foreach (var verb in Verbs)
+            {
+                if (!verbs.Contains(verb.Verb))
+                {
+                    verbs.Add(verb.Verb);
+                }
+            }
+
+            return verbs;
+        }
     }
 
     #endregion Structs & Enums

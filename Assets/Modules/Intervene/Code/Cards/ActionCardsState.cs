@@ -305,7 +305,7 @@ namespace AIS.Intervene
             }
 
             // Check if next part is a number (count) or a condition
-            int conditionStartIndex = 2;
+            int conditionStartIndex = 1;
 
             // Parse conditions (everything after count that starts with "if")
             List<ActionTargetCondition> conditions = new List<ActionTargetCondition>();
