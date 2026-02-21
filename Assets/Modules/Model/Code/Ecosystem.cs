@@ -30,11 +30,11 @@ namespace AIS.Model
         public bool IsExternal;
 
         public List<SerializedHash32> SpeciesInEcosystem = new List<SerializedHash32>();
-        public Dictionary<SerializedHash32, SpeciesSlotData> SpeciesSlotDict = new Dictionary<SerializedHash32, SpeciesSlotData>();
-        public Dictionary<SerializedHash32, SpeciesSlotData> SpeciesSecondarySlotDict = new Dictionary<SerializedHash32, SpeciesSlotData>();
+        public Dictionary<SerializedHash32, ClusterSlotData> SpeciesSlotDict = new Dictionary<SerializedHash32, ClusterSlotData>();
+        public Dictionary<SerializedHash32, ClusterSlotData> SecondarySlotDict = new Dictionary<SerializedHash32, ClusterSlotData>();
 
-        public SpeciesSlot[] MainSlots; // Slots for active species to occupy
-        public SpeciesSlot[] SecondarySlots; // Slots for secondary "species" to occupy
+        public ClusterSlot[] MainSlots; // Slots for active species to occupy
+        public ClusterSlot[] SecondarySlots; // Slots for secondary "species" to occupy
 
         #endregion // Inspector
 
@@ -47,18 +47,18 @@ namespace AIS.Model
             MainRenderer.sprite = setupData.Sprite;
             MainRenderer.sortingOrder = InvasionModelSorting.ECOSYSTEM_SORTING;
 
-            MainSlots = new SpeciesSlot[setupData.MainSlotPoses.Length];
+            MainSlots = new ClusterSlot[setupData.MainSlotPoses.Length];
             for (int i = 0; i < setupData.MainSlotPoses.Length; i++)
             {
-                var newSlot = Instantiate(transformPrefab, this.transform).AddComponent<SpeciesSlot>();
+                var newSlot = Instantiate(transformPrefab, this.transform).AddComponent<ClusterSlot>();
                 newSlot.transform.localPosition = setupData.MainSlotPoses[i];
                 MainSlots[i] = newSlot;
             }
 
-            SecondarySlots = new SpeciesSlot[setupData.SecondarySlotPoses.Length];
+            SecondarySlots = new ClusterSlot[setupData.SecondarySlotPoses.Length];
             for (int i = 0; i < setupData.SecondarySlotPoses.Length; i++)
             {
-                var newSlot = Instantiate(transformPrefab, this.transform).AddComponent<SpeciesSlot>();
+                var newSlot = Instantiate(transformPrefab, this.transform).AddComponent<ClusterSlot>();
                 newSlot.transform.localPosition = setupData.SecondarySlotPoses[i];
                 SecondarySlots[i] = newSlot;
             }
@@ -102,13 +102,15 @@ namespace AIS.Model
 
             foreach (var speciesId in SpeciesInEcosystem)
             {
+                if (!SpeciesSlotDict.ContainsKey(speciesId)) { continue; }
+
                 var slotIndex = SpeciesSlotDict[speciesId].SlotIndex;
                 var slot = MainSlots[slotIndex];
-                foreach (var speciesCluster in slot.SpeciesClusters)
+                foreach (var speciesCluster in slot.Clusters)
                 {
                     if ((speciesCluster.TravelType & travelType) != 0)
                     {
-                        foundSpecies.Add(new Tuple<SerializedHash32, PathwayType, ActionTarget>(speciesCluster.SpeciesId, speciesCluster.TravelType, speciesCluster.TargetType));
+                        foundSpecies.Add(new Tuple<SerializedHash32, PathwayType, ActionTarget>(speciesCluster.ContentsId, speciesCluster.TravelType, speciesCluster.TargetType));
                     }
                 }
             }
@@ -116,59 +118,59 @@ namespace AIS.Model
             return foundSpecies;
         }
 
-        public void AddPopulation(SerializedHash32 speciesId, int addCount, PathwayType travelType, ActionTarget targetType, bool isSecondary = false)
+        public void AddPopulation(SerializedHash32 clusterContentsId, int addCount, PathwayType travelType, ActionTarget targetType, bool isSecondary = false)
         {
             if (addCount == 0) { return; }
 
-            Dictionary<SerializedHash32, SpeciesSlotData> slotDict = isSecondary ? SpeciesSecondarySlotDict : SpeciesSlotDict;
+            Dictionary<SerializedHash32, ClusterSlotData> slotDict = isSecondary ? SecondarySlotDict : SpeciesSlotDict;
 
-            if (!SpeciesInEcosystem.Contains(speciesId))
+            if (!SpeciesInEcosystem.Contains(clusterContentsId))
             {
                 // create a new cluster population and register it with ecosystem and InvasionModelContainer
-                SpeciesInEcosystem.Add(speciesId);
+                SpeciesInEcosystem.Add(clusterContentsId);
 
-                if (!slotDict.ContainsKey(speciesId))
+                if (!slotDict.ContainsKey(clusterContentsId))
                 {
                     int newSlotIndex = isSecondary ? FindNextBestSecondarySlot() : FindNextBestSlot();
-                    SpeciesSlotData slotData = new SpeciesSlotData();
+                    ClusterSlotData slotData = new ClusterSlotData();
                     slotData.SlotIndex = newSlotIndex;
-                    slotData.SpeciesId = speciesId;
-                    slotDict.Add(speciesId, slotData);
+                    slotData.ClusterContentsId = clusterContentsId;
+                    slotDict.Add(clusterContentsId, slotData);
                 }
                 else
                 {
                     Debug.LogWarning("[Ecosystem] Misalignment between SpeciesInEcosystem list and SpeciesSlotDict!");
                 }
 
-                int slotIndex = slotDict[speciesId].SlotIndex;
-                var speciesSlot = isSecondary ? SecondarySlots[slotIndex] : MainSlots[slotIndex];
+                int slotIndex = slotDict[clusterContentsId].SlotIndex;
+                var clusterSlot = isSecondary ? SecondarySlots[slotIndex] : MainSlots[slotIndex];
 
-                var newCluster = InvasionModelPrefabs.Instance.CreateSpeciesCluster(InvasionModelContainer.Instance.transform);
-                newCluster.Init(speciesId, addCount, travelType, targetType, this);
+                var newCluster = InvasionModelPrefabs.Instance.CreateCluster(InvasionModelContainer.Instance.transform, targetType);
+                newCluster.Init(clusterContentsId, addCount, travelType, targetType, this);
 
-                var targetPos = speciesSlot.transform.position;
+                var targetPos = clusterSlot.transform.position;
                 var yOffset = 1;
-                targetPos.y += speciesSlot.Occupancy() * yOffset;
+                targetPos.y += clusterSlot.Occupancy() * yOffset;
                 newCluster.transform.position = targetPos;
 
-                speciesSlot.SpeciesClusters.Add(newCluster);
+                clusterSlot.Clusters.Add(newCluster);
                 InvasionModelContainer.Instance.RegisterSpeciesCluster(newCluster);
             }
             else
             {
                 // the relevant species cluster already has a population
                 // merge populations
-                if (slotDict.ContainsKey(speciesId))
+                if (slotDict.ContainsKey(clusterContentsId))
                 {
-                    var speciesSlot = isSecondary ? SecondarySlots[slotDict[speciesId].SlotIndex] : MainSlots[slotDict[speciesId].SlotIndex];
-                    for (int i = 0; i < speciesSlot.SpeciesClusters.Count; i++)
+                    var clusterSlot = isSecondary ? SecondarySlots[slotDict[clusterContentsId].SlotIndex] : MainSlots[slotDict[clusterContentsId].SlotIndex];
+                    for (int i = 0; i < clusterSlot.Clusters.Count; i++)
                     {
-                        var cluster = speciesSlot.SpeciesClusters[i];
-                        if (cluster.SpeciesId.Equals(speciesId))
+                        var cluster = clusterSlot.Clusters[i];
+                        if (cluster.ContentsId.Equals(clusterContentsId))
                         {
                             cluster.AdjustPopulation(addCount);
                         }
-                        speciesSlot.SpeciesClusters[i] = cluster;
+                        clusterSlot.Clusters[i] = cluster;
                     }
                 }
                 else
@@ -179,7 +181,7 @@ namespace AIS.Model
 
             if (isSecondary)
             {
-                SpeciesSecondarySlotDict = slotDict;
+                SecondarySlotDict = slotDict;
             }
             else
             {
@@ -187,22 +189,22 @@ namespace AIS.Model
             }
         }
 
-        public void ReleasePopulation(SerializedHash32 speciesId, int releaseCount, bool isSecondary = false)
+        public void ReleasePopulation(SerializedHash32 clusterContentsId, int releaseCount, bool isSecondary = false)
         {
             if (releaseCount == 0) { return; }
 
-            Dictionary<SerializedHash32, SpeciesSlotData> slotDict = isSecondary ? SpeciesSecondarySlotDict : SpeciesSlotDict;
+            Dictionary<SerializedHash32, ClusterSlotData> slotDict = isSecondary ? SecondarySlotDict : SpeciesSlotDict;
 
-            int slotIndex = slotDict[speciesId].SlotIndex;
-            var speciesSlot = isSecondary ? SecondarySlots[slotIndex] : MainSlots[slotIndex];
+            int slotIndex = slotDict[clusterContentsId].SlotIndex;
+            var clusterSlot = isSecondary ? SecondarySlots[slotIndex] : MainSlots[slotIndex];
 
-            SpeciesCluster cluster = null;
+            Cluster cluster = null;
             int clusterIndex = 0;
-            for (int i = 0; i < speciesSlot.SpeciesClusters.Count; i++)
+            for (int i = 0; i < clusterSlot.Clusters.Count; i++)
             {
-                if (speciesSlot.SpeciesClusters[i].SpeciesId.Equals(speciesId))
+                if (clusterSlot.Clusters[i].ContentsId.Equals(clusterContentsId))
                 {
-                    cluster = speciesSlot.SpeciesClusters[i];
+                    cluster = clusterSlot.Clusters[i];
                     clusterIndex = i;
                 }
             }
@@ -219,20 +221,20 @@ namespace AIS.Model
             {
                 // reduce population
                 cluster.AdjustPopulation(-releaseCount);
-                speciesSlot.SpeciesClusters[clusterIndex] = cluster;
+                clusterSlot.Clusters[clusterIndex] = cluster;
             }
             else
             {
                 // remove cluster
-                speciesSlot.SpeciesClusters.Remove(cluster);
-                SpeciesInEcosystem.Remove(cluster.SpeciesId);
-                slotDict.Remove(cluster.SpeciesId);
+                clusterSlot.Clusters.Remove(cluster);
+                SpeciesInEcosystem.Remove(cluster.ContentsId);
+                slotDict.Remove(cluster.ContentsId);
                 InvasionModelContainer.Instance.RemoveSpeciesCluster(cluster);
             }
 
             if (isSecondary)
             {
-                SpeciesSecondarySlotDict = slotDict;
+                SecondarySlotDict = slotDict;
             }
             else
             {
@@ -242,12 +244,12 @@ namespace AIS.Model
 
         public int GetPopulation(SerializedHash32 speciesId, bool isSecondary = false)
         {
-            int slotIndex = isSecondary ? SpeciesSecondarySlotDict[speciesId].SlotIndex : SpeciesSlotDict[speciesId].SlotIndex;
+            int slotIndex = isSecondary ? SecondarySlotDict[speciesId].SlotIndex : SpeciesSlotDict[speciesId].SlotIndex;
             var speciesSlot = isSecondary ? SecondarySlots[slotIndex] : MainSlots[slotIndex];
 
-            foreach (var speciesCluster in speciesSlot.SpeciesClusters)
+            foreach (var speciesCluster in speciesSlot.Clusters)
             {
-                if (speciesCluster.SpeciesId.Equals(speciesId))
+                if (speciesCluster.ContentsId.Equals(speciesId))
                 {
                     return speciesCluster.Population;
                 }
@@ -274,7 +276,7 @@ namespace AIS.Model
         public bool TryAddNest(int amt)
         {
             // TODO: get const nest id
-            AddPopulation("nest", amt, 0, ActionTarget.Trap, isSecondary: true);
+            AddPopulation("nest", amt, 0, ActionTarget.Nest, isSecondary: true);
 
             return true;
         }

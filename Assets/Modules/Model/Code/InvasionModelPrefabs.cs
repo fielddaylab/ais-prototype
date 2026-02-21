@@ -1,3 +1,4 @@
+using AIS.Intervene;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,9 +20,25 @@ namespace AIS.Model
             Instance = this;
         }
 
-        public SpeciesCluster CreateSpeciesCluster(Transform parentTransform)
+        public Cluster CreateCluster(Transform parentTransform, ActionTarget targetType)
         {
-            var newCluster = Instantiate(SpeciesClusterPrefab, parentTransform).GetComponent<SpeciesCluster>();
+            Cluster newCluster = Instantiate(SpeciesClusterPrefab, parentTransform).GetComponent<Cluster>();
+
+            switch (targetType) {
+                case ActionTarget.Nest:
+                    var nest = newCluster.gameObject.AddComponent<Nest>();
+                    nest.SpawnSpeciesId = InvasionModel.Instance.m_CurrModelSetupData.DefaultInvasive.SpeciesId;
+                    nest.SpawnAmt = 1;
+                    nest.SpawnTravelType = InvasionModel.Instance.m_CurrModelSetupData.DefaultInvasive.StartingTravelType;
+                    nest.SpawnTargetType = InvasionModel.Instance.m_CurrModelSetupData.DefaultInvasive.StartingTargetType;
+                    nest.TriggerOdds = 1 / 6f;
+                    break;
+                case ActionTarget.Trap:
+                    var trap = newCluster.gameObject.AddComponent<Trap>();
+                    break;
+                default:
+                    break;
+            }
 
             return newCluster;
         }

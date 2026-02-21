@@ -39,7 +39,11 @@ namespace AIS.Intervene {
             // Finalize species movements
             FinalizePathwayTransfers();
 
-            // TODO: Spawn at Nests
+            // Spawn at Nests
+            foreach (var ecosystem in InvasionModelContainer.Instance.GetAllEcosystems())
+            {
+                TriggerNests(ecosystem);
+            }
 
             Debug.Log("[InterveneDriver] Sim Progressed by 1 tick");
         }
@@ -72,7 +76,9 @@ namespace AIS.Intervene {
                     }
                     transferNum = Mathf.FloorToInt(Mathf.Min(origPop, pathway.TransferRate));
                 }
-                transferNum = Mathf.Max(1, transferNum); ; // rounded down, but at least 1
+                transferNum = Mathf.Max(1, transferNum); // rounded down, but at least 1
+
+                // TODO: remove at trap
 
                 // split species, between orig and dest clusters
                 var transferAlloc = new SpeciesTransferAllocation();
@@ -97,6 +103,28 @@ namespace AIS.Intervene {
                     destEco.AddPopulation(m_SpeciesTransfers[i].SpeciesId, m_SpeciesTransfers[i].TransferCount, m_SpeciesTransfers[i].TravelType, m_SpeciesTransfers[i].TargetType);
                 }
                 m_SpeciesTransfers.RemoveAt(i);
+            }
+        }
+
+        private void TriggerNests(Ecosystem eco)
+        {
+            foreach (var slot in eco.SecondarySlots)
+            {
+                foreach (var cluster in slot.Clusters)
+                {
+                    if (cluster.TargetType == ActionTarget.Nest)
+                    {
+                        var nest = cluster.GetComponent<Nest>();
+                        if (nest != null)
+                        {
+                            nest.TriggerOdds = 1;
+                            if (Random.Range(0, 1f) < nest.TriggerOdds)
+                            {
+                                eco.AddPopulation(nest.SpawnSpeciesId, nest.SpawnAmt, nest.SpawnTravelType, nest.SpawnTargetType);
+                            }
+                        }
+                    }
+                }
             }
         }
 

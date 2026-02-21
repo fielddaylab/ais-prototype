@@ -134,7 +134,7 @@
 
 ::example-action-card-11
 @title		Reproduction Supressor
-@desc		Decrease all Nests by 1. // TODO
+@desc		Decrease all Nests by 1.
 @path		temp.png
 @cost		3
 
@@ -155,6 +155,18 @@
     verb: match, awareness, 0
     specificity: all
     maxtargets: -1
+
+::example-action-card-13
+@title		Place Nest
+@desc		Place a Nest in an Ecosystem.
+@path		temp.png
+@cost		1
+
+@effect
+    target: ecosystem
+    verb: addnest, 1, fixed
+    specificity: specific
+    maxtargets: 1
 
 
 // END

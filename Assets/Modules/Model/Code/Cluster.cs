@@ -20,7 +20,7 @@ namespace AIS.Model
         public Sprite SpeciesSprite;
     }
 
-    public class SpeciesCluster : MonoBehaviour, IReducible, IIncreasable, IRemovable
+    public class Cluster : MonoBehaviour, IReducible, IIncreasable, IRemovable
     {
         public SpriteRenderer BGRenderer;
         public SpriteRenderer IconRenderer;
@@ -28,10 +28,10 @@ namespace AIS.Model
 
         public ModelTag ActionTag;
 
-        public SerializedHash32 SpeciesId;
+        [HideInInspector] public SerializedHash32 ContentsId;
         [HideInInspector] public int Population;
-        public PathwayType TravelType;
-        public ActionTarget TargetType;
+        [HideInInspector] public PathwayType TravelType;
+        [HideInInspector] public ActionTarget TargetType;
 
         [HideInInspector] public Ecosystem ParentEcosystem;
 
@@ -42,9 +42,9 @@ namespace AIS.Model
         }
         */
 
-        public void Init(SerializedHash32 speciesId, int population, PathwayType travelType, ActionTarget targetType, Ecosystem ecosystem)
+        public void Init(SerializedHash32 contentsId, int population, PathwayType travelType, ActionTarget targetType, Ecosystem ecosystem)
         {
-            SpeciesId = speciesId;
+            ContentsId = contentsId;
             Population = population;
             TravelType = travelType;
             TargetType = targetType;
@@ -53,7 +53,7 @@ namespace AIS.Model
 
             ParentEcosystem = ecosystem;
 
-            IconRenderer.sprite = ModelSpriteLookup.Instance.LookupSpeciesIcon(speciesId);
+            IconRenderer.sprite = ModelSpriteLookup.Instance.LookupSpeciesIcon(contentsId);
             PopulationText.SetText("x" + Population.ToStringLookup());
             ActionTag.Highlight.sortingOrder = InvasionModelSorting.SPECIES_SORTING;
             BGRenderer.sortingOrder = InvasionModelSorting.SPECIES_SORTING + 10;
@@ -74,9 +74,11 @@ namespace AIS.Model
 
         public bool TryReduce(float amt, ModifierType modType)
         {
+            bool isSecondary = TargetType == ActionTarget.Nest || TargetType == ActionTarget.Trap;
+
             if (modType == ModifierType.Fixed)
             {
-                ParentEcosystem.ReleasePopulation(SpeciesId, (int)amt);
+                ParentEcosystem.ReleasePopulation(ContentsId, (int)amt, isSecondary: isSecondary);
 
                 return true;
             }
@@ -86,7 +88,7 @@ namespace AIS.Model
                 // rounded up, at least 1
                 releaseAmt = Mathf.Max(1, releaseAmt);
 
-                ParentEcosystem.ReleasePopulation(SpeciesId, (int)releaseAmt);
+                ParentEcosystem.ReleasePopulation(ContentsId, (int)releaseAmt, isSecondary: isSecondary);
 
                 return true;
             }
@@ -98,9 +100,11 @@ namespace AIS.Model
 
         public bool TryIncrease(float amt, ModifierType modType)
         {
+            bool isSecondary = TargetType == ActionTarget.Nest || TargetType == ActionTarget.Trap;
+
             if (modType == ModifierType.Fixed)
             {
-                ParentEcosystem.AddPopulation(SpeciesId, (int)amt, TravelType, TargetType);
+                ParentEcosystem.AddPopulation(ContentsId, (int)amt, TravelType, TargetType, isSecondary: isSecondary);
 
                 return true;
             }
@@ -110,7 +114,7 @@ namespace AIS.Model
                 // rounded down, but at least 1
                 addAmt = Mathf.Max(1, addAmt);
 
-                ParentEcosystem.AddPopulation(SpeciesId, (int)addAmt, TravelType, TargetType);
+                ParentEcosystem.AddPopulation(ContentsId, (int)addAmt, TravelType, TargetType, isSecondary: isSecondary);
 
                 return true;
             }
@@ -122,7 +126,9 @@ namespace AIS.Model
 
         public bool TryRemove()
         {
-            ParentEcosystem.ReleasePopulation(SpeciesId, Population);
+            bool isSecondary = TargetType == ActionTarget.Nest || TargetType == ActionTarget.Trap;
+
+            ParentEcosystem.ReleasePopulation(ContentsId, Population, isSecondary: isSecondary);
 
             return true;
         }

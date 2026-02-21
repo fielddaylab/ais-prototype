@@ -594,6 +594,9 @@ namespace AIS.Intervene
                 case "addtrap":
                 case "trap":
                     return ActionVerb.AddTrap;
+                case "addnest":
+                case "nest":
+                    return ActionVerb.AddNest;
                 default:
                     Debug.LogWarning("[CardUtility] Unknown verb: " + verbStr);
                     return ActionVerb.Reduce; // default fallback

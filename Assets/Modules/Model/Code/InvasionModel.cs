@@ -16,6 +16,8 @@ namespace AIS.Model
 
     public class InvasionModel : MonoBehaviour
     {
+        public static InvasionModel Instance;
+
         #region Inspector
 
         [SerializeField] private InvasionModelPrefabs m_Prefabs;
@@ -25,9 +27,14 @@ namespace AIS.Model
 
         #endregion // Inspector
 
-        private InvasionModelSetupData m_CurrModelSetupData;
+        public InvasionModelSetupData m_CurrModelSetupData { get; private set; }
 
         #region UnityCallbacks
+
+        private void Awake()
+        {
+            Instance = this;
+        }
 
         private void Start()
         {

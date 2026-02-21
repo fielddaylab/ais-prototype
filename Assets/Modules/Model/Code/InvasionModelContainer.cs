@@ -17,7 +17,7 @@ namespace AIS.Model
 
         private List<Ecosystem> m_Ecosystems = new List<Ecosystem>();
         private List<Pathway> m_Pathways = new List<Pathway>();
-        private List<SpeciesCluster> m_SpeciesClusters = new List<SpeciesCluster>();
+        private List<Cluster> m_SpeciesClusters = new List<Cluster>();
 
         public void InitInstance()
         {
@@ -49,7 +49,7 @@ namespace AIS.Model
             BGRenderer.sortingOrder = InvasionModelSorting.BG_SORTING;
         }
 
-        public void RemoveSpeciesCluster(SpeciesCluster cluster)
+        public void RemoveSpeciesCluster(Cluster cluster)
         {
             m_SpeciesClusters.Remove(cluster);
             Destroy(cluster.gameObject);
@@ -69,7 +69,7 @@ namespace AIS.Model
             m_Pathways.Add(pathway);
         }
 
-        public void RegisterSpeciesCluster(SpeciesCluster cluster)
+        public void RegisterSpeciesCluster(Cluster cluster)
         {
             m_SpeciesClusters.Add(cluster);
         }
@@ -89,6 +89,21 @@ namespace AIS.Model
             }
 
             return null;
+        }
+
+        public List<Ecosystem> GetAllEcosystems()
+        {
+            List<Ecosystem> ecosystems = new List<Ecosystem>();
+
+            foreach (var eco in m_Ecosystems)
+            {
+                if (!eco.IsExternal)
+                {
+                    ecosystems.Add(eco);
+                }
+            }
+
+            return ecosystems;
         }
 
         public List<Pathway> GetAllPathways()

@@ -167,3 +167,14 @@ MonoBehaviour:
     StartingTravelType: 8
     StartingTargetType: 1
     SpeciesSprite: {fileID: 21300000, guid: 865a1d2b3d332134591f29fcd54f724f, type: 3}
+  DefaultInvasive:
+    SpeciesId:
+      m_Source: snail
+      m_HashValue: 2331752522
+    StartingEcosystemId:
+      m_Source: 
+      m_HashValue: 0
+    StartingPopulation: 0
+    StartingTravelType: 8
+    StartingTargetType: 1
+    SpeciesSprite: {fileID: 21300000, guid: 865a1d2b3d332134591f29fcd54f724f, type: 3}

@@ -403,7 +403,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7423000311647376986}
-  - component: {fileID: 6067376890127794808}
+  - component: {fileID: 8475021899211029602}
   - component: {fileID: 7447373408981766623}
   m_Layer: 0
   m_Name: Species Cluster
@@ -430,7 +430,7 @@ Transform:
   - {fileID: 7977369457103104796}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6067376890127794808
+--- !u!114 &8475021899211029602
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -439,14 +439,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 8153853392820626865}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b0ce92625f2ef7b469f3fcaf37e6b117, type: 3}
+  m_Script: {fileID: 11500000, guid: f36d5d4a6553408479a4a94571b9b134, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   BGRenderer: {fileID: 3835675364536436763}
   IconRenderer: {fileID: 7447373408981766623}
   PopulationText: {fileID: 8345544088896419788}
   ActionTag: {fileID: 6769573476877274509}
-  SpeciesId:
+  ContentsId:
     m_Source: 
     m_HashValue: 0
   Population: 0

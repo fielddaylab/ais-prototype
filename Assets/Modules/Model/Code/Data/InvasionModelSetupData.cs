@@ -15,5 +15,6 @@ namespace AIS.Model
         public PathwaySetupData[] Pathways;
         public InvasionCurveThreshold[] InvasionCurveThresholds;
         public SpeciesSetupData[] SharedSpeciesSetups;
+        public SpeciesSetupData DefaultInvasive;
     }
 }
