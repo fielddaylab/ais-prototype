@@ -6,6 +6,6 @@ namespace AIS.Intervene
 {
     public interface IReducible
     {
-        public bool TryReduce(float amt, ModifierType modType);
+        public bool TryReduce(List<float> amts, ModifierType modType);
     }
 }

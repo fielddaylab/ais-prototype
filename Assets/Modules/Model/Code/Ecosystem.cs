@@ -20,7 +20,7 @@ namespace AIS.Model
         public Vector2[] SecondarySlotPoses;
     }
 
-    public class Ecosystem : MonoBehaviour, IAddTrapable, IAddNestable
+    public class Ecosystem : MonoBehaviour, IAddTrapable, IAddNestable, IModifiable
     {
         #region Inspector
 
@@ -301,6 +301,88 @@ namespace AIS.Model
             AddPopulation("nest", amt, 0, ActionTarget.Nest, isSecondary: true);
 
             return true;
+        }
+
+        // IModifiable
+
+        public bool TryModify(List<float> amts, ModifierType modType)
+        {
+            if (amts.Count == 3)
+            {
+                // modify invasives, predators, prey
+
+                // Invasive
+
+                var defaultInvasive = InvasionModel.Instance.m_CurrModelSetupData.DefaultInvasive;
+                int modInvasiveAmt = 0;
+
+                if (modType == ModifierType.Fixed) {
+                    modInvasiveAmt = Mathf.FloorToInt(amts[0]);
+                }
+                else if (modType == ModifierType.Ratio) {
+                    modInvasiveAmt = Mathf.CeilToInt(GetPopulation(defaultInvasive.SpeciesId) * amts[0]);
+                    // rounded up, at least 1
+                    modInvasiveAmt = Mathf.Max(1, modInvasiveAmt);
+                }
+
+                if (modInvasiveAmt < 0) {
+                    ReleasePopulation(defaultInvasive.SpeciesId, -modInvasiveAmt);
+                }
+                else if (modInvasiveAmt > 0) {
+                    AddPopulation(defaultInvasive.SpeciesId, modInvasiveAmt, defaultInvasive.StartingTravelType, defaultInvasive.StartingTargetType);
+                }
+
+                // Predator
+
+                int modPredatorAmt = 0;
+                var defaultPredator = InvasionModel.Instance.m_CurrModelSetupData.DefaultPredator;
+
+                if (modType == ModifierType.Fixed)
+                {
+                    modPredatorAmt = Mathf.FloorToInt(amts[1]);
+                }
+                else if (modType == ModifierType.Ratio)
+                {
+                    modPredatorAmt = Mathf.CeilToInt(GetPopulation(defaultPredator.SpeciesId) * amts[1]);
+                    // rounded up, at least 1
+                    modPredatorAmt = Mathf.Max(1, modPredatorAmt);
+                }
+
+                if (modPredatorAmt < 0) {
+                    ReleasePopulation(defaultPredator.SpeciesId, -modPredatorAmt);
+                }
+                else if (modPredatorAmt > 0) {
+                    AddPopulation(defaultPredator.SpeciesId, modPredatorAmt, defaultPredator.StartingTravelType, defaultPredator.StartingTargetType);
+                }
+
+                // Prey
+
+                int modPreyAmt = 0;
+                var defaultPrey = InvasionModel.Instance.m_CurrModelSetupData.DefaultPrey;
+
+                if (modType == ModifierType.Fixed)
+                {
+                    modPreyAmt = Mathf.FloorToInt(amts[2]);
+                }
+                else if (modType == ModifierType.Ratio)
+                {
+                    modPreyAmt = Mathf.CeilToInt(GetPopulation(defaultPrey.SpeciesId) * amts[2]);
+                    // rounded up, at least 1
+                    modPreyAmt = Mathf.Max(1, modPreyAmt);
+                }
+
+                if (modPreyAmt < 0)
+                {
+                    ReleasePopulation(defaultPrey.SpeciesId, -modPreyAmt);
+                }
+                else if (modPreyAmt > 0) {
+                    AddPopulation(defaultPrey.SpeciesId, modPreyAmt, defaultPrey.StartingTravelType, defaultPrey.StartingTargetType);
+                }
+
+                return true;
+            }
+
+            return false;
         }
 
         #endregion // Interfaces

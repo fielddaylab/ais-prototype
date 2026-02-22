@@ -49,17 +49,17 @@ namespace AIS.Intervene
 
         #region Interfaces
 
-        public bool TryIncrease(float amt, ModifierType modType)
+        public bool TryIncrease(List<float> amts, ModifierType modType)
         {
             if (modType == ModifierType.Fixed)
             {
-                AdjustAwareness((int)amt);
+                AdjustAwareness((int)amts[0]);
 
                 return true;
             }
             else if (modType == ModifierType.Ratio)
             {
-                int addAmt = Mathf.FloorToInt(WorkingAwareness.Awareness * amt);
+                int addAmt = Mathf.FloorToInt(WorkingAwareness.Awareness * amts[0]);
 
                 AdjustAwareness((int)addAmt);
 
@@ -69,17 +69,17 @@ namespace AIS.Intervene
             return false;
         }
 
-        public bool TryReduce(float amt, ModifierType modType)
+        public bool TryReduce(List<float> amts, ModifierType modType)
         {
             if (modType == ModifierType.Fixed)
             {
-                AdjustAwareness(-(int)amt);
+                AdjustAwareness(-(int)amts[0]);
 
                 return true;
             }
             else if (modType == ModifierType.Ratio)
             {
-                int reduceAmt = Mathf.FloorToInt(WorkingAwareness.Awareness * amt);
+                int reduceAmt = Mathf.FloorToInt(WorkingAwareness.Awareness * amts[0]);
 
                 AdjustAwareness((int)reduceAmt);
 

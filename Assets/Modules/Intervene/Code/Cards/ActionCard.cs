@@ -17,6 +17,7 @@ namespace AIS.Intervene {
         Reveal,
         AddTrap,
         AddNest,
+        Modify,
     }
 
     [Flags]
@@ -75,7 +76,7 @@ namespace AIS.Intervene {
     public struct ActionVerbDetails
     {
         public ActionVerb Verb;
-        public float Value;
+        public List<float> Values;
         public ModifierType ModType;
         public float Odds; // odds of triggering
     }

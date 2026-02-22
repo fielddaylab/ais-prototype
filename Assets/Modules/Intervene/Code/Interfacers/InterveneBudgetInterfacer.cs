@@ -77,17 +77,17 @@ namespace AIS.Intervene
 
         #region Interfaces
 
-        public bool TryIncrease(float amt, ModifierType modType)
+        public bool TryIncrease(List<float> amts, ModifierType modType)
         {
             if (modType == ModifierType.Fixed)
             {
-                AdjustBudgetLevel((int)amt);
+                AdjustBudgetLevel((int)amts[0]);
 
                 return true;
             }
             else if (modType == ModifierType.Ratio)
             {
-                int addAmt = Mathf.FloorToInt(WorkingBudget.Budget * amt);
+                int addAmt = Mathf.FloorToInt(WorkingBudget.Budget * amts[0]);
 
                 AdjustBudgetLevel(addAmt);
 
@@ -97,17 +97,17 @@ namespace AIS.Intervene
             return false;
         }
 
-        public bool TryReduce(float amt, ModifierType modType)
+        public bool TryReduce(List<float> amts, ModifierType modType)
         {
             if (modType == ModifierType.Fixed)
             {
-                AdjustBudgetLevel(-(int)amt);
+                AdjustBudgetLevel(-(int)amts[0]);
 
                 return true;
             }
             else if (modType == ModifierType.Ratio)
             {
-                int reduceAmt = Mathf.FloorToInt(WorkingBudget.Budget * amt);
+                int reduceAmt = Mathf.FloorToInt(WorkingBudget.Budget * amts[0]);
 
                 AdjustBudgetLevel((int)-reduceAmt);
 

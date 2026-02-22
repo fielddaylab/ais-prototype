@@ -136,17 +136,17 @@ namespace AIS.Model
 
         // IReducible
 
-        public bool TryReduce(float amt, ModifierType modType)
+        public bool TryReduce(List<float> amts, ModifierType modType)
         {
             if (modType == ModifierType.Fixed)
             {
-                AdjustTransferRate(-amt);
+                AdjustTransferRate(-amts[0]);
 
                 return true;
             }
             else if (modType == ModifierType.Ratio)
             {
-                float newRate = TransferRate - TransferRate * amt;
+                float newRate = TransferRate - TransferRate * amts[0];
                 SetTransferRate(newRate);
 
                 return true;
@@ -157,17 +157,17 @@ namespace AIS.Model
 
         // IIncreasable
 
-        public bool TryIncrease(float amt, ModifierType modType)
+        public bool TryIncrease(List<float> amts, ModifierType modType)
         {
             if (modType == ModifierType.Fixed)
             {
-                AdjustTransferRate(amt);
+                AdjustTransferRate(amts[0]);
 
                 return true;
             }
             else if (modType == ModifierType.Ratio)
             {
-                float newRate = TransferRate + TransferRate * amt;
+                float newRate = TransferRate + TransferRate * amts[0];
                 SetTransferRate(newRate);
 
                 return true;

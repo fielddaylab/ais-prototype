@@ -72,19 +72,19 @@ namespace AIS.Model
 
         // IReducible
 
-        public bool TryReduce(float amt, ModifierType modType)
+        public bool TryReduce(List<float> amts, ModifierType modType)
         {
             bool isSecondary = TargetType == ActionTarget.Nest || TargetType == ActionTarget.Trap;
 
             if (modType == ModifierType.Fixed)
             {
-                ParentEcosystem.ReleasePopulation(ContentsId, (int)amt, isSecondary: isSecondary);
+                ParentEcosystem.ReleasePopulation(ContentsId, (int)amts[0], isSecondary: isSecondary);
 
                 return true;
             }
             else if (modType == ModifierType.Ratio)
             {
-                int releaseAmt = Mathf.CeilToInt(Population * amt);
+                int releaseAmt = Mathf.CeilToInt(Population * amts[0]);
                 // rounded up, at least 1
                 releaseAmt = Mathf.Max(1, releaseAmt);
 
@@ -98,19 +98,19 @@ namespace AIS.Model
 
         // IIncreasable
 
-        public bool TryIncrease(float amt, ModifierType modType)
+        public bool TryIncrease(List<float> amts, ModifierType modType)
         {
             bool isSecondary = TargetType == ActionTarget.Nest || TargetType == ActionTarget.Trap;
 
             if (modType == ModifierType.Fixed)
             {
-                ParentEcosystem.AddPopulation(ContentsId, (int)amt, TravelType, TargetType, isSecondary: isSecondary);
+                ParentEcosystem.AddPopulation(ContentsId, (int)amts[0], TravelType, TargetType, isSecondary: isSecondary);
 
                 return true;
             }
             else if (modType == ModifierType.Ratio)
             {
-                int addAmt = Mathf.FloorToInt(Population * amt);
+                int addAmt = Mathf.FloorToInt(Population * amts[0]);
                 // rounded down, but at least 1
                 addAmt = Mathf.Max(1, addAmt);
 

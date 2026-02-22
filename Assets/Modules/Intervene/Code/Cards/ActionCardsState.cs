@@ -82,6 +82,7 @@ namespace AIS.Intervene
 
         private static readonly char[] END_DELIMS = new char[] { '\r', '\n' };
         private static readonly char[] COMMA_DELIM = new char[] { ',' };
+        private static readonly char[] MODIFY_DELIM = new char[] { ';' };
 
         #endregion // Card Definition Parsing
 
@@ -326,14 +327,19 @@ namespace AIS.Intervene
         static private ActionVerbDetails ParseVerb(string verbContent)
         {
             // Format: [verb], [value], [modifierType], odds [oddsValue]
-            // Example: "reduce, 10, fixed, odds 0.75" or "reveal, odds 0.5" or "reduce, 10, fixed"
-
-            // TODO: roll dice, check against val
+            // For "modify" verb: [verb], ([value1], [value2], ...), [modifierType], odds [oddsValue]
+            // Examples: 
+            //   "reduce, 10, fixed, odds 0.75"
+            //   "reveal, odds 0.5"
+            //   "modify, (-2, -1, -1), fixed"
+            //   "modify, (5, 10), fixed, odds 0.8"
 
             string[] parts = verbContent.Split(COMMA_DELIM, StringSplitOptions.RemoveEmptyEntries);
 
             ActionVerbDetails verbDetails = new ActionVerbDetails();
             verbDetails.Odds = 1; // 100% by default
+            verbDetails.Values = new List<float>(); // Initialize list
+            verbDetails.ModType = ModifierType.Fixed;
 
             // Parse verb type (required)
             if (parts.Length > 0)
@@ -341,16 +347,19 @@ namespace AIS.Intervene
                 verbDetails.Verb = ParseActionVerb(parts[0].Trim());
             }
 
-            // Process remaining parts, looking for "odds" keyword
+            bool valuesSet = false;
+
+            // Process remaining parts, looking for "odds" keyword or parentheses for modify verb
             for (int i = 1; i < parts.Length; i++)
             {
-                string part = parts[i].Trim().ToLower();
+                string part = parts[i].Trim();
+                string partLower = part.ToLower();
 
                 // Check if this part starts with "odds"
-                if (part.StartsWith("odds"))
+                if (partLower.StartsWith("odds"))
                 {
                     // Extract the odds value after "odds"
-                    string oddsStr = parts[i].Trim().Substring(4).Trim(); // Remove "odds" keyword
+                    string oddsStr = part.Substring(4).Trim(); // Remove "odds" keyword
                     if (float.TryParse(oddsStr, out float odds))
                     {
                         verbDetails.Odds = odds;
@@ -360,22 +369,40 @@ namespace AIS.Intervene
                         Debug.LogWarning("[CardUtility] Could not parse odds value: " + oddsStr + ". Defaulting to 1.0 (100%).");
                     }
                 }
-                // Parse value (first non-odds number)
-                else if (i == 1 && float.TryParse(part, out float value))
+                // Check if this is a list of values in parentheses (for modify verb)
+                else if (part.Contains("(") && part.Contains(")"))
                 {
-                    verbDetails.Value = value;
+                    // Extract content between parentheses
+                    int startIndex = part.IndexOf('(');
+                    int endIndex = part.IndexOf(')');
+                    string valuesList = part.Substring(startIndex + 1, endIndex - startIndex - 1);
+
+                    // Split by comma and parse each value
+                    string[] valueStrings = valuesList.Split(MODIFY_DELIM, StringSplitOptions.RemoveEmptyEntries);
+                    foreach (string valueStr in valueStrings)
+                    {
+                        if (float.TryParse(valueStr.Trim(), out float value))
+                        {
+                            verbDetails.Values.Add(value);
+                        }
+                        else
+                        {
+                            Debug.LogWarning("[CardUtility] Could not parse value in list: " + valueStr.Trim());
+                        }
+                    }
+                    valuesSet = true;
                 }
-                // Parse modifier type (second non-odds parameter)
-                else if (i == 2)
+                // Parse single value (first non-odds number, if not already set by list)
+                else if (!valuesSet && i == 1 && float.TryParse(part, out float value))
+                {
+                    verbDetails.Values.Add(value);
+                    valuesSet = true;
+                }
+                // Parse modifier type (look for modifier keywords)
+                else
                 {
                     verbDetails.ModType = ParseModifierType(part);
                 }
-            }
-
-            // Set default modifier if not specified
-            if (parts.Length <= 2 || (parts.Length == 3 && parts[2].Trim().ToLower().StartsWith("odds")))
-            {
-                verbDetails.ModType = ModifierType.Fixed;
             }
 
             return verbDetails;
@@ -597,6 +624,9 @@ namespace AIS.Intervene
                 case "addnest":
                 case "nest":
                     return ActionVerb.AddNest;
+                case "modify":
+                case "mod":
+                    return ActionVerb.Modify;
                 default:
                     Debug.LogWarning("[CardUtility] Unknown verb: " + verbStr);
                     return ActionVerb.Reduce; // default fallback

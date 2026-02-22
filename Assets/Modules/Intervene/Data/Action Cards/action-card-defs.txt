@@ -109,7 +109,7 @@
 
 ::example-action-card-9
 @title		Field Research
-@desc		Flip one unknown Pathway. // TODO
+@desc		Flip one unknown Pathway.
 @path		temp.png
 @cost		1
 
@@ -121,13 +121,13 @@
 
 ::example-action-card-10
 @title		Chemical Removal
-@desc		In one Ecosystem: -2 Invasive, -1 Predator, -1 Prey // TODO
+@desc		In one Ecosystem: -2 Invasive, -1 Predator, -1 Prey
 @path		temp.png
 @cost		2
 
 @effect
     target: ecosystem
-    verb: modify, -2, -1, -1, fixed
+    verb: modify, (-2; -1; -1), fixed
     specificity: specific
     maxtargets: 1
 

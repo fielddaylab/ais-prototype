@@ -4,8 +4,8 @@ using UnityEngine;
 
 namespace AIS.Intervene
 {
-    public interface IIncreasable
+    public interface IModifiable
     {
-        public bool TryIncrease(List<float> amts, ModifierType modType);
+        public bool TryModify(List<float> amts, ModifierType modType);
     }
 }

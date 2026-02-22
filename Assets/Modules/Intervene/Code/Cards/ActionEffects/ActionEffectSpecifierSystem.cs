@@ -265,6 +265,9 @@ namespace AIS.Intervene
                             case ActionVerb.AddNest:
                                 TryAddNest(target.QueriableObj, verb);
                                 break;
+                            case ActionVerb.Modify:
+                                TryModify(target.QueriableObj, verb);
+                                break;
                             default:
                                 continue;
                         }
@@ -285,7 +288,7 @@ namespace AIS.Intervene
 
             if (toReduce != null)
             {
-                return toReduce.TryReduce(verbDetails.Value, verbDetails.ModType);
+                return toReduce.TryReduce(verbDetails.Values, verbDetails.ModType);
             }
             else
             {
@@ -300,7 +303,7 @@ namespace AIS.Intervene
 
             if (toIncrease != null)
             {
-                return toIncrease.TryIncrease(verbDetails.Value, verbDetails.ModType);
+                return toIncrease.TryIncrease(verbDetails.Values, verbDetails.ModType);
             }
             else
             {
@@ -345,7 +348,7 @@ namespace AIS.Intervene
 
             if (toAddTrapTo != null)
             {
-                return toAddTrapTo.TryAddTrap((int)verbDetails.Value);
+                return toAddTrapTo.TryAddTrap((int)verbDetails.Values[0]);
             }
             else
             {
@@ -360,11 +363,26 @@ namespace AIS.Intervene
 
             if (toAddNestTo != null)
             {
-                return toAddNestTo.TryAddNest((int)verbDetails.Value);
+                return toAddNestTo.TryAddNest((int)verbDetails.Values[0]);
             }
             else
             {
                 Debug.LogWarning("[Increasable] Tried to add nest on a tag (" + queriable.name + ") that does not support it!");
+                return false;
+            }
+        }
+
+        private bool TryModify(GameObject queriable, ActionVerbDetails verbDetails)
+        {
+            var toModify = queriable.GetComponent<IModifiable>();
+
+            if (toModify != null)
+            {
+                return toModify.TryModify(verbDetails.Values, verbDetails.ModType);
+            }
+            else
+            {
+                Debug.LogWarning("[Increasable] Tried to modify on a tag (" + queriable.name + ") that does not support it!");
                 return false;
             }
         }

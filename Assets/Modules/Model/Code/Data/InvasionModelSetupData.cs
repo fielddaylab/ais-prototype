@@ -16,5 +16,7 @@ namespace AIS.Model
         public InvasionCurveThreshold[] InvasionCurveThresholds;
         public SpeciesSetupData[] SharedSpeciesSetups;
         public SpeciesSetupData DefaultInvasive;
+        public SpeciesSetupData DefaultPredator;
+        public SpeciesSetupData DefaultPrey;
     }
 }
