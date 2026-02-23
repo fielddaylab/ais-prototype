@@ -27,7 +27,7 @@ namespace AIS.Model
 
         #endregion // Inspector
 
-        public InvasionModelSetupData m_CurrModelSetupData { get; private set; }
+        public InvasionModelSetupData CurrModelSetupData { get; private set; }
 
         #region UnityCallbacks
 
@@ -51,7 +51,7 @@ namespace AIS.Model
         /// <param name="setupData"></param>
         public void SetModelSetupData(InvasionModelSetupData setupData)
         {
-            m_CurrModelSetupData = setupData;
+            CurrModelSetupData = setupData;
             InvasionModelContainer.Instance = m_ModelContainer;
         }
 
@@ -81,7 +81,7 @@ namespace AIS.Model
 
         private void SetupEcosystems()
         {
-            foreach (var ecosystemData in m_CurrModelSetupData.Ecosystems)
+            foreach (var ecosystemData in CurrModelSetupData.Ecosystems)
             {
                 var newEcosystem = Instantiate(m_Prefabs.EcosystemPrefab, m_ModelContainer.transform).GetComponent<Ecosystem>();
                 newEcosystem.LoadData(ecosystemData, m_Prefabs.TransformPrefab);
@@ -91,7 +91,7 @@ namespace AIS.Model
 
         private void SetupPathways()
         {
-            foreach (var pathwayData in m_CurrModelSetupData.Pathways)
+            foreach (var pathwayData in CurrModelSetupData.Pathways)
             {
                 var newPathway = Instantiate(m_Prefabs.PathwayPrefab, m_ModelContainer.transform).GetComponent<Pathway>();
                 newPathway.LoadData(pathwayData);
@@ -101,7 +101,7 @@ namespace AIS.Model
 
         private void SetupInvasionCurve(float invasionCurve)
         {
-            var curveThreshold = FindRelevantThreshold(m_CurrModelSetupData.InvasionCurveThresholds, invasionCurve);
+            var curveThreshold = FindRelevantThreshold(CurrModelSetupData.InvasionCurveThresholds, invasionCurve);
 
             // Setup Species
             SetupSpecies(curveThreshold.SpeciesSetups);
@@ -120,7 +120,7 @@ namespace AIS.Model
         private void SetupShared()
         {
             // Setup Shared Species
-            SetupSpecies(m_CurrModelSetupData.SharedSpeciesSetups);
+            SetupSpecies(CurrModelSetupData.SharedSpeciesSetups);
         }
 
         #endregion // Setup

@@ -21,6 +21,8 @@ namespace AIS.Model
         public Color SelectedColor;  // TODO: move to lookup
         [Required] public GameObject QueriableObj;
 
+        [HideInInspector] public bool IsPhantom;
+
         #region Unity Callbacks
 
         public void OnEnable()

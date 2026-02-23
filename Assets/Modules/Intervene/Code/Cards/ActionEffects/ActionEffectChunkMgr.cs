@@ -96,7 +96,8 @@ namespace AIS.Intervene
                     Collider2D[] hits = Physics2D.OverlapPointAll(mouseWorldPos, ModelTagLayer);
                     Collider2D highestPriorityHit = null;
 
-                    // int highestPriority = int.MinValue;
+                    // highest sprite renderer layer is highest priority
+                    int highestPriority = int.MinValue;
                     foreach (var hit in hits)
                     {
                         if (hit != null)
@@ -104,15 +105,17 @@ namespace AIS.Intervene
                             var tag = hit.GetComponent<ModelTag>();
                             if (tag != null)
                             {
-                                highestPriorityHit = hit;
+                                var priorityLayer = 0;
+                                var renderer = tag.GetComponent<SpriteRenderer>();
+                                if (renderer != null) {
+                                    priorityLayer = renderer.enabled ? renderer.sortingOrder : int.MinValue;
+                                }
+                                if (priorityLayer > highestPriority)
+                                {
+                                    highestPriorityHit = hit;
+                                    highestPriority = priorityLayer;
+                                }
                             }
-                            /*
-                            if (tag.Priority > highestPriority)
-                            {
-                                highestPriorityHit = hit;
-                                highestPriority = box.Priority;
-                            }
-                            */
                         }
                     }
 
@@ -154,7 +157,7 @@ namespace AIS.Intervene
         }
 
         private void AddTagToChunk(ModelTag tag)
-        {
+        { 
             EffectChunk.SelectedTargets.Add(tag);
             if (RequireAtLeastOne)
             {

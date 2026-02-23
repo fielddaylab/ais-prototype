@@ -138,9 +138,9 @@ namespace AIS.Model
             }
         }
 
-        public void AddPopulation(SerializedHash32 clusterContentsId, int addCount, PathwayType travelType, ActionTarget targetType, bool isSecondary = false)
+        public void AddPopulation(SerializedHash32 clusterContentsId, int addCount, PathwayType travelType, ActionTarget targetType, bool isSecondary = false, bool isPhantom = false)
         {
-            if (addCount == 0) { return; }
+            if (addCount == 0 && !isPhantom) { return; }
 
             Dictionary<SerializedHash32, ClusterSlotData> slotDict = isSecondary ? SecondarySlotDict : SpeciesSlotDict;
 
@@ -173,6 +173,8 @@ namespace AIS.Model
                 targetPos.y += clusterSlot.Occupancy() * yOffset;
                 newCluster.transform.position = targetPos;
 
+                newCluster.ActionTag.IsPhantom = isPhantom;
+
                 clusterSlot.Clusters.Add(newCluster);
                 InvasionModelContainer.Instance.RegisterSpeciesCluster(newCluster);
             }
@@ -189,6 +191,9 @@ namespace AIS.Model
                         if (cluster.ContentsId.Equals(clusterContentsId))
                         {
                             cluster.AdjustPopulation(addCount);
+                            if (cluster.ActionTag.IsPhantom) {
+                                cluster.ActionTag.IsPhantom = false;
+                            }
                         }
                         clusterSlot.Clusters[i] = cluster;
                     }
@@ -209,7 +214,7 @@ namespace AIS.Model
             }
         }
 
-        public void ReleasePopulation(SerializedHash32 clusterContentsId, int releaseCount, bool isSecondary = false)
+        public void ReleasePopulation(SerializedHash32 clusterContentsId, int releaseCount, bool isSecondary = false, bool isPhantom = false)
         {
             if (releaseCount == 0) { return; }
 
@@ -264,8 +269,82 @@ namespace AIS.Model
             }
         }
 
+        public void RemovePhantomPopulations()
+        {
+            for (int i = 0; i < 2; i++)
+            {
+                bool isSecondary = i == 1;
+                Dictionary<SerializedHash32, ClusterSlotData> slotDict = isSecondary ? SecondarySlotDict : SpeciesSlotDict;
+
+                List<SerializedHash32> keys = new List<SerializedHash32>();
+                foreach (KeyValuePair<SerializedHash32, ClusterSlotData> pair in slotDict)
+                {
+                    keys.Add(pair.Key);
+                }
+                for (int k = 0; k < keys.Count; k++)
+                {
+                    var clusterContentsId = keys[k];
+                    int slotIndex = slotDict[clusterContentsId].SlotIndex;
+                    var clusterSlot = isSecondary ? SecondarySlots[slotIndex] : MainSlots[slotIndex];
+
+                    Cluster cluster = null;
+                    int clusterIndex = 0;
+                    for (int c = 0; c < clusterSlot.Clusters.Count; c++)
+                    {
+                        if (clusterSlot.Clusters[c].ContentsId.Equals(clusterContentsId))
+                        {
+                            cluster = clusterSlot.Clusters[c];
+                            clusterIndex = c;
+                        }
+                    }
+
+                    if (cluster == null)
+                    {
+                        Debug.LogWarning("[Ecosystem] Tried to release phantom population from a species cluster that does not exist!");
+                    }
+
+                    // Do not modify external
+                    if (cluster.Population == -1) { return; }
+
+                    if (!cluster.ActionTag.IsPhantom) { continue; }
+
+                    // remove cluster
+                    clusterSlot.Clusters.Remove(cluster);
+                    SpeciesInEcosystem.Remove(cluster.ContentsId);
+                    slotDict.Remove(cluster.ContentsId);
+                    InvasionModelContainer.Instance.RemoveSpeciesCluster(cluster);
+
+                    if (isSecondary)
+                    {
+                        SecondarySlotDict = slotDict;
+                    }
+                    else
+                    {
+                        SpeciesSlotDict = slotDict;
+                    }
+                }
+            }
+
+
+
+
+
+
+            
+        }
+
         public int GetPopulation(SerializedHash32 speciesId, bool isSecondary = false)
         {
+            if (isSecondary && !SecondarySlotDict.ContainsKey(speciesId))
+            {
+                return 0;
+            }
+
+            if (!isSecondary && !SpeciesSlotDict.ContainsKey(speciesId))
+            {
+                return 0;
+            }
+
             int slotIndex = isSecondary ? SecondarySlotDict[speciesId].SlotIndex : SpeciesSlotDict[speciesId].SlotIndex;
             var speciesSlot = isSecondary ? SecondarySlots[slotIndex] : MainSlots[slotIndex];
 
@@ -313,7 +392,7 @@ namespace AIS.Model
 
                 // Invasive
 
-                var defaultInvasive = InvasionModel.Instance.m_CurrModelSetupData.DefaultInvasive;
+                var defaultInvasive = InvasionModel.Instance.CurrModelSetupData.DefaultInvasive;
                 int modInvasiveAmt = 0;
 
                 if (modType == ModifierType.Fixed) {
@@ -335,7 +414,7 @@ namespace AIS.Model
                 // Predator
 
                 int modPredatorAmt = 0;
-                var defaultPredator = InvasionModel.Instance.m_CurrModelSetupData.DefaultPredator;
+                var defaultPredator = InvasionModel.Instance.CurrModelSetupData.DefaultPredator;
 
                 if (modType == ModifierType.Fixed)
                 {
@@ -358,7 +437,7 @@ namespace AIS.Model
                 // Prey
 
                 int modPreyAmt = 0;
-                var defaultPrey = InvasionModel.Instance.m_CurrModelSetupData.DefaultPrey;
+                var defaultPrey = InvasionModel.Instance.CurrModelSetupData.DefaultPrey;
 
                 if (modType == ModifierType.Fixed)
                 {

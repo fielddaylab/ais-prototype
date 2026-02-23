@@ -3683,6 +3683,7 @@ MonoBehaviour:
   NormalColor: {r: 0.37254903, g: 0.6745098, b: 1, a: 1}
   SelectedColor: {r: 0.51760083, g: 0.9433962, b: 0.28034887, a: 1}
   QueriableObj: {fileID: 718663731}
+  IsPhantom: 0
 --- !u!61 &1492019621
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -4058,6 +4059,7 @@ MonoBehaviour:
   NormalColor: {r: 0.37254903, g: 0.6745098, b: 1, a: 1}
   SelectedColor: {r: 0.51760083, g: 0.9433962, b: 0.28034887, a: 1}
   QueriableObj: {fileID: 640494034}
+  IsPhantom: 0
 --- !u!61 &1611505429
 BoxCollider2D:
   m_ObjectHideFlags: 0

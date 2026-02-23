@@ -38,6 +38,7 @@ namespace AIS.Intervene
         private int CurrActionIndex;
         private int CurrEffectIndex;
         private List<EffectChunk> ProcessedEffects = new List<EffectChunk>();
+        private List<ModelTag> PendingPhantoms = new List<ModelTag>();
 
         public Routine ChunkTransitionRoutine;
 
@@ -77,6 +78,7 @@ namespace AIS.Intervene
         {
             SelectedActionCards.Clear();
             ActionsProcessList.Clear();
+            PendingPhantoms.Clear();
 
             List<CardBase> selectedCards = CardInteractionMgr.Instance.Hand.GetSelectedCards();
             foreach (var card in selectedCards)
@@ -100,6 +102,7 @@ namespace AIS.Intervene
             }
 
             ProcessedEffects.Clear();
+            PendingPhantoms.Clear();
 
             CurrActionIndex = 0;
             CurrEffectIndex = 0;
@@ -124,7 +127,14 @@ namespace AIS.Intervene
             }
 
             // process curr effect for curr action card
-            ChunkMgr.Begin(ActionsProcessList[CurrActionIndex].Effects[CurrEffectIndex]);
+            // If increase, create phantom clusters
+            var effectToProcess = ActionsProcessList[CurrActionIndex].Effects[CurrEffectIndex];
+            if (effectToProcess.GetAllVerbs().Contains(ActionVerb.Increase))
+            {
+                CreatePhantomClusters(effectToProcess);
+            }
+
+            ChunkMgr.Begin(effectToProcess);
         }
 
         public void Exit()
@@ -133,8 +143,10 @@ namespace AIS.Intervene
             {
                 ChunkMgr.ExternForceCancel();
             }
+
             ActionsProcessList.Clear();
             SelectedActionCards.Clear();
+            PendingPhantoms.Clear();
         }
 
         private void OnAllActionsProcessed()
@@ -150,6 +162,65 @@ namespace AIS.Intervene
         }
 
         #endregion // Phase Management
+
+        private void CreatePhantomClusters(ActionEffect effectToProcess)
+        {
+            foreach (var target in effectToProcess.AllTargets)
+            {
+                foreach (var eco in InvasionModelContainer.Instance.GetAllEcosystems())
+                {
+                    if (eco.IsExternal) { continue; }
+
+                    if ((target.Target & ActionTarget.Invasive) != 0)
+                    {
+                        var defInvasive = InvasionModel.Instance.CurrModelSetupData.DefaultInvasive;
+                        if (eco.GetPopulation(defInvasive.SpeciesId) == 0)
+                        {
+                            eco.AddPopulation(defInvasive.SpeciesId, 0, defInvasive.StartingTravelType, target.Target, isPhantom: true);
+                        }
+                    }
+                    else if ((target.Target & ActionTarget.Predator) != 0)
+                    {
+                        var defPredator = InvasionModel.Instance.CurrModelSetupData.DefaultPredator;
+                        if (eco.GetPopulation(defPredator.SpeciesId) == 0)
+                        {
+                            eco.AddPopulation(defPredator.SpeciesId, 0, defPredator.StartingTravelType, target.Target, isPhantom: true);
+                        }
+                    }
+                    else if ((target.Target & ActionTarget.Prey) != 0)
+                    {
+                        var defPrey = InvasionModel.Instance.CurrModelSetupData.DefaultPrey;
+                        if (eco.GetPopulation(defPrey.SpeciesId) == 0)
+                        {
+                            eco.AddPopulation(defPrey.SpeciesId, 0, defPrey.StartingTravelType, target.Target, isPhantom: true);
+                        }
+                    }
+                    else if ((target.Target & ActionTarget.Nest) != 0)
+                    {
+                        if (eco.GetPopulation("nest") == 0)
+                        {
+                            eco.AddPopulation("nest", 0, 0, target.Target, isSecondary: true, isPhantom: true);
+
+                        }
+                    }
+                    else if ((target.Target & ActionTarget.Trap) != 0)
+                    {
+                        if (eco.GetPopulation("trap") == 0)
+                        {
+                            eco.AddPopulation("trap", 0, 0, target.Target, isSecondary: true, isPhantom: true);
+                        }
+                    }
+                }
+            }
+        }
+
+        private void RemovePhantomClusters()
+        {
+            foreach (var eco in InvasionModelContainer.Instance.GetAllEcosystems())
+            {
+                eco.RemovePhantomPopulations();
+            }
+        }
 
         #region Handlers
 
@@ -184,6 +255,13 @@ namespace AIS.Intervene
         private void HandleEffectSpecifyCancel()
         {
             ChunkTransitionRoutine.Stop();
+
+            // clean up partially-confirmed phantoms
+            for (int i = 0; i < PendingPhantoms.Count; i++) {
+                PendingPhantoms[i].IsPhantom = true;
+            }
+            RemovePhantomClusters();
+
             Exit();
         }
 
@@ -214,6 +292,17 @@ namespace AIS.Intervene
         {
             ProcessedEffects.Add(ChunkMgr.EffectChunk);
 
+            foreach (var tag in ChunkMgr.EffectChunk.SelectedTargets)
+            {
+                if (tag.IsPhantom)
+                {
+                    tag.IsPhantom = false;
+                    PendingPhantoms.Add(tag);
+                }
+            }
+
+            RemovePhantomClusters();
+
             yield return 0.5f;
 
             // move to next index
@@ -223,6 +312,8 @@ namespace AIS.Intervene
 
         private IEnumerator ChunkCancelRoutine()
         {
+            RemovePhantomClusters();
+
             yield return 2f;
 
             // re-trigger current index

@@ -27,15 +27,15 @@ namespace AIS.Model
             switch (targetType) {
                 case ActionTarget.Nest:
                     var nest = newCluster.gameObject.AddComponent<Nest>();
-                    nest.SpawnSpeciesId = InvasionModel.Instance.m_CurrModelSetupData.DefaultInvasive.SpeciesId;
+                    nest.SpawnSpeciesId = InvasionModel.Instance.CurrModelSetupData.DefaultInvasive.SpeciesId;
                     nest.SpawnAmt = 1;
-                    nest.SpawnTravelType = InvasionModel.Instance.m_CurrModelSetupData.DefaultInvasive.StartingTravelType;
-                    nest.SpawnTargetType = InvasionModel.Instance.m_CurrModelSetupData.DefaultInvasive.StartingTargetType;
+                    nest.SpawnTravelType = InvasionModel.Instance.CurrModelSetupData.DefaultInvasive.StartingTravelType;
+                    nest.SpawnTargetType = InvasionModel.Instance.CurrModelSetupData.DefaultInvasive.StartingTargetType;
                     nest.TriggerOdds = 1 / 6f;
                     break;
                 case ActionTarget.Trap:
                     var trap = newCluster.gameObject.AddComponent<Trap>();
-                    trap.TrapSpeciesId = InvasionModel.Instance.m_CurrModelSetupData.DefaultInvasive.SpeciesId;
+                    trap.TrapSpeciesId = InvasionModel.Instance.CurrModelSetupData.DefaultInvasive.SpeciesId;
                     trap.TrapAmt = 1;
                     trap.TriggerOdds = 1 / 6f;
                     break;
