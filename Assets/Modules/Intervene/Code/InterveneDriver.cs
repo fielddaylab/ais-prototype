@@ -23,6 +23,8 @@ namespace AIS.Intervene {
 
         #endregion // Structs and Enums
 
+        private const int NEST_THRESHOLD = 3;
+
         private List<SpeciesTransferAllocation> m_SpeciesTransfers = new List<SpeciesTransferAllocation>();
 
         public void TickSim()
@@ -128,6 +130,12 @@ namespace AIS.Intervene {
                 eco.AddPopulation(invasiveCounts[0].Item1, 1, invasiveCounts[0].Item3, invasiveCounts[0].Item4);
             }
             Debug.Log("[InterveneDriver] [InterspeciesDynamics] eco " + eco.EcosystemId + " invasives reproduced " + reproduceNum);
+        
+            // Spawn Nest
+            if (totalInvasives >= NEST_THRESHOLD)
+            {
+                TrySpawnNest(eco);
+            }
         }
 
         private void ProcessPredatorDynamics(Ecosystem eco)
@@ -266,6 +274,27 @@ namespace AIS.Intervene {
                     destEco.AddPopulation(m_SpeciesTransfers[i].SpeciesId, m_SpeciesTransfers[i].TransferCount, m_SpeciesTransfers[i].TravelType, m_SpeciesTransfers[i].TargetType);
                 }
                 m_SpeciesTransfers.RemoveAt(i);
+            }
+        }
+
+        private void TrySpawnNest(Ecosystem eco)
+        {
+            bool nestExists = false;
+            foreach (var slot in eco.SecondarySlots)
+            {
+                foreach (var cluster in slot.Clusters)
+                {
+                    if (cluster.TargetType == ActionTarget.Nest)
+                    {
+                        nestExists = true;
+                        break;
+                    }
+                }
+            }
+
+            if (!nestExists)
+            {
+                eco.TryAddNest(1);
             }
         }
 

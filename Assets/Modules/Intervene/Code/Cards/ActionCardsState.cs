@@ -71,6 +71,8 @@ namespace AIS.Intervene
         private static readonly string SPEC_LINE = "specificity:";
         private static readonly string MAX_TARGETS_LINE = "maxtargets:";
         private static readonly string IF_KEYWORD = "if";
+        private static readonly string ODDS_KEYWORD = "odds";
+        private static readonly string RELATIVE_KEYWORD = "relative";
 
         private static readonly string ENTRY_SEP = "::";
 
@@ -356,10 +358,10 @@ namespace AIS.Intervene
                 string partLower = part.ToLower();
 
                 // Check if this part starts with "odds"
-                if (partLower.StartsWith("odds"))
+                if (partLower.StartsWith(ODDS_KEYWORD))
                 {
                     // Extract the odds value after "odds"
-                    string oddsStr = part.Substring(4).Trim(); // Remove "odds" keyword
+                    string oddsStr = part.Substring(ODDS_KEYWORD.Length).Trim(); // Remove "odds" keyword
                     if (float.TryParse(oddsStr, out float odds))
                     {
                         verbDetails.Odds = odds;
@@ -368,6 +370,17 @@ namespace AIS.Intervene
                     {
                         Debug.LogWarning("[CardUtility] Could not parse odds value: " + oddsStr + ". Defaulting to 1.0 (100%).");
                     }
+                }
+                // Check if this part starts with "relative"
+                else if (partLower.StartsWith(RELATIVE_KEYWORD))
+                {
+                    // Extract the id after "relative"
+                    string relativeId = part.Substring(RELATIVE_KEYWORD.Length).Trim(); // Remove "relative" keyword
+                    if (relativeId.Equals("aware")) {
+                        // account for shorthand
+                        relativeId = "awareness";
+                    }
+                    verbDetails.RelativeId = relativeId;
                 }
                 // Check if this is a list of values in parentheses (for modify verb)
                 else if (part.Contains("(") && part.Contains(")"))
@@ -627,6 +640,8 @@ namespace AIS.Intervene
                 case "modify":
                 case "mod":
                     return ActionVerb.Modify;
+                case "match":
+                    return ActionVerb.Match;
                 default:
                     Debug.LogWarning("[CardUtility] Unknown verb: " + verbStr);
                     return ActionVerb.Reduce; // default fallback

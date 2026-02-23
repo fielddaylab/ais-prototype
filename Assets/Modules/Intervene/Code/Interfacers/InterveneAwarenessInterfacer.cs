@@ -6,7 +6,8 @@ using UnityEngine;
 
 namespace AIS.Intervene
 {
-    public class InterveneAwarenessInterfacer : MonoBehaviour, IReducible, IIncreasable
+    [RequireComponent(typeof(Comparable))]
+    public class InterveneAwarenessInterfacer : MonoBehaviour, IReducible, IIncreasable, IMatchable, IComparable
     {
         #region Structs
 
@@ -37,7 +38,7 @@ namespace AIS.Intervene
 
         public void LoadPlayerAwareness(int awarenessLevel)
         {
-            WorkingAwareness.Awareness = awarenessLevel;
+            AdjustAwareness(awarenessLevel);
         }
 
         public void AdjustAwareness(int amt)
@@ -48,6 +49,8 @@ namespace AIS.Intervene
         }
 
         #region Interfaces
+
+        // IIncreasable
 
         public bool TryIncrease(List<float> amts, ModifierType modType)
         {
@@ -69,6 +72,8 @@ namespace AIS.Intervene
             return false;
         }
 
+        // IReducible
+
         public bool TryReduce(List<float> amts, ModifierType modType)
         {
             if (modType == ModifierType.Fixed)
@@ -87,6 +92,30 @@ namespace AIS.Intervene
             }
 
             return false;
+        }
+
+        // IMatchable
+
+        public bool TryMatch(SerializedHash32 toMatch, SerializedHash32 toMatchWith, float modifier)
+        {
+            return ComparisonUtility.TryMatch(ComparisonFacilitator.Instance, toMatch, toMatchWith, modifier);
+        }
+
+        // IComparable
+
+        public SerializedHash32 GetId()
+        {
+            return GetComponent<Comparable>().Id;
+        }
+
+        public float GetValue()
+        {
+            return WorkingAwareness.Awareness;
+        }
+
+        public void SetValue(float val)
+        {
+            AdjustAwareness((int)val - WorkingAwareness.Awareness);
         }
 
         #endregion // Interfaces

@@ -18,6 +18,7 @@ namespace AIS.Intervene {
         AddTrap,
         AddNest,
         Modify,
+        Match,
     }
 
     [Flags]
@@ -79,6 +80,7 @@ namespace AIS.Intervene {
         public List<float> Values;
         public ModifierType ModType;
         public float Odds; // odds of triggering
+        public string RelativeId;
     }
 
     public struct ActionEffect

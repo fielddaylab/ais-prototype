@@ -2144,6 +2144,7 @@ GameObject:
   m_Component:
   - component: {fileID: 640494035}
   - component: {fileID: 640494036}
+  - component: {fileID: 640494037}
   m_Layer: 5
   m_Name: BudgetInterfacer
   m_TagString: Untagged
@@ -2187,6 +2188,22 @@ MonoBehaviour:
   LevelValueText: {fileID: 599112455}
   ValueText: {fileID: 785384552}
   StartingBudget: 3
+--- !u!114 &640494037
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 640494034}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08d265fc6f283934b89c1061e897cb64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Id:
+    m_Source: budget
+    m_HashValue: 968532104
+  QueriableObj: {fileID: 640494034}
 --- !u!224 &691021998 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6746020108103461400, guid: 09e431a58959a4048b62270e719951be, type: 3}
@@ -2213,6 +2230,7 @@ GameObject:
   m_Component:
   - component: {fileID: 718663732}
   - component: {fileID: 718663733}
+  - component: {fileID: 718663734}
   m_Layer: 5
   m_Name: AwarenessInterfacer
   m_TagString: Untagged
@@ -2255,6 +2273,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ValueText: {fileID: 1911674756}
   StartingAwareness: 3
+--- !u!114 &718663734
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 718663731}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08d265fc6f283934b89c1061e897cb64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Id:
+    m_Source: awareness
+    m_HashValue: 1720472078
+  QueriableObj: {fileID: 718663731}
 --- !u!1 &785384550
 GameObject:
   m_ObjectHideFlags: 0
@@ -2667,6 +2701,50 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 31a622c86520d1c4999c275ce34d70c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &1006025945
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1006025946}
+  - component: {fileID: 1006025947}
+  m_Layer: 5
+  m_Name: ComparisonFacilitator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1006025946
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1006025945}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 85}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1006025947
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1006025945}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b35700452dab2ea4b842e0c5a8ed6ea4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &1070808567 stripped
@@ -5325,5 +5403,6 @@ SceneRoots:
   - {fileID: 1483107674}
   - {fileID: 367910946}
   - {fileID: 1381339230}
+  - {fileID: 1006025946}
   - {fileID: 430890321}
   - {fileID: 1737065584}

@@ -6,7 +6,8 @@ using UnityEngine;
 
 namespace AIS.Intervene
 {
-    public class InterveneBudgetInterfacer : MonoBehaviour, IReducible, IIncreasable
+    [RequireComponent(typeof(Comparable))]
+    public class InterveneBudgetInterfacer : MonoBehaviour, IReducible, IIncreasable, IMatchable, IComparable
     {
         #region Structs
 
@@ -77,6 +78,7 @@ namespace AIS.Intervene
 
         #region Interfaces
 
+        // IIncreasable
         public bool TryIncrease(List<float> amts, ModifierType modType)
         {
             if (modType == ModifierType.Fixed)
@@ -97,6 +99,8 @@ namespace AIS.Intervene
             return false;
         }
 
+        // IReducible
+
         public bool TryReduce(List<float> amts, ModifierType modType)
         {
             if (modType == ModifierType.Fixed)
@@ -115,6 +119,30 @@ namespace AIS.Intervene
             }
 
             return false;
+        }
+
+        // IMatchable
+
+        public bool TryMatch(SerializedHash32 toMatch, SerializedHash32 toMatchWith, float modifier)
+        {
+            return ComparisonUtility.TryMatch(ComparisonFacilitator.Instance, toMatch, toMatchWith, modifier);
+        }
+
+        // IComparable
+
+        public SerializedHash32 GetId()
+        {
+            return GetComponent<Comparable>().Id;
+        }
+
+        public float GetValue()
+        {
+            return WorkingBudget.Budget;
+        }
+
+        public void SetValue(float val)
+        {
+            AdjustBudgetValue((int)val - WorkingBudget.Budget);
         }
 
         #endregion // Interfaces

@@ -268,6 +268,9 @@ namespace AIS.Intervene
                             case ActionVerb.Modify:
                                 TryModify(target.QueriableObj, verb);
                                 break;
+                            case ActionVerb.Match:
+                                TryMatch(target.QueriableObj, verb);
+                                break;
                             default:
                                 continue;
                         }
@@ -383,6 +386,21 @@ namespace AIS.Intervene
             else
             {
                 Debug.LogWarning("[Increasable] Tried to modify on a tag (" + queriable.name + ") that does not support it!");
+                return false;
+            }
+        }
+
+        private bool TryMatch(GameObject queriable, ActionVerbDetails verbDetails)
+        {
+            var toMatch = queriable.GetComponent<IMatchable>();
+
+            if (toMatch != null)
+            {
+                return toMatch.TryMatch(queriable.GetComponent<IComparable>().GetId(), verbDetails.RelativeId, verbDetails.Values[0]);
+            }
+            else
+            {
+                Debug.LogWarning("[Increasable] Tried to increase on a tag (" + queriable.name + ") that does not support it!");
                 return false;
             }
         }

@@ -146,13 +146,13 @@
 
 ::example-action-card-12
 @title		Fundraising
-@desc		Set Budget equal to Awareness. // TODO
+@desc		Set Budget equal to Awareness.
 @path		temp.png
 @cost		1
 
 @effect
     target: budget
-    verb: match, awareness, 0
+    verb: match, 0, fixed, relative awareness
     specificity: all
     maxtargets: -1
 
