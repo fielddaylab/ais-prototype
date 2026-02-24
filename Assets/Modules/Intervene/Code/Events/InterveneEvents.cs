@@ -21,6 +21,10 @@ namespace AIS.Intervene
         public static StringHash32 OnEffectChunkCancel = "on-effect-chunk-cancel";
 
         public static StringHash32 OnEffectSpecifyAllActionsProcessed = "on-effect-specify-all-actions-processed";
-
+        
+        public static StringHash32 OnHoverZone = "on-hover-zone";
+        public static StringHash32 OnUiSelected = "on-ui-selected";
+        public static StringHash32 OnEndTurn = "on-end-turn";
+        public static StringHash32 OnPredatorEatPrey = "on-predator-eat-prey";
     }
 }

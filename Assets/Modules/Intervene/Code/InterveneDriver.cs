@@ -60,6 +60,7 @@ namespace AIS.Intervene {
             }
 
             Debug.Log("[InterveneDriver] Sim Progressed by 1 tick");
+            AisGame.Events.Dispatch(InterveneEvents.OnEndTurn);
         }
 
         #region Simulate & Modify
@@ -74,7 +75,7 @@ namespace AIS.Intervene {
         private void ProcessInvasiveDynamics(Ecosystem eco)
         {
             /*
-            Hunt: Roll d6 equal to invasive population. For each result lower than the prey population, remove 1 prey and add it to “bank.”
+            Hunt: Roll d6 equal to invasive population. For each result lower than the prey population, remove 1 prey and add it to ï¿½bank.ï¿½
             Starve: If 0 banked prey, roll d12. If the result is less than or equal to invasive population, decrease population by 1.
             Reproduce: If the invasive population is 1, add 1 invasive population for each banked prey. Otherwise, add 1 invasive population for every 2 banked prey.
             */
@@ -145,7 +146,7 @@ namespace AIS.Intervene {
         private void ProcessPredatorDynamics(Ecosystem eco)
         {
             /*
-            Hunt: Roll d6 equal to predator population. For each result lower than the prey population, remove 1 prey and add it to “bank.” 
+            Hunt: Roll d6 equal to predator population. For each result lower than the prey population, remove 1 prey and add it to ï¿½bank.ï¿½ 
             Starve: If 0 banked prey, roll d12. If the result is less than or equal to predator population, decrease population by 1.
             Reproduce: If the predator population is 1, add 1 predator population for each banked prey. Otherwise, add 1 predator population for every 2 banked prey.
             */
@@ -179,6 +180,7 @@ namespace AIS.Intervene {
             if (totalPreyConsumed > 0)
             {
                 eco.ReleasePopulation(preyCounts[0].Item1, totalPreyConsumed);
+                AisGame.Events.Dispatch(InterveneEvents.OnPredatorEatPrey);
             }
 
             Debug.Log("[InterveneDriver] [InterspeciesDynamics] eco " + eco.EcosystemId + " predators consumed " + totalPreyConsumed);

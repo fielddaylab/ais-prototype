@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using FieldDay.Audio;
 
 namespace AIS.Intervene
 {
@@ -29,6 +30,7 @@ namespace AIS.Intervene
 
         public void Shuffle()
         {
+            Sfx.Play("Oneshot.ShuffleDeck");
             CardStackUtility.ShuffleStack(this);
         }
     }
