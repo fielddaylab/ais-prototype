@@ -13,6 +13,7 @@
 
 // UNITY_UI_CLIP_RECT       (Unity) Applies rect clipping
 // UNITY_UI_ALPHACLIP       (Unity) Applies basic alpha clipping
+// UNITY_COLORSPACE_GAMMA   (Unity) Dictates output color space
 
 /// Types
 
@@ -52,6 +53,9 @@ fixed4 _Color;
 float4 _ClipRect;
 half _UIMaskSoftnessX;
 half _UIMaskSoftnessY;
+
+// color space
+int _UIVertexColorAlwaysGammaSpace;
 
 /// Helpers
 
@@ -97,6 +101,12 @@ inline float UIPerformRectClip(half4 mask)
     #define UIAlphaClip(color)
 #endif // UNITY_UI_ALPHACLIP
 
+#if !UNITY_COLORSPACE_GAMMA
+    #define UICorrectColorSpace(color) if (_UIVertexColorAlwaysGammaSpace) (color).rgb = UIGammaToLinear((color).rgb)
+#else
+    #define UICorrectColorSpace(color)
+#endif // UNITY_COLORSPACE_GAMMA
+
 /// Programs
 
 Varyings_UI DefaultUIVert(Attributes_UI v)
@@ -115,6 +125,8 @@ Varyings_UI DefaultUIVert(Attributes_UI v)
 #endif // UNITY_UI_CLIP_RECT
     
     output.color = v.color * _Color;
+    
+    UICorrectColorSpace(output.color);
     
     UITransferLerpColor(v, output);
     UITransferAdditiveColor(v, output);
