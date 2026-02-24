@@ -162,20 +162,23 @@ MonoBehaviour:
   m_VerticalAlignment: 1024
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
+  m_ActiveFontFeatures: 6e72656b
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
+  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0
@@ -187,6 +190,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
+  m_maxLineWidth: 0
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
@@ -651,6 +655,14 @@ PrefabInstance:
       propertyPath: m_text
       value: Map
       objectReference: {fileID: 0}
+    - target: {fileID: 5259678250882653231, guid: 64a566afa857e504ea29d3fcd3a1ebdd, type: 3}
+      propertyPath: m_ActiveFontFeatures.Array.data[0]
+      value: 1801810542
+      objectReference: {fileID: 0}
+    - target: {fileID: 6553197160556178368, guid: 64a566afa857e504ea29d3fcd3a1ebdd, type: 3}
+      propertyPath: TooltipHeader
+      value: Map
+      objectReference: {fileID: 0}
     - target: {fileID: 8517469443237463300, guid: 64a566afa857e504ea29d3fcd3a1ebdd, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -973,6 +985,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5259678250882653231, guid: 64a566afa857e504ea29d3fcd3a1ebdd, type: 3}
+      propertyPath: m_ActiveFontFeatures.Array.data[0]
+      value: 1801810542
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1285,6 +1301,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5259678250882653231, guid: 64a566afa857e504ea29d3fcd3a1ebdd, type: 3}
       propertyPath: m_text
+      value: Stats
+      objectReference: {fileID: 0}
+    - target: {fileID: 5259678250882653231, guid: 64a566afa857e504ea29d3fcd3a1ebdd, type: 3}
+      propertyPath: m_ActiveFontFeatures.Array.data[0]
+      value: 1801810542
+      objectReference: {fileID: 0}
+    - target: {fileID: 6553197160556178368, guid: 64a566afa857e504ea29d3fcd3a1ebdd, type: 3}
+      propertyPath: TooltipHeader
       value: Stats
       objectReference: {fileID: 0}
     - target: {fileID: 8517469443237463300, guid: 64a566afa857e504ea29d3fcd3a1ebdd, type: 3}

@@ -11,7 +11,6 @@ namespace FieldDay.Scripting {
 
     public enum ScriptThreadOwnershipClearReason : byte {
         Completed,
-        Released,
         Cancelled,
     }
 }

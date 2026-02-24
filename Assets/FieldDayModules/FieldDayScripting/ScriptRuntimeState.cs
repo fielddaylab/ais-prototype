@@ -62,8 +62,8 @@ namespace FieldDay.Scripting {
         internal IPool<VariantTable> TablePool;
 
         // Variable Resolvers
-        internal CustomVariantResolver Resolver;
-        internal CustomVariantResolver ResolverOverride;
+        internal VariantTableResolver Resolver;
+        internal VariantTableResolver ResolverOverride;
 
         // Randomization
         internal System.Random Random = new System.Random();
@@ -100,10 +100,10 @@ namespace FieldDay.Scripting {
         }
 
         void IRegistrationCallbacks.OnRegister() {
-            Resolver = new CustomVariantResolver();
+            Resolver = new VariantTableResolver(8);
             MethodCache = LeafUtils.CreateMethodCache(typeof(IScriptActorComponent));
 
-            ResolverOverride = new CustomVariantResolver();
+            ResolverOverride = new VariantTableResolver(2);
             ResolverOverride.Base = Resolver;
 
             TagParserConfig = new CustomTagParserConfig();
@@ -159,8 +159,6 @@ namespace FieldDay.Scripting {
             }
         }
 
-        // TODO: Figure out why this needs to be called later in the scene loading process
-        // when in WebGL. Also why LoadStaticAsync is broken
         private void InitialMethodCache() {
             MethodCache.Load(typeof(ScriptActor));
             MethodCache.LoadStatic();
@@ -245,25 +243,11 @@ namespace FieldDay.Scripting {
         #region Variables
 
         /// <summary>
-        /// Binds a named variable to the runtime.
-        /// </summary>
-        static public void BindVariable(TableKeyPair keyPair, CustomVariantResolver.GetVarDelegate resolver) {
-            Runtime.Resolver.SetVar(keyPair, resolver);
-        }
-
-        /// <summary>
-        /// Removes a named variable from the runtime.
-        /// </summary>
-        static public void UnbindVariable(TableKeyPair keyPair) {
-            Runtime.Resolver.ClearVar(keyPair);
-        }
-
-        /// <summary>
         /// Reads the variable at the given location.
         /// </summary>
         static public Variant ReadVariable(TableKeyPair keyPair, Variant defaultVal = default) {
             Variant result;
-            if (!Runtime.Resolver.TryResolve(null, keyPair, out result)) {
+            if (!Runtime.Resolver.TryResolve(keyPair, out result)) {
                 result = defaultVal;
             }
             return result;
@@ -274,7 +258,7 @@ namespace FieldDay.Scripting {
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         static public void WriteVariable(TableKeyPair keyPair, Variant value) {
-            Runtime.Resolver.TryModify(null, keyPair, VariantModifyOperator.Set, value);
+            Runtime.Resolver.TryModify(keyPair, VariantModifyOperator.Set, value);
         }
 
         #endregion // Variables

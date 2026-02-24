@@ -55,6 +55,8 @@ inline float2 Rotate2d(float2 base, float radians)
     return mul(MatrixCreateRotation2d(radians), base);
 }
 
+/// Color Space
+
 /// Fragment Operations
 
 #if FD_PREMULTIPLY_ALPHA

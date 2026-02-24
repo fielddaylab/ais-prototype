@@ -103,20 +103,23 @@ MonoBehaviour:
   m_VerticalAlignment: 1024
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 0
+  m_TextWrappingMode: 0
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
+  m_ActiveFontFeatures: 6e72656b
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
+  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0
@@ -128,6 +131,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
+  m_maxLineWidth: 0
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
@@ -144,6 +148,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5226356568605317947}
   - component: {fileID: 3772672734182785918}
+  - component: {fileID: 6534638356248003531}
   m_Layer: 5
   m_Name: StatDisplay
   m_TagString: Untagged
@@ -196,9 +201,34 @@ MonoBehaviour:
   m_Group:
     m_Source: 
     m_HashValue: 0
-  StatValueCounter: {fileID: 8564677903271829106}
+  StatId: 0
+  StatValueCounter: {fileID: 6534638356248003531}
   Flash: {fileID: 8953411953980187673}
   Hint: {fileID: 6427691672911807362}
+--- !u!114 &6534638356248003531
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1098404919043995260}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3be49b58eb1fbc44080a922f380f3840, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Id:
+    m_Source: 
+    m_HashValue: 0
+  m_Class:
+    m_Source: 
+    m_HashValue: 0
+  m_Group:
+    m_Source: 
+    m_HashValue: 0
+  m_StartingValue: 0
+  m_MaxValue: 5
+  m_Style: {fileID: 8331921685177749373}
 --- !u!1 &1457370082229251474
 GameObject:
   m_ObjectHideFlags: 0
@@ -366,7 +396,6 @@ GameObject:
   - component: {fileID: 4555136772105552623}
   - component: {fileID: 9200620550542379294}
   - component: {fileID: 5425194139748410991}
-  - component: {fileID: 8564677903271829106}
   - component: {fileID: 8331921685177749373}
   m_Layer: 5
   m_Name: Ring
@@ -432,30 +461,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &8564677903271829106
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2434552711531519362}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3be49b58eb1fbc44080a922f380f3840, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Id:
-    m_Source: 
-    m_HashValue: 0
-  m_Class:
-    m_Source: 
-    m_HashValue: 0
-  m_Group:
-    m_Source: 
-    m_HashValue: 0
-  m_StartingValue: 0
-  m_MaxValue: 5
-  m_Style: {fileID: 8331921685177749373}
 --- !u!114 &8331921685177749373
 MonoBehaviour:
   m_ObjectHideFlags: 0

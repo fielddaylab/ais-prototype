@@ -33,7 +33,7 @@ namespace FieldDay {
             }
         }
 #else
-        private ComponentKit() {
+        protected ComponentKit() {
             throw new Exception("ComponentKits cannot exist outside of editor.");
         }
 #endif // UNITY_EDITOR

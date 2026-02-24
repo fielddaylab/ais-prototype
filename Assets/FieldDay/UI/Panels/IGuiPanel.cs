@@ -9,6 +9,7 @@ namespace FieldDay.UI {
     [TypeIndexCapacity(512)]
     public interface IGuiPanel {
         Transform Root { get; }
+        StringHash32 Group { get; }
 
         void Show();
         void Hide();

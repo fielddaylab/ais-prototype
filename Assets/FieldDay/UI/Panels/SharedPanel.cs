@@ -11,6 +11,8 @@ namespace FieldDay.UI {
     public abstract class SharedPanel : MonoBehaviour, ISharedGuiPanel {
         public const int DefaultExecutionOrder = -100;
 
+        [SerializeField, PanelGroupName] private StringHash32 m_PanelGroup;
+
         protected virtual void Awake() {
             Game.Gui.RegisterPanel(this);
         }
@@ -25,6 +27,10 @@ namespace FieldDay.UI {
 
         public virtual Transform Root {
             get { return transform; }
+        }
+
+        public StringHash32 Group {
+            get { return m_PanelGroup; }
         }
 
         public virtual void Hide() {

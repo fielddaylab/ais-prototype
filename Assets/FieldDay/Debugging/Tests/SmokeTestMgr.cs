@@ -58,7 +58,9 @@ namespace FieldDay.Debugging {
             }
         }
 
+#if DEVELOPMENT
         static private readonly string[] CachedSmokeTestStateStrings = ReflectionCache.EnumInfo<SmokeTestState>().InspectorNames;
+#endif // DEVELOPMENT
 
         static private Action s_Reset;
         static private readonly RingBuffer<SmokeTestData> s_ScheduledTests = new RingBuffer<SmokeTestData>(MaxTests, RingBufferMode.Fixed);
@@ -167,10 +169,12 @@ namespace FieldDay.Debugging {
             }
 
             if (s_TestState >= SmokeTestState.Running) {
+#if DEVELOPMENT
                 s_DebugBuilder.Append("CURRENT TEST: ").Append(test.Name)
                     .Append("\nSTATE: ").Append(CachedSmokeTestStateStrings[(int) s_TestState]);
                 DebugDraw.AddViewportText(new Vector2(0.5f, 0), new Vector2(0, 16), s_DebugBuilder, Color.green, 0, TextAnchor.LowerCenter, DebugTextStyle.BackgroundDarkOpaque);
                 s_DebugBuilder.Clear();
+#endif // DEVELOPMENT
             }
         }
 

@@ -1,5 +1,6 @@
 using BeauUtil;
 using System;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -18,9 +19,18 @@ namespace FieldDay.UI {
         public SyncMode Mode;
 
         public Vector2 Padding;
+        public Vector2 MinSize;
         [Required] public RectTransform[] Children;
 
         [NonSerialized] private Vector2 m_LastKnownSize;
+
+        /// <summary>
+        /// Returns the last known size.
+        /// </summary>
+        public Vector2 LastSize {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get { return m_LastKnownSize; }
+        }
 
         public void Sync() {
             Sync(Root, Mode, Padding);
@@ -52,8 +62,8 @@ namespace FieldDay.UI {
         }
 
         public void SetSize(Vector2 size) {
-            size.x = Mathf.Ceil(size.x);
-            size.y = Mathf.Ceil(size.y);
+            size.x = Mathf.Ceil(Math.Max(size.x, MinSize.x));
+            size.y = Mathf.Ceil(Math.Max(size.y, MinSize.y));
 
             if (m_LastKnownSize != size) {
                 m_LastKnownSize = size;
@@ -79,9 +89,10 @@ namespace FieldDay.UI {
 
 #if UNITY_EDITOR
         private void LateUpdate() {
-            if (Application.IsPlaying(this))
+            if (Application.IsPlaying(this) || UnityEditor.EditorApplication.isPlayingOrWillChangePlaymode)
                 return;
 
+            m_LastKnownSize = default;
             Sync();
         }
 #endif // UNITY_EDITOR

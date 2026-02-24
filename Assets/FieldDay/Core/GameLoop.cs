@@ -265,7 +265,7 @@ namespace FieldDay {
             Log.Msg("[GameLoop] Starting...");
             Log.Msg("[GameLoop] Word Size = {0} ({1})", Unsafe.PointerSize, Unsafe.IsPointerSizeCompileTimeConstant ? "compile-time" : "runtime");
             Log.Msg("[GameLoop] Stopwatch Frequency = {0}hz", System.Diagnostics.Stopwatch.Frequency);
-            Log.Msg("[GameLoop] Graphics Device Type = {0}", SystemInfo.graphicsDeviceType);
+            Log.Msg("[GameLoop] Graphics Device Type = {0} (Shader Level {1})", SystemInfo.graphicsDeviceType, SystemInfo.graphicsShaderLevel);
 
             if (ReflectionBootData.ShouldUse()) {
                 ReflectionBootData.Mount(m_ReflectionData);

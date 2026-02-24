@@ -45,6 +45,7 @@ namespace FieldDay.UI {
         private IGuiModule[] m_ModuleMap = new IGuiModule[ModuleIndex.Capacity];
 
         private readonly Dictionary<StringHash32, RectTransform> m_NamedElementMap = new Dictionary<StringHash32, RectTransform>(16, CompareUtils.DefaultEquals<StringHash32>());
+        private readonly Dictionary<StringHash32, RingBuffer<IGuiPanel>> m_PanelGroups = new Dictionary<StringHash32, RingBuffer<IGuiPanel>>(8, CompareUtils.DefaultEquals<StringHash32>());
 
         private readonly RingBuffer<IOnGuiUpdate> m_UpdateCallbacks = new RingBuffer<IOnGuiUpdate>(32, RingBufferMode.Expand);
         private readonly Pipe<GuiCommandData> m_Commands = new Pipe<GuiCommandData>(16, true);
@@ -161,6 +162,11 @@ namespace FieldDay.UI {
                     m_SharedPanelMap[index] = shared;
                 }
 
+                StringHash32 panelGroup = panel.Group;
+                if (!panelGroup.IsEmpty) {
+
+                }
+
                 RegistrationCallbacks.InvokeRegister(panel);
                 Log.Msg("[GuiMgr] Panel '{0}' registered", panelType.FullName);
             }
@@ -178,6 +184,11 @@ namespace FieldDay.UI {
 
                 if (m_SharedPanelMap[index] == panel) {
                     m_SharedPanelMap[index] = null;
+                }
+
+                StringHash32 panelGroup = panel.Group;
+                if (!panelGroup.IsEmpty) {
+
                 }
 
                 RegistrationCallbacks.InvokeDeregister(panel);

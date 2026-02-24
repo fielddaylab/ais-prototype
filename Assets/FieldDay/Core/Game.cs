@@ -18,6 +18,7 @@ using FieldDay.Memory;
 using FieldDay.Perf;
 using FieldDay.Files;
 using FieldDay.Localization;
+using Unity.IL2CPP.CompilerServices;
 
 [assembly: InternalsVisibleTo("FieldDay.Core.Editor")]
 
@@ -25,6 +26,7 @@ namespace FieldDay {
     /// <summary>
     /// Maintains references to game engine components.
     /// </summary>
+    [Il2CppEagerStaticClassConstruction]
     public class Game {
 
         /// <summary>
