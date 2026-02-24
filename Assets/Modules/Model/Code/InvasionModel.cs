@@ -8,10 +8,10 @@ namespace AIS.Model
     {
         public static int BG_SORTING = -100;
         public static int ECOSYSTEM_SORTING = 0;
-        public static int SPECIES_SORTING = 200;
         public static int PATHWAY_SORTING = 500;
         public static int PATHWAY_ICON_BG_SORTING = 600;
         public static int PATHWAY_ICON_SORTING = 650;
+        public static int SPECIES_SORTING = 1000;
     }
 
     public class InvasionModel : MonoBehaviour

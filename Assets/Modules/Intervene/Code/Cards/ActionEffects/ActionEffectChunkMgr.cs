@@ -238,7 +238,7 @@ namespace AIS.Intervene
 
         private void SummonHighlights()
         {
-            List<ModelTag> filteredTags = ModelTagMgr.Instance.FilterTagsByTargetDetails(m_EffectToProcess.AllTargets, m_EffectToProcess.GetAllVerbs());
+            List<ModelTag> filteredTags = ModelTagMgr.Instance.FilterTagsByTargetDetails(m_EffectToProcess.AllTargets, m_EffectToProcess.GetAllVerbs(), filterExternal: true);
 
             ModelTagMgr.Instance.HighlightTags(filteredTags);
         }

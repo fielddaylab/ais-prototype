@@ -104,6 +104,10 @@ namespace AIS.Intervene {
                 }
             }
             totalPreyConsumed = Mathf.Min(totalPreyConsumed, totalPrey);
+            if (totalPreyConsumed > 0) 
+            {
+                eco.ReleasePopulation(preyCounts[0].Item1, totalPreyConsumed);
+            }
 
             Debug.Log("[InterveneDriver] [InterspeciesDynamics] eco " + eco.EcosystemId + " invasives consumed " + totalPreyConsumed);
 
@@ -172,6 +176,10 @@ namespace AIS.Intervene {
                 }
             }
             totalPreyConsumed = Mathf.Min(totalPreyConsumed, totalPrey);
+            if (totalPreyConsumed > 0)
+            {
+                eco.ReleasePopulation(preyCounts[0].Item1, totalPreyConsumed);
+            }
 
             Debug.Log("[InterveneDriver] [InterspeciesDynamics] eco " + eco.EcosystemId + " predators consumed " + totalPreyConsumed);
 

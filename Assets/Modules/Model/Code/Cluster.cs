@@ -16,8 +16,6 @@ namespace AIS.Model
         public int StartingPopulation;
         public PathwayType StartingTravelType;
         public ActionTarget StartingTargetType;
-
-        public Sprite SpeciesSprite;
     }
 
     public class Cluster : MonoBehaviour, IReducible, IIncreasable, IRemovable

@@ -84,7 +84,7 @@ namespace AIS.Model
         {
             int lowestIndex = -1;
             int lowestOccupancy = int.MaxValue;
-            for (int i = 0; i < MainSlots.Length; i++)
+            for (int i = 0; i < SecondarySlots.Length; i++)
             {
                 if (SecondarySlots[i].Occupancy() < lowestOccupancy)
                 {

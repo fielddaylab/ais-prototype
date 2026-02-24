@@ -1027,6 +1027,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 00074f573a8314145b68f35bed9e0361, type: 2}
   - {fileID: 11400000, guid: ede39d3681b120a4d896e554ef128866, type: 2}
   - {fileID: 11400000, guid: 1cafaa9a8600cc846894a674fe613016, type: 2}
+  - {fileID: 11400000, guid: d763cc96cf0b3d14ba733a039b975c8c, type: 2}
+  - {fileID: 11400000, guid: 7432bbff7f0266541bb6e2e6d7310ca9, type: 2}
   m_AllPathwayDefs:
   - {fileID: 11400000, guid: 648d9471692cea34f8cae882e4abb26b, type: 2}
   - {fileID: 11400000, guid: c4b372aa1c2fc6e428daeca5a0f65b55, type: 2}

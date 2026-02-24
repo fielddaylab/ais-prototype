@@ -24,7 +24,7 @@ namespace AIS.Model
 
         #region Queries 
 
-        public List<ModelTag> FilterTagsByTargetDetails(ActionTargetDetails[] allTargetDetails, List<ActionVerb> allVerbs, List<ModelTag> toFilter = null)
+        public List<ModelTag> FilterTagsByTargetDetails(ActionTargetDetails[] allTargetDetails, List<ActionVerb> allVerbs, List<ModelTag> toFilter = null, bool filterExternal = false)
         {
             List<ModelTag> filtered = new List<ModelTag>();
             if (toFilter == null)
@@ -41,6 +41,16 @@ namespace AIS.Model
                     // match target type
                     if ((tag.TargetType & targetDetails.Target) != 0)
                     {
+                        // skip external ecosystems
+                        if ((tag.TargetType & ActionTarget.Ecosystem) != 0)
+                        {
+                            Ecosystem eco = tag.QueriableObj.GetComponent<Ecosystem>();
+                            if (eco != null && eco.IsExternal && filterExternal)
+                            {
+                                continue;
+                            }
+                        }
+
                         if (allVerbs.Contains(ActionVerb.Reveal))
                         {
                             // skip revealed pathways

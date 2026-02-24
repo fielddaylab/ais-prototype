@@ -17,32 +17,51 @@ MonoBehaviour:
       m_Source: eco-1
       m_HashValue: 415488260
     Pos: {x: -2.5, y: 2.8}
-    Sprite: {fileID: 21300000, guid: f8f65bee0319a3847a609844f43a46f7, type: 3}
+    Sprite: {fileID: 21300000, guid: f60dddc97d540bd43af4b4df692b3067, type: 3}
     IsExternal: 0
     MainSlotPoses:
-    - {x: 0, y: 0}
+    - {x: 0.7, y: 0}
+    - {x: -1, y: 0.8}
+    - {x: 0, y: 0.8}
     SecondarySlotPoses:
     - {x: 1, y: -1}
     - {x: 2, y: -1}
   - EcosystemId:
       m_Source: eco-2
       m_HashValue: 465821117
-    Pos: {x: 2.25, y: 0.8}
-    Sprite: {fileID: 21300000, guid: f8f65bee0319a3847a609844f43a46f7, type: 3}
+    Pos: {x: 2.69, y: 1.24}
+    Sprite: {fileID: 21300000, guid: f60dddc97d540bd43af4b4df692b3067, type: 3}
     IsExternal: 0
     MainSlotPoses:
-    - {x: 0, y: 0}
+    - {x: 0.7, y: 0}
+    - {x: -1, y: 0.8}
+    - {x: 0, y: 0.8}
     SecondarySlotPoses:
     - {x: 1, y: -1}
     - {x: 2, y: -1}
   - EcosystemId:
       m_Source: eco-3
       m_HashValue: 449043498
-    Pos: {x: -1.08, y: -1.38}
-    Sprite: {fileID: 21300000, guid: f8f65bee0319a3847a609844f43a46f7, type: 3}
+    Pos: {x: 1.64, y: -2.77}
+    Sprite: {fileID: 21300000, guid: f60dddc97d540bd43af4b4df692b3067, type: 3}
     IsExternal: 0
     MainSlotPoses:
-    - {x: 0, y: 0}
+    - {x: 0.7, y: 0}
+    - {x: -1, y: 0.8}
+    - {x: 0, y: 0.8}
+    SecondarySlotPoses:
+    - {x: 1, y: -1}
+    - {x: 2, y: -1}
+  - EcosystemId:
+      m_Source: eco-4
+      m_HashValue: 365155403
+    Pos: {x: -3.67, y: -1.2}
+    Sprite: {fileID: 21300000, guid: f60dddc97d540bd43af4b4df692b3067, type: 3}
+    IsExternal: 0
+    MainSlotPoses:
+    - {x: 0.7, y: 0}
+    - {x: -1, y: 0.8}
+    - {x: 0, y: 0.8}
     SecondarySlotPoses:
     - {x: 1, y: -1}
     - {x: 2, y: -1}
@@ -53,7 +72,9 @@ MonoBehaviour:
     Sprite: {fileID: 0}
     IsExternal: 1
     MainSlotPoses:
-    - {x: 0, y: 0}
+    - {x: 0.7, y: 0}
+    - {x: -1, y: 0.8}
+    - {x: 0, y: 0.8}
     SecondarySlotPoses:
     - {x: 1, y: -1}
     - {x: 2, y: -1}
@@ -64,7 +85,9 @@ MonoBehaviour:
     Sprite: {fileID: 0}
     IsExternal: 1
     MainSlotPoses:
-    - {x: 0, y: 0}
+    - {x: 0.7, y: 0}
+    - {x: -1, y: 0.8}
+    - {x: 0, y: 0.8}
     SecondarySlotPoses:
     - {x: 1, y: -1}
     - {x: 2, y: -1}
@@ -79,7 +102,7 @@ MonoBehaviour:
       m_Source: eco-2
       m_HashValue: 465821117
     Pos: {x: 0, y: 1.8}
-    Sprite: {fileID: 21300000, guid: 982d9117f01cacc4c82578bc731ff5c8, type: 3}
+    Sprite: {fileID: 21300000, guid: d7ad4c16f8e2b8b45b08114ab9ea97df, type: 3}
     TransferRateType: 0
     StartingTransferRate: 0.5
     StartingTriggerChance: 1
@@ -94,8 +117,40 @@ MonoBehaviour:
     DestEcosystemId:
       m_Source: eco-3
       m_HashValue: 449043498
-    Pos: {x: 1.07, y: -0.45}
-    Sprite: {fileID: 21300000, guid: 982d9117f01cacc4c82578bc731ff5c8, type: 3}
+    Pos: {x: 2.33, y: -0.74}
+    Sprite: {fileID: 21300000, guid: a17145c4ce00ac742bd1ed6cae4766ee, type: 3}
+    TransferRateType: 0
+    StartingTransferRate: 0.5
+    StartingTriggerChance: 1
+    PathwayType: 8
+    IsNotHidden: 0
+  - PathwayId:
+      m_Source: path-3-to-4
+      m_HashValue: 3136505241
+    OrigEcosystemId:
+      m_Source: eco-3
+      m_HashValue: 449043498
+    DestEcosystemId:
+      m_Source: eco-4
+      m_HashValue: 365155403
+    Pos: {x: -0.9, y: -2.5}
+    Sprite: {fileID: 21300000, guid: adb30357e1f13ac419e8dd97746cb91e, type: 3}
+    TransferRateType: 0
+    StartingTransferRate: 0.5
+    StartingTriggerChance: 1
+    PathwayType: 8
+    IsNotHidden: 0
+  - PathwayId:
+      m_Source: path-4-to-1
+      m_HashValue: 2153858281
+    OrigEcosystemId:
+      m_Source: eco-4
+      m_HashValue: 365155403
+    DestEcosystemId:
+      m_Source: eco-1
+      m_HashValue: 415488260
+    Pos: {x: -2.58, y: 0.65}
+    Sprite: {fileID: 21300000, guid: 2a35bc215ed898f4794e613ad03bd1a8, type: 3}
     TransferRateType: 0
     StartingTransferRate: 0.5
     StartingTriggerChance: 1
@@ -126,7 +181,7 @@ MonoBehaviour:
     DestEcosystemId:
       m_Source: eco-EXTERN-OUT
       m_HashValue: 3287957386
-    Pos: {x: 2.24, y: -3.02}
+    Pos: {x: 4.52, y: -1.98}
     Sprite: {fileID: 21300000, guid: 212473082a4b11c4f8bb20e89697f17e, type: 3}
     TransferRateType: 0
     StartingTransferRate: 0.5
@@ -142,10 +197,9 @@ MonoBehaviour:
       StartingEcosystemId:
         m_Source: eco-1
         m_HashValue: 415488260
-      StartingPopulation: 4
+      StartingPopulation: 3
       StartingTravelType: 8
       StartingTargetType: 1
-      SpeciesSprite: {fileID: 21300000, guid: 865a1d2b3d332134591f29fcd54f724f, type: 3}
     - SpeciesId:
         m_Source: snail
         m_HashValue: 2331752522
@@ -155,7 +209,87 @@ MonoBehaviour:
       StartingPopulation: 1
       StartingTravelType: 8
       StartingTargetType: 1
-      SpeciesSprite: {fileID: 21300000, guid: 865a1d2b3d332134591f29fcd54f724f, type: 3}
+    - SpeciesId:
+        m_Source: snail
+        m_HashValue: 2331752522
+      StartingEcosystemId:
+        m_Source: eco-3
+        m_HashValue: 449043498
+      StartingPopulation: 1
+      StartingTravelType: 8
+      StartingTargetType: 1
+    - SpeciesId:
+        m_Source: swordfish
+        m_HashValue: 2123853456
+      StartingEcosystemId:
+        m_Source: eco-1
+        m_HashValue: 415488260
+      StartingPopulation: 2
+      StartingTravelType: 0
+      StartingTargetType: 2
+    - SpeciesId:
+        m_Source: swordfish
+        m_HashValue: 2123853456
+      StartingEcosystemId:
+        m_Source: eco-2
+        m_HashValue: 465821117
+      StartingPopulation: 2
+      StartingTravelType: 0
+      StartingTargetType: 2
+    - SpeciesId:
+        m_Source: swordfish
+        m_HashValue: 2123853456
+      StartingEcosystemId:
+        m_Source: eco-3
+        m_HashValue: 449043498
+      StartingPopulation: 2
+      StartingTravelType: 0
+      StartingTargetType: 2
+    - SpeciesId:
+        m_Source: swordfish
+        m_HashValue: 2123853456
+      StartingEcosystemId:
+        m_Source: eco-4
+        m_HashValue: 365155403
+      StartingPopulation: 2
+      StartingTravelType: 0
+      StartingTargetType: 2
+    - SpeciesId:
+        m_Source: prey-fish
+        m_HashValue: 2048621690
+      StartingEcosystemId:
+        m_Source: eco-1
+        m_HashValue: 415488260
+      StartingPopulation: 4
+      StartingTravelType: 0
+      StartingTargetType: 4
+    - SpeciesId:
+        m_Source: prey-fish
+        m_HashValue: 2048621690
+      StartingEcosystemId:
+        m_Source: eco-2
+        m_HashValue: 465821117
+      StartingPopulation: 4
+      StartingTravelType: 0
+      StartingTargetType: 4
+    - SpeciesId:
+        m_Source: prey-fish
+        m_HashValue: 2048621690
+      StartingEcosystemId:
+        m_Source: eco-3
+        m_HashValue: 449043498
+      StartingPopulation: 4
+      StartingTravelType: 0
+      StartingTargetType: 4
+    - SpeciesId:
+        m_Source: prey-fish
+        m_HashValue: 2048621690
+      StartingEcosystemId:
+        m_Source: eco-4
+        m_HashValue: 365155403
+      StartingPopulation: 4
+      StartingTravelType: 0
+      StartingTargetType: 4
   SharedSpeciesSetups:
   - SpeciesId:
       m_Source: snail
@@ -166,7 +300,6 @@ MonoBehaviour:
     StartingPopulation: -1
     StartingTravelType: 8
     StartingTargetType: 1
-    SpeciesSprite: {fileID: 21300000, guid: 865a1d2b3d332134591f29fcd54f724f, type: 3}
   DefaultInvasive:
     SpeciesId:
       m_Source: snail
@@ -177,4 +310,23 @@ MonoBehaviour:
     StartingPopulation: 0
     StartingTravelType: 8
     StartingTargetType: 1
-    SpeciesSprite: {fileID: 21300000, guid: 865a1d2b3d332134591f29fcd54f724f, type: 3}
+  DefaultPredator:
+    SpeciesId:
+      m_Source: swordfish
+      m_HashValue: 2123853456
+    StartingEcosystemId:
+      m_Source: 
+      m_HashValue: 0
+    StartingPopulation: 0
+    StartingTravelType: 0
+    StartingTargetType: 2
+  DefaultPrey:
+    SpeciesId:
+      m_Source: prey-fish
+      m_HashValue: 2048621690
+    StartingEcosystemId:
+      m_Source: 
+      m_HashValue: 0
+    StartingPopulation: 0
+    StartingTravelType: 0
+    StartingTargetType: 4
