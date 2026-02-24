@@ -163,9 +163,9 @@ namespace AIS.Intervene
 
         #endregion // Phase Management
 
-        private void CreatePhantomClusters(ActionEffect effectToProcess)
+        private void CreatePhantomClusters(ActionEffectBundle effectToProcess)
         {
-            foreach (var target in effectToProcess.AllTargets)
+            foreach (var target in effectToProcess.ActionEffect.AllTargets)
             {
                 foreach (var eco in InvasionModelContainer.Instance.GetAllEcosystems())
                 {

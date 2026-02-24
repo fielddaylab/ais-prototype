@@ -25,9 +25,16 @@ namespace AIS.Intervene
 
         #endregion // Inspector
 
+        public static InterveneAwarenessInterfacer Instance;
+
         [HideInInspector] public InterveneAwareness WorkingAwareness = new InterveneAwareness();
 
         #region Unity Callbacks
+
+        private void Awake()
+        {
+            Instance = this;
+        }
 
         private void Start()
         {

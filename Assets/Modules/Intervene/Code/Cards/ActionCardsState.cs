@@ -18,11 +18,11 @@ namespace AIS.Intervene
         public string ImgPath;
 
         public int Cost;
-        public ActionEffect[] Effects;
+        public ActionEffectBundle[] Effects;
 
         public bool IsValid;
 
-        public ActionCardData(SerializedHash32 cardID, string title, string desc, string imgPath, int cost, ActionEffect[] effects)
+        public ActionCardData(SerializedHash32 cardID, string title, string desc, string imgPath, int cost, ActionEffectBundle[] effects)
         {
             CardID = cardID;
             Title = title;
@@ -199,16 +199,16 @@ namespace AIS.Intervene
             }
 
             // Action Effects parsing
-            ActionEffect[] effects = ParseEffects(cardDef);
+            ActionEffectBundle[] effects = ParseEffects(cardDef);
 
             return new ActionCardData(cardID, title, desc, imgPath, cost, effects);
         }
 
         #region Effect Parsing Helpers
 
-        static private ActionEffect[] ParseEffects(string cardDef)
+        static private ActionEffectBundle[] ParseEffects(string cardDef)
         {
-            List<ActionEffect> effects = new List<ActionEffect>();
+            List<ActionEffectBundle> effects = new List<ActionEffectBundle>();
 
             // Find all @effect blocks
             int searchStart = 0;
@@ -231,7 +231,7 @@ namespace AIS.Intervene
                 }
 
                 // Parse this effect block
-                ActionEffect effect = ParseSingleEffect(effectBlock);
+                ActionEffectBundle effect = ParseSingleEffect(effectBlock);
                 effects.Add(effect);
 
                 searchStart = effectIndex + EFFECT_TAG.Length;
@@ -240,7 +240,7 @@ namespace AIS.Intervene
             return effects.ToArray();
         }
 
-        static private ActionEffect ParseSingleEffect(string effectBlock)
+        static private ActionEffectBundle ParseSingleEffect(string effectBlock)
         {
             List<ActionTargetDetails> targets = new List<ActionTargetDetails>();
             ActionSpecificity specificity = ActionSpecificity.Specific;
@@ -281,7 +281,7 @@ namespace AIS.Intervene
                 }
             }
 
-            ActionEffect effect = new ActionEffect
+            ActionEffect primaryEffect = new ActionEffect
             {
                 AllTargets = targets.ToArray(),
                 Specificity = specificity,
@@ -289,7 +289,31 @@ namespace AIS.Intervene
                 Verbs = verbs.ToArray()
             };
 
-            return effect;
+            // TODO: Parse these
+            List<ActionTargetDetails> overrideTargets = new List<ActionTargetDetails>();
+            ActionSpecificity overrideSpecificity = ActionSpecificity.Specific;
+            int overrideMaxTargets = 1;
+            List<ActionVerbDetails> overrideVerbs = new List<ActionVerbDetails>();
+
+            ActionCondition overrideCondition = ActionCondition.None;
+            ActionEffect overrideEffect = new ActionEffect
+            {
+                AllTargets = overrideTargets.ToArray(),
+                Specificity = overrideSpecificity,
+                MaxTargets = overrideMaxTargets,
+                Verbs = overrideVerbs.ToArray()
+            };
+            ActionEffectOverride effectOverride = new ActionEffectOverride
+            {
+                Condition = overrideCondition,
+                Override = overrideEffect
+            };
+            ActionEffectBundle effectBundle = new ActionEffectBundle
+            {
+                ActionEffect = primaryEffect
+            };
+
+            return effectBundle;
         }
 
         static private ActionTargetDetails ParseTarget(string targetContent)

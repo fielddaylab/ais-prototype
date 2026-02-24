@@ -53,6 +53,7 @@ namespace AIS.Intervene {
         AwarenessEqualTo,
         AwarenessGreaterThan,
         PathwayType,
+        // TODO: more below as needed
     }
 
     public enum ModifierType
@@ -81,6 +82,23 @@ namespace AIS.Intervene {
         public ModifierType ModType;
         public float Odds; // odds of triggering
         public string RelativeId;
+    }
+
+    public struct ActionEffectBundle
+    {
+        public ActionEffect ActionEffect;
+        public ActionEffectOverride EffectOverride;
+
+        public List<ActionVerb> GetAllVerbs()
+        {
+            return ActionEffect.GetAllVerbs();
+        }
+    }
+
+    public struct ActionEffectOverride
+    {
+        public ActionCondition Condition;
+        public ActionEffect Override;
     }
 
     public struct ActionEffect
@@ -113,7 +131,7 @@ namespace AIS.Intervene {
         public string Description;
         public string ImgPath;
 
-        public ActionEffect[] Effects;
+        public ActionEffectBundle[] Effects;
 
         public override void PopulateCardUI(UICard toPopulate)
         {
@@ -133,7 +151,19 @@ namespace AIS.Intervene {
             {
                 case ActionCondition.PathwayType:
                     return EvaluatePathway(condition, tag);
-                // TODO: many more
+                // TODO: convert the below to the IComparable system
+                case ActionCondition.PopulationLessThan:
+                    return tag.QueriableObj.GetComponent<Cluster>().Population < condition.NumericalCheck;
+                case ActionCondition.PopulationEqualTo:
+                    return tag.QueriableObj.GetComponent<Cluster>().Population == condition.NumericalCheck;
+                case ActionCondition.PopulationGreaterThan:
+                    return tag.QueriableObj.GetComponent<Cluster>().Population > condition.NumericalCheck;
+                case ActionCondition.AwarenessLessThan:
+                    return InterveneAwarenessInterfacer.Instance.GetValue() < condition.NumericalCheck;
+                case ActionCondition.AwarenessEqualTo:
+                    return InterveneAwarenessInterfacer.Instance.GetValue() == condition.NumericalCheck;
+                case ActionCondition.AwarenessGreaterThan:
+                    return InterveneAwarenessInterfacer.Instance.GetValue() >= condition.NumericalCheck;
                 default:
                     Debug.LogWarning("[ActionCard] No condition matching to evaluate " + condition.Condition.ToString() + "!");
                     return true;

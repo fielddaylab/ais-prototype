@@ -156,16 +156,5 @@
     specificity: all
     maxtargets: -1
 
-::example-action-card-13
-@title		More Invasives!
-@desc		Increase an Invasive population by 1
-@path		temp.png
-@cost		1
-
-@effect
-    target: invasive
-    verb: increase, 1, fixed
-    specificity: specific
-    maxtargets: 1
 
 // END
