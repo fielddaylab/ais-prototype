@@ -154,14 +154,6 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1950308175471934421, guid: 3d915541ee8314e4393844d1f2eec9c1, type: 3}
-      propertyPath: m_GlobalAssetPacks.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1950308175471934421, guid: 3d915541ee8314e4393844d1f2eec9c1, type: 3}
-      propertyPath: m_GlobalAssetPacks.Array.data[0]
-      value: 
-      objectReference: {fileID: 11400000, guid: 2ee22996f3987d54398e1ec8caa45fea, type: 2}
     - target: {fileID: 1976163424038299190, guid: 3d915541ee8314e4393844d1f2eec9c1, type: 3}
       propertyPath: m_IsActive
       value: 1

@@ -239,6 +239,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3199809854720407860}
   - component: {fileID: 274291178913441694}
+  - component: {fileID: 3795131110483000347}
   m_Layer: 0
   m_Name: InvasionModel
   m_TagString: Untagged
@@ -280,6 +281,20 @@ MonoBehaviour:
   m_Prefabs: {fileID: 6411420342871478010}
   m_ModelContainer: {fileID: 8961839981816191731}
   m_InitModelSetupData: {fileID: 11400000, guid: 1cd13b047af69f64e89173976332935b, type: 2}
+--- !u!114 &3795131110483000347
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5203912826279457964}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a57e4b302e053dc4b8227bf389f85bda, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Packs:
+  - {fileID: 11400000, guid: 2ee22996f3987d54398e1ec8caa45fea, type: 2}
 --- !u!1 &5519124628785717435
 GameObject:
   m_ObjectHideFlags: 0
