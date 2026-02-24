@@ -25,7 +25,7 @@ namespace AIS.Intervene
 
         public LayerMask ModelTagLayer;
 
-        private ActionEffectBundle m_EffectToProcess;
+        private ActionEffect m_EffectToProcess;
 
         private void Awake()
         {
@@ -66,26 +66,26 @@ namespace AIS.Intervene
 
         private void AwaitInputs()
         {
-            if (m_EffectToProcess.ActionEffect.Specificity == ActionSpecificity.All)
+            if (m_EffectToProcess.Specificity == ActionSpecificity.All)
             {
                 // TODO: auto-highlight all and await continue
                 if (EffectChunk.SelectedTargets.Count != 0) { return; }
 
-                List<ModelTag> filteredTags = ModelTagMgr.Instance.FilterTagsByTargetDetails(m_EffectToProcess.ActionEffect.AllTargets, m_EffectToProcess.GetAllVerbs());
+                List<ModelTag> filteredTags = ModelTagMgr.Instance.FilterTagsByTargetDetails(m_EffectToProcess.AllTargets, m_EffectToProcess.GetAllVerbs());
                 foreach (var tag in filteredTags)
                 {
                     AddTagToChunk(tag);
                     tag.SetSelectedHighlight();
                 }
             }
-            else if (m_EffectToProcess.ActionEffect.Specificity == ActionSpecificity.Random)
+            else if (m_EffectToProcess.Specificity == ActionSpecificity.Random)
             {
                 // TODO: randomly select from available tags up to max targets
                 if (EffectChunk.SelectedTargets.Count != 0) { return; }
 
                 // TODO: hide selections from player?
             }
-            else if (m_EffectToProcess.ActionEffect.Specificity == ActionSpecificity.Specific)
+            else if (m_EffectToProcess.Specificity == ActionSpecificity.Specific)
             {
                 // await player input
                 if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
@@ -124,7 +124,7 @@ namespace AIS.Intervene
                         // if clicked over a valid tag
                         var tag = highestPriorityHit.GetComponent<ModelTag>();
 
-                        List<ModelTag> validTags = ModelTagMgr.Instance.FilterTagsByTargetDetails(m_EffectToProcess.ActionEffect.AllTargets, m_EffectToProcess.GetAllVerbs());
+                        List<ModelTag> validTags = ModelTagMgr.Instance.FilterTagsByTargetDetails(m_EffectToProcess.AllTargets, m_EffectToProcess.GetAllVerbs());
                         if (validTags.Contains(tag))
                         {
                             ToggleTagSelected(tag);
@@ -144,12 +144,12 @@ namespace AIS.Intervene
                 tag.SetNormalHighlight();
             }
             // Else if MaxTargets is reached, do not select
-            else if (m_EffectToProcess.ActionEffect.MaxTargets == EffectChunk.SelectedTargets.Count)
+            else if (m_EffectToProcess.MaxTargets == EffectChunk.SelectedTargets.Count)
             { 
                 // do nothing
             }
             // Else if more selections allowed, select and modify highlight (selected color)
-            else if (EffectChunk.SelectedTargets.Count < m_EffectToProcess.ActionEffect.MaxTargets)
+            else if (EffectChunk.SelectedTargets.Count < m_EffectToProcess.MaxTargets)
             {
                 AddTagToChunk(tag);
                 tag.SetSelectedHighlight();
@@ -182,7 +182,7 @@ namespace AIS.Intervene
 
         #region Control
 
-        public void Begin(ActionEffectBundle effectToProcess)
+        public void Begin(ActionEffect effectToProcess)
         {
             IsActive = true;
             AisGame.Events.Dispatch(InterveneEvents.OnEffectChunkBegin);
@@ -196,7 +196,7 @@ namespace AIS.Intervene
                 ConfirmChunkBtn.interactable = false;
             }
 
-            EffectChunk.Verbs = effectToProcess.ActionEffect.Verbs;
+            EffectChunk.Verbs = effectToProcess.Verbs;
 
             SummonHighlights();
         }
@@ -238,7 +238,7 @@ namespace AIS.Intervene
 
         private void SummonHighlights()
         {
-            List<ModelTag> filteredTags = ModelTagMgr.Instance.FilterTagsByTargetDetails(m_EffectToProcess.ActionEffect.AllTargets, m_EffectToProcess.GetAllVerbs(), filterExternal: true);
+            List<ModelTag> filteredTags = ModelTagMgr.Instance.FilterTagsByTargetDetails(m_EffectToProcess.AllTargets, m_EffectToProcess.GetAllVerbs(), filterExternal: true);
 
             ModelTagMgr.Instance.HighlightTags(filteredTags);
         }

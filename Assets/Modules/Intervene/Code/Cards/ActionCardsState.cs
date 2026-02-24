@@ -65,6 +65,7 @@ namespace AIS.Intervene
         private static readonly string IMAGE_PATH_TAG = "@path";
         private static readonly string COST_TAG = "@cost";
         private static readonly string EFFECT_TAG = "@effect";
+        private static readonly string OVERRIDE_EFFECT_TAG = "@overrideeffect";
 
         private static readonly string TARGET_LINE = "target:";
         private static readonly string VERB_LINE = "verb:";
@@ -230,8 +231,8 @@ namespace AIS.Intervene
                     effectBlock = cardDef.Substring(effectIndex, nextEffectIndex - effectIndex);
                 }
 
-                // Parse this effect block
-                ActionEffectBundle effect = ParseSingleEffect(effectBlock);
+                // Parse this effect block (which may contain @overrideEffect)
+                ActionEffectBundle effect = ParseSingleEffectBundle(effectBlock);
                 effects.Add(effect);
 
                 searchStart = effectIndex + EFFECT_TAG.Length;
@@ -240,7 +241,63 @@ namespace AIS.Intervene
             return effects.ToArray();
         }
 
-        static private ActionEffectBundle ParseSingleEffect(string effectBlock)
+        static private ActionEffectBundle ParseSingleEffectBundle(string effectBlock)
+        {
+            // Check if there's an @overrideEffect block
+            int overrideIndex = effectBlock.ToLower().IndexOf(OVERRIDE_EFFECT_TAG);
+
+            string primaryEffectBlock;
+            string overrideEffectBlock = null;
+            ActionTargetCondition overrideTargetCondition = new ActionTargetCondition();
+            overrideTargetCondition.Condition = ActionCondition.None;
+
+            if (overrideIndex != -1)
+            {
+                // Split into primary and override blocks
+                primaryEffectBlock = effectBlock.Substring(0, overrideIndex);
+                overrideEffectBlock = effectBlock.Substring(overrideIndex);
+
+                // Parse the condition from @overrideEffect line
+                // Format: "@overrideEffect if awareness > 2"
+                string overrideLine = overrideEffectBlock.Substring(0, overrideEffectBlock.IndexOfAny(END_DELIMS));
+                string conditionPart = overrideLine.Substring(OVERRIDE_EFFECT_TAG.Length).Trim();
+
+                if (conditionPart.ToLower().StartsWith(IF_KEYWORD))
+                {
+                    overrideTargetCondition = ParseCondition(conditionPart);
+                }
+            }
+            else
+            {
+                primaryEffectBlock = effectBlock;
+            }
+
+            // Parse primary effect
+            ActionEffect primaryEffect = ParseEffect(primaryEffectBlock);
+
+            ActionEffectBundle effectBundle = new ActionEffectBundle
+            {
+                ActionEffect = primaryEffect
+            };
+
+            // Parse override effect if present
+            if (overrideEffectBlock != null)
+            {
+                ActionEffect overrideEffect = ParseEffect(overrideEffectBlock);
+
+                ActionEffectOverride effectOverride = new ActionEffectOverride
+                {
+                    Condition = overrideTargetCondition,
+                    Override = overrideEffect
+                };
+
+                effectBundle.EffectOverride = effectOverride;
+            }
+
+            return effectBundle;
+        }
+
+        static private ActionEffect ParseEffect(string effectBlock)
         {
             List<ActionTargetDetails> targets = new List<ActionTargetDetails>();
             ActionSpecificity specificity = ActionSpecificity.Specific;
@@ -281,7 +338,7 @@ namespace AIS.Intervene
                 }
             }
 
-            ActionEffect primaryEffect = new ActionEffect
+            ActionEffect effect = new ActionEffect
             {
                 AllTargets = targets.ToArray(),
                 Specificity = specificity,
@@ -289,31 +346,7 @@ namespace AIS.Intervene
                 Verbs = verbs.ToArray()
             };
 
-            // TODO: Parse these
-            List<ActionTargetDetails> overrideTargets = new List<ActionTargetDetails>();
-            ActionSpecificity overrideSpecificity = ActionSpecificity.Specific;
-            int overrideMaxTargets = 1;
-            List<ActionVerbDetails> overrideVerbs = new List<ActionVerbDetails>();
-
-            ActionCondition overrideCondition = ActionCondition.None;
-            ActionEffect overrideEffect = new ActionEffect
-            {
-                AllTargets = overrideTargets.ToArray(),
-                Specificity = overrideSpecificity,
-                MaxTargets = overrideMaxTargets,
-                Verbs = overrideVerbs.ToArray()
-            };
-            ActionEffectOverride effectOverride = new ActionEffectOverride
-            {
-                Condition = overrideCondition,
-                Override = overrideEffect
-            };
-            ActionEffectBundle effectBundle = new ActionEffectBundle
-            {
-                ActionEffect = primaryEffect
-            };
-
-            return effectBundle;
+            return effect;
         }
 
         static private ActionTargetDetails ParseTarget(string targetContent)
@@ -400,7 +433,8 @@ namespace AIS.Intervene
                 {
                     // Extract the id after "relative"
                     string relativeId = part.Substring(RELATIVE_KEYWORD.Length).Trim(); // Remove "relative" keyword
-                    if (relativeId.Equals("aware")) {
+                    if (relativeId.Equals("aware"))
+                    {
                         // account for shorthand
                         relativeId = "awareness";
                     }
@@ -537,6 +571,122 @@ namespace AIS.Intervene
                 else if (operatorChar == EQ_CHAR)
                 {
                     condition.Condition = ActionCondition.AwarenessEqualTo;
+                }
+
+                if (float.TryParse(valueStr, out float numValue))
+                {
+                    if (operatorChar == '≤')
+                    {
+                        numValue++;
+                    }
+                    else if (operatorChar == '≥')
+                    {
+                        numValue--;
+                    }
+                    condition.NumericalCheck = numValue;
+                }
+            }
+            // Social/Outreach conditions
+            else if (variableName.Contains("social"))
+            {
+                if (operatorChar == LE_CHAR || operatorChar == '≤')
+                {
+                    condition.Condition = ActionCondition.SocialLessThan;
+                }
+                else if (operatorChar == GR_CHAR || operatorChar == '≥')
+                {
+                    condition.Condition = ActionCondition.SocialGreaterThan;
+                }
+                else if (operatorChar == EQ_CHAR)
+                {
+                    condition.Condition = ActionCondition.SocialEqualTo;
+                }
+
+                if (float.TryParse(valueStr, out float numValue))
+                {
+                    if (operatorChar == '≤')
+                    {
+                        numValue++;
+                    }
+                    else if (operatorChar == '≥')
+                    {
+                        numValue--;
+                    }
+                    condition.NumericalCheck = numValue;
+                }
+            }
+            // Ranger/Outdoor conditions
+            else if (variableName.Contains("outdoor"))
+            {
+                if (operatorChar == LE_CHAR || operatorChar == '≤')
+                {
+                    condition.Condition = ActionCondition.OutdoorLessThan;
+                }
+                else if (operatorChar == GR_CHAR || operatorChar == '≥')
+                {
+                    condition.Condition = ActionCondition.OutdoorGreaterThan;
+                }
+                else if (operatorChar == EQ_CHAR)
+                {
+                    condition.Condition = ActionCondition.OutdoorEqualTo;
+                }
+
+                if (float.TryParse(valueStr, out float numValue))
+                {
+                    if (operatorChar == '≤')
+                    {
+                        numValue++;
+                    }
+                    else if (operatorChar == '≥')
+                    {
+                        numValue--;
+                    }
+                    condition.NumericalCheck = numValue;
+                }
+            }
+            // Tech/Gear conditions
+            else if (variableName.Contains("tech"))
+            {
+                if (operatorChar == LE_CHAR || operatorChar == '≤')
+                {
+                    condition.Condition = ActionCondition.TechLessThan;
+                }
+                else if (operatorChar == GR_CHAR || operatorChar == '≥')
+                {
+                    condition.Condition = ActionCondition.TechGreaterThan;
+                }
+                else if (operatorChar == EQ_CHAR)
+                {
+                    condition.Condition = ActionCondition.TechEqualTo;
+                }
+
+                if (float.TryParse(valueStr, out float numValue))
+                {
+                    if (operatorChar == '≤')
+                    {
+                        numValue++;
+                    }
+                    else if (operatorChar == '≥')
+                    {
+                        numValue--;
+                    }
+                    condition.NumericalCheck = numValue;
+                }
+            }
+            // Research/Science conditions
+            else if (variableName.Contains("research"))
+            {
+                if (operatorChar == LE_CHAR || operatorChar == '≤')
+                {
+                    condition.Condition = ActionCondition.ResearchLessThan;
+                }
+                else if (operatorChar == GR_CHAR || operatorChar == '≥')
+                {
+                    condition.Condition = ActionCondition.ResearchGreaterThan;
+                }
+                else if (operatorChar == EQ_CHAR)
+                {
+                    condition.Condition = ActionCondition.ResearchEqualTo;
                 }
 
                 if (float.TryParse(valueStr, out float numValue))

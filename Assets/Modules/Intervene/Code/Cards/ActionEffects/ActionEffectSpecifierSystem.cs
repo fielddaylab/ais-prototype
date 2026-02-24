@@ -128,7 +128,19 @@ namespace AIS.Intervene
 
             // process curr effect for curr action card
             // If increase, create phantom clusters
-            var effectToProcess = ActionsProcessList[CurrActionIndex].Effects[CurrEffectIndex];
+            var effectBundleToProcess = ActionsProcessList[CurrActionIndex].Effects[CurrEffectIndex];
+
+            var effectToProcess = effectBundleToProcess.ActionEffect;
+
+            // Check if override
+            if (effectBundleToProcess.EffectOverride.Condition.Condition != 0)
+            {
+                if (ActionCardUtility.Evaluate(effectBundleToProcess.EffectOverride.Condition))
+                {
+                    effectToProcess = effectBundleToProcess.EffectOverride.Override;
+                }
+            }
+
             if (effectToProcess.GetAllVerbs().Contains(ActionVerb.Increase))
             {
                 CreatePhantomClusters(effectToProcess);
@@ -163,9 +175,9 @@ namespace AIS.Intervene
 
         #endregion // Phase Management
 
-        private void CreatePhantomClusters(ActionEffectBundle effectToProcess)
+        private void CreatePhantomClusters(ActionEffect effectToProcess)
         {
-            foreach (var target in effectToProcess.ActionEffect.AllTargets)
+            foreach (var target in effectToProcess.AllTargets)
             {
                 foreach (var eco in InvasionModelContainer.Instance.GetAllEcosystems())
                 {

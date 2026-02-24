@@ -54,6 +54,18 @@ namespace AIS.Intervene {
         AwarenessGreaterThan,
         PathwayType,
         // TODO: more below as needed
+        SocialLessThan,
+        SocialEqualTo,
+        SocialGreaterThan,
+        OutdoorLessThan,
+        OutdoorEqualTo,
+        OutdoorGreaterThan,
+        TechLessThan,
+        TechEqualTo,
+        TechGreaterThan,
+        ResearchLessThan,
+        ResearchEqualTo,
+        ResearchGreaterThan,
     }
 
     public enum ModifierType
@@ -97,7 +109,7 @@ namespace AIS.Intervene {
 
     public struct ActionEffectOverride
     {
-        public ActionCondition Condition;
+        public ActionTargetCondition Condition;
         public ActionEffect Override;
     }
 
@@ -145,7 +157,7 @@ namespace AIS.Intervene {
 
     public static class ActionCardUtility
     {
-        public static bool Evaluate(ActionTargetCondition condition, ModelTag tag)
+        public static bool Evaluate(ActionTargetCondition condition, ModelTag tag = null)
         {
             switch (condition.Condition)
             {
@@ -164,6 +176,30 @@ namespace AIS.Intervene {
                     return InterveneAwarenessInterfacer.Instance.GetValue() == condition.NumericalCheck;
                 case ActionCondition.AwarenessGreaterThan:
                     return InterveneAwarenessInterfacer.Instance.GetValue() >= condition.NumericalCheck;
+                case ActionCondition.SocialLessThan:
+                    return false; // TODO
+                case ActionCondition.SocialEqualTo:
+                    return false; // TODO
+                case ActionCondition.SocialGreaterThan:
+                    return false; // TODO
+                case ActionCondition.OutdoorLessThan:
+                    return false; // TODO
+                case ActionCondition.OutdoorEqualTo:
+                    return false; // TODO
+                case ActionCondition.OutdoorGreaterThan:
+                    return false; // TODO
+                case ActionCondition.TechLessThan:
+                    return false; // TODO
+                case ActionCondition.TechEqualTo:
+                    return false; // TODO
+                case ActionCondition.TechGreaterThan:
+                    return false; // TODO
+                case ActionCondition.ResearchLessThan:
+                    return false; // TODO
+                case ActionCondition.ResearchEqualTo:
+                    return false; // TODO
+                case ActionCondition.ResearchGreaterThan:
+                    return false; // TODO
                 default:
                     Debug.LogWarning("[ActionCard] No condition matching to evaluate " + condition.Condition.ToString() + "!");
                     return true;
@@ -172,6 +208,8 @@ namespace AIS.Intervene {
 
         private static bool EvaluatePathway(ActionTargetCondition condition, ModelTag tag)
         {
+            if (tag == null) { return false; }
+
             // check if pathway
             if (((tag.TargetType & ActionTarget.Pathway) != 0))
             {
