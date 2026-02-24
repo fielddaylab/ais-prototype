@@ -64,13 +64,24 @@
 
 ::example-action-card-4
 @title		Manual Removal
-@desc		-1 Invasive OR -1 Nest.
+@desc		-1 Invasive OR -1 Nest. || OUTDOORS -1 Invasive in same lake
 @path		temp.png
 @cost		2
 
 @effect
     target: invasive
     target: nest
+    verb: reduce, 1, fixed
+    specificity: specific
+    maxtargets: 1
+
+@effect
+    target: invasive
+    verb: reduce, 1, fixed
+    specificity: specific
+    maxtargets: 0
+@overrideEffect if outdoor > 0
+    target: invasive
     verb: reduce, 1, fixed
     specificity: specific
     maxtargets: 1
@@ -90,11 +101,22 @@
 
 ::example-action-card-6
 @title		Place Trap
-@desc		Place a trap in an Ecosystem. It has a 1/6 chance of triggering per round.
+@desc		Place a trap in an Ecosystem. It has a 1/6 chance of triggering per round. || TECH Place another trap in another lake
 @path		temp.png
 @cost		1
 
 @effect
+    target: ecosystem
+    verb: addtrap, 1, fixed
+    specificity: specific
+    maxtargets: 1
+
+@effect
+    target: ecosystem
+    verb: addtrap, 1, fixed
+    specificity: specific
+    maxtargets: 0
+@overrideEffect if tech > 0
     target: ecosystem
     verb: addtrap, 1, fixed
     specificity: specific
@@ -126,7 +148,7 @@
 
 ::example-action-card-9
 @title		Field Research
-@desc		Flip one unknown Pathway.
+@desc		Flip one unknown Pathway. || RESEARCH Decrease the revealed pathway by 1
 @path		temp.png
 @cost		1
 
@@ -135,10 +157,16 @@
     verb: reveal, 0, fixed
     specificity: specific
     maxtargets: 1
+@overrideEffect if research > 0
+    target: pathway, type = unknown
+    verb: reveal, 0, fixed
+    verb: reduce, 1, fixed
+    specificity: specific
+    maxtargets: 1
 
 ::example-action-card-10
 @title		Chemical Removal
-@desc		In one Ecosystem: -2 Invasive, -1 Predator, -1 Prey
+@desc		In one Ecosystem: -2 Invasive, -1 Predator, -1 Prey || RESEARCH Skip -1 Prey
 @path		temp.png
 @cost		2
 
@@ -147,17 +175,27 @@
     verb: modify, (-2; -1; -1), fixed
     specificity: specific
     maxtargets: 1
+@overrideEffect if research > 0
+    target: ecosystem
+    verb: modify, (-2; -1; 0), fixed
+    specificity: specific
+    maxtargets: 1
 
 
 ::example-action-card-11
 @title		Reproduction Supressor
-@desc		Decrease all Nests by 1.
+@desc		Decrease all Nests by 1. || RESEARCH Decrease all Nests by an additional 1.
 @path		temp.png
 @cost		3
 
 @effect
     target: nest
     verb: reduce, 1, fixed
+    specificity: all
+    maxtargets: -1
+@overrideEffect if research > 0
+    target: nest
+    verb: reduce, 2, fixed
     specificity: all
     maxtargets: -1
 
