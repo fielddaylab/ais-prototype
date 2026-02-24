@@ -751,10 +751,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Core Intervene Functionality
       objectReference: {fileID: 0}
-    - target: {fileID: 7168767267207884269, guid: 72c851f6dec9d6c409145d5ba2ed91b9, type: 3}
-      propertyPath: m_Camera
-      value: 
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

@@ -175,7 +175,7 @@ namespace AIS.Intervene {
                 case ActionCondition.AwarenessEqualTo:
                     return InterveneAwarenessInterfacer.Instance.GetValue() == condition.NumericalCheck;
                 case ActionCondition.AwarenessGreaterThan:
-                    return InterveneAwarenessInterfacer.Instance.GetValue() >= condition.NumericalCheck;
+                    return InterveneAwarenessInterfacer.Instance.GetValue() > condition.NumericalCheck;
                 case ActionCondition.SocialLessThan:
                     return StatsInterfacer.Instance.GetValue(StatsInterfacer.SOCIAL_KEY) < condition.NumericalCheck;
                 case ActionCondition.SocialEqualTo:

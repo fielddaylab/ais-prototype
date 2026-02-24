@@ -46,6 +46,7 @@ namespace AIS.Intervene
 
         public void LoadPlayerAwareness(int awarenessLevel)
         {
+            ClearAwareness();
             AdjustAwareness(awarenessLevel);
         }
 
@@ -54,6 +55,11 @@ namespace AIS.Intervene
             WorkingAwareness.Awareness += amt;
 
             ValueText.SetText(WorkingAwareness.Awareness.ToStringLookup());
+        }
+
+        public void ClearAwareness()
+        {
+            AdjustAwareness(-WorkingAwareness.Awareness);
         }
 
         #region Interfaces

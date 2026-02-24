@@ -131,6 +131,12 @@ namespace AIS.Intervene
 
             CardStackVisualsUtility.RefreshVisuals(stack.Visuals, stack);
         }
+
+        public static void Clear(CardStack stack)
+        {
+            stack.Cards.Clear();
+            CardStackVisualsUtility.RefreshVisuals(stack.Visuals, stack);
+        }
     }
 
     public static class ListUtility

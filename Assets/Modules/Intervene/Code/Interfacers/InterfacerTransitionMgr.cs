@@ -1,3 +1,4 @@
+using AIS.Model;
 using BeauUtil;
 using FieldDay.SharedState;
 using System.Collections;
@@ -12,14 +13,18 @@ namespace AIS.Intervene
         public InterveneAwarenessInterfacer Awareness;
         public StatsInterfacer Stats;
         public CardInteractionMgr CardMgr;
+        [HideInInspector] public InvasionModel InvasionModel;
 
         // Data passed into this scene
         public void Load()
         {
-            // TODO: convert to parameters
-            int inBudget = 0;
+            // TODO: manage proper dependency sequence
+            InvasionModel = InvasionModel.Instance;
 
-            int inAwareness = 0;
+            // TODO: convert to parameters
+            int inBudget = 3;
+
+            int inAwareness = 3;
 
             int[] inStats = new int[4];
             inStats[0] = 0;
@@ -29,17 +34,30 @@ namespace AIS.Intervene
 
             List<SerializedHash32> inEvidenceIds = new List<SerializedHash32>();
 
+            int inInvasionCurve = 0;
+
             // Load data
             Budget.LoadPlayerBudget(inBudget);
             Awareness.LoadPlayerAwareness(inAwareness);
             Stats.LoadPlayerStats(inStats[0], inStats[1], inStats[2], inStats[3]);
             CardMgr.LoadSetupData(inEvidenceIds);
+            InvasionModel.Load(inInvasionCurve);
         }
 
         // TODO: any data that needs to be passed to next scene
         public void Return()
         {
 
+        }
+
+        private void Start()
+        {
+            AisGame.Events.Register(InterveneEvents.OnInterveneRestart, HandleInterveneRestart);
+        }
+
+        private void HandleInterveneRestart()
+        {
+            Load();
         }
     }
 }

@@ -39,11 +39,16 @@ namespace AIS.Model
         private void Start()
         {
             // TEMP
-            SetModelSetupData(m_InitModelSetupData);
-            RefreshSetup(0);
+            Load(0);
         }
 
         #endregion // Unity Callbacks
+
+        public void Load(int invasionCurve)
+        {
+            SetModelSetupData(m_InitModelSetupData);
+            RefreshSetup(invasionCurve);
+        }
 
         /// <summary>
         /// Call at start of every level
