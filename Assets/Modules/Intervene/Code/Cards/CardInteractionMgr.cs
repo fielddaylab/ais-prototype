@@ -40,8 +40,8 @@ namespace AIS.Intervene
 
         private void Start()
         {
-            SetupData();
-            SetupVisuals();
+            // TEMP
+            LoadSetupData(null);
         }
 
         private void OnDisable()
@@ -58,6 +58,12 @@ namespace AIS.Intervene
         }
 
         #endregion // Unity Callbacks
+
+        public void LoadSetupData(List<SerializedHash32> evidenceIds)
+        {
+            SetupData(evidenceIds);
+            SetupVisuals();
+        }
 
         #region Core Card Mechanics
 
@@ -108,18 +114,8 @@ namespace AIS.Intervene
 
         #region Setup
 
-        private void SetupData()
+        private void SetupData(List<SerializedHash32> evidenceIds)
         {
-            List<StringHash32> evidenceIds = new List<StringHash32>();
-            // TODO: get curr evidence cards
-
-            // TEMP DEBUG
-            evidenceIds = new List<StringHash32>() {
-                "example-evidence-card-1",
-                "example-evidence-card-2",
-                "example-evidence-card-3",
-            };
-
             var actionCardsState = Find.State<ActionCardsState>();
             //var actionCards = ActionCardsUtility.GetCardsFromEvidence(actionCardsState, evidenceIds);
             var actionCards = ActionCardsUtility.GetAllCards(actionCardsState);

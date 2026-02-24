@@ -38,6 +38,7 @@ namespace AIS.Intervene
 
         private void Start()
         {
+            // TEMP
             LoadPlayerAwareness(StartingAwareness);
         }
 
