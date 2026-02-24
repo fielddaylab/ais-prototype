@@ -136,12 +136,12 @@ namespace AIS.Intervene
             return GetComponent<Comparable>().Id;
         }
 
-        public float GetValue()
+        public float GetValue(string key = null)
         {
             return WorkingBudget.Budget;
         }
 
-        public void SetValue(float val)
+        public void SetValue(float val, string key = null)
         {
             AdjustBudgetValue((int)val - WorkingBudget.Budget);
         }

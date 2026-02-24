@@ -177,29 +177,29 @@ namespace AIS.Intervene {
                 case ActionCondition.AwarenessGreaterThan:
                     return InterveneAwarenessInterfacer.Instance.GetValue() >= condition.NumericalCheck;
                 case ActionCondition.SocialLessThan:
-                    return false; // TODO
+                    return StatsInterfacer.Instance.GetValue(StatsInterfacer.SOCIAL_KEY) < condition.NumericalCheck;
                 case ActionCondition.SocialEqualTo:
-                    return false; // TODO
+                    return StatsInterfacer.Instance.GetValue(StatsInterfacer.SOCIAL_KEY) == condition.NumericalCheck;
                 case ActionCondition.SocialGreaterThan:
-                    return false; // TODO
+                    return StatsInterfacer.Instance.GetValue(StatsInterfacer.SOCIAL_KEY) > condition.NumericalCheck;
                 case ActionCondition.OutdoorLessThan:
-                    return false; // TODO
+                    return StatsInterfacer.Instance.GetValue(StatsInterfacer.OUTDOOR_KEY) < condition.NumericalCheck;
                 case ActionCondition.OutdoorEqualTo:
-                    return false; // TODO
+                    return StatsInterfacer.Instance.GetValue(StatsInterfacer.OUTDOOR_KEY) == condition.NumericalCheck;
                 case ActionCondition.OutdoorGreaterThan:
-                    return false; // TODO
+                    return StatsInterfacer.Instance.GetValue(StatsInterfacer.OUTDOOR_KEY) > condition.NumericalCheck;
                 case ActionCondition.TechLessThan:
-                    return false; // TODO
+                    return StatsInterfacer.Instance.GetValue(StatsInterfacer.TECH_KEY) < condition.NumericalCheck;
                 case ActionCondition.TechEqualTo:
-                    return false; // TODO
+                    return StatsInterfacer.Instance.GetValue(StatsInterfacer.TECH_KEY) == condition.NumericalCheck;
                 case ActionCondition.TechGreaterThan:
-                    return false; // TODO
+                    return StatsInterfacer.Instance.GetValue(StatsInterfacer.TECH_KEY) > condition.NumericalCheck;
                 case ActionCondition.ResearchLessThan:
-                    return false; // TODO
+                    return StatsInterfacer.Instance.GetValue(StatsInterfacer.RESEARCH_KEY) < condition.NumericalCheck;
                 case ActionCondition.ResearchEqualTo:
-                    return false; // TODO
+                    return StatsInterfacer.Instance.GetValue(StatsInterfacer.RESEARCH_KEY) == condition.NumericalCheck;
                 case ActionCondition.ResearchGreaterThan:
-                    return false; // TODO
+                    return StatsInterfacer.Instance.GetValue(StatsInterfacer.RESEARCH_KEY) > condition.NumericalCheck;
                 default:
                     Debug.LogWarning("[ActionCard] No condition matching to evaluate " + condition.Condition.ToString() + "!");
                     return true;

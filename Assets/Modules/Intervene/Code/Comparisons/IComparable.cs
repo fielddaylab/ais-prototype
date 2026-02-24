@@ -9,8 +9,8 @@ namespace AIS.Intervene
     {
         public SerializedHash32 GetId();
 
-        public float GetValue();
+        public float GetValue(string key = null);
 
-        public void SetValue(float val);
+        public void SetValue(float val, string key = null);
     }
 }
