@@ -67,6 +67,7 @@ namespace AIS.Intervene
         private static readonly string EFFECT_TAG = "@effect";
         private static readonly string OVERRIDE_EFFECT_TAG = "@overrideeffect";
 
+        private static readonly string HARDCODE_LINE = "hardcoded";
         private static readonly string TARGET_LINE = "target:";
         private static readonly string VERB_LINE = "verb:";
         private static readonly string SPEC_LINE = "specificity:";
@@ -120,6 +121,7 @@ namespace AIS.Intervene
         {
             Debug.Log("[CardUtility] converting card: " + cardDef);
             SerializedHash32 cardID = "";
+            string cardIdStr = "";
             string title = "";
             string desc = "";
             string imgPath = "";
@@ -127,7 +129,8 @@ namespace AIS.Intervene
             // Parse into data
 
             // First line must be card id
-            cardID = cardDef.Substring(0, cardDef.IndexOfAny(END_DELIMS));
+            cardIdStr = cardDef.Substring(0, cardDef.IndexOfAny(END_DELIMS));
+            cardID = cardIdStr;
             Debug.Log("[CardUtility] parsed card id : " + cardID);
 
             // Title comes after @title
@@ -200,14 +203,14 @@ namespace AIS.Intervene
             }
 
             // Action Effects parsing
-            ActionEffectBundle[] effects = ParseEffects(cardDef);
+            ActionEffectBundle[] effects = ParseEffects(cardDef, cardIdStr);
 
             return new ActionCardData(cardID, title, desc, imgPath, cost, effects);
         }
 
         #region Effect Parsing Helpers
 
-        static private ActionEffectBundle[] ParseEffects(string cardDef)
+        static private ActionEffectBundle[] ParseEffects(string cardDef, string cardIdStr)
         {
             List<ActionEffectBundle> effects = new List<ActionEffectBundle>();
 
@@ -232,7 +235,7 @@ namespace AIS.Intervene
                 }
 
                 // Parse this effect block (which may contain @overrideEffect)
-                ActionEffectBundle effect = ParseSingleEffectBundle(effectBlock);
+                ActionEffectBundle effect = ParseSingleEffectBundle(effectBlock, cardIdStr);
                 effects.Add(effect);
 
                 searchStart = effectIndex + EFFECT_TAG.Length;
@@ -241,7 +244,7 @@ namespace AIS.Intervene
             return effects.ToArray();
         }
 
-        static private ActionEffectBundle ParseSingleEffectBundle(string effectBlock)
+        static private ActionEffectBundle ParseSingleEffectBundle(string effectBlock, string cardIdStr)
         {
             // Check if there's an @overrideEffect block
             int overrideIndex = effectBlock.ToLower().IndexOf(OVERRIDE_EFFECT_TAG);
@@ -273,7 +276,7 @@ namespace AIS.Intervene
             }
 
             // Parse primary effect
-            ActionEffect primaryEffect = ParseEffect(primaryEffectBlock);
+            ActionEffect primaryEffect = ParseEffect(primaryEffectBlock, cardIdStr);
 
             ActionEffectBundle effectBundle = new ActionEffectBundle
             {
@@ -283,7 +286,7 @@ namespace AIS.Intervene
             // Parse override effect if present
             if (overrideEffectBlock != null)
             {
-                ActionEffect overrideEffect = ParseEffect(overrideEffectBlock);
+                ActionEffect overrideEffect = ParseEffect(overrideEffectBlock, cardIdStr);
 
                 ActionEffectOverride effectOverride = new ActionEffectOverride
                 {
@@ -297,12 +300,13 @@ namespace AIS.Intervene
             return effectBundle;
         }
 
-        static private ActionEffect ParseEffect(string effectBlock)
+        static private ActionEffect ParseEffect(string effectBlock, string cardIdStr)
         {
             List<ActionTargetDetails> targets = new List<ActionTargetDetails>();
             ActionSpecificity specificity = ActionSpecificity.Specific;
             int maxTargets = 1;
             List<ActionVerbDetails> verbs = new List<ActionVerbDetails>();
+            string hardCodedId = String.Empty;
 
             // Split into lines
             string[] lines = effectBlock.Split(END_DELIMS, StringSplitOptions.RemoveEmptyEntries);
@@ -336,6 +340,10 @@ namespace AIS.Intervene
                         maxTargets = count;
                     }
                 }
+                else if (trimmedLine.StartsWith(HARDCODE_LINE))
+                {
+                    hardCodedId = cardIdStr;
+                }
             }
 
             ActionEffect effect = new ActionEffect
@@ -343,7 +351,8 @@ namespace AIS.Intervene
                 AllTargets = targets.ToArray(),
                 Specificity = specificity,
                 MaxTargets = maxTargets,
-                Verbs = verbs.ToArray()
+                Verbs = verbs.ToArray(),
+                HardCodedId = hardCodedId,
             };
 
             return effect;

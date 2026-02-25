@@ -62,7 +62,7 @@ namespace AIS.Intervene
 
         private void HandlePredatorEatPrey()
         {
-            Sfx.Play("Oneshot.PredatorEatPrey");
+            // Sfx.Play("Oneshot.PredatorEatPrey");
         }
     }
 }

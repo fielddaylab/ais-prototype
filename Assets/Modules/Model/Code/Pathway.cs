@@ -29,16 +29,32 @@ namespace AIS.Model
     public enum PathwayType
     {
         Currents = 0x01,
-        CaptivityTrade = 0x02,
+        PetTrade = 0x02,
         BoatHulls = 0x04,
         BaitBuckets = 0x08,
         BallastWater = 0x10,
+        Aquarium = 0x20,
     }
 
     public enum RateType
     {
         Ratio,
         Fixed
+    }
+
+    [Flags]
+    public enum PathwayEffectType
+    {
+        BlockAll = 0x01,
+        Remove = 0x02,
+    }
+
+    public struct PathwayEffect
+    {
+        public string EffectId;
+        public PathwayEffectType EffectType;
+        public ActionTarget TargetType;
+        public float Value;
     }
 
     public class Pathway : MonoBehaviour, IReducible, IIncreasable, IRemovable, IRevealable
@@ -49,6 +65,8 @@ namespace AIS.Model
         public SpriteRenderer PathwayTypeBGRenderer;
         public SpriteRenderer PathwayTypeRenderer;
         public TMP_Text TransferRateText;
+
+        public List<PathwayEffect> OnTryMoveFromOrig = new List<PathwayEffect>();
 
         public SerializedHash32 OrigEcosystemId;
         public SerializedHash32 DestEcosystemId;
@@ -132,6 +150,24 @@ namespace AIS.Model
             UpdateVisuals();
         }
 
+        public void AddEffectOnTryMoveFromOrig(PathwayEffect toAdd)
+        {
+            OnTryMoveFromOrig.Add(toAdd);
+        }
+
+        public bool OnTryMoveFromOrigContains(string effectId)
+        {
+            foreach (var effect in OnTryMoveFromOrig)
+            {
+                if (effect.EffectId.Equals(effectId))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         #region Interfaces
 
         // IReducible
@@ -180,7 +216,7 @@ namespace AIS.Model
 
         public bool TryRemove()
         {
-            AdjustTransferRate(TransferRate);
+            AdjustTransferRate(-TransferRate);
 
             return true;
         }

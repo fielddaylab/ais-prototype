@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b484e83148c49ad47a774f9533990758, type: 3}
-  m_Name: BallastWater
+  m_Name: Aquarium
   m_EditorClassIdentifier: 
-  PathType: 16
-  Sprite: {fileID: 21300000, guid: d53dec5aa513b844fbcfcb51b5a85b14, type: 3}
+  PathType: 32
+  Sprite: {fileID: 21300000, guid: 59373bdbb4056d84fa603dbfcd851249, type: 3}
   IsHidden: 0

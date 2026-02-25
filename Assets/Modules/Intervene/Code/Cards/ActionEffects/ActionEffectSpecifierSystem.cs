@@ -142,6 +142,9 @@ namespace AIS.Intervene
                 }
             }
 
+            // hardcoded modifications
+            effectToProcess = ModifyHardCode(effectToProcess);
+
             if (effectToProcess.GetAllVerbs().Contains(ActionVerb.Increase))
             {
                 CreatePhantomClusters(effectToProcess);
@@ -337,6 +340,13 @@ namespace AIS.Intervene
         {
             foreach (var effect in ProcessedEffects)
             {
+                if (effect.HardCodedId != null && !effect.HardCodedId.Equals(string.Empty))
+                {
+                    // handle hard coding
+                    ExecuteHardCode(effect);
+                    continue;
+                }
+
                 foreach (var verb in effect.Verbs)
                 {
                     if (verb.Odds != 1)
@@ -510,5 +520,162 @@ namespace AIS.Intervene
         }
 
         #endregion // Effect Execution
+
+        #region HardCoded Modification
+
+        /// <summary>
+        /// Modifying happens BEFORE selections are made
+        /// </summary>
+        private ActionEffect ModifyHardCode(ActionEffect toModify)
+        {
+            if (toModify.HardCodedId == null || toModify.HardCodedId.Equals(string.Empty))
+            {
+                return toModify;
+            }
+
+            switch (toModify.HardCodedId)
+            {
+                case "eat-the-invasive":
+                    return ModifyEatInvasive(toModify);
+                default:
+                    Debug.LogWarning("[ActionEffectSpecifierSystem] Tried to modify hard code on " + toModify.HardCodedId + ", but no handling is in place!");
+                    return toModify;
+            }
+        }
+
+        private ActionEffect ModifyEatInvasive(ActionEffect toModify)
+        {
+            // For every 2 Awareness, remove 1 Invasive from a different ecosystem. || OUTDOOR - 1 additional Invasive(not per Awareness).
+            toModify.MaxTargets = InterveneAwarenessInterfacer.Instance.GetValue() * 1;
+            if (StatsInterfacer.Instance.GetValue(StatsInterfacer.OUTDOOR_KEY) > 1)
+            {
+                toModify.MaxTargets++;
+            }
+
+            return toModify;
+        }
+
+        #endregion // HardCoded Modification
+
+        #region HardCoded Execution
+
+        /// <summary>
+        ///  Executing happens AFTER selections are made
+        /// </summary>
+        /// <param name="toExecute"></param>
+        private void ExecuteHardCode(EffectChunk toExecute)
+        {
+            switch (toExecute.HardCodedId)
+            {
+                case "aquaculturist-outreach":
+                    ExecuteAqua();
+                    break;
+                case "angler-outreach":
+                    ExecuteAngler();
+                    break;
+                case "ballast-treatment":
+                    ExecuteBallastTreatment();
+                    break;
+                default:
+                    Debug.LogWarning("[ActionEffectSpecifierSystem] Tried to execute hard code on " + toExecute.HardCodedId + ", but no handling is in place!");
+                    break;
+            }
+        }
+
+        private void ExecuteAqua()
+        {
+            ExecuteRollBelowAwarenessReducePathway("aquarium");
+        }
+
+        private void ExecuteAngler()
+        {
+            ExecuteRollBelowAwarenessReducePathway("baitbuckets");
+        }
+
+        private void ExecuteBallastTreatment()
+        {
+            // When a "Ballast" pathway activates, -1 Invasive from source instead of moving.
+
+            // find all Ballast pathways
+            ActionTargetDetails[] targets = new ActionTargetDetails[1];
+            ActionTargetDetails ballastDetails = new ActionTargetDetails();
+            ballastDetails.Target = ActionTarget.Pathway;
+            ActionTargetCondition[] anglerConditions = new ActionTargetCondition[1];
+            ActionTargetCondition mainCondition = new ActionTargetCondition();
+            mainCondition.Condition = ActionCondition.PathwayType;
+            mainCondition.StrCheck = "ballastwater";
+            anglerConditions[0] = mainCondition;
+            ballastDetails.Conditions = anglerConditions;
+            targets[0] = ballastDetails;
+
+            List<ActionVerb> verbs = new List<ActionVerb>();
+
+            List<ModelTag> filteredTags = ModelTagMgr.Instance.FilterTagsByTargetDetails(targets, verbs, filterExternal: true);
+
+            // apply -1 invasive from source instead of move
+            string effectId = "ballast-treatment";
+            foreach (var tag in filteredTags)
+            {
+                var pathway = tag.QueriableObj.GetComponent<Pathway>();
+                if (pathway != null)
+                {
+                    if (!pathway.OnTryMoveFromOrigContains(effectId))
+                    {
+                        PathwayEffect ballastEffect = new PathwayEffect();
+                        ballastEffect.EffectId = effectId;
+                        ballastEffect.EffectType |= PathwayEffectType.BlockAll;
+                        ballastEffect.EffectType |= PathwayEffectType.Remove;
+                        ballastEffect.TargetType = ActionTarget.Invasive;
+                        ballastEffect.Value = 1;
+
+                        pathway.AddEffectOnTryMoveFromOrig(ballastEffect);
+                    }
+                }
+            }
+        }
+
+        private void ExecuteRollBelowAwarenessReducePathway(string pathId)
+        {
+            // Roll 1d6. If below Awareness, decrease all pathways of given type.
+            int roll = UnityEngine.Random.Range(1, 7);
+            if (roll < InterveneAwarenessInterfacer.Instance.GetValue())
+            {
+                // decrease all Bait Buckets pathways.
+                ActionTargetDetails[] targets = new ActionTargetDetails[1];
+                ActionTargetDetails anglerDetails = new ActionTargetDetails();
+                anglerDetails.Target = ActionTarget.Pathway;
+                ActionTargetCondition[] anglerConditions = new ActionTargetCondition[1];
+                ActionTargetCondition mainCondition = new ActionTargetCondition();
+                mainCondition.Condition = ActionCondition.PathwayType;
+                mainCondition.StrCheck = pathId;
+                anglerConditions[0] = mainCondition;
+                anglerDetails.Conditions = anglerConditions;
+                targets[0] = anglerDetails;
+
+                List<ActionVerb> verbs = new List<ActionVerb>();
+                verbs.Add(ActionVerb.Reduce);
+
+                List<ModelTag> filteredTags = ModelTagMgr.Instance.FilterTagsByTargetDetails(targets, verbs, filterExternal: true);
+
+                ModelTagMgr.Instance.HighlightTags(filteredTags);
+
+                // TODO: space of time between highlight and decrease
+                ActionVerbDetails verbDetails = new ActionVerbDetails();
+                verbDetails.Verb = ActionVerb.Reduce;
+                verbDetails.Values = new List<float>();
+                verbDetails.Values.Add(1);
+                verbDetails.ModType = ModifierType.Fixed;
+                verbDetails.Odds = 1;
+
+                foreach (var tag in filteredTags)
+                {
+                    TryReduce(tag.QueriableObj, verbDetails);
+                }
+
+                ModelTagMgr.Instance.ClearExistingHighlights();
+            }
+        }
+
+        #endregion // HardCoded Execution
     }
 }

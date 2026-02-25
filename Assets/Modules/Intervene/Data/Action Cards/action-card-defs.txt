@@ -1,15 +1,13 @@
 // Action Cards With Effects
 
-::example-action-card-0
+::aquaculturist-outreach
 @title		Aquaculturist Outreach
-@desc		Roll 1d6. If below Awareness, decrease all Aquarium pathways. // TODO
+@desc		Roll 1d6. If below Awareness, decrease all known Aquarium pathways.
 @path		temp.png
 @cost		1
 
 @effect
-    target: path, if type = CaptivityTrade
-    verb: reduce, 1, fixed, odds 0.16667
-    specificity: all
+    hardcoded
 
 
 ::example-action-card-1
@@ -51,16 +49,14 @@
     specificity: specific
     maxTargets: 1
 
-::example-action-card-3
+::angler-outreach
 @title		Angler Outreach
-@desc		Roll 1d6. If below Awareness, decrease all Bait Bucket pathways by 1. // TODO
+@desc		Roll 1d6. If below Awareness, decrease all Bait Bucket pathways by 1.
 @path		temp.png
 @cost		1
 
 @effect
-    target: pathway, if type = BaitBuckets
-    verb: reduce, 1, fixed
-    specificity: all
+    hardcoded
 
 ::example-action-card-4
 @title		Manual Removal
@@ -86,9 +82,9 @@
     specificity: specific
     maxtargets: 1
 
-::example-action-card-5
+::eat-the-invasive
 @title		Eat the Invasive
-@desc		For every 2 Awareness, remove 1 Invasive. // TODO
+@desc		For every 2 Awareness, remove 1 Invasive from a different ecosystem. || OUTDOOR -1 additional Invasive (not per Awareness).
 @path		temp.png
 @cost		3
 
@@ -129,22 +125,19 @@
 @cost		2
 
 @effect
-    target: pathway, type = Currents
+    target: pathway, if type = Currents
     verb: remove, 1, fixed
     specificity: specific
     maxtargets: 1
 
-::example-action-card-8
+::ballast-treatment
 @title		Ballast Treatment
-@desc		When a "Ballast" pathway activates, -1 Invasive from source instead of moving. // TODO STRETCH
+@desc		When a "Ballast" pathway activates, -1 Invasive from source instead of moving.
 @path		temp.png
 @cost		3
 
 @effect
-    target: pathway, type = Ballast
-    verb: modify, 1, fixed
-    specificity: specific
-    maxtargets: 1
+    hardcoded
 
 ::example-action-card-9
 @title		Field Research
@@ -153,12 +146,12 @@
 @cost		1
 
 @effect
-    target: pathway, type = unknown
+    target: pathway, if type = unknown
     verb: reveal, 0, fixed
     specificity: specific
     maxtargets: 1
 @overrideEffect if research > 0
-    target: pathway, type = unknown
+    target: pathway, if type = unknown
     verb: reveal, 0, fixed
     verb: reduce, 1, fixed
     specificity: specific

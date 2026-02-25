@@ -1,4 +1,5 @@
 using AIS.Model;
+using BeauUtil;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,6 +12,7 @@ namespace AIS.Intervene
     {
         public List<ModelTag> SelectedTargets;
         public ActionVerbDetails[] Verbs;
+        public string HardCodedId;
     }
 
     public class ActionEffectChunkMgr : MonoBehaviour
@@ -197,6 +199,10 @@ namespace AIS.Intervene
             }
 
             EffectChunk.Verbs = effectToProcess.Verbs;
+            if (effectToProcess.IsHardCoded())
+            {
+                EffectChunk.HardCodedId = effectToProcess.HardCodedId;
+            }
 
             SummonHighlights();
         }

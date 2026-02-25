@@ -119,6 +119,7 @@ namespace AIS.Intervene {
         public ActionSpecificity Specificity;
         public float MaxTargets; // up to
         public ActionVerbDetails[] Verbs;
+        public string HardCodedId; // TEMP system to define advanced card abilities in prototype
 
         public List<ActionVerb> GetAllVerbs()
         {
@@ -132,6 +133,11 @@ namespace AIS.Intervene {
             }
 
             return verbs;
+        }
+
+        public bool IsHardCoded()
+        {
+            return !HardCodedId.Equals(String.Empty);
         }
     }
 
@@ -218,6 +224,10 @@ namespace AIS.Intervene {
                 if (pathway != null)
                 {
                     if ((pathway.PathwayType & PathwayUtility.StrToPathwayType(condition.StrCheck)) != 0)
+                    {
+                        return true;
+                    }
+                    else if (pathway.IsHidden && condition.StrCheck.Equals("unknown"))
                     {
                         return true;
                     }

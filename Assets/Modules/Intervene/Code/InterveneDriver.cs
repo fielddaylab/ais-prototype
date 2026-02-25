@@ -261,6 +261,25 @@ namespace AIS.Intervene {
                 }
                 transferNum = Mathf.Max(1, transferNum); // rounded down, but at least 1
 
+                // Process pathway effects (i.e. ballast treatment: -1 invasive from source instead of move)
+                foreach (var onTryMoveFromOrigEffect in pathway.OnTryMoveFromOrig)
+                {
+                    if ((onTryMoveFromOrigEffect.EffectType & PathwayEffectType.BlockAll) != 0)
+                    {
+                        transferNum = 0;
+                    }
+                    if ((onTryMoveFromOrigEffect.EffectType & PathwayEffectType.Remove) != 0)
+                    {
+                        int origPop = origEco.GetPopulation(speciesPair.Item1);
+                        if (origPop > 0)
+                        {
+                            if ((onTryMoveFromOrigEffect.TargetType & ActionTarget.Invasive) != 0) {
+                                origEco.ReleasePopulation(InvasionModel.Instance.CurrModelSetupData.DefaultInvasive.SpeciesId, (int)onTryMoveFromOrigEffect.Value);
+                            }
+                        }
+                    }
+                }
+
                 // split species, between orig and dest clusters
                 var transferAlloc = new SpeciesTransferAllocation();
                 transferAlloc.SpeciesId = speciesPair.Item1;

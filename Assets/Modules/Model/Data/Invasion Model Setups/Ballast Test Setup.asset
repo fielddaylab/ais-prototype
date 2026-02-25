@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 832d788c2ab479440ad7213f3fc25030, type: 3}
-  m_Name: Test Invasion Model Setup
+  m_Name: Ballast Test Setup
   m_EditorClassIdentifier: 
   Ecosystems:
   - EcosystemId:
@@ -103,11 +103,11 @@ MonoBehaviour:
       m_HashValue: 465821117
     Pos: {x: 0, y: 1.8}
     Sprite: {fileID: 21300000, guid: d7ad4c16f8e2b8b45b08114ab9ea97df, type: 3}
-    TransferRateType: 0
-    StartingTransferRate: 0.5
+    TransferRateType: 1
+    StartingTransferRate: 2
     StartingTriggerChance: 1
     PathwayType: 16
-    IsNotHidden: 0
+    IsNotHidden: 1
   - PathwayId:
       m_Source: path-2-to-3
       m_HashValue: 3174743921
@@ -135,11 +135,11 @@ MonoBehaviour:
       m_HashValue: 365155403
     Pos: {x: -0.9, y: -2.5}
     Sprite: {fileID: 21300000, guid: adb30357e1f13ac419e8dd97746cb91e, type: 3}
-    TransferRateType: 0
-    StartingTransferRate: 0.5
+    TransferRateType: 1
+    StartingTransferRate: 2
     StartingTriggerChance: 1
-    PathwayType: 1
-    IsNotHidden: 0
+    PathwayType: 16
+    IsNotHidden: 1
   - PathwayId:
       m_Source: path-4-to-1
       m_HashValue: 2153858281
@@ -154,8 +154,8 @@ MonoBehaviour:
     TransferRateType: 0
     StartingTransferRate: 0.5
     StartingTriggerChance: 1
-    PathwayType: 4
-    IsNotHidden: 1
+    PathwayType: 8
+    IsNotHidden: 0
   - PathwayId:
       m_Source: path-EXTERN-IN-to-1
       m_HashValue: 1868001983
@@ -186,7 +186,7 @@ MonoBehaviour:
     TransferRateType: 0
     StartingTransferRate: 0.5
     StartingTriggerChance: 0.5
-    PathwayType: 4
+    PathwayType: 8
     IsNotHidden: 0
   InvasionCurveThresholds:
   - Threshold: 0
@@ -198,7 +198,7 @@ MonoBehaviour:
         m_Source: eco-1
         m_HashValue: 415488260
       StartingPopulation: 3
-      StartingTravelType: 8
+      StartingTravelType: 24
       StartingTargetType: 1
     - SpeciesId:
         m_Source: snail
@@ -207,7 +207,7 @@ MonoBehaviour:
         m_Source: eco-2
         m_HashValue: 465821117
       StartingPopulation: 1
-      StartingTravelType: 8
+      StartingTravelType: 24
       StartingTargetType: 1
     - SpeciesId:
         m_Source: snail
@@ -216,7 +216,7 @@ MonoBehaviour:
         m_Source: eco-3
         m_HashValue: 449043498
       StartingPopulation: 1
-      StartingTravelType: 8
+      StartingTravelType: 24
       StartingTargetType: 1
     - SpeciesId:
         m_Source: swordfish
@@ -308,7 +308,7 @@ MonoBehaviour:
       m_Source: 
       m_HashValue: 0
     StartingPopulation: 0
-    StartingTravelType: -1
+    StartingTravelType: 24
     StartingTargetType: 1
   DefaultPredator:
     SpeciesId:
