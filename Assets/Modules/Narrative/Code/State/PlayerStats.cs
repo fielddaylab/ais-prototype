@@ -64,6 +64,10 @@ namespace AIS.Narrative {
             block.Communicate = (sbyte) Math.Clamp((int) block.Communicate, MinValue, MaxValue);
         }
 
+        static public int Clamp(int statValue) {
+            return Math.Clamp(statValue, MinValue, MaxValue);
+        }
+
         public bool Equals(PlayerStatBlock other) {
             return Tech == other.Tech
                 & Research == other.Research
