@@ -41,7 +41,7 @@ namespace AIS.Model
 
         #region Visuals
 
-        public void ShowHighlight()
+        public void ShowHighlight(bool isCustom = false)
         {
             if (Highlight != null) {
                 Highlight.enabled = true;
@@ -50,7 +50,10 @@ namespace AIS.Model
             {
                 UIHighlight.enabled = true;
             }
-            SetNormalHighlight();
+            if (!isCustom)
+            {
+                SetNormalHighlight();
+            }
         }
 
         public void HideHighlight()
@@ -71,6 +74,18 @@ namespace AIS.Model
             }
             else if (UIHighlight != null) {
                 UIHighlight.color = NormalColor;
+            }
+        }
+
+        public void SetCustomHighlight(Color customColor)
+        {
+            if (Highlight != null)
+            {
+                Highlight.color = customColor;
+            }
+            else if (UIHighlight != null)
+            {
+                UIHighlight.color = customColor;
             }
         }
 

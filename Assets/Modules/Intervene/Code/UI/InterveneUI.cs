@@ -1,6 +1,7 @@
 using FieldDay;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,6 +13,11 @@ namespace AIS.Intervene {
         [SerializeField] private Button m_TickSimButton;
         [SerializeField] private InterveneDriver m_Driver;
         [SerializeField] private InterveneBudgetInterfacer m_BudgetInterfacer;
+
+        [Header("Sim Phase")]
+        public GameObject SimPhaseGroup;
+        public TMP_Text SimPhaseText;
+        public Color FocusColor;
 
         [Header("End State")]
         [SerializeField] private Button m_VictoryBtn;
@@ -34,6 +40,8 @@ namespace AIS.Intervene {
             m_VictoryBtn.onClick.AddListener(HandleDeclareVictoryClicked);
             m_DefeatBtn.onClick.AddListener(HandleDeclareDefeatClicked);
 
+            HideSimPhase();
+
             AisGame.Events.Register(InterveneEvents.OnInterveneRestart, HandleInterveneRestart);
         }
 
@@ -47,10 +55,26 @@ namespace AIS.Intervene {
 
             AisGame.Events.Deregister(InterveneEvents.OnInterveneRestart, HandleInterveneRestart);
         }
+        
+        public void ShowSimPhase()
+        {
+            SimPhaseGroup.SetActive(true);
+        }
+
+        public void SetSimPhase(string phaseText)
+        {
+            SimPhaseText.SetText(phaseText);
+        }
+
+        public void HideSimPhase()
+        {
+            SimPhaseGroup.SetActive(false);
+        }
 
         private void HandleTickSimClicked()
         {
             if (m_Driver.SimRoutine.Exists()) { return; }
+
             m_Driver.TickSim();
             m_BudgetInterfacer.BestowBudget();
         }
