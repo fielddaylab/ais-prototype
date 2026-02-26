@@ -272,7 +272,7 @@ namespace FieldDay.Scripting {
                 }
                 m_CurrentPrinter = printer;
                 if (m_CurrentPrinter != null && m_CurrentPrinter != m_CurrentChoicePresenter) {
-                    m_CurrentPrinter.SetThreadOwner(GetHandle());
+                    m_CurrentPrinter.SwitchThreadOwner(GetHandle());
                 }
             }
         }
@@ -306,7 +306,7 @@ namespace FieldDay.Scripting {
                 }
                 m_CurrentChoicePresenter = choicePresenter;
                 if (m_CurrentChoicePresenter != null && m_CurrentChoicePresenter != m_CurrentPrinter) {
-                    m_CurrentChoicePresenter.SetThreadOwner(GetHandle());
+                    m_CurrentChoicePresenter.SwitchThreadOwner(GetHandle());
                 }
             }
         }
@@ -340,7 +340,7 @@ namespace FieldDay.Scripting {
             }
 
             if (printer == null && choicePresenter == null) {
-                owned.SetThreadOwner(GetHandle());
+                owned.SwitchThreadOwner(GetHandle());
                 m_OwnedResources.PushBack(owned);
             }
         }

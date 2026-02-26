@@ -2,6 +2,9 @@
 #define FD_COMMON_INCLUDED
 
 #include "UnityCG.cginc"
+#include "./DXCompat.cginc"
+
+/// Keywords
 
 /// Configuration Defines
 
@@ -108,5 +111,12 @@ inline float4 SamplePaletteRegion(sampler2D palette, float normalizedIndex, floa
 {
     return tex2D(palette, float2(regionStart.x + normalizedIndex * regionWidth, regionStart.y));
 }
+
+/*
+inline float4 SamplePaletteArray(sampler2DArray palette, float normalizedIndex, float depth)
+{
+    return tex2DArray(palette, float3(normalizedIndex, 0.5, depth));
+}
+*/
 
 #endif // FD_COMMON_INCLUDED

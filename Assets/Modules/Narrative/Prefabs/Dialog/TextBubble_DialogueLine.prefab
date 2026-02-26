@@ -189,7 +189,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 0.003921569, g: 0.003921569, b: 0.003921569, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -363,6 +363,18 @@ PrefabInstance:
       value: There is so much text here. Why? Does it wrap properly to the next line?
         Does it show up correctly?
       objectReference: {fileID: 0}
+    - target: {fileID: 5432207164625995907, guid: ffbb30178c6e70b4d9616b06af86c963, type: 3}
+      propertyPath: m_Color.b
+      value: 0.003921569
+      objectReference: {fileID: 0}
+    - target: {fileID: 5432207164625995907, guid: ffbb30178c6e70b4d9616b06af86c963, type: 3}
+      propertyPath: m_Color.g
+      value: 0.003921569
+      objectReference: {fileID: 0}
+    - target: {fileID: 5432207164625995907, guid: ffbb30178c6e70b4d9616b06af86c963, type: 3}
+      propertyPath: m_Color.r
+      value: 0.003921569
+      objectReference: {fileID: 0}
     - target: {fileID: 6422463037750317989, guid: ffbb30178c6e70b4d9616b06af86c963, type: 3}
       propertyPath: m_Name
       value: TextBubble_DialogueLine
@@ -472,6 +484,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6422463037750317989, guid: ffbb30178c6e70b4d9616b06af86c963, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4724098201803321799}
+    - targetCorrespondingSourceObject: {fileID: 6422463037750317989, guid: ffbb30178c6e70b4d9616b06af86c963, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8767833143502191583}
+    - targetCorrespondingSourceObject: {fileID: 6422463037750317989, guid: ffbb30178c6e70b4d9616b06af86c963, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7372205226503040868}
   m_SourcePrefab: {fileID: 100100000, guid: ffbb30178c6e70b4d9616b06af86c963, type: 3}
 --- !u!114 &346806614066988506 stripped
 MonoBehaviour:
@@ -508,17 +526,49 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Layout: {fileID: 346806614066988506}
   RootPivot: {fileID: 1593249569663048262}
-  ArrowRoot: {fileID: 7401037625113379502}
+  Visibility: {fileID: 8767833143502191583}
+  Offset: {fileID: 7372205226503040868}
   Text: {fileID: 5442800235022107517}
   CharacterName: {fileID: 6002357686512341577}
   CharacterLayout: {fileID: 8783009594861381729}
+  Tail: {fileID: 7401037625113379502}
   BackgroundColor:
   - {fileID: 6848114496992748278}
   - {fileID: 3447726798470415462}
+  ContentColor:
+  - {fileID: 5442800235022107517}
   Rounding:
   - {fileID: 4940232727546550983}
   - {fileID: 6848114496992748278}
   - {fileID: 3786592432372020327}
+--- !u!225 &8767833143502191583
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2796333468060299073}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!114 &7372205226503040868
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2796333468060299073}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd60b9a67a0443343b479b094c836759, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Offset0: {x: 0, y: 0}
+  m_Offset1: {x: 0, y: 0}
+  m_Offset2: {x: 0, y: 0}
+  m_Offset3: {x: 0, y: 0}
 --- !u!114 &3786592432372020327 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5432207164625995907, guid: ffbb30178c6e70b4d9616b06af86c963, type: 3}

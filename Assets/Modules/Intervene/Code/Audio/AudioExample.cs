@@ -1,3 +1,4 @@
+using FieldDay;
 using FieldDay.Audio;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,7 +10,9 @@ namespace AIS.Intervene
     {
         private void Start()
         {
-            Sfx.Play("Oneshot.Example");
+            Game.Scenes.QueueOnLoad(() => {
+                Sfx.Play("Oneshot.Example");
+            });
         }
     }
 }

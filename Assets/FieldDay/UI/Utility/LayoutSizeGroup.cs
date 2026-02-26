@@ -37,7 +37,7 @@ namespace FieldDay.UI {
         }
 
         public void Sync(RectTransform root, SyncMode mode, Vector2 padding) {
-            if (!root) {
+            if (!root || !isActiveAndEnabled) {
                 return;
             }
 

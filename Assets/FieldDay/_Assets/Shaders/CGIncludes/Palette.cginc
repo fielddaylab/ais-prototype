@@ -10,6 +10,7 @@
 /// Uniforms
 
 sampler2D _PaletteTex;
+// sampler2DArray _PaletteTexArray;
 
 half _PaletteColorThreshold;
 half _PaletteAlphaThreshold;
@@ -17,6 +18,18 @@ half _PaletteAlphaThreshold;
 /// Helpers
 
 inline void LayerPaletteTextureComponents(sampler2D intensityTexture, float2 intensityUV, out float paletteValue, out float alphaComponent)
+{
+    float intensity = SampleSingle(intensityTexture, intensityUV);
+    paletteValue = saturate(intensity / _PaletteColorThreshold);
+    
+#if FD_PALETTE_ATTENUATE_ALPHA
+    alphaComponent = saturate(intensity / _PaletteAlphaThreshold);
+#else
+    alphaComponent = 1;
+#endif // FD_PALETTE_ATTENUATE_ALPHA
+}
+
+inline void LayerPaletteARrayTextureComponents(sampler2D intensityTexture, float2 intensityUV, out float paletteValue, out float alphaComponent)
 {
     float intensity = SampleSingle(intensityTexture, intensityUV);
     paletteValue = saturate(intensity / _PaletteColorThreshold);

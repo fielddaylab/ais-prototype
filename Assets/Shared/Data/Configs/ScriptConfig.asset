@@ -16,5 +16,5 @@ MonoBehaviour:
   EnableVoxOnAllLinesByDefault: 0
   EnableDialogBoxOnAllLinesByDefault: 1
   DefaultDialogBoxId:
-    m_Source: 
-    m_HashValue: 0
+    m_Source: Dialogue
+    m_HashValue: 1716769139

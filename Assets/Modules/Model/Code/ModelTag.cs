@@ -1,5 +1,6 @@
 using AIS.Intervene;
 using BeauUtil;
+using FieldDay;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -27,7 +28,7 @@ namespace AIS.Model
 
         public void OnEnable()
         {
-            ModelTagMgr.Instance.Register(this);
+            Game.Scenes.QueueOnEnable(this, () => ModelTagMgr.Instance.Register(this));
         }
 
         public void OnDisable()

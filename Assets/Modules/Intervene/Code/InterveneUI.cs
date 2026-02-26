@@ -1,3 +1,4 @@
+using AIS.Model;
 using FieldDay;
 using System.Collections;
 using System.Collections.Generic;
@@ -18,6 +19,7 @@ namespace AIS.Intervene {
         private void Awake()
         {
             Instance = this;
+            InvasionModel.Instance.gameObject.SetActive(true);
         }
 
         private void Start()

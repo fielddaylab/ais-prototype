@@ -1,0 +1,89 @@
+using System.Runtime.CompilerServices;
+using Unity.IL2CPP.CompilerServices;
+using UnityEngine;
+
+namespace FieldDay {
+    [Il2CppEagerStaticClassConstruction]
+    static public class Positioning {
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        static private float GetAnchorX(TextAnchor anchor) {
+            return ((int)anchor % 3) * 0.5f;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        static private float GetAnchorY(TextAnchor anchor) {
+            return (2 - (int)anchor / 3) * 0.5f;
+        }
+
+        static public void SetAnchorOffsetX(RectTransform rect, float anchorX, float offsetX) {
+            Vector2 min, max, offset;
+            min = rect.anchorMin;
+            max = rect.anchorMax;
+            offset = rect.anchoredPosition;
+            min.x = max.x = anchorX;
+            offset.x = offsetX;
+            rect.anchorMin = min;
+            rect.anchorMax = max;
+            rect.anchoredPosition = offset;
+        }
+
+        static public void SetAnchorX(RectTransform rect, float anchorX) {
+            Vector2 min, max;
+            min = rect.anchorMin;
+            max = rect.anchorMax;
+            min.x = max.x = anchorX;
+            rect.anchorMin = min;
+            rect.anchorMax = max;
+        }
+
+        static public void SetAnchorY(RectTransform rect, float anchorY) {
+            Vector2 min, max;
+            min = rect.anchorMin;
+            max = rect.anchorMax;
+            min.x = max.y = anchorY;
+            rect.anchorMin = min;
+            rect.anchorMax = max;
+        }
+
+        static public void SetAnchorOffsetY(RectTransform rect, float anchorY, float offsetY) {
+            Vector2 min, max, offset;
+            min = rect.anchorMin;
+            max = rect.anchorMax;
+            offset = rect.anchoredPosition;
+            min.x = max.y = anchorY;
+            offset.y = offsetY;
+            rect.anchorMin = min;
+            rect.anchorMax = max;
+            rect.anchoredPosition = offset;
+        }
+
+        static public void SetAnchor(RectTransform rect, Vector2 anchorXY) {
+            rect.anchorMin = anchorXY;
+            rect.anchorMax = anchorXY;
+        }
+
+        static public void SetAnchorOffset(RectTransform rect, Vector2 anchorXY, Vector2 offset) {
+            rect.anchorMin = anchorXY;
+            rect.anchorMax = anchorXY;
+            rect.anchoredPosition = offset;
+        }
+
+        static public void SetAnchor(RectTransform rect, TextAnchor anchor) {
+            Vector2 anchorXY = new Vector2(GetAnchorX(anchor), GetAnchorY(anchor));
+            rect.anchorMin = anchorXY;
+            rect.anchorMax = anchorXY;
+        }
+
+        static public void SetAnchorOffset(RectTransform rect, TextAnchor anchor, Vector2 offset) {
+            Vector2 anchorXY = new Vector2(GetAnchorX(anchor), GetAnchorY(anchor));
+            rect.anchorMin = anchorXY;
+            rect.anchorMax = anchorXY;
+            rect.anchoredPosition = offset;
+        }
+
+        static public void SetPivot(RectTransform rect, TextAnchor anchor) {
+            rect.pivot = new Vector2(GetAnchorX(anchor), GetAnchorY(anchor));
+        }
+    }
+}
