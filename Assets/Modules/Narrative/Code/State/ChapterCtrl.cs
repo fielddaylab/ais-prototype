@@ -1,0 +1,19 @@
+using System.Collections.Generic;
+using AIS.Model;
+using BeauUtil;
+using FieldDay.Scenes;
+using FieldDay.Scripting;
+
+namespace AIS.Narrative {
+    public sealed class ChapterCtrl : SceneController {
+        protected override IEnumerator<WorkSlicer.Result?> OnScenePreload() {
+            AisGame.SharedState.Register(new PlayerInventory());
+            InvasionModel.Instance.gameObject.SetActive(false);
+            return null;
+        }
+
+        protected override void OnSceneReady() {
+            ScriptUtility.Trigger("ChapterStart");
+        }
+    }
+}

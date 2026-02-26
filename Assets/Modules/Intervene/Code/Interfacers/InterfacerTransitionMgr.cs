@@ -1,5 +1,6 @@
 using AIS.Model;
 using BeauUtil;
+using FieldDay;
 using FieldDay.SharedState;
 using System.Collections;
 using System.Collections.Generic;
@@ -20,7 +21,7 @@ namespace AIS.Intervene
         {
             AisGame.Events.Register(InterveneEvents.OnInterveneRestart, HandleInterveneRestart);
 
-            Load();
+            Game.Scenes.QueueOnEnable(this, Load);
         }
 
         // Data passed into this scene

@@ -3676,7 +3676,7 @@ namespace TMPro
             m_charWidthAdjDelta = 0;
 
             // Set Margins to Infinity
-            Vector2 margin = new Vector2(m_marginWidth != 0 ? m_marginWidth : k_LargePositiveFloat, k_LargePositiveFloat);
+            Vector2 margin = new Vector2(m_maxLineWidth > 0 ? (m_maxLineWidth - m_margin.x - m_margin.z) : (m_marginWidth != 0 ? m_marginWidth : k_LargePositiveFloat), k_LargePositiveFloat);
 
             m_isCalculatingPreferredValues = true;
             ParseInputText();
@@ -3748,7 +3748,7 @@ namespace TMPro
             m_maxFontSize = m_fontSizeMax;
             m_charWidthAdjDelta = 0;
 
-            Vector2 margin = new Vector2(m_marginWidth != 0 ? m_marginWidth : k_LargePositiveFloat, k_LargePositiveFloat);
+            Vector2 margin = new Vector2(m_maxLineWidth > 0 ? (m_maxLineWidth - m_margin.x - m_margin.z) : (m_marginWidth != 0 ? m_marginWidth : k_LargePositiveFloat), k_LargePositiveFloat);
 
             m_isCalculatingPreferredValues = true;
             ParseInputText();

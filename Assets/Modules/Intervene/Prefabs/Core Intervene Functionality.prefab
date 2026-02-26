@@ -751,6 +751,7 @@ GameObject:
   - component: {fileID: 9052763557328043203}
   - component: {fileID: 7045346726542897301}
   - component: {fileID: 7628070281908729309}
+  - component: {fileID: 1002163005149313078}
   m_Layer: 5
   m_Name: InterveneUI
   m_TagString: Untagged
@@ -873,6 +874,18 @@ MonoBehaviour:
   m_DefeatBtn: {fileID: 1998085089915055899}
   m_EndPanel: {fileID: 8702474494442968615}
   Raycaster: {fileID: 7045346726542897301}
+--- !u!114 &1002163005149313078
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1564706633918584254}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a539f5caad7a174abd656d65916f57c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1589051323828862823
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,0 +1,16 @@
+#basePath TestChapter
+
+:: Start
+@trigger    ChapterStart
+@cutscene
+
+{@Narrator} {char-name ???} "'Twas a dark and stormy..."
+            Hang on. Wrong story. Let me start over.
+            "And then at the stroke of..."
+            No no that's all wrong too. Oh for...
+{@Player}   Hello?
+{@Narrator} {char-name ???}     Oh dang it, I thought I'd been really quiet too.
+                Guess I'll need to start your story from scratch <i>again</i>.
+{@Player}       Uhhhhhh what do you mean?
+{@Narrator}     Listen, kid
+$call BeginIntervention()

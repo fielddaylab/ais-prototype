@@ -46,6 +46,7 @@ namespace AIS.Model
 
         public void Load(float invasionCurve)
         {
+            gameObject.SetActive(true);
             SetModelSetupData(m_InitModelSetupData);
             RefreshSetup(invasionCurve);
         }

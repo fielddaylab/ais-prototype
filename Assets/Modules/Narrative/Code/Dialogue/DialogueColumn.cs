@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using BeauPools;
+using BeauRoutine;
 using BeauUtil;
 using BeauUtil.Tags;
 using BeauUtil.UI;
@@ -9,71 +10,78 @@ using FieldDay;
 using FieldDay.Components;
 using FieldDay.Scripting;
 using FieldDay.UI;
+using Leaf;
 using Leaf.Runtime;
 using TMPro;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace AIS.Narrative {
-    public class DialogueColumn : BatchedComponent, IDialoguePrinter, IRegistrationCallbacks {
-        public SerializedHash32 Id;
+    [DisallowMultipleComponent]
+    public sealed class DialogueColumn : BaseDialoguePrinter, IDialogueChoicePresenter {
+        public DialogueColumnLayout Layout;
 
-        #region IScriptThreadOwned
+        [NonSerialized] private DialogueLine m_CurrentLine;
 
-        void IScriptThreadOwned.ClearThreadOwner() {
-            
+        public override IEnumerator TypeLine(TagString text, TagTextData textData) {
+            if (m_CurrentLine.Visibility.alpha <= 0) {
+                m_CurrentLine.SetVisible(true);
+                Layout.RecomputePositioning();
+                yield return 0.1f;
+            }
         }
 
-        LeafThreadHandle IScriptThreadOwned.GetThreadOwner() {
-            throw new NotImplementedException();
+        public override void UpdateCharacter(DialogueCharacterState character) {
+            if (!m_CurrentLine) {
+                return;
+            }
+
+            m_CurrentLine.SetCharacterInfo(character, null);
         }
 
-        #endregion // IScriptThreadOwned
-
-        public void CancelSkip() {
-            throw new NotImplementedException();
+        protected override void ConfigureEventHandler(TagStringEventHandler handler) {
+            base.ConfigureEventHandler(handler);
         }
 
-        public IEnumerator CompleteLine() {
-            throw new NotImplementedException();
+        protected override void PrepareTextDisplay(TagString text, DialogueCharacterState character) {
+            m_CurrentLine = Layout.LinePool.Alloc();
+            Layout.ActiveLines.PushBack(m_CurrentLine);
+            m_CurrentLine.SetCharacterInfo(character, null);
+            m_CurrentLine.Populate(text);
+            m_CurrentLine.CharacterLayout.Sync();
+            m_CurrentLine.Layout.Sync();
+            Positioning.SetAnchor((RectTransform) m_CurrentLine.transform, TextAnchor.LowerCenter);
+            m_CurrentLine.SetVisible(false);
         }
 
-        public void FastForwardLine(int visibleCount, int richCount) {
-            throw new NotImplementedException();
+        public override void FastForwardLine(int visibleCount, int richCount) { }
+
+        public override IEnumerator CompleteLine() {
+            m_CurrentLine = null;
+
+            if (LeafRuntime.PredictChoice(ThreadOwner.GetThread())) {
+                yield break;
+            }
+
+            Layout.DefaultNextButton.Content.Populate("...");
+            Layout.DefaultNextButton.Content.SetCharacterInfo(default, null);
+            Layout.DefaultNextButton.Content.Layout.Sync();
+            Layout.DefaultNextButton.Content.SetVisible(true);
+
+            while (true) {
+                if (Layout.DefaultNextButton.ConsumeClick() || InputControls.CheckAdvanceInput()) {
+                    break;
+                }
+
+                yield return null;
+            }
+
+            Layout.DefaultNextButton.Content.SetVisible(false);
+            yield return 0.1f;
         }
 
-        public TagStringEventHandler PrepareLine(TagString text, DialogueCharacterState character, TagStringEventHandler parentHandler) {
-            throw new NotImplementedException();
-        }
-
-        public void SetThreadOwner(LeafThreadHandle handle) {
-            throw new NotImplementedException();
-        }
-
-        public void StartSkip() {
-            throw new NotImplementedException();
-        }
-
-        public bool TryClearThreadOwner(LeafThreadHandle handle, ScriptThreadOwnershipClearReason cancelType) {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerator TypeLine(TagString text, TagTextData textData) {
-            throw new NotImplementedException();
-        }
-
-        public void UpdateCharacter(DialogueCharacterState character) {
-            throw new NotImplementedException();
-        }
-
-        void IRegistrationCallbacks.OnDeregister() {
-            ScriptUtility.DeregisterDialoguePrinter(Id, this);
-        }
-
-        void IRegistrationCallbacks.OnRegister() {
-            ScriptUtility.RegisterDialoguePrinter(Id, this);
+        public IEnumerator ShowOptions(LeafChoice choice, LeafNode node, ScriptThread thread, DialogueCharacterState character) {
+            yield break;
         }
     }
-
 }
