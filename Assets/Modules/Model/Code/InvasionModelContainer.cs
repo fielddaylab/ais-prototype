@@ -30,19 +30,19 @@ namespace AIS.Model
         {
             for (int i = 0; i < m_Ecosystems.Count; i++)
             {
-                Destroy(m_Ecosystems[i]);
+                Destroy(m_Ecosystems[i].gameObject);
             }
             m_Ecosystems.Clear();
 
             for (int i = 0; i < m_Pathways.Count; i++)
             {
-                Destroy(m_Pathways[i]);
+                Destroy(m_Pathways[i].gameObject);
             }
             m_Pathways.Clear();
 
             for (int i = 0; i < m_SpeciesClusters.Count; i++)
             {
-                Destroy(m_SpeciesClusters[i]);
+                Destroy(m_SpeciesClusters[i].gameObject);
             }
             m_SpeciesClusters.Clear();
 

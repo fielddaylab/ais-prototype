@@ -23,6 +23,7 @@ namespace AIS.Model
         public float StartingTriggerChance;
         public PathwayType PathwayType;
         public bool IsNotHidden;
+        public PathDir StartingDir;
     }
 
     [Flags]
@@ -57,6 +58,13 @@ namespace AIS.Model
         public float Value;
     }
 
+    public enum PathDir
+    {
+        None,
+        Input,
+        Output
+    }
+
     public class Pathway : MonoBehaviour, IReducible, IIncreasable, IRemovable, IRevealable
     {
         #region Inspector
@@ -75,6 +83,7 @@ namespace AIS.Model
         public float TransferTriggerChance { get; private set; }
         public float TransferRate { get; private set; }
         public bool IsHidden { get; private set; }
+        public PathDir Dir { get; private set; }
 
         #endregion // Inspector
 
@@ -84,6 +93,7 @@ namespace AIS.Model
             DestEcosystemId = setupData.DestEcosystemId;
             PathwayType = setupData.PathwayType;
             SetIsHidden(!setupData.IsNotHidden);
+            Dir = setupData.StartingDir;
 
             this.transform.position = setupData.Pos;
             MainRenderer.sprite = setupData.Sprite;

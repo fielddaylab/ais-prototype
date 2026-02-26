@@ -18,11 +18,12 @@ namespace AIS.Intervene
         public string ImgPath;
 
         public int Cost;
+        public ActionEffectBundle[] DiscoverResults;
         public ActionEffectBundle[] Effects;
 
         public bool IsValid;
 
-        public ActionCardData(SerializedHash32 cardID, string title, string desc, string imgPath, int cost, ActionEffectBundle[] effects)
+        public ActionCardData(SerializedHash32 cardID, string title, string desc, string imgPath, int cost, ActionEffectBundle[] discoverResults, ActionEffectBundle[] effects)
         {
             CardID = cardID;
             Title = title;
@@ -30,6 +31,7 @@ namespace AIS.Intervene
             ImgPath = imgPath;
 
             Cost = cost;
+            DiscoverResults = discoverResults;
             Effects = effects;
 
             IsValid = true;
@@ -64,6 +66,7 @@ namespace AIS.Intervene
         private static readonly string DESC_TAG = "@desc";
         private static readonly string IMAGE_PATH_TAG = "@path";
         private static readonly string COST_TAG = "@cost";
+        private static readonly string DISCOVER_RESULT_TAG = "@discoverresult";
         private static readonly string EFFECT_TAG = "@effect";
         private static readonly string OVERRIDE_EFFECT_TAG = "@overrideeffect";
 
@@ -202,10 +205,13 @@ namespace AIS.Intervene
                 }
             }
 
+            // DiscoverResults parsing
+            ActionEffectBundle[] discoverResults = ParseDiscoverResults(cardDef, cardIdStr);
+
             // Action Effects parsing
             ActionEffectBundle[] effects = ParseEffects(cardDef, cardIdStr);
 
-            return new ActionCardData(cardID, title, desc, imgPath, cost, effects);
+            return new ActionCardData(cardID, title, desc, imgPath, cost, discoverResults, effects);
         }
 
         #region Effect Parsing Helpers
@@ -242,6 +248,44 @@ namespace AIS.Intervene
             }
 
             return effects.ToArray();
+        }
+
+        static private ActionEffectBundle[] ParseDiscoverResults(string cardDef, string cardIdStr)
+        {
+            List<ActionEffectBundle> discoverResults = new List<ActionEffectBundle>();
+
+            // Find all @discoverresult blocks
+            int searchStart = 0;
+            while (true)
+            {
+                int discoverIndex = cardDef.ToLower().IndexOf(DISCOVER_RESULT_TAG, searchStart);
+                if (discoverIndex == -1) break;
+
+                // Find the next @discoverresult or end of string to determine this result's boundaries
+                int nextDiscoverIndex = cardDef.ToLower().IndexOf(DISCOVER_RESULT_TAG, discoverIndex + DISCOVER_RESULT_TAG.Length);
+                if (nextDiscoverIndex == -1)
+                {
+                    nextDiscoverIndex = cardDef.ToLower().IndexOf(EFFECT_TAG, discoverIndex + DISCOVER_RESULT_TAG.Length);
+                }
+                string discoverBlock;
+
+                if (nextDiscoverIndex == -1)
+                {
+                    discoverBlock = cardDef.Substring(discoverIndex);
+                }
+                else
+                {
+                    discoverBlock = cardDef.Substring(discoverIndex, nextDiscoverIndex - discoverIndex);
+                }
+
+                // Parse this discover result block (which may contain @overrideEffect)
+                ActionEffectBundle discoverResult = ParseSingleEffectBundle(discoverBlock, cardIdStr);
+                discoverResults.Add(discoverResult);
+
+                searchStart = discoverIndex + DISCOVER_RESULT_TAG.Length;
+            }
+
+            return discoverResults.ToArray();
         }
 
         static private ActionEffectBundle ParseSingleEffectBundle(string effectBlock, string cardIdStr)
@@ -715,6 +759,17 @@ namespace AIS.Intervene
             else if ((variableName.Contains("type") || variableName.Contains("pathway")) && operatorChar == EQ_CHAR)
             {
                 condition.Condition = ActionCondition.PathwayType;
+                condition.StrCheck = valueStr;
+            }
+            // Pathway Type conditions (only with = operator)
+            else if (variableName.Contains("dir") && valueStr.Contains("input") && operatorChar == EQ_CHAR)
+            {
+                condition.Condition = ActionCondition.IsInput;
+                condition.StrCheck = valueStr;
+            }
+            else if (variableName.Contains("dir") && valueStr.Contains("output") && operatorChar == EQ_CHAR)
+            {
+                condition.Condition = ActionCondition.IsOutput;
                 condition.StrCheck = valueStr;
             }
             // Generic string comparison (for future extensibility)

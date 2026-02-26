@@ -22,10 +22,13 @@ namespace AIS.Intervene
                 newCard.ImgPath = cardData.ImgPath;
                 newCard.SetBaseCost(cardData.Cost);
 
+                newCard.DiscoverResults = cardData.DiscoverResults;
                 newCard.Effects = cardData.Effects;
 
                 CardStackUtility.AddToTop(this, newCard, false);
             }
+
+            AisGame.Events.Dispatch(InterveneEvents.OnActionDeckConstructed);
         }
 
         public void Shuffle()

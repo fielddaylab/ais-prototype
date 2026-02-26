@@ -108,6 +108,7 @@ MonoBehaviour:
     StartingTriggerChance: 1
     PathwayType: 16
     IsNotHidden: 0
+    StartingDir: 0
   - PathwayId:
       m_Source: path-2-to-3
       m_HashValue: 3174743921
@@ -124,6 +125,7 @@ MonoBehaviour:
     StartingTriggerChance: 1
     PathwayType: 8
     IsNotHidden: 0
+    StartingDir: 0
   - PathwayId:
       m_Source: path-3-to-4
       m_HashValue: 3136505241
@@ -140,6 +142,7 @@ MonoBehaviour:
     StartingTriggerChance: 1
     PathwayType: 1
     IsNotHidden: 0
+    StartingDir: 0
   - PathwayId:
       m_Source: path-4-to-1
       m_HashValue: 2153858281
@@ -155,7 +158,8 @@ MonoBehaviour:
     StartingTransferRate: 0.5
     StartingTriggerChance: 1
     PathwayType: 4
-    IsNotHidden: 1
+    IsNotHidden: 0
+    StartingDir: 0
   - PathwayId:
       m_Source: path-EXTERN-IN-to-1
       m_HashValue: 1868001983
@@ -172,6 +176,7 @@ MonoBehaviour:
     StartingTriggerChance: 0.5
     PathwayType: 8
     IsNotHidden: 0
+    StartingDir: 1
   - PathwayId:
       m_Source: path-3-to-EXTERN-OUT
       m_HashValue: 3542182944
@@ -188,6 +193,7 @@ MonoBehaviour:
     StartingTriggerChance: 0.5
     PathwayType: 4
     IsNotHidden: 0
+    StartingDir: 2
   InvasionCurveThresholds:
   - Threshold: 0
     SpeciesSetups:

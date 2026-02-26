@@ -362,28 +362,28 @@ namespace AIS.Intervene
                         switch (verb.Verb)
                         {
                             case ActionVerb.Reduce:
-                                TryReduce(target.QueriableObj, verb);
+                                ActionEffectUtility.TryReduce(target.QueriableObj, verb);
                                 break;
                             case ActionVerb.Increase:
-                                TryIncrease(target.QueriableObj, verb);
+                                ActionEffectUtility.TryIncrease(target.QueriableObj, verb);
                                 break;
                             case ActionVerb.Remove:
-                                TryRemove(target.QueriableObj, verb);
+                                ActionEffectUtility.TryRemove(target.QueriableObj, verb);
                                 break;
                             case ActionVerb.Reveal:
-                                TryReveal(target.QueriableObj, verb);
+                                ActionEffectUtility.TryReveal(target.QueriableObj, verb);
                                 break;
                             case ActionVerb.AddTrap:
-                                TryAddTrap(target.QueriableObj, verb);
+                                ActionEffectUtility.TryAddTrap(target.QueriableObj, verb);
                                 break;
                             case ActionVerb.AddNest:
-                                TryAddNest(target.QueriableObj, verb);
+                                ActionEffectUtility.TryAddNest(target.QueriableObj, verb);
                                 break;
                             case ActionVerb.Modify:
-                                TryModify(target.QueriableObj, verb);
+                                ActionEffectUtility.TryModify(target.QueriableObj, verb);
                                 break;
                             case ActionVerb.Match:
-                                TryMatch(target.QueriableObj, verb);
+                                ActionEffectUtility.TryMatch(target.QueriableObj, verb);
                                 break;
                             default:
                                 continue;
@@ -396,130 +396,6 @@ namespace AIS.Intervene
         }
 
         #endregion // Routines
-
-        #region Effect Execution
-
-        private bool TryReduce(GameObject queriable, ActionVerbDetails verbDetails)
-        {
-            var toReduce = queriable.GetComponent<IReducible>();
-
-            if (toReduce != null)
-            {
-                return toReduce.TryReduce(verbDetails.Values, verbDetails.ModType);
-            }
-            else
-            {
-                Debug.LogWarning("[Reducible] Tried to reduce on a tag (" + queriable.name + ") that does not support it!");
-                return false;
-            }
-        }
-
-        private bool TryIncrease(GameObject queriable, ActionVerbDetails verbDetails)
-        {
-            var toIncrease = queriable.GetComponent<IIncreasable>();
-
-            if (toIncrease != null)
-            {
-                return toIncrease.TryIncrease(verbDetails.Values, verbDetails.ModType);
-            }
-            else
-            {
-                Debug.LogWarning("[Increasable] Tried to increase on a tag (" + queriable.name + ") that does not support it!");
-                return false;
-            }
-        }
-
-        private bool TryRemove(GameObject queriable, ActionVerbDetails verbDetails)
-        {
-            var toRemove = queriable.GetComponent<IRemovable>();
-
-            if (toRemove != null)
-            {
-                return toRemove.TryRemove();
-            }
-            else
-            {
-                Debug.LogWarning("[Increasable] Tried to remove on a tag (" + queriable.name + ") that does not support it!");
-                return false;
-            }
-        }
-
-        private bool TryReveal(GameObject queriable, ActionVerbDetails verbDetails)
-        {
-            var toReveal = queriable.GetComponent<IRevealable>();
-
-            if (toReveal != null)
-            {
-                return toReveal.TryReveal();
-            }
-            else
-            {
-                Debug.LogWarning("[Increasable] Tried to reveal on a tag (" + queriable.name + ") that does not support it!");
-                return false;
-            }
-        }
-
-        private bool TryAddTrap(GameObject queriable, ActionVerbDetails verbDetails)
-        {
-            var toAddTrapTo = queriable.GetComponent<IAddTrapable>();
-
-            if (toAddTrapTo != null)
-            {
-                return toAddTrapTo.TryAddTrap((int)verbDetails.Values[0]);
-            }
-            else
-            {
-                Debug.LogWarning("[Increasable] Tried to add trap on a tag (" + queriable.name + ") that does not support it!");
-                return false;
-            }
-        }
-
-        private bool TryAddNest(GameObject queriable, ActionVerbDetails verbDetails)
-        {
-            var toAddNestTo = queriable.GetComponent<IAddNestable>();
-
-            if (toAddNestTo != null)
-            {
-                return toAddNestTo.TryAddNest((int)verbDetails.Values[0]);
-            }
-            else
-            {
-                Debug.LogWarning("[Increasable] Tried to add nest on a tag (" + queriable.name + ") that does not support it!");
-                return false;
-            }
-        }
-
-        private bool TryModify(GameObject queriable, ActionVerbDetails verbDetails)
-        {
-            var toModify = queriable.GetComponent<IModifiable>();
-
-            if (toModify != null)
-            {
-                return toModify.TryModify(verbDetails.Values, verbDetails.ModType);
-            }
-            else
-            {
-                Debug.LogWarning("[Increasable] Tried to modify on a tag (" + queriable.name + ") that does not support it!");
-                return false;
-            }
-        }
-
-        private bool TryMatch(GameObject queriable, ActionVerbDetails verbDetails)
-        {
-            var toMatch = queriable.GetComponent<IMatchable>();
-
-            if (toMatch != null)
-            {
-                return toMatch.TryMatch(queriable.GetComponent<IComparable>().GetId(), verbDetails.RelativeId, verbDetails.Values[0]);
-            }
-            else
-            {
-                Debug.LogWarning("[Increasable] Tried to increase on a tag (" + queriable.name + ") that does not support it!");
-                return false;
-            }
-        }
-
-        #endregion // Effect Execution
 
         #region HardCoded Modification
 
@@ -669,7 +545,7 @@ namespace AIS.Intervene
 
                 foreach (var tag in filteredTags)
                 {
-                    TryReduce(tag.QueriableObj, verbDetails);
+                    ActionEffectUtility.TryReduce(tag.QueriableObj, verbDetails);
                 }
 
                 ModelTagMgr.Instance.ClearExistingHighlights();
@@ -677,5 +553,132 @@ namespace AIS.Intervene
         }
 
         #endregion // HardCoded Execution
+    }
+
+    public static class ActionEffectUtility
+    {
+        #region Effect Execution
+
+        public static bool TryReduce(GameObject queriable, ActionVerbDetails verbDetails)
+        {
+            var toReduce = queriable.GetComponent<IReducible>();
+
+            if (toReduce != null)
+            {
+                return toReduce.TryReduce(verbDetails.Values, verbDetails.ModType);
+            }
+            else
+            {
+                Debug.LogWarning("[Reducible] Tried to reduce on a tag (" + queriable.name + ") that does not support it!");
+                return false;
+            }
+        }
+
+        public static bool TryIncrease(GameObject queriable, ActionVerbDetails verbDetails)
+        {
+            var toIncrease = queriable.GetComponent<IIncreasable>();
+
+            if (toIncrease != null)
+            {
+                return toIncrease.TryIncrease(verbDetails.Values, verbDetails.ModType);
+            }
+            else
+            {
+                Debug.LogWarning("[Increasable] Tried to increase on a tag (" + queriable.name + ") that does not support it!");
+                return false;
+            }
+        }
+
+        public static bool TryRemove(GameObject queriable, ActionVerbDetails verbDetails)
+        {
+            var toRemove = queriable.GetComponent<IRemovable>();
+
+            if (toRemove != null)
+            {
+                return toRemove.TryRemove();
+            }
+            else
+            {
+                Debug.LogWarning("[Increasable] Tried to remove on a tag (" + queriable.name + ") that does not support it!");
+                return false;
+            }
+        }
+
+        public static bool TryReveal(GameObject queriable, ActionVerbDetails verbDetails)
+        {
+            var toReveal = queriable.GetComponent<IRevealable>();
+
+            if (toReveal != null)
+            {
+                return toReveal.TryReveal();
+            }
+            else
+            {
+                Debug.LogWarning("[Increasable] Tried to reveal on a tag (" + queriable.name + ") that does not support it!");
+                return false;
+            }
+        }
+
+        public static bool TryAddTrap(GameObject queriable, ActionVerbDetails verbDetails)
+        {
+            var toAddTrapTo = queriable.GetComponent<IAddTrapable>();
+
+            if (toAddTrapTo != null)
+            {
+                return toAddTrapTo.TryAddTrap((int)verbDetails.Values[0]);
+            }
+            else
+            {
+                Debug.LogWarning("[Increasable] Tried to add trap on a tag (" + queriable.name + ") that does not support it!");
+                return false;
+            }
+        }
+
+        public static bool TryAddNest(GameObject queriable, ActionVerbDetails verbDetails)
+        {
+            var toAddNestTo = queriable.GetComponent<IAddNestable>();
+
+            if (toAddNestTo != null)
+            {
+                return toAddNestTo.TryAddNest((int)verbDetails.Values[0]);
+            }
+            else
+            {
+                Debug.LogWarning("[Increasable] Tried to add nest on a tag (" + queriable.name + ") that does not support it!");
+                return false;
+            }
+        }
+
+        public static bool TryModify(GameObject queriable, ActionVerbDetails verbDetails)
+        {
+            var toModify = queriable.GetComponent<IModifiable>();
+
+            if (toModify != null)
+            {
+                return toModify.TryModify(verbDetails.Values, verbDetails.ModType);
+            }
+            else
+            {
+                Debug.LogWarning("[Increasable] Tried to modify on a tag (" + queriable.name + ") that does not support it!");
+                return false;
+            }
+        }
+
+        public static bool TryMatch(GameObject queriable, ActionVerbDetails verbDetails)
+        {
+            var toMatch = queriable.GetComponent<IMatchable>();
+
+            if (toMatch != null)
+            {
+                return toMatch.TryMatch(queriable.GetComponent<IComparable>().GetId(), verbDetails.RelativeId, verbDetails.Values[0]);
+            }
+            else
+            {
+                Debug.LogWarning("[Increasable] Tried to increase on a tag (" + queriable.name + ") that does not support it!");
+                return false;
+            }
+        }
+
+        #endregion // Effect Execution
     }
 }

@@ -48,9 +48,9 @@ namespace AIS.Intervene
             Budget.LoadPlayerBudget(inBudget);
             Awareness.LoadPlayerAwareness(inAwareness);
             Stats.LoadPlayerStats(inStats[0], inStats[1], inStats[2], inStats[3]);
-            CardMgr.LoadSetupData(inEvidenceIds);
             CurveInterfacer.LoadCurve(inInvasionCurve);
             InvasionModel.Load(CurveInterfacer.CurrVal);
+            CardMgr.LoadSetupData(inEvidenceIds);
         }
 
         // TODO: any data that needs to be passed to next scene
