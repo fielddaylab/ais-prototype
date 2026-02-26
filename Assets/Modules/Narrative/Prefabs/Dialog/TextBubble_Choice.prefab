@@ -30,7 +30,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3775999569407377305, guid: ffbb30178c6e70b4d9616b06af86c963, type: 3}
       propertyPath: m_maxLineWidth
-      value: 200
+      value: 180
       objectReference: {fileID: 0}
     - target: {fileID: 3775999569407377305, guid: ffbb30178c6e70b4d9616b06af86c963, type: 3}
       propertyPath: m_VerticalAlignment

@@ -8,7 +8,7 @@ namespace FieldDay.UI {
 #if UNITY_EDITOR
     [ExecuteAlways]
 #endif // UNITY_EDITOR
-    public sealed class LayoutSizeGroup : MonoBehaviour {
+    public sealed class LayoutSizeGroup : MonoBehaviour, ILayoutElement {
         public enum SyncMode {
             Size,
             PreferredSize,
@@ -23,6 +23,7 @@ namespace FieldDay.UI {
         [Required] public RectTransform[] Children;
 
         [NonSerialized] private Vector2 m_LastKnownSize;
+        [NonSerialized] private Vector2 m_LastPaddedSize;
 
         /// <summary>
         /// Returns the last known size.
@@ -37,7 +38,7 @@ namespace FieldDay.UI {
         }
 
         public void Sync(RectTransform root, SyncMode mode, Vector2 padding) {
-            if (!root || !isActiveAndEnabled) {
+            if (!root) {
                 return;
             }
 
@@ -75,6 +76,7 @@ namespace FieldDay.UI {
 
                 size.x = Mathf.Ceil(size.x + Padding.x);
                 size.y = Mathf.Ceil(size.y + Padding.y);
+                m_LastPaddedSize = size;
 
                 foreach (var child in Children) {
                     if (!child) {
@@ -86,6 +88,43 @@ namespace FieldDay.UI {
                 }
             }
         }
+
+        #region ILayoutElement
+
+        float ILayoutElement.minWidth {
+            get { return MinSize.x; }
+        }
+
+        float ILayoutElement.preferredWidth {
+            get { return m_LastPaddedSize.x; }
+        }
+
+        float ILayoutElement.flexibleWidth {
+            get { return 0; }
+        }
+
+        float ILayoutElement.minHeight {
+            get { return MinSize.y; }
+        }
+
+        float ILayoutElement.preferredHeight {
+            get { return m_LastPaddedSize.y; }
+        }
+
+        float ILayoutElement.flexibleHeight {
+            get { return 0; }
+        }
+
+        int ILayoutElement.layoutPriority {
+            get { return 100; }
+        }
+        void ILayoutElement.CalculateLayoutInputHorizontal() {
+        }
+
+        void ILayoutElement.CalculateLayoutInputVertical() {
+        }
+
+        #endregion // ILayoutElement
 
 #if UNITY_EDITOR
         private void LateUpdate() {

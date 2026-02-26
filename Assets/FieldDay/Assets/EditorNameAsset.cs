@@ -19,7 +19,7 @@ namespace FieldDay.Assets {
         bool IBaked.Bake(BakeFlags flags, BakeContext context) {
             const BakeFlags targetFlags = BakeFlags.IsBatchMode | BakeFlags.IsBuild;
             if ((flags & targetFlags) == targetFlags) {
-                DestroyImmediate(this);
+                DestroyImmediate(this, true);
                 return true;
             }
 

@@ -6,6 +6,7 @@ using BeauUtil.Tags;
 using BeauUtil.Variants;
 using FieldDay.Data;
 using FieldDay.Debugging;
+using FieldDay.Localization;
 using FieldDay.Scenes;
 using FieldDay.SharedState;
 using FieldDay.Vox;
@@ -290,6 +291,70 @@ namespace FieldDay.Scripting {
         }
 
         #endregion // Tag Parsing
+
+        #region Text Lookup
+
+        /// <summary>
+        /// Attempts to parse a line code out to a TagString.
+        /// </summary>
+        static public bool ReadText(ref TagString tagString, StringHash32 lineId, object context = null) {
+            // TODO: Implement with Loc
+            return false;
+        }
+
+        /// <summary>
+        /// Attempts to parse a line code out to a TagString.
+        /// </summary>
+        static public bool ReadText(TagString tagString, StringHash32 lineId, object context = null) {
+            // TODO: Implement with Loc
+            return false;
+        }
+
+        /// <summary>
+        /// Attempts to parse a line code out to a TagString.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        static public bool ReadText(ref TagString tagString, LeafThreadHandle threadContext, StringHash32 lineId, object context = null) {
+            return ReadText(ref tagString, threadContext.GetThread<ScriptThread>().PeekNode(), lineId, context);
+        }
+
+        /// <summary>
+        /// Attempts to parse a line code out to a TagString.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        static public bool ReadText(TagString tagString, LeafThreadHandle threadContext, StringHash32 lineId, object context = null) {
+            return ReadText(tagString, threadContext.GetThread<ScriptThread>().PeekNode(), lineId, context);
+        }
+
+        /// <summary>
+        /// Attempts to parse a line code out to a TagString.
+        /// </summary>
+        static public bool ReadText(ref TagString tagString, LeafNode nodeContext, StringHash32 lineId, object context = null) {
+            if (LeafUtils.TryLookupLine(Runtime.Plugin, lineId, nodeContext, out string line)) {
+                Runtime.TagParser.Parse(ref tagString, line, context);
+                return true;
+            }
+
+            tagString?.Clear();
+            return false;
+        }
+
+        /// <summary>
+        /// Attempts to parse a line code out to a TagString.
+        /// </summary>
+        static public bool ReadText(TagString tagString, LeafNode nodeContext, StringHash32 lineId, object context = null) {
+            Assert.NotNull(tagString);
+
+            if (LeafUtils.TryLookupLine(Runtime.Plugin, lineId, nodeContext, out string line)) {
+                Runtime.TagParser.Parse(ref tagString, line, context);
+                return true;
+            }
+
+            tagString?.Clear();
+            return false;
+        }
+
+        #endregion // Text Lookup
 
         #region Actors
 

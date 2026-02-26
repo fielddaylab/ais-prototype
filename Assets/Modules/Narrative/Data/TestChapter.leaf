@@ -14,7 +14,34 @@
 {@Player}       Uhhhhhh what do you mean?
 {@Narrator}     Listen, kid, we don't have much time.
                 I need you to take some stat bonuses.
+$set local:pointsToAllocate = 4
+$branch .StatBonusLoop
+
+:: StatBonusLoop
+$if !local:pointsToAllocate
+    $goto .Finishing
+$endif // 
+
+$set local:pointsToAllocate - 1
+
+$choice .ChooseTech; Adjust my tech.
+$choice .ChooseRanger; Adjust my outdoors-y-ness.
+$choice .ChooseNo; What about no?
+
+:: ChooseTech
 $call AdjustStat(Tech, 1)
 {@} Your Tech stat is now {$Stat(Tech)}!
+$goto .StatBonusLoop
+
+:: ChooseRanger
+$call AdjustStat(Ranger, 1)
+{@} Your Ranger stat is now {$Stat(Tech)}!
+$goto .StatBonusLoop
+
+:: ChooseNo
+{@Narrator}     ...huh.
+$goto .Finishing
+
+:: Finishing
 
 $call BeginIntervention()

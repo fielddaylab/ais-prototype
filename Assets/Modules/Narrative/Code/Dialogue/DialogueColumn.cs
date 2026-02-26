@@ -54,7 +54,10 @@ namespace AIS.Narrative {
             Layout.ActiveLines.PushBack(m_CurrentLine);
             m_CurrentLine.SetCharacterInfo(character, null);
             m_CurrentLine.Populate(text);
-            m_CurrentLine.CharacterLayout.Sync();
+
+            if (m_CurrentLine.CharacterLayout.isActiveAndEnabled) {
+                m_CurrentLine.CharacterLayout.Sync();
+            }
             m_CurrentLine.Layout.Sync();
             Positioning.SetAnchor((RectTransform) m_CurrentLine.transform, TextAnchor.LowerCenter);
             m_CurrentLine.SetVisible(false);
@@ -87,7 +90,40 @@ namespace AIS.Narrative {
         }
 
         public IEnumerator ShowOptions(LeafChoice choice, LeafNode node, ScriptThread thread, DialogueCharacterState character) {
-            yield break;
+            for(int i = 0; i < choice.Count; i++) {
+                var data = choice[i];
+                DialogueChoiceButton btn = Layout.Choices[i];
+                btn.gameObject.SetActive(true);
+
+                ScriptUtility.ReadText(thread.TagString, node, data.LineCode);
+                btn.Content.Populate(thread.TagString);
+                btn.Content.Layout.Sync();
+                btn.Content.SetVisible(true);
+
+                btn.Listener.enabled = data.IsAvailable;
+            }
+
+            for (int i = choice.Count; i < Layout.Choices.Length; i++) {
+                DialogueChoiceButton btn = Layout.Choices[i];
+                btn.gameObject.SetActive(false);
+            }
+
+            bool chosen = false;
+            while(!chosen) {
+                for(int i = 0; i < choice.Count; i++) {
+                    if (Layout.Choices[i].ConsumeClick()) {
+                        choice.Choose(i);
+                        chosen = true;
+                        break;
+                    }
+                }
+                yield return null;
+            }
+
+            for(int i = 0; i < Layout.Choices.Length; i++) {
+                Layout.Choices[i].Content.SetVisible(false);
+                Layout.Choices[i].gameObject.SetActive(false);
+            }
         }
     }
 }
