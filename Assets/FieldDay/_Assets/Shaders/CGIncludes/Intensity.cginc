@@ -16,21 +16,32 @@ half _IntensityAlphaThreshold;
 
 /// Helpers
 
-inline float4 LayerIntensityTexture(sampler2D intensityTexture, float2 uv, float4 color)
+inline void LayerIntensityTextureComponents(sampler2D intensityTexture, float2 uv, out float colorComponent, out float alphaComponent)
 {
     float intensity = SampleSingle(intensityTexture, uv);
-    return float4(
 #if FD_INTENSITY_COLOR || FD_INTENSITY_COLOR_ALPHA
-        color.rgb * saturate(intensity / _IntensityColorThreshold),
+    colorComponent = saturate(intensity / _IntensityColorThreshold);
 #else
-        color.rgb,
+    colorComponent = 1;
 #endif // FD_INTENSITY_COLOR || FD_INTENSITY_COLOR_ALPHA
+    
 #if FD_INTENSITY_ALPHA || FD_INTENSITY_COLOR_ALPHA
-        saturate(intensity / _IntensityAlphaThreshold) * color.a
+    alphaComponent = saturate(intensity / _IntensityAlphaThreshold);
 #else
-        color.a
+    alphaComponent = 1;
 #endif // FD_INTENSITY_ALPHA || FD_INTENSITY_COLOR_ALPHA
-    );
+}
+
+inline float4 LayerIntensityTexture(sampler2D intensityTexture, float2 uv)
+{
+    float colorComponent, alphaComponent;
+    LayerIntensityTextureComponents(intensityTexture, uv, colorComponent, alphaComponent);
+    return float4(colorComponent, colorComponent, colorComponent, alphaComponent);
+}
+
+inline float4 LayerIntensityTexture(sampler2D intensityTexture, float2 uv, float4 color)
+{
+    return color * LayerIntensityTexture(intensityTexture, uv);
 }
 
 #endif // FD_INTENSITY_INCLUDED

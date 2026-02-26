@@ -118,6 +118,11 @@ namespace FieldDay {
         };
 
         [SerializeField]
+        private ShadingMgr.Config m_ShadingConfig = new ShadingMgr.Config() {
+            
+        };
+
+        [SerializeField]
         private AssetPack[] m_GlobalAssetPacks = Array.Empty<AssetPack>();
 
         #endregion // Inspector
@@ -260,7 +265,7 @@ namespace FieldDay {
             Log.Msg("[GameLoop] Starting...");
             Log.Msg("[GameLoop] Word Size = {0} ({1})", Unsafe.PointerSize, Unsafe.IsPointerSizeCompileTimeConstant ? "compile-time" : "runtime");
             Log.Msg("[GameLoop] Stopwatch Frequency = {0}hz", System.Diagnostics.Stopwatch.Frequency);
-            Log.Msg("[GameLoop] Graphics Device Type = {0}", SystemInfo.graphicsDeviceType);
+            Log.Msg("[GameLoop] Graphics Device Type = {0} (Shader Level {1})", SystemInfo.graphicsDeviceType, SystemInfo.graphicsShaderLevel);
 
             if (ReflectionBootData.ShouldUse()) {
                 ReflectionBootData.Mount(m_ReflectionData);
@@ -324,6 +329,10 @@ namespace FieldDay {
                 Log.Msg("[GameLoop] Creating rendering manager...");
                 Game.Rendering = new RenderMgr();
                 Game.Rendering.Initialize(m_RenderConfig);
+
+                Log.Msg("[GameLoop] Creating shading manager...");
+                Game.Shading = new ShadingMgr();
+                Game.Shading.Initialize(m_ShadingConfig);
 
                 Log.Msg("[GameLoop] Creating input manager...");
                 Game.Input = new InputMgr();
@@ -532,6 +541,10 @@ namespace FieldDay {
             Game.Input.Shutdown();
             Game.Input = null;
 
+            Log.Msg("[GameLoop] Shutting down shading manager...");
+            Game.Shading.Shutdown();
+            Game.Shading = null;
+
             Log.Msg("[GameLoop] Shutting down rendering manager...");
             Game.Rendering.Shutdown();
             Game.Rendering = null;
@@ -704,6 +717,7 @@ namespace FieldDay {
 
             Game.Gui.ProcessUpdate();
             Game.Gui.ProcessShortcuts();
+            Game.Gui.FlushInputLayerChanges();
 
             // flush event queue
             Game.Events.Flush();
@@ -859,6 +873,9 @@ namespace FieldDay {
 
                     OnPreUpdate.Invoke(Frame.UnscaledDeltaTime);
                 }
+
+                Game.Gui.FlushCommands();
+                Game.Gui.FlushInputLayerChanges();
 
                 DequeueNextValues();
 

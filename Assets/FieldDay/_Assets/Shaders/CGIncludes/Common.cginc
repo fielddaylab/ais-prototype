@@ -55,6 +55,8 @@ inline float2 Rotate2d(float2 base, float radians)
     return mul(MatrixCreateRotation2d(radians), base);
 }
 
+/// Color Space
+
 /// Fragment Operations
 
 #if FD_PREMULTIPLY_ALPHA
@@ -96,5 +98,15 @@ inline float2 Rotate2d(float2 base, float radians)
 #endif
 
 #define SampleTexture(texture, uv)              (tex2D((texture), (uv)))
+
+inline float4 SamplePalette(sampler2D palette, float normalizedIndex)
+{
+    return tex2D(palette, float2(normalizedIndex, 0.5));
+}
+
+inline float4 SamplePaletteRegion(sampler2D palette, float normalizedIndex, float2 regionStart, float regionWidth)
+{
+    return tex2D(palette, float2(regionStart.x + normalizedIndex * regionWidth, regionStart.y));
+}
 
 #endif // FD_COMMON_INCLUDED
