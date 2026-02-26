@@ -17,11 +17,17 @@ MonoBehaviour:
     LookupFlags: 58
     LookupInherit: 0
     Assemblies:
+    - AssemblyName: Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      TypeCount: 1
     - AssemblyName: FieldDay.Vox, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       TypeCount: 2
     - AssemblyName: FieldDay.Scripting, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       TypeCount: 1
     Types:
+    - TypeName: AisGame
+      Self: 0
+      MemberCount: 1
+      OverloadCount: 0
     - TypeName: FieldDay.Vox.VoxUtility
       Self: 0
       MemberCount: 1
@@ -35,6 +41,8 @@ MonoBehaviour:
       MemberCount: 1
       OverloadCount: 0
     Members:
+    - MemberName: OnPreBoot
+      Type: 8
     - MemberName: Initialize
       Type: 8
     - MemberName: Initialize
@@ -89,7 +97,7 @@ MonoBehaviour:
     - AssemblyName: FieldDay.Scripting, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       TypeCount: 1
     Types:
-    - TypeName: AIS.Intervene.CardsUtility
+    - TypeName: AIS.Intervene.ActionCardsUtility
       Self: 0
       MemberCount: 1
       OverloadCount: 0

@@ -13,8 +13,6 @@ using FieldDay.UI;
 using Leaf;
 using Leaf.Runtime;
 using TMPro;
-using UnityEditor;
-using UnityEditor.VersionControl;
 using UnityEngine;
 using UnityEngine.UI;
 
