@@ -30,6 +30,13 @@ namespace AIS.Intervene
 
             return newChunk;
         }
+
+        public void Clear()
+        {
+            SelectedTargets.Clear();
+            HardCodedId = null;
+            Verbs = new ActionVerbDetails[0];
+        }
     }
 
     public class ActionEffectChunkMgr : MonoBehaviour
@@ -209,7 +216,7 @@ namespace AIS.Intervene
 
             m_EffectToProcess = effectToProcess;
 
-            EffectChunk.SelectedTargets.Clear();
+            EffectChunk.Clear();
             if (RequireAtLeastOne)
             {
                 ConfirmChunkBtn.interactable = false;
