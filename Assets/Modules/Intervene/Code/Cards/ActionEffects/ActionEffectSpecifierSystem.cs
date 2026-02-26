@@ -99,7 +99,7 @@ namespace AIS.Intervene
             foreach (var toProcess in SelectedActionCards)
             {
                 ActionsProcessList.Add(toProcess);
-                ProcessCost += toProcess.Cost;
+                ProcessCost += toProcess.GetAdjustedCost();
             }
 
             ProcessedEffects.Clear();

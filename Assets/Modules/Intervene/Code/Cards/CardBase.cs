@@ -16,7 +16,17 @@ namespace AIS.Intervene {
         public CardAttributes Attributes;
 
         public SerializedHash32 CardID;
-        public int Cost;
+        public int BaseCost { get; protected set; }
+
+        public int GetAdjustedCost()
+        {
+            return (int)(BaseCost + InvasionCurveInterfacer.Instance.CurrVal * InvasionCurveInterfacer.Instance.CostIncreaseRate);
+        }
+
+        public void SetBaseCost(int cost)
+        {
+            BaseCost = cost;
+        }
 
         public abstract void PopulateCardUI(UICard toPopulate);
     }

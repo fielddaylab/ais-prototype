@@ -154,10 +154,28 @@ namespace AIS.Intervene {
         public override void PopulateCardUI(UICard toPopulate)
         {
             toPopulate.Title.SetText(Title);
-            toPopulate.CostText.SetText("$" + Cost.ToStringLookup());
+            toPopulate.CostText.SetText("$" + GetAdjustedCost().ToStringLookup());
             toPopulate.Description.SetText(Description);
+            toPopulate.CardData = this;
             // TODO: img
             // toPopulate.Img.SetText(Title);
+        }
+
+        private void Start()
+        {
+            AisGame.Events.Register(InterveneEvents.OnInvasionLevelChanged, HandleInvasionLevelChanged);
+        }
+
+        private void OnDisable()
+        {
+            if (AisGame.IsShuttingDown) { return; }
+
+            AisGame.Events.Deregister(InterveneEvents.OnInvasionLevelChanged, HandleInvasionLevelChanged);
+        }
+
+        private void HandleInvasionLevelChanged()
+        {
+
         }
     }
 

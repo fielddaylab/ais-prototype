@@ -13,7 +13,15 @@ namespace AIS.Intervene
         public InterveneAwarenessInterfacer Awareness;
         public StatsInterfacer Stats;
         public CardInteractionMgr CardMgr;
+        public InvasionCurveInterfacer CurveInterfacer;
         [HideInInspector] public InvasionModel InvasionModel;
+
+        private void Start()
+        {
+            AisGame.Events.Register(InterveneEvents.OnInterveneRestart, HandleInterveneRestart);
+
+            Load();
+        }
 
         // Data passed into this scene
         public void Load()
@@ -34,25 +42,21 @@ namespace AIS.Intervene
 
             List<SerializedHash32> inEvidenceIds = new List<SerializedHash32>();
 
-            int inInvasionCurve = 0;
+            float inInvasionCurve = 0;
 
             // Load data
             Budget.LoadPlayerBudget(inBudget);
             Awareness.LoadPlayerAwareness(inAwareness);
             Stats.LoadPlayerStats(inStats[0], inStats[1], inStats[2], inStats[3]);
             CardMgr.LoadSetupData(inEvidenceIds);
-            InvasionModel.Load(inInvasionCurve);
+            CurveInterfacer.LoadCurve(inInvasionCurve);
+            InvasionModel.Load(CurveInterfacer.CurrVal);
         }
 
         // TODO: any data that needs to be passed to next scene
         public void Return()
         {
 
-        }
-
-        private void Start()
-        {
-            AisGame.Events.Register(InterveneEvents.OnInterveneRestart, HandleInterveneRestart);
         }
 
         private void HandleInterveneRestart()

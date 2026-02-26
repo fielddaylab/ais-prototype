@@ -10,6 +10,8 @@ namespace AIS.Intervene {
     {
         [HideInInspector] public SerializedHash32 CardID;
 
+        [HideInInspector] public CardBase CardData;
+
         [Header("Front")]
         public CanvasGroup FrontGroup;
         public TMP_Text Title;
@@ -26,19 +28,24 @@ namespace AIS.Intervene {
         public Image BackImg;
 
         [HideInInspector] public int StackIndex;
-    }
 
-    public static class CardUIUtility
-    {
-        /*
-        public static void PopulateCard(UICard card, ActionCardData cardData)
+        private void Start()
         {
-            card.CardID = cardData.CardID;
-            card.Title.SetText(cardData.Title);
-            card.CostText.SetText("$" + cardData.Cost.ToStringLookup());
-            card.Description.SetText(cardData.Description);
-            card.Img.sprite = null; // cardData.ImgPath;
+            AisGame.Events.Register(InterveneEvents.OnInvasionLevelChanged, HandleInvasionLevelChanged);
         }
-        */
+
+        private void OnDisable()
+        {
+            if (AisGame.IsShuttingDown) { return; }
+
+            AisGame.Events.Deregister(InterveneEvents.OnInvasionLevelChanged, HandleInvasionLevelChanged);
+        }
+
+        private void HandleInvasionLevelChanged()
+        {
+            if (CardData == null) { return; }
+
+            CostText.SetText("$" + CardData.GetAdjustedCost().ToStringLookup());
+        }
     }
 }

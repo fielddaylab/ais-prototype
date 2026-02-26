@@ -165,7 +165,7 @@ namespace AIS.Intervene
 
             foreach (var card in toAfford)
             {
-                totalCost += card.Cost;
+                totalCost += card.GetAdjustedCost();
             }
 
             return totalCost <= budget.WorkingBudget.Budget;
