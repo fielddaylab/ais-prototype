@@ -31,10 +31,9 @@ namespace AIS.Intervene
             // TODO: manage proper dependency sequence
             InvasionModel = InvasionModel.Instance;
 
-            // TODO: convert to parameters
-            int inBudget = 3;
+            int inBudget = 3; // TODO
 
-            int inAwareness = 3;
+            int inAwareness = 3; // TODO
 
             var stats = Find.State<PlayerStats>().StatBlock;
             int[] inStats = new int[4];
@@ -43,7 +42,13 @@ namespace AIS.Intervene
             inStats[2] = stats.Tech;
             inStats[3] = stats.Research;
 
+            var inventory = Find.State<PlayerInventory>();
+            StringHash32[] evidenceIds = new StringHash32[inventory.EvidenceCards.Count];
+            inventory.EvidenceCards.CopyTo(evidenceIds);
             List<SerializedHash32> inEvidenceIds = new List<SerializedHash32>();
+            foreach (var evidenceId in evidenceIds) {
+                inEvidenceIds.Add(evidenceId);
+            }
 
             float inInvasionCurve = 0;
 

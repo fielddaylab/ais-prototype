@@ -32,6 +32,18 @@ namespace AIS.Intervene {
 
         public Routine SimRoutine;
 
+        private void Start()
+        {
+            AisGame.Events.Register(InterveneEvents.OnInterveneRestart, HandleInterveneRestart);
+        }
+
+        private void OnDisable()
+        {
+            if (AisGame.IsShuttingDown) { return; }
+
+            AisGame.Events.Deregister(InterveneEvents.OnInterveneRestart, HandleInterveneRestart);
+        }
+
         public void TickSim()
         {
             if (InvasionModelContainer.Instance == null) { return; }
@@ -535,6 +547,12 @@ namespace AIS.Intervene {
             {
                 tag.HideHighlight();
             }
+        }
+
+        private void HandleInterveneRestart()
+        {
+            InterveneUI.Instance.HideSimPhase();
+            SimRoutine.Stop();
         }
     }
 }
