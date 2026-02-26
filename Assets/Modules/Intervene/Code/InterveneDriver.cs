@@ -1,4 +1,5 @@
 using AIS.Model;
+using BeauRoutine;
 using BeauUtil;
 using FieldDay;
 using System;
@@ -27,10 +28,17 @@ namespace AIS.Intervene {
 
         private List<SpeciesTransferAllocation> m_SpeciesTransfers = new List<SpeciesTransferAllocation>();
 
+        public Routine SimRoutine;
+
         public void TickSim()
         {
             if (InvasionModelContainer.Instance == null) { return; }
 
+            SimRoutine.Replace(TickSimRoutine());
+        }
+
+        private IEnumerator TickSimRoutine()
+        {
             // predator / prey dynamics
             foreach (var ecosystem in InvasionModelContainer.Instance.GetAllEcosystems())
             {
@@ -61,6 +69,8 @@ namespace AIS.Intervene {
 
             Debug.Log("[InterveneDriver] Sim Progressed by 1 tick");
             AisGame.Events.Dispatch(InterveneEvents.OnEndTurn);
+
+            yield return null;
         }
 
         #region Simulate & Modify

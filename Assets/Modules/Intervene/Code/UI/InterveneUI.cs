@@ -50,6 +50,7 @@ namespace AIS.Intervene {
 
         private void HandleTickSimClicked()
         {
+            if (m_Driver.SimRoutine.Exists()) { return; }
             m_Driver.TickSim();
             m_BudgetInterfacer.BestowBudget();
         }
