@@ -198,7 +198,7 @@ MonoBehaviour:
         m_Source: eco-1
         m_HashValue: 415488260
       StartingPopulation: 3
-      StartingTravelType: 8
+      StartingTravelType: -1
       StartingTargetType: 1
     - SpeciesId:
         m_Source: snail
@@ -207,7 +207,7 @@ MonoBehaviour:
         m_Source: eco-2
         m_HashValue: 465821117
       StartingPopulation: 1
-      StartingTravelType: 8
+      StartingTravelType: -1
       StartingTargetType: 1
     - SpeciesId:
         m_Source: snail
@@ -216,7 +216,7 @@ MonoBehaviour:
         m_Source: eco-3
         m_HashValue: 449043498
       StartingPopulation: 1
-      StartingTravelType: 8
+      StartingTravelType: -1
       StartingTargetType: 1
     - SpeciesId:
         m_Source: swordfish
@@ -298,7 +298,7 @@ MonoBehaviour:
       m_Source: eco-EXTERN-IN
       m_HashValue: 848023977
     StartingPopulation: -1
-    StartingTravelType: 8
+    StartingTravelType: -1
     StartingTargetType: 1
   DefaultInvasive:
     SpeciesId:

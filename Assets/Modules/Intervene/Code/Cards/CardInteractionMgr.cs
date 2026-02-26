@@ -41,7 +41,7 @@ namespace AIS.Intervene
         private void Start()
         {
             // TEMP
-            LoadSetupData(null);
+            // LoadSetupData(null);
         }
 
         private void OnDisable()

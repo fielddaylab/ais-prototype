@@ -39,7 +39,7 @@ namespace AIS.Model
         private void Start()
         {
             // TEMP
-            Load(0);
+            // Load(0);
         }
 
         #endregion // Unity Callbacks

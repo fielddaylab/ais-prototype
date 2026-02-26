@@ -41,7 +41,7 @@ namespace AIS.Intervene
         private void Start()
         {
             // TEMP
-            LoadPlayerBudget(StartingBudget);
+            // LoadPlayerBudget(StartingBudget);
         }
 
         #endregion // Unity Callbacks
