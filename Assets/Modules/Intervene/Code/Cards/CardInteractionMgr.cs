@@ -41,7 +41,7 @@ namespace AIS.Intervene
         private void Start()
         {
             // TEMP
-            LoadSetupData(null);
+            // LoadSetupData(null);
         }
 
         private void OnDisable()
@@ -119,7 +119,11 @@ namespace AIS.Intervene
             var actionCardsState = Find.State<ActionCardsState>();
             //var actionCards = ActionCardsUtility.GetCardsFromEvidence(actionCardsState, evidenceIds);
             var actionCards = ActionCardsUtility.GetAllCards(actionCardsState);
-            
+
+            CardStackUtility.Clear(Hand);
+            CardStackUtility.Clear(ActionDeck);
+            CardStackUtility.Clear(Discard);
+
             ActionDeck.PopulateDeck(actionCards);
             ShuffleActionDeck();
 

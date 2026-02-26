@@ -25,6 +25,7 @@ namespace AIS.Intervene
             }
 
             UpdateSelectVisuals();
+            AisGame.Events.Dispatch(InterveneEvents.OnUiSelected);
         }
 
         public void SingleSelectCard(int index)

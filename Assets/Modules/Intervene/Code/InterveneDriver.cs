@@ -1,4 +1,5 @@
 using AIS.Model;
+using BeauRoutine;
 using BeauUtil;
 using FieldDay;
 using System;
@@ -27,10 +28,17 @@ namespace AIS.Intervene {
 
         private List<SpeciesTransferAllocation> m_SpeciesTransfers = new List<SpeciesTransferAllocation>();
 
+        public Routine SimRoutine;
+
         public void TickSim()
         {
             if (InvasionModelContainer.Instance == null) { return; }
 
+            SimRoutine.Replace(TickSimRoutine());
+        }
+
+        private IEnumerator TickSimRoutine()
+        {
             // predator / prey dynamics
             foreach (var ecosystem in InvasionModelContainer.Instance.GetAllEcosystems())
             {
@@ -60,6 +68,9 @@ namespace AIS.Intervene {
             }
 
             Debug.Log("[InterveneDriver] Sim Progressed by 1 tick");
+            AisGame.Events.Dispatch(InterveneEvents.OnEndTurn);
+
+            yield return null;
         }
 
         #region Simulate & Modify
@@ -74,7 +85,7 @@ namespace AIS.Intervene {
         private void ProcessInvasiveDynamics(Ecosystem eco)
         {
             /*
-            Hunt: Roll d6 equal to invasive population. For each result lower than the prey population, remove 1 prey and add it to “bank.”
+            Hunt: Roll d6 equal to invasive population. For each result lower than the prey population, remove 1 prey and add it to ï¿½bank.ï¿½
             Starve: If 0 banked prey, roll d12. If the result is less than or equal to invasive population, decrease population by 1.
             Reproduce: If the invasive population is 1, add 1 invasive population for each banked prey. Otherwise, add 1 invasive population for every 2 banked prey.
             */
@@ -145,7 +156,7 @@ namespace AIS.Intervene {
         private void ProcessPredatorDynamics(Ecosystem eco)
         {
             /*
-            Hunt: Roll d6 equal to predator population. For each result lower than the prey population, remove 1 prey and add it to “bank.” 
+            Hunt: Roll d6 equal to predator population. For each result lower than the prey population, remove 1 prey and add it to ï¿½bank.ï¿½ 
             Starve: If 0 banked prey, roll d12. If the result is less than or equal to predator population, decrease population by 1.
             Reproduce: If the predator population is 1, add 1 predator population for each banked prey. Otherwise, add 1 predator population for every 2 banked prey.
             */
@@ -179,6 +190,7 @@ namespace AIS.Intervene {
             if (totalPreyConsumed > 0)
             {
                 eco.ReleasePopulation(preyCounts[0].Item1, totalPreyConsumed);
+                AisGame.Events.Dispatch(InterveneEvents.OnPredatorEatPrey);
             }
 
             Debug.Log("[InterveneDriver] [InterspeciesDynamics] eco " + eco.EcosystemId + " predators consumed " + totalPreyConsumed);
@@ -258,6 +270,25 @@ namespace AIS.Intervene {
                     transferNum = Mathf.FloorToInt(Mathf.Min(origPop, pathway.TransferRate));
                 }
                 transferNum = Mathf.Max(1, transferNum); // rounded down, but at least 1
+
+                // Process pathway effects (i.e. ballast treatment: -1 invasive from source instead of move)
+                foreach (var onTryMoveFromOrigEffect in pathway.OnTryMoveFromOrig)
+                {
+                    if ((onTryMoveFromOrigEffect.EffectType & PathwayEffectType.BlockAll) != 0)
+                    {
+                        transferNum = 0;
+                    }
+                    if ((onTryMoveFromOrigEffect.EffectType & PathwayEffectType.Remove) != 0)
+                    {
+                        int origPop = origEco.GetPopulation(speciesPair.Item1);
+                        if (origPop > 0)
+                        {
+                            if ((onTryMoveFromOrigEffect.TargetType & ActionTarget.Invasive) != 0) {
+                                origEco.ReleasePopulation(InvasionModel.Instance.CurrModelSetupData.DefaultInvasive.SpeciesId, (int)onTryMoveFromOrigEffect.Value);
+                            }
+                        }
+                    }
+                }
 
                 // split species, between orig and dest clusters
                 var transferAlloc = new SpeciesTransferAllocation();

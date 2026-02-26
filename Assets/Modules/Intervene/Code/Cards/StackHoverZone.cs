@@ -42,6 +42,7 @@ namespace AIS.Intervene
 
         private void HandleHoverEnter()
         {
+            AisGame.Events.Dispatch(InterveneEvents.OnHoverZone);
             MoveRoutine.Replace(Focus());
         }
 

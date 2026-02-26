@@ -106,8 +106,9 @@ MonoBehaviour:
     TransferRateType: 0
     StartingTransferRate: 0.5
     StartingTriggerChance: 1
-    PathwayType: 8
+    PathwayType: 16
     IsNotHidden: 0
+    StartingDir: 0
   - PathwayId:
       m_Source: path-2-to-3
       m_HashValue: 3174743921
@@ -124,6 +125,7 @@ MonoBehaviour:
     StartingTriggerChance: 1
     PathwayType: 8
     IsNotHidden: 0
+    StartingDir: 0
   - PathwayId:
       m_Source: path-3-to-4
       m_HashValue: 3136505241
@@ -138,8 +140,9 @@ MonoBehaviour:
     TransferRateType: 0
     StartingTransferRate: 0.5
     StartingTriggerChance: 1
-    PathwayType: 8
+    PathwayType: 1
     IsNotHidden: 0
+    StartingDir: 0
   - PathwayId:
       m_Source: path-4-to-1
       m_HashValue: 2153858281
@@ -154,8 +157,9 @@ MonoBehaviour:
     TransferRateType: 0
     StartingTransferRate: 0.5
     StartingTriggerChance: 1
-    PathwayType: 8
+    PathwayType: 4
     IsNotHidden: 0
+    StartingDir: 0
   - PathwayId:
       m_Source: path-EXTERN-IN-to-1
       m_HashValue: 1868001983
@@ -172,6 +176,7 @@ MonoBehaviour:
     StartingTriggerChance: 0.5
     PathwayType: 8
     IsNotHidden: 0
+    StartingDir: 1
   - PathwayId:
       m_Source: path-3-to-EXTERN-OUT
       m_HashValue: 3542182944
@@ -186,8 +191,9 @@ MonoBehaviour:
     TransferRateType: 0
     StartingTransferRate: 0.5
     StartingTriggerChance: 0.5
-    PathwayType: 8
+    PathwayType: 4
     IsNotHidden: 0
+    StartingDir: 2
   InvasionCurveThresholds:
   - Threshold: 0
     SpeciesSetups:
@@ -198,7 +204,7 @@ MonoBehaviour:
         m_Source: eco-1
         m_HashValue: 415488260
       StartingPopulation: 3
-      StartingTravelType: 8
+      StartingTravelType: -1
       StartingTargetType: 1
     - SpeciesId:
         m_Source: snail
@@ -207,7 +213,7 @@ MonoBehaviour:
         m_Source: eco-2
         m_HashValue: 465821117
       StartingPopulation: 1
-      StartingTravelType: 8
+      StartingTravelType: -1
       StartingTargetType: 1
     - SpeciesId:
         m_Source: snail
@@ -216,7 +222,7 @@ MonoBehaviour:
         m_Source: eco-3
         m_HashValue: 449043498
       StartingPopulation: 1
-      StartingTravelType: 8
+      StartingTravelType: -1
       StartingTargetType: 1
     - SpeciesId:
         m_Source: swordfish
@@ -298,7 +304,7 @@ MonoBehaviour:
       m_Source: eco-EXTERN-IN
       m_HashValue: 848023977
     StartingPopulation: -1
-    StartingTravelType: 8
+    StartingTravelType: -1
     StartingTargetType: 1
   DefaultInvasive:
     SpeciesId:
@@ -308,7 +314,7 @@ MonoBehaviour:
       m_Source: 
       m_HashValue: 0
     StartingPopulation: 0
-    StartingTravelType: 8
+    StartingTravelType: -1
     StartingTargetType: 1
   DefaultPredator:
     SpeciesId:

@@ -39,13 +39,14 @@ namespace AIS.Intervene
         private void Start()
         {
             // TEMP
-            LoadPlayerAwareness(StartingAwareness);
+            // LoadPlayerAwareness(StartingAwareness);
         }
 
         #endregion // Unity Callbacks
 
         public void LoadPlayerAwareness(int awarenessLevel)
         {
+            ClearAwareness();
             AdjustAwareness(awarenessLevel);
         }
 
@@ -54,6 +55,11 @@ namespace AIS.Intervene
             WorkingAwareness.Awareness += amt;
 
             ValueText.SetText(WorkingAwareness.Awareness.ToStringLookup());
+        }
+
+        public void ClearAwareness()
+        {
+            AdjustAwareness(-WorkingAwareness.Awareness);
         }
 
         #region Interfaces

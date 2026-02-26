@@ -39,11 +39,17 @@ namespace AIS.Model
         private void Start()
         {
             // TEMP
-            SetModelSetupData(m_InitModelSetupData);
-            RefreshSetup(0);
+            // Load(0);
         }
 
         #endregion // Unity Callbacks
+
+        public void Load(float invasionCurve)
+        {
+            gameObject.SetActive(true);
+            SetModelSetupData(m_InitModelSetupData);
+            RefreshSetup(invasionCurve);
+        }
 
         /// <summary>
         /// Call at start of every level
@@ -132,10 +138,10 @@ namespace AIS.Model
             int lowestIndex = -1;
             float lowestThreshold = float.MaxValue;
 
-            // Thresholds trigger at lowest where curve is <= threshold
+            // Thresholds trigger at lowest where curve is >= threshold
             for (int i = 0; i < thresholds.Length; i++)
             {
-                if ((thresholds[i].Threshold < lowestThreshold) && (invasionCurve <= thresholds[i].Threshold))
+                if ((thresholds[i].Threshold < lowestThreshold) && (invasionCurve >= thresholds[i].Threshold))
                 {
                     lowestIndex = i;
                     lowestThreshold = thresholds[i].Threshold;

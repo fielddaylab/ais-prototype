@@ -66,6 +66,8 @@ namespace AIS.Intervene {
         ResearchLessThan,
         ResearchEqualTo,
         ResearchGreaterThan,
+        IsInput,
+        IsOutput,
     }
 
     public enum ModifierType
@@ -119,6 +121,7 @@ namespace AIS.Intervene {
         public ActionSpecificity Specificity;
         public float MaxTargets; // up to
         public ActionVerbDetails[] Verbs;
+        public string HardCodedId; // TEMP system to define advanced card abilities in prototype
 
         public List<ActionVerb> GetAllVerbs()
         {
@@ -133,6 +136,11 @@ namespace AIS.Intervene {
 
             return verbs;
         }
+
+        public bool IsHardCoded()
+        {
+            return !HardCodedId.Equals(String.Empty);
+        }
     }
 
     #endregion Structs & Enums
@@ -143,15 +151,34 @@ namespace AIS.Intervene {
         public string Description;
         public string ImgPath;
 
+        public ActionEffectBundle[] DiscoverResults;
         public ActionEffectBundle[] Effects;
 
         public override void PopulateCardUI(UICard toPopulate)
         {
             toPopulate.Title.SetText(Title);
-            toPopulate.CostText.SetText("$" + Cost.ToStringLookup());
+            toPopulate.CostText.SetText("$" + GetAdjustedCost().ToStringLookup());
             toPopulate.Description.SetText(Description);
+            toPopulate.CardData = this;
             // TODO: img
             // toPopulate.Img.SetText(Title);
+        }
+
+        private void Start()
+        {
+            AisGame.Events.Register(InterveneEvents.OnInvasionLevelChanged, HandleInvasionLevelChanged);
+        }
+
+        private void OnDisable()
+        {
+            if (AisGame.IsShuttingDown) { return; }
+
+            AisGame.Events.Deregister(InterveneEvents.OnInvasionLevelChanged, HandleInvasionLevelChanged);
+        }
+
+        private void HandleInvasionLevelChanged()
+        {
+
         }
     }
 
@@ -175,7 +202,7 @@ namespace AIS.Intervene {
                 case ActionCondition.AwarenessEqualTo:
                     return InterveneAwarenessInterfacer.Instance.GetValue() == condition.NumericalCheck;
                 case ActionCondition.AwarenessGreaterThan:
-                    return InterveneAwarenessInterfacer.Instance.GetValue() >= condition.NumericalCheck;
+                    return InterveneAwarenessInterfacer.Instance.GetValue() > condition.NumericalCheck;
                 case ActionCondition.SocialLessThan:
                     return StatsInterfacer.Instance.GetValue(StatsInterfacer.SOCIAL_KEY) < condition.NumericalCheck;
                 case ActionCondition.SocialEqualTo:
@@ -200,6 +227,9 @@ namespace AIS.Intervene {
                     return StatsInterfacer.Instance.GetValue(StatsInterfacer.RESEARCH_KEY) == condition.NumericalCheck;
                 case ActionCondition.ResearchGreaterThan:
                     return StatsInterfacer.Instance.GetValue(StatsInterfacer.RESEARCH_KEY) > condition.NumericalCheck;
+                case ActionCondition.IsInput:
+                case ActionCondition.IsOutput:
+                    return EvaluatePathDir(condition, tag);
                 default:
                     Debug.LogWarning("[ActionCard] No condition matching to evaluate " + condition.Condition.ToString() + "!");
                     return true;
@@ -218,6 +248,35 @@ namespace AIS.Intervene {
                 if (pathway != null)
                 {
                     if ((pathway.PathwayType & PathwayUtility.StrToPathwayType(condition.StrCheck)) != 0)
+                    {
+                        return true;
+                    }
+                    else if (pathway.IsHidden && condition.StrCheck.Equals("unknown"))
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        private static bool EvaluatePathDir(ActionTargetCondition condition, ModelTag tag)
+        {
+            if (tag == null) { return false; }
+
+            // check if pathway
+            if (((tag.TargetType & ActionTarget.Pathway) != 0))
+            {
+                // check if type matches
+                Pathway pathway = tag.QueriableObj.GetComponent<Pathway>();
+                if (pathway != null)
+                {
+                    if ((condition.Condition == ActionCondition.IsInput) && (pathway.Dir == PathDir.Input))
+                    {
+                        return true;
+                    }
+                    else if ((condition.Condition == ActionCondition.IsOutput) && (pathway.Dir == PathDir.Output))
                     {
                         return true;
                     }

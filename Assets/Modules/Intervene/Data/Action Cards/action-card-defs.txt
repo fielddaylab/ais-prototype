@@ -1,15 +1,19 @@
 // Action Cards With Effects
 
-::example-action-card-0
+::aquaculturist-outreach
 @title		Aquaculturist Outreach
-@desc		Roll 1d6. If below Awareness, decrease all Aquarium pathways. // TODO
+@desc		Roll 1d6. If below Awareness, decrease all known Aquarium pathways.
 @path		temp.png
 @cost		1
 
+@discoverResult
+    target: path, if type = Aquarium
+    verb: reveal, 0, fixed
+    specificity: random
+    maxtargets: 2
+
 @effect
-    target: path, if type = CaptivityTrade
-    verb: reduce, 1, fixed, odds 0.16667
-    specificity: all
+    hardcoded
 
 
 ::example-action-card-1
@@ -34,6 +38,12 @@
 @path		temp.png
 @cost		3
 
+@discoverResult
+    target: path, if type = BoatHulls
+    verb: reveal, 0, fixed
+    specificity: random
+    maxtargets: 2
+
 @effect
     target: pathway, if type = BoatHulls
     verb: reduce, 1, fixed
@@ -51,16 +61,20 @@
     specificity: specific
     maxTargets: 1
 
-::example-action-card-3
+::angler-outreach
 @title		Angler Outreach
-@desc		Roll 1d6. If below Awareness, decrease all Bait Bucket pathways by 1. // TODO
+@desc		Roll 1d6. If below Awareness, decrease all Bait Bucket pathways by 1.
 @path		temp.png
 @cost		1
 
+@discoverResult
+    target: path, if type = BaitBuckets
+    verb: reveal, 0, fixed
+    specificity: random
+    maxtargets: 2
+
 @effect
-    target: pathway, if type = BaitBuckets
-    verb: reduce, 1, fixed
-    specificity: all
+    hardcoded
 
 ::example-action-card-4
 @title		Manual Removal
@@ -86,11 +100,17 @@
     specificity: specific
     maxtargets: 1
 
-::example-action-card-5
+::eat-the-invasive
 @title		Eat the Invasive
-@desc		For every 2 Awareness, remove 1 Invasive. // TODO
+@desc		For every 2 Awareness, remove 1 Invasive from a different ecosystem. || OUTDOOR -1 additional Invasive (not per Awareness).
 @path		temp.png
 @cost		3
+
+@discoverResult
+    target: awareness
+    verb: increase, 1, fixed
+    specificity: all
+    maxtargets: 1
 
 @effect
     target: invasive
@@ -128,23 +148,32 @@
 @path		temp.png
 @cost		2
 
+@discoverResult
+    target: path, if type = Currents
+    verb: reveal, 0, fixed
+    specificity: random
+    maxtargets: 2
+
 @effect
-    target: pathway, type = Currents
+    target: pathway, if type = Currents
     verb: remove, 1, fixed
     specificity: specific
     maxtargets: 1
 
-::example-action-card-8
+::ballast-treatment
 @title		Ballast Treatment
-@desc		When a "Ballast" pathway activates, -1 Invasive from source instead of moving. // TODO STRETCH
+@desc		When a "Ballast" pathway activates, -1 Invasive from source instead of moving.
 @path		temp.png
 @cost		3
 
+@discoverResult
+    target: path, if type = BallastWater
+    verb: reveal, 0, fixed
+    specificity: random
+    maxtargets: 2
+
 @effect
-    target: pathway, type = Ballast
-    verb: modify, 1, fixed
-    specificity: specific
-    maxtargets: 1
+    hardcoded
 
 ::example-action-card-9
 @title		Field Research
@@ -152,13 +181,19 @@
 @path		temp.png
 @cost		1
 
+@discoverResult
+    target: path, if dir = input
+    verb: reveal, 0, fixed
+    specificity: random
+    maxtargets: 1
+
 @effect
-    target: pathway, type = unknown
+    target: pathway, if type = unknown
     verb: reveal, 0, fixed
     specificity: specific
     maxtargets: 1
 @overrideEffect if research > 0
-    target: pathway, type = unknown
+    target: pathway, if type = unknown
     verb: reveal, 0, fixed
     verb: reduce, 1, fixed
     specificity: specific
@@ -169,6 +204,12 @@
 @desc		In one Ecosystem: -2 Invasive, -1 Predator, -1 Prey || RESEARCH Skip -1 Prey
 @path		temp.png
 @cost		2
+
+@discoverResult
+    target: awareness
+    verb: increase, 1, fixed
+    specificity: all
+    maxtargets: 1
 
 @effect
     target: ecosystem
@@ -204,6 +245,12 @@
 @desc		Set Budget equal to Awareness.
 @path		temp.png
 @cost		1
+
+@discoverResult
+    target: awareness
+    verb: increase, 1, fixed
+    specificity: all
+    maxtargets: 1
 
 @effect
     target: budget

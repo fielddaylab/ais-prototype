@@ -15,4 +15,4 @@ MonoBehaviour:
   SpeciesId:
     m_Source: swordfish
     m_HashValue: 2123853456
-  Sprite: {fileID: 21300000, guid: 8d466ad94e0e4004d92050654d13696a, type: 3}
+  Sprite: {fileID: 21300000, guid: 3fe0b85af4f15ce47b66afbf89083db8, type: 3}

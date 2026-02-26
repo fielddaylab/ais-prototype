@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using FieldDay.Audio;
 
 namespace AIS.Intervene
 {
@@ -19,16 +20,20 @@ namespace AIS.Intervene
                 newCard.Title = cardData.Title;
                 newCard.Description = cardData.Description;
                 newCard.ImgPath = cardData.ImgPath;
-                newCard.Cost = cardData.Cost;
+                newCard.SetBaseCost(cardData.Cost);
 
+                newCard.DiscoverResults = cardData.DiscoverResults;
                 newCard.Effects = cardData.Effects;
 
                 CardStackUtility.AddToTop(this, newCard, false);
             }
+
+            AisGame.Events.Dispatch(InterveneEvents.OnActionDeckConstructed);
         }
 
         public void Shuffle()
         {
+            Sfx.Play("Oneshot.ShuffleDeck");
             CardStackUtility.ShuffleStack(this);
         }
     }

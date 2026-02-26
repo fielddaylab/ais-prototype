@@ -22,5 +22,15 @@ namespace AIS.Intervene
 
         public static StringHash32 OnEffectSpecifyAllActionsProcessed = "on-effect-specify-all-actions-processed";
 
+        public static StringHash32 OnInterveneRestart = "on-intervene-restart";
+        public static StringHash32 OnActionDeckConstructed = "on-action-deck-constructed";
+        public static StringHash32 OnInterveneEnd = "on-intervene-end";
+
+        public static StringHash32 OnInvasionLevelChanged = "on-invasion-level-changed";
+
+        public static StringHash32 OnHoverZone = "on-hover-zone";
+        public static StringHash32 OnUiSelected = "on-ui-selected";
+        public static StringHash32 OnEndTurn = "on-end-turn";
+        public static StringHash32 OnPredatorEatPrey = "on-predator-eat-prey";
     }
 }

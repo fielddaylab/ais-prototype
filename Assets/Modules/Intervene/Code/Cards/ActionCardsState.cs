@@ -18,11 +18,12 @@ namespace AIS.Intervene
         public string ImgPath;
 
         public int Cost;
+        public ActionEffectBundle[] DiscoverResults;
         public ActionEffectBundle[] Effects;
 
         public bool IsValid;
 
-        public ActionCardData(SerializedHash32 cardID, string title, string desc, string imgPath, int cost, ActionEffectBundle[] effects)
+        public ActionCardData(SerializedHash32 cardID, string title, string desc, string imgPath, int cost, ActionEffectBundle[] discoverResults, ActionEffectBundle[] effects)
         {
             CardID = cardID;
             Title = title;
@@ -30,6 +31,7 @@ namespace AIS.Intervene
             ImgPath = imgPath;
 
             Cost = cost;
+            DiscoverResults = discoverResults;
             Effects = effects;
 
             IsValid = true;
@@ -64,9 +66,11 @@ namespace AIS.Intervene
         private static readonly string DESC_TAG = "@desc";
         private static readonly string IMAGE_PATH_TAG = "@path";
         private static readonly string COST_TAG = "@cost";
+        private static readonly string DISCOVER_RESULT_TAG = "@discoverresult";
         private static readonly string EFFECT_TAG = "@effect";
         private static readonly string OVERRIDE_EFFECT_TAG = "@overrideeffect";
 
+        private static readonly string HARDCODE_LINE = "hardcoded";
         private static readonly string TARGET_LINE = "target:";
         private static readonly string VERB_LINE = "verb:";
         private static readonly string SPEC_LINE = "specificity:";
@@ -120,6 +124,7 @@ namespace AIS.Intervene
         {
             Debug.Log("[CardUtility] converting card: " + cardDef);
             SerializedHash32 cardID = "";
+            string cardIdStr = "";
             string title = "";
             string desc = "";
             string imgPath = "";
@@ -127,7 +132,8 @@ namespace AIS.Intervene
             // Parse into data
 
             // First line must be card id
-            cardID = cardDef.Substring(0, cardDef.IndexOfAny(END_DELIMS));
+            cardIdStr = cardDef.Substring(0, cardDef.IndexOfAny(END_DELIMS));
+            cardID = cardIdStr;
             Debug.Log("[CardUtility] parsed card id : " + cardID);
 
             // Title comes after @title
@@ -199,15 +205,18 @@ namespace AIS.Intervene
                 }
             }
 
-            // Action Effects parsing
-            ActionEffectBundle[] effects = ParseEffects(cardDef);
+            // DiscoverResults parsing
+            ActionEffectBundle[] discoverResults = ParseDiscoverResults(cardDef, cardIdStr);
 
-            return new ActionCardData(cardID, title, desc, imgPath, cost, effects);
+            // Action Effects parsing
+            ActionEffectBundle[] effects = ParseEffects(cardDef, cardIdStr);
+
+            return new ActionCardData(cardID, title, desc, imgPath, cost, discoverResults, effects);
         }
 
         #region Effect Parsing Helpers
 
-        static private ActionEffectBundle[] ParseEffects(string cardDef)
+        static private ActionEffectBundle[] ParseEffects(string cardDef, string cardIdStr)
         {
             List<ActionEffectBundle> effects = new List<ActionEffectBundle>();
 
@@ -232,7 +241,7 @@ namespace AIS.Intervene
                 }
 
                 // Parse this effect block (which may contain @overrideEffect)
-                ActionEffectBundle effect = ParseSingleEffectBundle(effectBlock);
+                ActionEffectBundle effect = ParseSingleEffectBundle(effectBlock, cardIdStr);
                 effects.Add(effect);
 
                 searchStart = effectIndex + EFFECT_TAG.Length;
@@ -241,7 +250,45 @@ namespace AIS.Intervene
             return effects.ToArray();
         }
 
-        static private ActionEffectBundle ParseSingleEffectBundle(string effectBlock)
+        static private ActionEffectBundle[] ParseDiscoverResults(string cardDef, string cardIdStr)
+        {
+            List<ActionEffectBundle> discoverResults = new List<ActionEffectBundle>();
+
+            // Find all @discoverresult blocks
+            int searchStart = 0;
+            while (true)
+            {
+                int discoverIndex = cardDef.ToLower().IndexOf(DISCOVER_RESULT_TAG, searchStart);
+                if (discoverIndex == -1) break;
+
+                // Find the next @discoverresult or end of string to determine this result's boundaries
+                int nextDiscoverIndex = cardDef.ToLower().IndexOf(DISCOVER_RESULT_TAG, discoverIndex + DISCOVER_RESULT_TAG.Length);
+                if (nextDiscoverIndex == -1)
+                {
+                    nextDiscoverIndex = cardDef.ToLower().IndexOf(EFFECT_TAG, discoverIndex + DISCOVER_RESULT_TAG.Length);
+                }
+                string discoverBlock;
+
+                if (nextDiscoverIndex == -1)
+                {
+                    discoverBlock = cardDef.Substring(discoverIndex);
+                }
+                else
+                {
+                    discoverBlock = cardDef.Substring(discoverIndex, nextDiscoverIndex - discoverIndex);
+                }
+
+                // Parse this discover result block (which may contain @overrideEffect)
+                ActionEffectBundle discoverResult = ParseSingleEffectBundle(discoverBlock, cardIdStr);
+                discoverResults.Add(discoverResult);
+
+                searchStart = discoverIndex + DISCOVER_RESULT_TAG.Length;
+            }
+
+            return discoverResults.ToArray();
+        }
+
+        static private ActionEffectBundle ParseSingleEffectBundle(string effectBlock, string cardIdStr)
         {
             // Check if there's an @overrideEffect block
             int overrideIndex = effectBlock.ToLower().IndexOf(OVERRIDE_EFFECT_TAG);
@@ -273,7 +320,7 @@ namespace AIS.Intervene
             }
 
             // Parse primary effect
-            ActionEffect primaryEffect = ParseEffect(primaryEffectBlock);
+            ActionEffect primaryEffect = ParseEffect(primaryEffectBlock, cardIdStr);
 
             ActionEffectBundle effectBundle = new ActionEffectBundle
             {
@@ -283,7 +330,7 @@ namespace AIS.Intervene
             // Parse override effect if present
             if (overrideEffectBlock != null)
             {
-                ActionEffect overrideEffect = ParseEffect(overrideEffectBlock);
+                ActionEffect overrideEffect = ParseEffect(overrideEffectBlock, cardIdStr);
 
                 ActionEffectOverride effectOverride = new ActionEffectOverride
                 {
@@ -297,12 +344,13 @@ namespace AIS.Intervene
             return effectBundle;
         }
 
-        static private ActionEffect ParseEffect(string effectBlock)
+        static private ActionEffect ParseEffect(string effectBlock, string cardIdStr)
         {
             List<ActionTargetDetails> targets = new List<ActionTargetDetails>();
             ActionSpecificity specificity = ActionSpecificity.Specific;
             int maxTargets = 1;
             List<ActionVerbDetails> verbs = new List<ActionVerbDetails>();
+            string hardCodedId = String.Empty;
 
             // Split into lines
             string[] lines = effectBlock.Split(END_DELIMS, StringSplitOptions.RemoveEmptyEntries);
@@ -336,6 +384,10 @@ namespace AIS.Intervene
                         maxTargets = count;
                     }
                 }
+                else if (trimmedLine.StartsWith(HARDCODE_LINE))
+                {
+                    hardCodedId = cardIdStr;
+                }
             }
 
             ActionEffect effect = new ActionEffect
@@ -343,7 +395,8 @@ namespace AIS.Intervene
                 AllTargets = targets.ToArray(),
                 Specificity = specificity,
                 MaxTargets = maxTargets,
-                Verbs = verbs.ToArray()
+                Verbs = verbs.ToArray(),
+                HardCodedId = hardCodedId,
             };
 
             return effect;
@@ -706,6 +759,17 @@ namespace AIS.Intervene
             else if ((variableName.Contains("type") || variableName.Contains("pathway")) && operatorChar == EQ_CHAR)
             {
                 condition.Condition = ActionCondition.PathwayType;
+                condition.StrCheck = valueStr;
+            }
+            // Pathway Type conditions (only with = operator)
+            else if (variableName.Contains("dir") && valueStr.Contains("input") && operatorChar == EQ_CHAR)
+            {
+                condition.Condition = ActionCondition.IsInput;
+                condition.StrCheck = valueStr;
+            }
+            else if (variableName.Contains("dir") && valueStr.Contains("output") && operatorChar == EQ_CHAR)
+            {
+                condition.Condition = ActionCondition.IsOutput;
                 condition.StrCheck = valueStr;
             }
             // Generic string comparison (for future extensibility)

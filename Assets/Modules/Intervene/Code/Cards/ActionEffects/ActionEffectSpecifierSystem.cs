@@ -99,7 +99,7 @@ namespace AIS.Intervene
             foreach (var toProcess in SelectedActionCards)
             {
                 ActionsProcessList.Add(toProcess);
-                ProcessCost += toProcess.Cost;
+                ProcessCost += toProcess.GetAdjustedCost();
             }
 
             ProcessedEffects.Clear();
@@ -141,6 +141,9 @@ namespace AIS.Intervene
                     effectToProcess = effectBundleToProcess.EffectOverride.Override;
                 }
             }
+
+            // hardcoded modifications
+            effectToProcess = ModifyHardCode(effectToProcess);
 
             if (effectToProcess.GetAllVerbs().Contains(ActionVerb.Increase))
             {
@@ -303,7 +306,7 @@ namespace AIS.Intervene
 
         private IEnumerator ChunkCompleteRoutine()
         {
-            ProcessedEffects.Add(ChunkMgr.EffectChunk);
+            ProcessedEffects.Add(ChunkMgr.EffectChunk.Copy());
 
             foreach (var tag in ChunkMgr.EffectChunk.SelectedTargets)
             {
@@ -337,6 +340,13 @@ namespace AIS.Intervene
         {
             foreach (var effect in ProcessedEffects)
             {
+                if (effect.HardCodedId != null && !effect.HardCodedId.Equals(string.Empty))
+                {
+                    // handle hard coding
+                    ExecuteHardCode(effect);
+                    continue;
+                }
+
                 foreach (var verb in effect.Verbs)
                 {
                     if (verb.Odds != 1)
@@ -352,28 +362,28 @@ namespace AIS.Intervene
                         switch (verb.Verb)
                         {
                             case ActionVerb.Reduce:
-                                TryReduce(target.QueriableObj, verb);
+                                ActionEffectUtility.TryReduce(target.QueriableObj, verb);
                                 break;
                             case ActionVerb.Increase:
-                                TryIncrease(target.QueriableObj, verb);
+                                ActionEffectUtility.TryIncrease(target.QueriableObj, verb);
                                 break;
                             case ActionVerb.Remove:
-                                TryRemove(target.QueriableObj, verb);
+                                ActionEffectUtility.TryRemove(target.QueriableObj, verb);
                                 break;
                             case ActionVerb.Reveal:
-                                TryReveal(target.QueriableObj, verb);
+                                ActionEffectUtility.TryReveal(target.QueriableObj, verb);
                                 break;
                             case ActionVerb.AddTrap:
-                                TryAddTrap(target.QueriableObj, verb);
+                                ActionEffectUtility.TryAddTrap(target.QueriableObj, verb);
                                 break;
                             case ActionVerb.AddNest:
-                                TryAddNest(target.QueriableObj, verb);
+                                ActionEffectUtility.TryAddNest(target.QueriableObj, verb);
                                 break;
                             case ActionVerb.Modify:
-                                TryModify(target.QueriableObj, verb);
+                                ActionEffectUtility.TryModify(target.QueriableObj, verb);
                                 break;
                             case ActionVerb.Match:
-                                TryMatch(target.QueriableObj, verb);
+                                ActionEffectUtility.TryMatch(target.QueriableObj, verb);
                                 break;
                             default:
                                 continue;
@@ -387,9 +397,169 @@ namespace AIS.Intervene
 
         #endregion // Routines
 
+        #region HardCoded Modification
+
+        /// <summary>
+        /// Modifying happens BEFORE selections are made
+        /// </summary>
+        private ActionEffect ModifyHardCode(ActionEffect toModify)
+        {
+            if (toModify.HardCodedId == null || toModify.HardCodedId.Equals(string.Empty))
+            {
+                return toModify;
+            }
+
+            switch (toModify.HardCodedId)
+            {
+                case "eat-the-invasive":
+                    return ModifyEatInvasive(toModify);
+                default:
+                    Debug.LogWarning("[ActionEffectSpecifierSystem] Tried to modify hard code on " + toModify.HardCodedId + ", but no handling is in place!");
+                    return toModify;
+            }
+        }
+
+        private ActionEffect ModifyEatInvasive(ActionEffect toModify)
+        {
+            // For every 2 Awareness, remove 1 Invasive from a different ecosystem. || OUTDOOR - 1 additional Invasive(not per Awareness).
+            toModify.MaxTargets = InterveneAwarenessInterfacer.Instance.GetValue() * 1;
+            if (StatsInterfacer.Instance.GetValue(StatsInterfacer.OUTDOOR_KEY) > 1)
+            {
+                toModify.MaxTargets++;
+            }
+
+            return toModify;
+        }
+
+        #endregion // HardCoded Modification
+
+        #region HardCoded Execution
+
+        /// <summary>
+        ///  Executing happens AFTER selections are made
+        /// </summary>
+        /// <param name="toExecute"></param>
+        private void ExecuteHardCode(EffectChunk toExecute)
+        {
+            switch (toExecute.HardCodedId)
+            {
+                case "aquaculturist-outreach":
+                    ExecuteAqua();
+                    break;
+                case "angler-outreach":
+                    ExecuteAngler();
+                    break;
+                case "ballast-treatment":
+                    ExecuteBallastTreatment();
+                    break;
+                default:
+                    Debug.LogWarning("[ActionEffectSpecifierSystem] Tried to execute hard code on " + toExecute.HardCodedId + ", but no handling is in place!");
+                    break;
+            }
+        }
+
+        private void ExecuteAqua()
+        {
+            ExecuteRollBelowAwarenessReducePathway("aquarium");
+        }
+
+        private void ExecuteAngler()
+        {
+            ExecuteRollBelowAwarenessReducePathway("baitbuckets");
+        }
+
+        private void ExecuteBallastTreatment()
+        {
+            // When a "Ballast" pathway activates, -1 Invasive from source instead of moving.
+
+            // find all Ballast pathways
+            ActionTargetDetails[] targets = new ActionTargetDetails[1];
+            ActionTargetDetails ballastDetails = new ActionTargetDetails();
+            ballastDetails.Target = ActionTarget.Pathway;
+            ActionTargetCondition[] anglerConditions = new ActionTargetCondition[1];
+            ActionTargetCondition mainCondition = new ActionTargetCondition();
+            mainCondition.Condition = ActionCondition.PathwayType;
+            mainCondition.StrCheck = "ballastwater";
+            anglerConditions[0] = mainCondition;
+            ballastDetails.Conditions = anglerConditions;
+            targets[0] = ballastDetails;
+
+            List<ActionVerb> verbs = new List<ActionVerb>();
+
+            List<ModelTag> filteredTags = ModelTagMgr.Instance.FilterTagsByTargetDetails(targets, verbs, filterExternal: true);
+
+            // apply -1 invasive from source instead of move
+            string effectId = "ballast-treatment";
+            foreach (var tag in filteredTags)
+            {
+                var pathway = tag.QueriableObj.GetComponent<Pathway>();
+                if (pathway != null)
+                {
+                    if (!pathway.OnTryMoveFromOrigContains(effectId))
+                    {
+                        PathwayEffect ballastEffect = new PathwayEffect();
+                        ballastEffect.EffectId = effectId;
+                        ballastEffect.EffectType |= PathwayEffectType.BlockAll;
+                        ballastEffect.EffectType |= PathwayEffectType.Remove;
+                        ballastEffect.TargetType = ActionTarget.Invasive;
+                        ballastEffect.Value = 1;
+
+                        pathway.AddEffectOnTryMoveFromOrig(ballastEffect);
+                    }
+                }
+            }
+        }
+
+        private void ExecuteRollBelowAwarenessReducePathway(string pathId)
+        {
+            // Roll 1d6. If below Awareness, decrease all pathways of given type.
+            int roll = UnityEngine.Random.Range(1, 7);
+            if (roll < InterveneAwarenessInterfacer.Instance.GetValue())
+            {
+                // decrease all Bait Buckets pathways.
+                ActionTargetDetails[] targets = new ActionTargetDetails[1];
+                ActionTargetDetails anglerDetails = new ActionTargetDetails();
+                anglerDetails.Target = ActionTarget.Pathway;
+                ActionTargetCondition[] anglerConditions = new ActionTargetCondition[1];
+                ActionTargetCondition mainCondition = new ActionTargetCondition();
+                mainCondition.Condition = ActionCondition.PathwayType;
+                mainCondition.StrCheck = pathId;
+                anglerConditions[0] = mainCondition;
+                anglerDetails.Conditions = anglerConditions;
+                targets[0] = anglerDetails;
+
+                List<ActionVerb> verbs = new List<ActionVerb>();
+                verbs.Add(ActionVerb.Reduce);
+
+                List<ModelTag> filteredTags = ModelTagMgr.Instance.FilterTagsByTargetDetails(targets, verbs, filterExternal: true);
+
+                ModelTagMgr.Instance.HighlightTags(filteredTags);
+
+                // TODO: space of time between highlight and decrease
+                ActionVerbDetails verbDetails = new ActionVerbDetails();
+                verbDetails.Verb = ActionVerb.Reduce;
+                verbDetails.Values = new List<float>();
+                verbDetails.Values.Add(1);
+                verbDetails.ModType = ModifierType.Fixed;
+                verbDetails.Odds = 1;
+
+                foreach (var tag in filteredTags)
+                {
+                    ActionEffectUtility.TryReduce(tag.QueriableObj, verbDetails);
+                }
+
+                ModelTagMgr.Instance.ClearExistingHighlights();
+            }
+        }
+
+        #endregion // HardCoded Execution
+    }
+
+    public static class ActionEffectUtility
+    {
         #region Effect Execution
 
-        private bool TryReduce(GameObject queriable, ActionVerbDetails verbDetails)
+        public static bool TryReduce(GameObject queriable, ActionVerbDetails verbDetails)
         {
             var toReduce = queriable.GetComponent<IReducible>();
 
@@ -404,7 +574,7 @@ namespace AIS.Intervene
             }
         }
 
-        private bool TryIncrease(GameObject queriable, ActionVerbDetails verbDetails)
+        public static bool TryIncrease(GameObject queriable, ActionVerbDetails verbDetails)
         {
             var toIncrease = queriable.GetComponent<IIncreasable>();
 
@@ -419,7 +589,7 @@ namespace AIS.Intervene
             }
         }
 
-        private bool TryRemove(GameObject queriable, ActionVerbDetails verbDetails)
+        public static bool TryRemove(GameObject queriable, ActionVerbDetails verbDetails)
         {
             var toRemove = queriable.GetComponent<IRemovable>();
 
@@ -434,7 +604,7 @@ namespace AIS.Intervene
             }
         }
 
-        private bool TryReveal(GameObject queriable, ActionVerbDetails verbDetails)
+        public static bool TryReveal(GameObject queriable, ActionVerbDetails verbDetails)
         {
             var toReveal = queriable.GetComponent<IRevealable>();
 
@@ -449,7 +619,7 @@ namespace AIS.Intervene
             }
         }
 
-        private bool TryAddTrap(GameObject queriable, ActionVerbDetails verbDetails)
+        public static bool TryAddTrap(GameObject queriable, ActionVerbDetails verbDetails)
         {
             var toAddTrapTo = queriable.GetComponent<IAddTrapable>();
 
@@ -464,7 +634,7 @@ namespace AIS.Intervene
             }
         }
 
-        private bool TryAddNest(GameObject queriable, ActionVerbDetails verbDetails)
+        public static bool TryAddNest(GameObject queriable, ActionVerbDetails verbDetails)
         {
             var toAddNestTo = queriable.GetComponent<IAddNestable>();
 
@@ -479,7 +649,7 @@ namespace AIS.Intervene
             }
         }
 
-        private bool TryModify(GameObject queriable, ActionVerbDetails verbDetails)
+        public static bool TryModify(GameObject queriable, ActionVerbDetails verbDetails)
         {
             var toModify = queriable.GetComponent<IModifiable>();
 
@@ -494,7 +664,7 @@ namespace AIS.Intervene
             }
         }
 
-        private bool TryMatch(GameObject queriable, ActionVerbDetails verbDetails)
+        public static bool TryMatch(GameObject queriable, ActionVerbDetails verbDetails)
         {
             var toMatch = queriable.GetComponent<IMatchable>();
 

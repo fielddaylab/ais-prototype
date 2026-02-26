@@ -41,13 +41,14 @@ namespace AIS.Intervene
         private void Start()
         {
             // TEMP
-            LoadPlayerBudget(StartingBudget);
+            // LoadPlayerBudget(StartingBudget);
         }
 
         #endregion // Unity Callbacks
 
         public void LoadPlayerBudget(int budgetLevel)
         {
+            ClearBudget();
             AdjustBudgetLevel(budgetLevel);
             BestowBudget();
         }
@@ -57,6 +58,12 @@ namespace AIS.Intervene
             WorkingBudget.BudgetLevel += amt;
 
             LevelValueText.SetText("$" + WorkingBudget.BudgetLevel.ToStringLookup() + " per turn");
+        }
+
+        public void ClearBudget()
+        {
+            AdjustBudgetLevel(-WorkingBudget.BudgetLevel);
+            AdjustBudgetValue(-WorkingBudget.Budget);
         }
 
         public void AdjustBudgetValue(int amt)
@@ -158,7 +165,7 @@ namespace AIS.Intervene
 
             foreach (var card in toAfford)
             {
-                totalCost += card.Cost;
+                totalCost += card.GetAdjustedCost();
             }
 
             return totalCost <= budget.WorkingBudget.Budget;

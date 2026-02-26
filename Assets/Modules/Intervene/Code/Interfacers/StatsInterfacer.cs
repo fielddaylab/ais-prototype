@@ -56,7 +56,7 @@ namespace AIS.Intervene
         private void Start()
         {
             // TEMP
-            LoadPlayerStats(0, 0, 0, 0);
+            // LoadPlayerStats(0, 0, 0, 0);
         }
 
         #endregion // Unity Callbacks
