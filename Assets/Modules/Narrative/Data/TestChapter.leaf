@@ -12,5 +12,9 @@
 {@Narrator} {char-name ???}     Oh dang it, I thought I'd been really quiet too.
                 Guess I'll need to start your story from scratch <i>again</i>.
 {@Player}       Uhhhhhh what do you mean?
-{@Narrator}     Listen, kid
+{@Narrator}     Listen, kid, we don't have much time.
+                I need you to take some stat bonuses.
+$call AdjustStat(Tech, 1)
+{@} Your Tech stat is now {$Stat(Tech)}!
+
 $call BeginIntervention()
