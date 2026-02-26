@@ -781,13 +781,19 @@ namespace FieldDay.UI {
             CanvasSortKey sortKey = layer.InputMask.SortKey;
             int contextId = UnityHelper.Id(layer as UnityEngine.Object);
 
+            bool found = false;
             for(int i = m_InputPriorityStack.Count; i-- > 0;) {
                 PriorityRecord record = m_InputPriorityStack[i];
                 if (record.Sort.RawValue == sortKey.RawValue
                     && record.ContextId == contextId) {
                     m_InputPriorityStack.RemoveAt(i);
+                    found = true;
                     break;
                 }
+            }
+
+            if (!found) {
+                return;
             }
 
             CanvasSortKey largestSortKey = default;

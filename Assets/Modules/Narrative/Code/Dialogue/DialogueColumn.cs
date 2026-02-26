@@ -21,7 +21,13 @@ namespace AIS.Narrative {
     public sealed class DialogueColumn : BaseDialoguePrinter, IDialogueChoicePresenter {
         public DialogueColumnLayout Layout;
 
+        [NonSerialized] private IInputLayer m_InputLayer;
         [NonSerialized] private DialogueLine m_CurrentLine;
+
+        public override void OnRegister() {
+            base.OnRegister();
+            m_InputLayer = IInputLayer.Find(this);
+        }
 
         public override IEnumerator TypeLine(TagString text, TagTextData textData) {
             if (m_CurrentLine.Visibility.alpha <= 0) {
@@ -69,7 +75,7 @@ namespace AIS.Narrative {
             Layout.DefaultNextButton.Content.SetVisible(true);
 
             while (true) {
-                if (Layout.DefaultNextButton.ConsumeClick() || InputControls.CheckAdvanceInput()) {
+                if (Layout.DefaultNextButton.ConsumeClick() || (m_InputLayer.IsInputEnabled() && InputControls.CheckAdvanceInput())) {
                     break;
                 }
 

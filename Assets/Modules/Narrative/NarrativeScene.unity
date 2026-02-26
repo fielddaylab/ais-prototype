@@ -253,7 +253,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: -1, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -419,7 +419,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &898410614
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -465,7 +465,7 @@ Canvas:
   m_Enabled: 1
   serializedVersion: 3
   m_RenderMode: 1
-  m_Camera: {fileID: 0}
+  m_Camera: {fileID: 1926876358730560539}
   m_PlaneDistance: 2
   m_PixelPerfect: 1
   m_ReceivesEvents: 1
@@ -511,6 +511,8 @@ GameObject:
   - component: {fileID: 1199219529}
   - component: {fileID: 1199219528}
   - component: {fileID: 1199219527}
+  - component: {fileID: 1199219532}
+  - component: {fileID: 1199219534}
   m_Layer: 5
   m_Name: Discussion
   m_TagString: Untagged
@@ -615,6 +617,35 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1199219532
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1199219526}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 886b476264187574db00f73724000bf4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_GroupId:
+    m_HashValue: 1041581292
+  m_Raycasters:
+  - {fileID: 1199219528}
+--- !u!114 &1199219534
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1199219526}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a35ac004d50cc54f95e4446f5b0074d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Renderer: {fileID: 1199219530}
 --- !u!1 &1337184844
 GameObject:
   m_ObjectHideFlags: 0
@@ -1638,10 +1669,6 @@ PrefabInstance:
     - target: {fileID: 3945753921008511287, guid: 0298532c4ed53b34eadbe4513c077a38, type: 3}
       propertyPath: m_Name
       value: StatsPanel
-      objectReference: {fileID: 0}
-    - target: {fileID: 4322143891830709204, guid: 0298532c4ed53b34eadbe4513c077a38, type: 3}
-      propertyPath: m_VertexColorAlwaysGammaSpace
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -1,5 +1,6 @@
 using BeauRoutine.Extensions;
 using BeauUtil;
+using System;
 using UnityEngine;
 
 namespace FieldDay.UI {
@@ -13,7 +14,10 @@ namespace FieldDay.UI {
 
         [SerializeField, PanelGroupName] private StringHash32 m_PanelGroup;
 
+        [NonSerialized] protected IInputLayer m_InputLayer;
+
         protected virtual void Awake() {
+            m_InputLayer = IInputLayer.Find(this);
             Game.Gui.RegisterPanel(this);
         }
 

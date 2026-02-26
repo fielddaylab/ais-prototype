@@ -54,6 +54,7 @@ namespace FieldDay.UI {
             if (flags != mask.Flags) {
                 mask.Flags = flags;
                 layer.InputMask = mask;
+                Game.Gui.ForceUpdate(layer);
             }
         }
     }
