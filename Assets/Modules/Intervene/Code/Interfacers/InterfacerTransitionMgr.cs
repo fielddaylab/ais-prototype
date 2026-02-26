@@ -1,4 +1,5 @@
 using AIS.Model;
+using AIS.Narrative;
 using BeauUtil;
 using FieldDay;
 using FieldDay.SharedState;
@@ -35,11 +36,12 @@ namespace AIS.Intervene
 
             int inAwareness = 3;
 
+            var stats = Find.State<PlayerStats>().StatBlock;
             int[] inStats = new int[4];
-            inStats[0] = 0;
-            inStats[1] = 0;
-            inStats[2] = 0;
-            inStats[3] = 0;
+            inStats[0] = stats.Communicate;
+            inStats[1] = stats.Ranger;
+            inStats[2] = stats.Tech;
+            inStats[3] = stats.Research;
 
             List<SerializedHash32> inEvidenceIds = new List<SerializedHash32>();
 

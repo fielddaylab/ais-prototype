@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using AIS.Narrative;
 using FieldDay;
 using UnityEngine;
 
@@ -12,5 +13,11 @@ public sealed class AisGame : Game {
         Events = new EventDispatcher<EvtArgs>();
         SetEventDispatcher(Events);
         Rendering.EnableAspectClamping(4, 3);
+    }
+
+    [InvokeOnBoot]
+    static private void OnBoot() {
+        SharedState.Register(new PlayerInventory());
+        SharedState.Register(new PlayerStats());
     }
 }

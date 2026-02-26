@@ -12,11 +12,6 @@ namespace AIS.Narrative {
             Ranger = 2,
             Tech = 2
         };
-
-        [InvokeOnBoot]
-        static private void Initialize() {
-            Game.SharedState.Register(new PlayerStats());
-        }
     }
 
     public enum PlayerStatId : byte {
