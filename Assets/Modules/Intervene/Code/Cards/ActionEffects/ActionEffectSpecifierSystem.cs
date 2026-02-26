@@ -306,7 +306,7 @@ namespace AIS.Intervene
 
         private IEnumerator ChunkCompleteRoutine()
         {
-            ProcessedEffects.Add(ChunkMgr.EffectChunk);
+            ProcessedEffects.Add(ChunkMgr.EffectChunk.Copy());
 
             foreach (var tag in ChunkMgr.EffectChunk.SelectedTargets)
             {
