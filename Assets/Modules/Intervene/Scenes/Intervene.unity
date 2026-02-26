@@ -566,7 +566,7 @@ GameObject:
   - component: {fileID: 1506408083}
   - component: {fileID: 1506408082}
   m_Layer: 0
-  m_Name: Main Camera
+  m_Name: Main Camera (Intervene)
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -796,6 +796,10 @@ PrefabInstance:
     - target: {fileID: 6722534603810742425, guid: 72c851f6dec9d6c409145d5ba2ed91b9, type: 3}
       propertyPath: m_Name
       value: Core Intervene Functionality
+      objectReference: {fileID: 0}
+    - target: {fileID: 7168767267207884269, guid: 72c851f6dec9d6c409145d5ba2ed91b9, type: 3}
+      propertyPath: m_Camera
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

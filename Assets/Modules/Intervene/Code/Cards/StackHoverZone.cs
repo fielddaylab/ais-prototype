@@ -57,12 +57,12 @@ namespace AIS.Intervene
 
         private IEnumerator Focus()
         {
-            yield return ToMove.MoveTo(FocusedY, 0.1f, Axis.Y, Space.World);
+            yield return ToMove.MoveTo(FocusedY, 0.1f, Axis.Y, Space.Self);
         }
 
         private IEnumerator Hide()
         {
-            yield return ToMove.MoveTo(HiddenY, 0.1f, Axis.Y, Space.World);
+            yield return ToMove.MoveTo(HiddenY, 0.1f, Axis.Y, Space.Self);
         }
 
         #endregion // Routine

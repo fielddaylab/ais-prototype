@@ -1,5 +1,6 @@
 using AIS.Model;
 using AIS.Narrative;
+using BeauRoutine;
 using BeauUtil;
 using FieldDay;
 using FieldDay.SharedState;
@@ -18,6 +19,8 @@ namespace AIS.Intervene
         public InvasionCurveInterfacer CurveInterfacer;
         [HideInInspector] public InvasionModel InvasionModel;
 
+        private Routine m_LoadRoutine;
+
         private void Start()
         {
             AisGame.Events.Register(InterveneEvents.OnInterveneRestart, HandleInterveneRestart);
@@ -28,13 +31,17 @@ namespace AIS.Intervene
         // Data passed into this scene
         public void Load()
         {
+            m_LoadRoutine.Replace(LoadRoutine());
+        }
+
+        private IEnumerator LoadRoutine()
+        {
             // TODO: manage proper dependency sequence
             InvasionModel = InvasionModel.Instance;
 
-            // TODO: convert to parameters
-            int inBudget = 3;
+            int inBudget = 3; // TODO
 
-            int inAwareness = 3;
+            int inAwareness = 3; // TODO
 
             var stats = Find.State<PlayerStats>().StatBlock;
             int[] inStats = new int[4];
@@ -43,7 +50,14 @@ namespace AIS.Intervene
             inStats[2] = stats.Tech;
             inStats[3] = stats.Research;
 
+            var inventory = Find.State<PlayerInventory>();
+            StringHash32[] evidenceIds = new StringHash32[inventory.EvidenceCards.Count];
+            inventory.EvidenceCards.CopyTo(evidenceIds);
             List<SerializedHash32> inEvidenceIds = new List<SerializedHash32>();
+            foreach (var evidenceId in evidenceIds)
+            {
+                inEvidenceIds.Add(evidenceId);
+            }
 
             float inInvasionCurve = 0;
 
@@ -53,6 +67,10 @@ namespace AIS.Intervene
             Stats.LoadPlayerStats(inStats[0], inStats[1], inStats[2], inStats[3]);
             CurveInterfacer.LoadCurve(inInvasionCurve);
             InvasionModel.Load(CurveInterfacer.CurrVal);
+
+            // allow 1 frame for model tags to register themselves
+            yield return null;
+
             CardMgr.LoadSetupData(inEvidenceIds);
         }
 

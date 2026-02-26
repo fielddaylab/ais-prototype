@@ -25,10 +25,24 @@ namespace AIS.Intervene {
         #endregion // Structs and Enums
 
         private const int NEST_THRESHOLD = 3;
+        private const float SIM_PHASE_DELAY = 1.2f;
+        private const float SIM_PHASE_SHORT_DELAY = 0.8f;
 
         private List<SpeciesTransferAllocation> m_SpeciesTransfers = new List<SpeciesTransferAllocation>();
 
         public Routine SimRoutine;
+
+        private void Start()
+        {
+            AisGame.Events.Register(InterveneEvents.OnInterveneRestart, HandleInterveneRestart);
+        }
+
+        private void OnDisable()
+        {
+            if (AisGame.IsShuttingDown) { return; }
+
+            AisGame.Events.Deregister(InterveneEvents.OnInterveneRestart, HandleInterveneRestart);
+        }
 
         public void TickSim()
         {
@@ -39,50 +53,86 @@ namespace AIS.Intervene {
 
         private IEnumerator TickSimRoutine()
         {
+            InterveneUI.Instance.ShowSimPhase();
+
             // predator / prey dynamics
+            /*
             foreach (var ecosystem in InvasionModelContainer.Instance.GetAllEcosystems())
             {
                 if (ecosystem.IsExternal) { continue; }
-                ProcessInterspeciesDynamics(ecosystem);
+                InterveneUI.Instance.SetSimPhase("Species Dynamics");
+                yield return ProcessInterspeciesDynamics(ecosystem);
+            }
+            */
+            foreach (var ecosystem in InvasionModelContainer.Instance.GetAllEcosystems())
+            {
+                if (ecosystem.IsExternal) { continue; }
+                yield return ProcessInvasiveDynamics(ecosystem);
+            }
+            foreach (var ecosystem in InvasionModelContainer.Instance.GetAllEcosystems())
+            {
+                if (ecosystem.IsExternal) { continue; }
+                yield return ProcessPredatorDynamics(ecosystem);
+            }
+            foreach (var ecosystem in InvasionModelContainer.Instance.GetAllEcosystems())
+            {
+                if (ecosystem.IsExternal) { continue; }
+                yield return ProcessPreyDynamics(ecosystem);
             }
 
             // Trigger Traps
+            InterveneUI.Instance.SetSimPhase("Trigger Traps");
             foreach (var ecosystem in InvasionModelContainer.Instance.GetAllEcosystems())
             {
-                TriggerTraps(ecosystem);
+                yield return TriggerTraps(ecosystem);
             }
 
             // Transfer species along pathways
+            InterveneUI.Instance.SetSimPhase("Stage Pathway Travels");
             foreach (var pathway in InvasionModelContainer.Instance.GetAllPathways())
             {
-                StagePathwayTransfer(pathway);
+                SetPathwayFocused(pathway, true);
+                yield return StagePathwayTransfer(pathway);
+                SetPathwayFocused(pathway, false);
             }
+            yield return SIM_PHASE_DELAY;
 
             // Finalize species movements
+            InterveneUI.Instance.SetSimPhase("Finalize Pathway Travels");
             FinalizePathwayTransfers();
 
+            yield return SIM_PHASE_DELAY;
+
             // Spawn at Nests
+            InterveneUI.Instance.SetSimPhase("Trigger Nests");
             foreach (var ecosystem in InvasionModelContainer.Instance.GetAllEcosystems())
             {
-                TriggerNests(ecosystem);
+                yield return TriggerNests(ecosystem);
             }
+
+            InterveneUI.Instance.SetSimPhase("COMPLETE!");
+            yield return SIM_PHASE_DELAY * 1.5;
+
+            InterveneUI.Instance.HideSimPhase();
 
             Debug.Log("[InterveneDriver] Sim Progressed by 1 tick");
             AisGame.Events.Dispatch(InterveneEvents.OnEndTurn);
 
-            yield return null;
         }
 
         #region Simulate & Modify
 
-        private void ProcessInterspeciesDynamics(Ecosystem eco)
+        private IEnumerator ProcessInterspeciesDynamics(Ecosystem eco)
         {
-            ProcessInvasiveDynamics(eco);
-            ProcessPredatorDynamics(eco);
-            ProcessPreyDynamics(eco);
+            yield return ProcessInvasiveDynamics(eco);
+            yield return SIM_PHASE_DELAY;
+            yield return ProcessPredatorDynamics(eco);
+            yield return SIM_PHASE_DELAY;
+            yield return ProcessPreyDynamics(eco);
+            yield return SIM_PHASE_DELAY;
         }
 
-        private void ProcessInvasiveDynamics(Ecosystem eco)
+        private IEnumerator ProcessInvasiveDynamics(Ecosystem eco)
         {
             /*
             Hunt: Roll d6 equal to invasive population. For each result lower than the prey population, remove 1 prey and add it to �bank.�
@@ -104,7 +154,15 @@ namespace AIS.Intervene {
                 totalInvasives += count.Item2;
             }
 
+            if (totalInvasives == 0)
+            {
+                yield break;
+            }
+
+            SetEcosystemFocused(eco, true);
+
             // Hunt
+            InterveneUI.Instance.SetSimPhase("Invasive Turn: Hunt");
             int totalPreyConsumed = 0;
             for (int i = 0; i < totalInvasives; i++)
             {
@@ -121,7 +179,9 @@ namespace AIS.Intervene {
             }
 
             Debug.Log("[InterveneDriver] [InterspeciesDynamics] eco " + eco.EcosystemId + " invasives consumed " + totalPreyConsumed);
+            yield return SIM_PHASE_SHORT_DELAY;
 
+            InterveneUI.Instance.SetSimPhase("Invasive Turn: Starve");
             // Starve
             if (totalPreyConsumed == 0)
             {
@@ -132,7 +192,9 @@ namespace AIS.Intervene {
                     Debug.Log("[InterveneDriver] [InterspeciesDynamics] eco " + eco.EcosystemId + " invasives starved 1");
                 }
             }
+            yield return SIM_PHASE_SHORT_DELAY;
 
+            InterveneUI.Instance.SetSimPhase("Invasive Turn: Reproduce");
             // Reproduce
             int reproduceNum = totalPreyConsumed;
             if (totalInvasives > 1)
@@ -145,15 +207,21 @@ namespace AIS.Intervene {
                 eco.AddPopulation(invasiveCounts[0].Item1, 1, invasiveCounts[0].Item3, invasiveCounts[0].Item4);
             }
             Debug.Log("[InterveneDriver] [InterspeciesDynamics] eco " + eco.EcosystemId + " invasives reproduced " + reproduceNum);
-        
+            yield return SIM_PHASE_SHORT_DELAY;
+
+            InterveneUI.Instance.SetSimPhase("Invasive Turn: Spawn Nests");
             // Spawn Nest
             if (totalInvasives >= NEST_THRESHOLD)
             {
                 TrySpawnNest(eco);
             }
+
+            yield return SIM_PHASE_DELAY;
+
+            SetEcosystemFocused(eco, false);
         }
 
-        private void ProcessPredatorDynamics(Ecosystem eco)
+        private IEnumerator ProcessPredatorDynamics(Ecosystem eco)
         {
             /*
             Hunt: Roll d6 equal to predator population. For each result lower than the prey population, remove 1 prey and add it to �bank.� 
@@ -176,6 +244,14 @@ namespace AIS.Intervene {
                 totalPredators += count.Item2;
             }
 
+            if (totalPredators == 0)
+            {
+                yield break;
+            }
+
+            SetEcosystemFocused(eco, true);
+
+            InterveneUI.Instance.SetSimPhase("Predator Turn: Hunt");
             // Hunt
             int totalPreyConsumed = 0;
             for (int i = 0; i < totalPredators; i++)
@@ -194,7 +270,9 @@ namespace AIS.Intervene {
             }
 
             Debug.Log("[InterveneDriver] [InterspeciesDynamics] eco " + eco.EcosystemId + " predators consumed " + totalPreyConsumed);
+            yield return SIM_PHASE_SHORT_DELAY;
 
+            InterveneUI.Instance.SetSimPhase("Predator Turn: Starve");
             // Starve
             if (totalPreyConsumed == 0)
             {
@@ -205,7 +283,9 @@ namespace AIS.Intervene {
                     Debug.Log("[InterveneDriver] [InterspeciesDynamics] eco " + eco.EcosystemId + " predators starved 1");
                 }
             }
+            yield return SIM_PHASE_SHORT_DELAY;
 
+            InterveneUI.Instance.SetSimPhase("Predator Turn: Reproduce");
             // Reproduce
             int reproduceNum = totalPreyConsumed;
             if (totalPredators > 1)
@@ -218,9 +298,13 @@ namespace AIS.Intervene {
                 eco.AddPopulation(predatorCounts[0].Item1, 1, predatorCounts[0].Item3, predatorCounts[0].Item4);
             }
             Debug.Log("[InterveneDriver] [InterspeciesDynamics] eco " + eco.EcosystemId + " predator reproduced " + reproduceNum);
+           
+            yield return SIM_PHASE_DELAY;
+
+            SetEcosystemFocused(eco, false);
         }
 
-        private void ProcessPreyDynamics(Ecosystem eco)
+        private IEnumerator ProcessPreyDynamics(Ecosystem eco)
         {
             /*
             Reproduce: Roll 1d6. If the result is less than or equal to the current prey population, add 1 prey population.
@@ -233,6 +317,14 @@ namespace AIS.Intervene {
                 totalPrey += count.Item2;
             }
 
+            if (totalPrey == 0)
+            {
+                yield break;
+            }
+
+            SetEcosystemFocused(eco, true);
+
+            InterveneUI.Instance.SetSimPhase("Prey Turn: Reproduce");
             // Reproduce
             int rollResult = UnityEngine.Random.Range(1, 7);
             if (rollResult <= totalPrey)
@@ -241,9 +333,13 @@ namespace AIS.Intervene {
                 eco.AddPopulation(preyCounts[0].Item1, 1, preyCounts[0].Item3, preyCounts[0].Item4);
                 Debug.Log("[InterveneDriver] [InterspeciesDynamics] eco " + eco.EcosystemId + " prey reproduced 1");
             }
+
+            yield return SIM_PHASE_DELAY;
+
+            SetEcosystemFocused(eco, false);
         }
 
-        private void StagePathwayTransfer(Pathway pathway)
+        private IEnumerator StagePathwayTransfer(Pathway pathway)
         {
             // for each species in origin which travels along pathway
             var origEco = InvasionModelContainer.Instance.GetEcosystem(pathway.OrigEcosystemId);
@@ -302,6 +398,8 @@ namespace AIS.Intervene {
                 // Release species from original ecosystem
                 origEco.ReleasePopulation(speciesPair.Item1, transferNum);
             }
+
+            yield return SIM_PHASE_DELAY;
         }
 
         private void FinalizePathwayTransfers()
@@ -337,8 +435,23 @@ namespace AIS.Intervene {
             }
         }
 
-        private void TriggerNests(Ecosystem eco)
+        private IEnumerator TriggerNests(Ecosystem eco)
         {
+            List<Tuple<SerializedHash32, int, PathwayType, ActionTarget>> nestCounts;
+            eco.FindByTargetType(ActionTarget.Trap, out nestCounts);
+            int totalNests = 0;
+            foreach (var count in nestCounts)
+            {
+                totalNests += count.Item2;
+            }
+
+            if (totalNests == 0)
+            {
+                yield break;
+            }
+
+            SetEcosystemFocused(eco, true);
+
             foreach (var slot in eco.SecondarySlots)
             {
                 foreach (var cluster in slot.Clusters)
@@ -356,10 +469,29 @@ namespace AIS.Intervene {
                     }
                 }
             }
+
+            yield return SIM_PHASE_SHORT_DELAY;
+
+            SetEcosystemFocused(eco, false);
         }
 
-        private void TriggerTraps(Ecosystem eco)
+        private IEnumerator TriggerTraps(Ecosystem eco)
         {
+            List<Tuple<SerializedHash32, int, PathwayType, ActionTarget>> trapCounts;
+            eco.FindByTargetType(ActionTarget.Trap, out trapCounts);
+            int totalTraps = 0;
+            foreach (var count in trapCounts)
+            {
+                totalTraps += count.Item2;
+            }
+
+            if (totalTraps == 0)
+            {
+                yield break;
+            }
+
+            SetEcosystemFocused(eco, true);
+
             foreach (var slot in eco.SecondarySlots)
             {
                 foreach (var cluster in slot.Clusters)
@@ -377,8 +509,50 @@ namespace AIS.Intervene {
                     }
                 }
             }
+
+            yield return SIM_PHASE_SHORT_DELAY;
+
+            SetEcosystemFocused(eco, false);
         }
 
         #endregion // Simulate & Modify
+
+        private void SetEcosystemFocused(Ecosystem eco, bool isFocused)
+        {
+            ModelTag tag = eco.GetComponentInChildren<ModelTag>();
+            if (tag == null) { return; }
+
+            if (isFocused)
+            {
+                tag.SetCustomHighlight(InterveneUI.Instance.FocusColor);
+                tag.ShowHighlight(true);
+            }
+            else
+            {
+                tag.HideHighlight();
+            }
+        }
+
+        private void SetPathwayFocused(Pathway path, bool isFocused)
+        {
+            ModelTag tag = path.GetComponentInChildren<ModelTag>();
+            if (tag == null) { return; }
+
+            if (isFocused)
+            {
+                tag.SetCustomHighlight(InterveneUI.Instance.FocusColor);
+                tag.ShowHighlight(true);
+            }
+            else
+            {
+                tag.HideHighlight();
+            }
+        }
+
+        private void HandleInterveneRestart()
+        {
+            InterveneUI.Instance.HideSimPhase();
+            SimRoutine.Stop();
+        }
     }
 }
