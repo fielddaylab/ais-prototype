@@ -3,6 +3,12 @@
 
 #include "UnityCG.cginc"
 
+#if defined(UNITY_FIXED_IS_HALF)
+#define FD_SUPPORTS_HALF 1
+#else
+#define FD_SUPPORTS_HALF 0
+#endif // defined(UNITY_FIXED_IS_HALF)
+
 /*
 #if !defined(sampler2DArray)
 

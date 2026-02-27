@@ -4,9 +4,11 @@ using System.Collections.Generic;
 using BeauPools;
 using BeauRoutine;
 using BeauUtil;
+using BeauUtil.Debugger;
 using BeauUtil.Tags;
 using BeauUtil.UI;
 using FieldDay;
+using FieldDay.Collections;
 using FieldDay.Components;
 using FieldDay.Scripting;
 using FieldDay.UI;
@@ -30,6 +32,14 @@ namespace AIS.Narrative {
         public int MaxLines = 3;
 
         public RingBuffer<DialogueLine> ActiveLines = new RingBuffer<DialogueLine>(8);
+
+        private void Awake() {
+            using(TempComponentBuffer<DialogueChoiceButton> buffer = TempComponentBuffer<DialogueChoiceButton>.Create()) {
+                foreach(var choice in Choices) {
+                    buffer.Add(choice);
+                }
+            }
+        }
 
         public void RecomputePositioning() {
             while(ActiveLines.Count > MaxLines) {

@@ -37,10 +37,14 @@ inline float Quantize8(float value)
     return round(value * QUANTIZE_PRECISION_8) * INV_QUANTIZE_PRECISION_8;
 }
 
+#if FD_SUPPORTS_HALF
+
 inline half Quantize8(half value)
 {
     return round(value * QUANTIZE_PRECISION_8) * INV_QUANTIZE_PRECISION_8;
 }
+
+#endif // FD_SUPPORTS_HALF
 
 /// Math
 

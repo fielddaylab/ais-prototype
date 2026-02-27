@@ -83,11 +83,13 @@ inline float UIPerformRectClip(float4 mask)
     return m.x * m.y;
 }
 
+#if FD_SUPPORTS_HALF
 inline float UIPerformRectClip(half4 mask)
 {
     half2 m = saturate((_ClipRect.zw - _ClipRect.xy - abs(mask.xy)) * mask.zw);
     return m.x * m.y;
 }
+#endif // FD_SUPPORTS_HALF
 
 #ifdef UNITY_UI_CLIP_RECT
     #define UIRectClip(mask, color) (color).a *= UIPerformRectClip(mask)

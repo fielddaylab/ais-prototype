@@ -12,7 +12,6 @@ public sealed class AisGame : Game {
     {
         Events = new EventDispatcher<EvtArgs>();
         SetEventDispatcher(Events);
-        Rendering.EnableAspectClamping(4, 3);
     }
 
     [InvokeOnBoot]

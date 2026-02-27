@@ -3572,15 +3572,9 @@ namespace TMPro
         {
             // CALCULATE PREFERRED WIDTH
             m_isPreferredWidthDirty = true;
+            m_isPreferredHeightDirty = true;
             float preferredWidth = GetPreferredWidth();
-
-            // CALCULATE PREFERRED HEIGHT
-            m_isPreferredHeightDirty = true;
             float preferredHeight = GetPreferredHeight();
-
-            // Reset dirty states as we always want to recalculate preferred values when this function is called.
-            m_isPreferredWidthDirty = true;
-            m_isPreferredHeightDirty = true;
 
             return new Vector2(preferredWidth, preferredHeight);
         }
@@ -3675,17 +3669,30 @@ namespace TMPro
             m_maxFontSize = m_fontSizeMax;
             m_charWidthAdjDelta = 0;
 
-            // Set Margins to Infinity
             Vector2 margin = new Vector2(m_maxLineWidth > 0 ? (m_maxLineWidth - m_margin.x - m_margin.z) : (m_marginWidth != 0 ? m_marginWidth : k_LargePositiveFloat), k_LargePositiveFloat);
 
             m_isCalculatingPreferredValues = true;
             ParseInputText();
 
+            // Reset Text Auto Size iteration tracking.
+            m_IsAutoSizePointSizeSet = false;
             m_AutoSizeIterationCount = 0;
-            TextWrappingModes wrapMode = m_TextWrappingMode;
-            float preferredWidth = CalculatePreferredValues(ref fontSize, margin, false, wrapMode).x;
 
+            // The CalculatePreferredValues function is potentially called repeatedly when text auto size is enabled.
+            // This is a revised implementation to remove the use of recursion which could potentially result in stack overflow issues.
+            Vector2 preferredSize = default;
+            float preferredWidth = 0;
+
+            while (m_IsAutoSizePointSizeSet == false) {
+                preferredSize = CalculatePreferredValues(ref fontSize, margin, m_enableAutoSizing, m_TextWrappingMode);
+                preferredWidth = preferredSize.x;
+                m_AutoSizeIterationCount += 1;
+            }
+
+            m_preferredHeight = preferredSize.y;
+            m_preferredWidth = preferredWidth;
             m_isPreferredWidthDirty = false;
+            m_isPreferredHeightDirty = false;
 
             //Debug.Log("GetPreferredWidth() called on Object ID: " + GetInstanceID() + " on frame: " + Time.frameCount + ". Returning width of " + preferredWidth);
 
@@ -3759,14 +3766,19 @@ namespace TMPro
 
             // The CalculatePreferredValues function is potentially called repeatedly when text auto size is enabled.
             // This is a revised implementation to remove the use of recursion which could potentially result in stack overflow issues.
+            Vector2 preferredSize = default;
             float preferredHeight = 0;
 
             while (m_IsAutoSizePointSizeSet == false)
             {
-                preferredHeight = CalculatePreferredValues(ref fontSize, margin, m_enableAutoSizing, m_TextWrappingMode).y;
+                preferredSize = CalculatePreferredValues(ref fontSize, margin, m_enableAutoSizing, m_TextWrappingMode);
+                preferredHeight = preferredSize.y;
                 m_AutoSizeIterationCount += 1;
             }
 
+            m_preferredWidth = preferredSize.x;
+            m_preferredHeight = preferredHeight;
+            m_isPreferredWidthDirty = false;
             m_isPreferredHeightDirty = false;
 
             //Debug.Log("GetPreferredHeight() called on Object ID: " + GetInstanceID() + " on frame: " + Time.frameCount +". Returning height of " + preferredHeight);

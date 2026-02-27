@@ -61,7 +61,7 @@ MonoBehaviour:
     - AssemblyName: FieldDay.Scripting, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       TypeCount: 1
     Types:
-    - TypeName: AIS.Narrative.PlayerStats
+    - TypeName: AisGame
       Self: 0
       MemberCount: 1
       OverloadCount: 0
@@ -70,7 +70,7 @@ MonoBehaviour:
       MemberCount: 1
       OverloadCount: 0
     Members:
-    - MemberName: Initialize
+    - MemberName: OnBoot
       Type: 8
     - MemberName: OnBoot
       Type: 8
