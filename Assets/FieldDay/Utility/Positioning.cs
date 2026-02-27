@@ -6,6 +6,8 @@ namespace FieldDay {
     [Il2CppEagerStaticClassConstruction]
     static public class Positioning {
 
+        #region Anchors
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         static private float GetAnchorX(TextAnchor anchor) {
             return ((int)anchor % 3) * 0.5f;
@@ -82,8 +84,18 @@ namespace FieldDay {
             rect.anchoredPosition = offset;
         }
 
+        #endregion // Anchors
+
+        #region Pivot
+
         static public void SetPivot(RectTransform rect, TextAnchor anchor) {
             rect.pivot = new Vector2(GetAnchorX(anchor), GetAnchorY(anchor));
         }
+
+        #endregion // Pivot
+
+        #region Horizontal Layout
+
+        #endregion // Horizontal Layout
     }
 }
