@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Oneshot.DrawCard
   m_EditorClassIdentifier: 
   Samples:
-  - {fileID: 8300000, guid: f53275990df014149b66ae57618baa1e, type: 3}
+  - {fileID: 8300000, guid: 21c07ccca4d24442c8096d61b9278c1c, type: 3}
   Stream: 
   PreloadSamples: 1
   UnloadAfterPlayback: 0

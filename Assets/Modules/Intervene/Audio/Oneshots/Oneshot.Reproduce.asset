@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Oneshot.Reproduce
   m_EditorClassIdentifier: 
   Samples:
-  - {fileID: 8300000, guid: d084533f3318f446d9f986c2ba75c5a0, type: 3}
+  - {fileID: 8300000, guid: 00a3691aaf23541c59084cdc15ac5468, type: 3}
   Stream: 
   PreloadSamples: 1
   UnloadAfterPlayback: 0

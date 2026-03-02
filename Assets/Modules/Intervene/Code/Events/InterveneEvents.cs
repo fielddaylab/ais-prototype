@@ -28,6 +28,7 @@ namespace AIS.Intervene
 
         public static StringHash32 OnInvasionLevelChanged = "on-invasion-level-changed";
 
+        // Events for SFX
         public static StringHash32 OnHoverZone = "on-hover-zone";
         public static StringHash32 OnUiSelected = "on-ui-selected";
         public static StringHash32 OnEndTurn = "on-end-turn";

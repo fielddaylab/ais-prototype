@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Oneshot.SpawnNest
   m_EditorClassIdentifier: 
   Samples:
-  - {fileID: 8300000, guid: 1c713f358fedb453b84de5a649549b40, type: 3}
+  - {fileID: 8300000, guid: ab5581a2665b44608bba2397bb707978, type: 3}
   Stream: 
   PreloadSamples: 1
   UnloadAfterPlayback: 0
