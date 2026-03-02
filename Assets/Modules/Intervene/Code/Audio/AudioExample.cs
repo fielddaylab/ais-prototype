@@ -12,12 +12,20 @@ namespace AIS.Intervene
             AisGame.Events.Register(InterveneEvents.OnHoverZone, HandleZoneHovered);
             AisGame.Events.Register(InterveneEvents.OnDrawFromActionDeck, HandleCardDrawn);
 
+            // UI buttons
             AisGame.Events.Register(InterveneEvents.OnUiSelected, HandleUiSelected);
+            AisGame.Events.Register(InterveneEvents.OnEffectSpecifyBegin, HandleUiSelected);
             AisGame.Events.Register(InterveneEvents.OnEffectChunkComplete, HandleConfirmButtons);
             AisGame.Events.Register(InterveneEvents.OnEffectSpecifyConfirm, HandleConfirmButtons);
-            AisGame.Events.Register(InterveneEvents.OnEndTurn, HandleTurnEnded);
 
-            AisGame.Events.Register(InterveneEvents.OnPredatorEatPrey, HandlePredatorEatPrey);
+            // Simulation
+            AisGame.Events.Register(InterveneEvents.OnHunt, HandleHunt);
+            AisGame.Events.Register(InterveneEvents.OnStarve, HandleStarve);
+            AisGame.Events.Register(InterveneEvents.OnReproduce, HandleReproduce);
+            AisGame.Events.Register(InterveneEvents.OnNestSpawn, HandleNestSpawn);
+            AisGame.Events.Register(InterveneEvents.OnTrapTriggered, HandleTrapTriggered);
+            AisGame.Events.Register(InterveneEvents.OnPathwayHighlighted, HandlePathwayHighlighted);
+            AisGame.Events.Register(InterveneEvents.OnEndTurn, HandleTurnEnded);
         }
 
         private void OnDisable()
@@ -27,12 +35,20 @@ namespace AIS.Intervene
             AisGame.Events.Deregister(InterveneEvents.OnHoverZone, HandleZoneHovered);
             AisGame.Events.Deregister(InterveneEvents.OnDrawFromActionDeck, HandleCardDrawn);
 
+            // UI buttons
             AisGame.Events.Deregister(InterveneEvents.OnUiSelected, HandleUiSelected);
+            AisGame.Events.Deregister(InterveneEvents.OnEffectSpecifyBegin, HandleUiSelected);
             AisGame.Events.Deregister(InterveneEvents.OnEffectChunkComplete, HandleConfirmButtons);
             AisGame.Events.Deregister(InterveneEvents.OnEffectSpecifyConfirm, HandleConfirmButtons);
-            AisGame.Events.Deregister(InterveneEvents.OnEndTurn, HandleTurnEnded);
 
-            AisGame.Events.Deregister(InterveneEvents.OnPredatorEatPrey, HandlePredatorEatPrey);
+            // Simulation
+            AisGame.Events.Deregister(InterveneEvents.OnHunt, HandleHunt);
+            AisGame.Events.Deregister(InterveneEvents.OnStarve, HandleStarve);
+            AisGame.Events.Deregister(InterveneEvents.OnReproduce, HandleReproduce);
+            AisGame.Events.Deregister(InterveneEvents.OnNestSpawn, HandleNestSpawn);
+            AisGame.Events.Deregister(InterveneEvents.OnTrapTriggered, HandleTrapTriggered);
+            AisGame.Events.Deregister(InterveneEvents.OnPathwayHighlighted, HandlePathwayHighlighted);
+            AisGame.Events.Deregister(InterveneEvents.OnEndTurn, HandleTurnEnded);
         }
 
         private void HandleZoneHovered()
@@ -60,9 +76,34 @@ namespace AIS.Intervene
             Sfx.Play("Oneshot.EndTurn");
         }
 
-        private void HandlePredatorEatPrey()
+        private void HandlePathwayHighlighted()
         {
-            // Sfx.Play("Oneshot.PredatorEatPrey");
+            Sfx.Play("Oneshot.HighlightPathway");
+        }
+
+        private void HandleHunt()
+        {
+            Sfx.Play("Oneshot.Hunt");
+        }
+
+        private void HandleStarve()
+        {
+            Sfx.Play("Oneshot.Starve");
+        }
+
+        private void HandleReproduce()
+        {
+            Sfx.Play("Oneshot.Reproduce");
+        }
+
+        private void HandleNestSpawn()
+        {
+            Sfx.Play("Oneshot.SpawnNest");
+        }
+
+        private void HandleTrapTriggered()
+        {
+            Sfx.Play("Oneshot.TrapTriggered");
         }
     }
 }

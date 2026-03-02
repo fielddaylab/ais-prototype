@@ -176,6 +176,7 @@ namespace AIS.Intervene {
             if (totalPreyConsumed > 0) 
             {
                 eco.ReleasePopulation(preyCounts[0].Item1, totalPreyConsumed);
+                AisGame.Events.Dispatch(InterveneEvents.OnHunt);
             }
 
             Debug.Log("[InterveneDriver] [InterspeciesDynamics] eco " + eco.EcosystemId + " invasives consumed " + totalPreyConsumed);
@@ -190,6 +191,7 @@ namespace AIS.Intervene {
                 {
                     eco.ReleasePopulation(invasiveCounts[0].Item1, 1);
                     Debug.Log("[InterveneDriver] [InterspeciesDynamics] eco " + eco.EcosystemId + " invasives starved 1");
+                    AisGame.Events.Dispatch(InterveneEvents.OnStarve);
                 }
             }
             yield return SIM_PHASE_SHORT_DELAY;
@@ -205,6 +207,7 @@ namespace AIS.Intervene {
             for (int i = 0; i < reproduceNum; i++)
             {
                 eco.AddPopulation(invasiveCounts[0].Item1, 1, invasiveCounts[0].Item3, invasiveCounts[0].Item4);
+                AisGame.Events.Dispatch(InterveneEvents.OnReproduce);
             }
             Debug.Log("[InterveneDriver] [InterspeciesDynamics] eco " + eco.EcosystemId + " invasives reproduced " + reproduceNum);
             yield return SIM_PHASE_SHORT_DELAY;
@@ -214,6 +217,7 @@ namespace AIS.Intervene {
             if (totalInvasives >= NEST_THRESHOLD)
             {
                 TrySpawnNest(eco);
+                AisGame.Events.Dispatch(InterveneEvents.OnNestSpawn);
             }
 
             yield return SIM_PHASE_DELAY;
@@ -266,7 +270,7 @@ namespace AIS.Intervene {
             if (totalPreyConsumed > 0)
             {
                 eco.ReleasePopulation(preyCounts[0].Item1, totalPreyConsumed);
-                AisGame.Events.Dispatch(InterveneEvents.OnPredatorEatPrey);
+                AisGame.Events.Dispatch(InterveneEvents.OnHunt);
             }
 
             Debug.Log("[InterveneDriver] [InterspeciesDynamics] eco " + eco.EcosystemId + " predators consumed " + totalPreyConsumed);
@@ -281,6 +285,7 @@ namespace AIS.Intervene {
                 {
                     eco.ReleasePopulation(predatorCounts[0].Item1, 1);
                     Debug.Log("[InterveneDriver] [InterspeciesDynamics] eco " + eco.EcosystemId + " predators starved 1");
+                    AisGame.Events.Dispatch(InterveneEvents.OnStarve);
                 }
             }
             yield return SIM_PHASE_SHORT_DELAY;
@@ -296,6 +301,7 @@ namespace AIS.Intervene {
             for (int i = 0; i < reproduceNum; i++)
             {
                 eco.AddPopulation(predatorCounts[0].Item1, 1, predatorCounts[0].Item3, predatorCounts[0].Item4);
+                AisGame.Events.Dispatch(InterveneEvents.OnReproduce);
             }
             Debug.Log("[InterveneDriver] [InterspeciesDynamics] eco " + eco.EcosystemId + " predator reproduced " + reproduceNum);
            
@@ -332,6 +338,7 @@ namespace AIS.Intervene {
                 // TODO: how to divvy if multiple types of prey?
                 eco.AddPopulation(preyCounts[0].Item1, 1, preyCounts[0].Item3, preyCounts[0].Item4);
                 Debug.Log("[InterveneDriver] [InterspeciesDynamics] eco " + eco.EcosystemId + " prey reproduced 1");
+                AisGame.Events.Dispatch(InterveneEvents.OnReproduce);
             }
 
             yield return SIM_PHASE_DELAY;
@@ -504,6 +511,7 @@ namespace AIS.Intervene {
                             if (UnityEngine.Random.Range(0, 1f) < trap.TriggerOdds)
                             {
                                 eco.ReleasePopulation(trap.TrapSpeciesId, trap.TrapAmt * cluster.Population);
+                                AisGame.Events.Dispatch(InterveneEvents.OnTrapTriggered);
                             }
                         }
                     }
@@ -542,6 +550,7 @@ namespace AIS.Intervene {
             {
                 tag.SetCustomHighlight(InterveneUI.Instance.FocusColor);
                 tag.ShowHighlight(true);
+                AisGame.Events.Dispatch(InterveneEvents.OnPathwayHighlighted);
             }
             else
             {

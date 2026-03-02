@@ -168,6 +168,7 @@ namespace AIS.Intervene
             {
                 RemoveTagFromChunk(tag);
                 tag.SetNormalHighlight();
+                AisGame.Events.Dispatch(InterveneEvents.OnUiSelected);
             }
             // Else if MaxTargets is reached, do not select
             else if (m_EffectToProcess.MaxTargets == EffectChunk.SelectedTargets.Count)
@@ -179,6 +180,7 @@ namespace AIS.Intervene
             {
                 AddTagToChunk(tag);
                 tag.SetSelectedHighlight();
+                AisGame.Events.Dispatch(InterveneEvents.OnUiSelected);
             }
         }
 
