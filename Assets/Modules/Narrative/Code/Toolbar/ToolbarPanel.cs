@@ -20,25 +20,30 @@ namespace AIS.Narrative {
         }
 
         private void ToggleStats() {
+            var mapPanel = Find.Panel<MapDisplayPanel>();
             var statPanel = Find.Panel<StatDisplayPanel>();
             if (statPanel.IsShowing()) {
                 statPanel.Hide();
             } else {
+                mapPanel.Hide();
                 statPanel.Populate(Find.State<PlayerStats>().StatBlock);
                 statPanel.Show();
             }
-            InvasionModel.Instance.gameObject.SetActive(false);
             Find.GuiModule<DialoguePanel>().SetVisible(true);
+            InvasionModel.Instance.gameObject.SetActive(false);
         }
 
         private void ToggleMap() {
+            var mapPanel = Find.Panel<MapDisplayPanel>();
             var statPanel = Find.Panel<StatDisplayPanel>();
-            statPanel.Hide();
-
-            bool isActive = InvasionModel.Instance.gameObject.activeSelf;
-            InvasionModel.Instance.gameObject.SetActive(!isActive);
-
-            Find.GuiModule<DialoguePanel>().SetVisible(isActive);
+            if (mapPanel.IsShowing()) {
+                mapPanel.Hide();
+            } else {
+                statPanel.Hide();
+                mapPanel.Show();
+            }
+            Find.GuiModule<DialoguePanel>().SetVisible(!mapPanel.IsShowing());
+            InvasionModel.Instance.gameObject.SetActive(mapPanel.IsShowing());
         }
     }
 }
