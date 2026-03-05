@@ -79,6 +79,8 @@ namespace AIS.Intervene
                     newCard.StackIndex = i;
                     int tempIndex = i;
                     newCard.ClickBtn.onClick.AddListener(() => { stack.ClickCall(tempIndex); });
+                    CardHoverZone hoverZone = newCard.GetComponent<CardHoverZone>();
+                    if (hoverZone != null) hoverZone.RootCard = newCard;
                     visuals.CardVisuals.Add(newCard);
                 }
 
