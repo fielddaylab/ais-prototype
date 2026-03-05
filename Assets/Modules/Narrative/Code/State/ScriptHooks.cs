@@ -24,5 +24,17 @@ namespace AIS.Narrative {
         static public void LoadIntoInterventionScene() {
             Game.Scenes.LoadMainScene(SceneReference.FromName("Intervene"));
         }
+
+        [LeafMember("GiveEvidenceCard")]
+        static public bool GiveEvidence(StringHash32 id) {
+            PlayerInventory inv = Find.State<PlayerInventory>();
+            return inv.EvidenceCards.Add(id);
+        }
+
+        [LeafMember("HasEvidenceCard")]
+        static public bool HasEvidenceCard(StringHash32 id) {
+            PlayerInventory inv = Find.State<PlayerInventory>();
+            return inv.EvidenceCards.Contains(id);
+        }
     }
 }
