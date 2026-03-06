@@ -151,6 +151,7 @@ namespace AIS.Intervene
 
         private static IEnumerator ApplyFanLayout(CardStackVisualsBase visuals, float totalAngle, float offsetY)
         {
+            yield return new WaitForEndOfFrame();
             for (int i = 0; i < visuals.CardVisuals.Count; i++)
             {
                 float t = visuals.CardVisuals.Count == 1 ? 0.5f : (float)i / (visuals.CardVisuals.Count - 1);
@@ -165,7 +166,6 @@ namespace AIS.Intervene
                 CardHoverZone hoverZone = visuals.CardVisuals[i].GetComponentInChildren<CardHoverZone>();
                 if (hoverZone != null) hoverZone.setFanLayout(pos.y);
             }
-            yield break;
         }
 
         public static void PerformShuffleVisuals()

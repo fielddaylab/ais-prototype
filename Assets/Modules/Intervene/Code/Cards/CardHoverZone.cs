@@ -95,6 +95,7 @@ namespace AIS.Intervene
         public void setFanLayout(float fanY)
         {
             m_FanLayout = fanY;
+            SetAnchoredY(m_FanLayout);
         }
 
         private IEnumerator MoveTo(float targetY)
