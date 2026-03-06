@@ -106,6 +106,11 @@ namespace AIS.Intervene
                 GameObject.Destroy(visuals.CardVisuals[i].gameObject);
                 visuals.CardVisuals.RemoveAt(i);
             }
+
+            float totalAngle = (float)stack.Cards.Count * 2.5f;
+            float offsetY = 25f;
+
+            visuals.VisualsRoutine.Replace(ApplyFanLayout(visuals, totalAngle, offsetY));
         }
 
         private static void ClearCard(UICard card)
@@ -142,6 +147,25 @@ namespace AIS.Intervene
         private static void RefreshSpreadVisualsAt(CardStackVisualsBase visuals, CardStack stack, int targetIndex)
         {
 
+        }
+
+        private static IEnumerator ApplyFanLayout(CardStackVisualsBase visuals, float totalAngle, float offsetY)
+        {
+            yield return null;
+            for (int i = 0; i < visuals.CardVisuals.Count; i++)
+            {
+                float t = visuals.CardVisuals.Count == 1 ? 0.5f : (float)i / (visuals.CardVisuals.Count - 1);
+                float angle = Mathf.Lerp(-totalAngle, totalAngle, t);
+
+                RectTransform rt = visuals.CardVisuals[i].GetComponent<RectTransform>();
+                Vector2 pos = rt.anchoredPosition;
+                pos.y = -offsetY * Mathf.Pow(t * 2f - 1f, 2f) - 130f; // -130f is the offest to make cards aligned with hand deck
+                rt.anchoredPosition = pos;
+                rt.localRotation = Quaternion.Euler(0, 0, angle);
+
+                CardHoverZone hoverZone = visuals.CardVisuals[i].GetComponent<CardHoverZone>();
+                if (hoverZone != null) hoverZone.setFanLayout(pos.y);
+            }
         }
 
         public static void PerformShuffleVisuals()

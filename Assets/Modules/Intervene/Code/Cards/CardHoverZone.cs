@@ -21,6 +21,7 @@ namespace AIS.Intervene
         private RectTransform m_rectTransform;
         private HorizontalLayoutGroup m_layout;
         private float m_OriginalY;
+        private float m_FanLayout;
 
         private void Awake()
         {
@@ -31,17 +32,6 @@ namespace AIS.Intervene
             m_hoverZone.OnHoverEnter.AddListener(HandleHoverEnter);
             m_hoverZone.OnHoverExit.AddListener(HandleHoverExit);
             AisGame.Events.Register(InterveneEvents.OnUiSelected, HandleSelectionChanged);
-        }
-
-        private void Start()
-        {
-            StartCoroutine(CaptureOriginalY());
-        }
-
-        private IEnumerator CaptureOriginalY()
-        {
-            yield return null;
-            m_OriginalY = m_rectTransform.anchoredPosition.y;
         }
 
         public void Update()
@@ -73,14 +63,13 @@ namespace AIS.Intervene
                 s_CurrentHovered.HandleHoverExit();
             s_CurrentHovered = this;
 
-            if (m_layout != null)
+            if (m_FanLayout == 0f)
             {
-                m_layout.enabled = false;
-                LayoutRebuilder.ForceRebuildLayoutImmediate(m_layout.GetComponent<RectTransform>());
+                m_FanLayout = m_rectTransform.anchoredPosition.y;
             }
 
             RootCard.CanvasOverride.sortingOrder = 2;
-            float targetY = m_OriginalY + (IsSelected() ? SelectedOffsetY : HoverOffsetY);
+            float targetY = m_FanLayout + (IsSelected() ? SelectedOffsetY : HoverOffsetY);
             MoveRoutine.Replace(MoveTo(targetY));
         }
 
@@ -90,18 +79,16 @@ namespace AIS.Intervene
                 s_CurrentHovered = null;
 
             RootCard.CanvasOverride.sortingOrder = 1;
-            float targetY = IsSelected() ? m_OriginalY + SelectedOffsetY : m_OriginalY;
+            float targetY = IsSelected() ? m_FanLayout + SelectedOffsetY : m_FanLayout;
             MoveRoutine.Replace(MoveTo(targetY));
-
-            if (m_layout != null) m_layout.enabled = true;
         }
 
         private void HandleSelectionChanged()
         {   
-            float targetY = IsSelected() ? m_OriginalY + SelectedOffsetY : m_OriginalY;
+            float targetY = IsSelected() ? m_FanLayout + SelectedOffsetY : m_FanLayout;
             if (s_CurrentHovered == this)
             {
-                targetY = m_OriginalY + Mathf.Max(HoverOffsetY, IsSelected() ? SelectedOffsetY : HoverOffsetY);
+                targetY = m_FanLayout + Mathf.Max(HoverOffsetY, IsSelected() ? SelectedOffsetY : HoverOffsetY);
             }
 
             MoveRoutine.Replace(MoveTo(targetY));
@@ -110,6 +97,10 @@ namespace AIS.Intervene
         #endregion // Handlers
 
         #region Routines
+        public void setFanLayout(float fanY)
+        {
+            m_FanLayout = fanY;
+        }
 
         private IEnumerator MoveTo(float targetY)
         {
