@@ -26,6 +26,8 @@ namespace AIS.Intervene {
         [Header("Back")]
         public CanvasGroup BackGroup;
         public Image BackImg;
+        public Image AwarenessBg;
+        public TMP_Text AwarenessReq;
 
         [HideInInspector] public int StackIndex;
 
