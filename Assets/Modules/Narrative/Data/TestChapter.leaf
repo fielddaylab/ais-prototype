@@ -16,7 +16,7 @@
                 I need you to take some stat bonuses.
                 But first let me go to this room.
 
-{bg "bg/Room.png"}
+$call SetBackground("bg/Room.png")
 $set local:pointsToAllocate = 4
 $branch .StatBonusLoop
 
