@@ -14,6 +14,9 @@
 {@Player}       Uhhhhhh what do you mean?
 {@Narrator}     Listen, kid, we don't have much time.
                 I need you to take some stat bonuses.
+                But first let me go to this room.
+
+{bg "bg/Room.png"}
 $set local:pointsToAllocate = 4
 $branch .StatBonusLoop
 
