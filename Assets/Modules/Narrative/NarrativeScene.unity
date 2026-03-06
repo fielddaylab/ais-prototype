@@ -1715,7 +1715,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9913f779154e51489975768a5b48c38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BackgroundTexture: {fileID: 1589338998}
+  m_BackgroundTexture: {fileID: 1589338998}
 --- !u!1001 &1674594800
 PrefabInstance:
   m_ObjectHideFlags: 0

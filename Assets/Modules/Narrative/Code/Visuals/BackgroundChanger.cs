@@ -11,12 +11,13 @@ namespace AIS.Narrative
     // temporary script to swap background from Leaf files
     public class BackgroundChanger : MonoBehaviour
     {
-        public StreamingQuadTexture BackgroundTexture = null;
+        [SerializeField]
+        private StreamingQuadTexture m_BackgroundTexture = null;
 
         [LeafMember("SetBackground")]
         public void SetBackground(string path)
         {
-            BackgroundTexture.Path = path;
+            m_BackgroundTexture.Path = path;
         }
     }
 }
