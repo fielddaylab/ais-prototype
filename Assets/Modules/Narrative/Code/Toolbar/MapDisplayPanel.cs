@@ -15,6 +15,7 @@ namespace AIS.Narrative {
 
         private MapMode? currMode = null;
         public Button travelButton, modelButton;
+        public GameObject travelPointContainer;
 
         protected override void Awake() {
             base.Awake();
@@ -47,6 +48,7 @@ namespace AIS.Narrative {
 
             Transform container = InvasionModel.Instance.gameObject.transform.GetChild(1);
             bool isTravelMode = newMode == MapMode.Travel;
+
             for (int i = 0; i < container.childCount; i++) {
                 GameObject child = container.GetChild(i).gameObject;
                 // Travel mode: Hide icons
@@ -59,6 +61,8 @@ namespace AIS.Narrative {
                     child.SetActive(!isTravelMode);
                 }
             }
+
+            travelPointContainer.SetActive(isTravelMode);
 
             // TODO: current code is temporary -- implement proper animation later
             travelButton.GetComponent<RoundedRectGraphic>().color = isTravelMode ? Color.white : Color.gray;
