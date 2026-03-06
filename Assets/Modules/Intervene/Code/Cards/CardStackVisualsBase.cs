@@ -79,7 +79,7 @@ namespace AIS.Intervene
                     newCard.StackIndex = i;
                     int tempIndex = i;
                     newCard.ClickBtn.onClick.AddListener(() => { stack.ClickCall(tempIndex); });
-                    CardHoverZone hoverZone = newCard.GetComponent<CardHoverZone>();
+                    CardHoverZone hoverZone = newCard.GetComponentInChildren<CardHoverZone>();
                     if (hoverZone != null) hoverZone.RootCard = newCard;
                     visuals.CardVisuals.Add(newCard);
                 }
@@ -151,7 +151,6 @@ namespace AIS.Intervene
 
         private static IEnumerator ApplyFanLayout(CardStackVisualsBase visuals, float totalAngle, float offsetY)
         {
-            yield return null;
             for (int i = 0; i < visuals.CardVisuals.Count; i++)
             {
                 float t = visuals.CardVisuals.Count == 1 ? 0.5f : (float)i / (visuals.CardVisuals.Count - 1);
@@ -163,9 +162,10 @@ namespace AIS.Intervene
                 rt.anchoredPosition = pos;
                 rt.localRotation = Quaternion.Euler(0, 0, angle);
 
-                CardHoverZone hoverZone = visuals.CardVisuals[i].GetComponent<CardHoverZone>();
+                CardHoverZone hoverZone = visuals.CardVisuals[i].GetComponentInChildren<CardHoverZone>();
                 if (hoverZone != null) hoverZone.setFanLayout(pos.y);
             }
+            yield break;
         }
 
         public static void PerformShuffleVisuals()

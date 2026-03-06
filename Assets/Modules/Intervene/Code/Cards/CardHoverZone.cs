@@ -12,8 +12,8 @@ namespace AIS.Intervene
     {
         public UICard RootCard;
         public Routine MoveRoutine;
-        public float HoverOffsetY = 40f;
-        public float SelectedOffsetY = 80f;
+        public float HoverOffsetY = 20f;
+        public float SelectedOffsetY = 40f;
 
         private static CardHoverZone s_CurrentHovered;
 
@@ -62,11 +62,6 @@ namespace AIS.Intervene
             if (s_CurrentHovered != null && s_CurrentHovered != this)
                 s_CurrentHovered.HandleHoverExit();
             s_CurrentHovered = this;
-
-            if (m_FanLayout == 0f)
-            {
-                m_FanLayout = m_rectTransform.anchoredPosition.y;
-            }
 
             RootCard.CanvasOverride.sortingOrder = 2;
             float targetY = m_FanLayout + (IsSelected() ? SelectedOffsetY : HoverOffsetY);

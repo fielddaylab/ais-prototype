@@ -43,6 +43,7 @@ namespace AIS.Intervene {
             HideSimPhase();
 
             AisGame.Events.Register(InterveneEvents.OnInterveneRestart, HandleInterveneRestart);
+            AisGame.Events.Register(InterveneEvents.OnEndTurn, () => { m_TickSimButton.interactable = true; });
         }
 
         private void OnDisable()
@@ -76,6 +77,7 @@ namespace AIS.Intervene {
             if (m_Driver.SimRoutine.Exists()) { return; }
 
             m_Driver.TickSim();
+            m_TickSimButton.interactable = false;
             m_BudgetInterfacer.BestowBudget();
         }
 
@@ -94,6 +96,7 @@ namespace AIS.Intervene {
         private void HandleInterveneRestart()
         {
             m_EndPanel.Hide();
+            m_TickSimButton.interactable = true;
         }
     }
 }
