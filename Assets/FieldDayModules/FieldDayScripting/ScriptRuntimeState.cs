@@ -283,11 +283,57 @@ namespace FieldDay.Scripting {
         }
 
         /// <summary>
+        /// Returns the character id embedded in the given line.
+        /// </summary>
+        static public StringHash32 GetCharacterId(TagString tagString, StringHash32 defaultValue) {
+            if (!tagString.TryFindEvent(LeafUtils.Events.Character, out var evtData)) {
+                return defaultValue;
+            }
+            return evtData.Argument0.AsStringHash();
+        }
+
+        /// <summary>
         /// Returns the character name override embedded in the given line.
         /// </summary>
         static public StringSlice GetCharacterNameOverride(TagString tagString) {
             tagString.TryFindEvent(TagEvents.OverrideCharName, out var evtData);
             return evtData.StringArgument;
+        }
+
+        /// <summary>
+        /// Returns the character state embedded in the given line.
+        /// </summary>
+        static public DialogueCharacterState GetCharacterState(TagString tagString, DialogueCharacterState baseValues) {
+            DialogueCharacterState charState = baseValues;
+            
+            int nodeIndex = 0;
+            if (tagString.EventCount > 0) {
+                for (nodeIndex = 0; nodeIndex < tagString.NodeCount; nodeIndex++) {
+                    TagNodeData node = tagString.GetNode(nodeIndex);
+                    if (node.Type != TagNodeType.Event) {
+                        break;
+                    }
+
+                    StringHash32 eventType = node.Event.Type;
+                    if (eventType == TagEvents.HasNoVox) {
+                    } else if (eventType == TagEvents.HasVox) {
+                    } else if (eventType == TagEvents.VoxOnly) {
+                    } else if (eventType == TagEvents.SetStyle) {
+                    } else if (eventType == LeafUtils.Events.Character) {
+                        charState.CharacterId = node.Event.Argument0.AsStringHash();
+                        charState.PoseId = node.Event.Argument1.AsStringHash();
+                        charState.OverrideName = null;
+                    } else if (eventType == LeafUtils.Events.Pose) {
+                        charState.PoseId = node.Event.Argument0.AsStringHash();
+                    } else if (eventType == TagEvents.OverrideCharName) {
+                        charState.OverrideName = node.Event.StringArgument.ToString();
+                    } else {
+                        break;
+                    }
+                }
+            }
+
+            return charState;
         }
 
         #endregion // Tag Parsing

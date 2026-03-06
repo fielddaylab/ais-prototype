@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97a0c6dbe8178cc429d253a7d6899f18, type: 3}
+  m_Name: GameIcons
+  m_EditorClassIdentifier: 
+  TimeIcons:
+  - {fileID: -7352664550879960363, guid: 67ad1be2da52d50409d2d278fe8cc877, type: 3}
+  - {fileID: 6293501518269557312, guid: 67ad1be2da52d50409d2d278fe8cc877, type: 3}
+  - {fileID: -6815810491483390975, guid: 67ad1be2da52d50409d2d278fe8cc877, type: 3}
+  - {fileID: 4613115529637828903, guid: 67ad1be2da52d50409d2d278fe8cc877, type: 3}
+  - {fileID: -3460734942905223259, guid: 67ad1be2da52d50409d2d278fe8cc877, type: 3}
+  TimeColor:
+    serializedVersion: 2
+    rgba: 4278207160
+  StatIcons:
+  - {fileID: -2232950738939389605, guid: 4509e9e250d10464eb0e3018fb3acfc0, type: 3}
+  - {fileID: -8313078148496640839, guid: 4509e9e250d10464eb0e3018fb3acfc0, type: 3}
+  - {fileID: 8209244977770430746, guid: 4509e9e250d10464eb0e3018fb3acfc0, type: 3}
+  - {fileID: 7090847894660574460, guid: 4509e9e250d10464eb0e3018fb3acfc0, type: 3}
+  - {fileID: 832823234063075852, guid: 4509e9e250d10464eb0e3018fb3acfc0, type: 3}
+  StatColors:
+  - serializedVersion: 2
+    rgba: 4281005311
+  - serializedVersion: 2
+    rgba: 4284572159
+  - serializedVersion: 2
+    rgba: 4290920703
+  - serializedVersion: 2
+    rgba: 4281794378
+  - serializedVersion: 2
+    rgba: 4294966587

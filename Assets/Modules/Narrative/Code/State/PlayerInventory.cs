@@ -10,11 +10,13 @@ namespace AIS.Narrative {
         public readonly HashSet<StringHash32> EvidenceCards;
         public readonly VariantTable GlobalVars;
         public readonly VariantTable LevelVars;
+        public int TimeRemaining;
 
         public PlayerInventory() {
             EvidenceCards = SetUtils.Create<StringHash32>(24);
             GlobalVars = new VariantTable("global", 32);
             LevelVars = new VariantTable("level", 32);
+            TimeRemaining = 20;
         }
 
         void IRegistrationCallbacks.OnRegister() {

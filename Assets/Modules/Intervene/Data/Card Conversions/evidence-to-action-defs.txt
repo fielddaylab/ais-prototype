@@ -1,8 +1,8 @@
 // Evidence To Action Conversions
 
 ::
-@from	example-evidence-card-0
-@to		aquaculturist-outreach
+@from	Evidence-Angler
+@to		angler-outreach
 
 ::
 @from	example-evidence-card-1

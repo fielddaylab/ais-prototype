@@ -27,6 +27,8 @@ $set local:pointsToAllocate - 1
 $choice .ChooseTech; Adjust my tech.
 $choice .ChooseRanger; Adjust my outdoors-y-ness.
 $choice .ChooseNo; What about no?
+    $data   CheckStat = "Communicate"
+    $data   CheckStatValue = 4
 
 :: ChooseTech
 $call AdjustStat(Tech, 1)
@@ -36,6 +38,13 @@ $goto .StatBonusLoop
 :: ChooseRanger
 $call AdjustStat(Ranger, 1)
 {@} Your Ranger stat is now {$Stat(Tech)}!
+$if !HasEvidenceCard("Evidence-Angler")
+    {@Narrator}     Hang on, I also have something for you...
+                    Let me just... check my pockets...
+                    Here you go!
+    $call GiveEvidenceCard("Evidence-Angler")
+    {@}     You obtained an evidence card! Check your Evidence menu for details!
+$endif
 $goto .StatBonusLoop
 
 :: ChooseNo

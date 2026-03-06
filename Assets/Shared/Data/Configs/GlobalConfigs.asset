@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: GlobalConfigs
   m_EditorClassIdentifier: 
   m_GlobalAssets:
+  - {fileID: 11400000, guid: 0d89434cc51a7b94291daf4328e17dd8, type: 2}
   - {fileID: 11400000, guid: 4a33153a95c058f4f915a4f7048286f4, type: 2}
   m_NamedAssets: []
   m_LiteAssets: []

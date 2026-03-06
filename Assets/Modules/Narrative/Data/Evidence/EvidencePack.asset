@@ -10,13 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b4be90a9d33d3784caac2e5eb4b5636c, type: 3}
-  m_Name: TextStylesPack
+  m_Name: EvidencePack
   m_EditorClassIdentifier: 
   m_GlobalAssets: []
   m_NamedAssets:
-  - {fileID: 11400000, guid: 2afd5d60634e0114f9d2ad4ee9dd0bc2, type: 2}
-  - {fileID: 11400000, guid: a0de91a24fdf5c041b94a6465f71eeb6, type: 2}
-  - {fileID: 11400000, guid: 1aa014cbaa89a7a449f3490bd1f088f4, type: 2}
-  - {fileID: 11400000, guid: 73b3ef7aca4899c4d948d92f2559d99c, type: 2}
-  - {fileID: 11400000, guid: 9cbe1835fd9cf974285e2be76b7bc094, type: 2}
+  - {fileID: 11400000, guid: 72dd68f85270c414ea160de0c14a11e1, type: 2}
   m_LiteAssets: []
