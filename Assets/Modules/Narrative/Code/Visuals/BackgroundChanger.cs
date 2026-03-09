@@ -5,19 +5,22 @@ using Leaf.Runtime;
 using EasyAssetStreaming;
 using System;
 using BeauUtil;
+using FieldDay.Scripting;
+using FieldDay.SharedState;
+using FieldDay;
 
 namespace AIS.Narrative
 {
     // temporary script to swap background from Leaf files
-    public class BackgroundChanger : MonoBehaviour
+    public class BackgroundChanger : SharedStateComponent
     {
         [SerializeField]
         private StreamingQuadTexture m_BackgroundTexture = null;
 
         [LeafMember("SetBackground")]
-        public void SetBackground(string path)
+        static public void SetBackground(string path)
         {
-            m_BackgroundTexture.Path = path;
+            Find.State<BackgroundChanger>().m_BackgroundTexture.Path = path;
         }
     }
 }
