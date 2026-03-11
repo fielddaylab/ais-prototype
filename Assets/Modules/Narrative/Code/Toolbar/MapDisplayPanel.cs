@@ -5,6 +5,7 @@ using FieldDay.UI;
 using UnityEngine;
 using UnityEngine.UI;
 using BeauUtil.UI;
+using System.Collections.Generic;
 
 namespace AIS.Narrative {
     public sealed class MapDisplayPanel : SharedPanel {
@@ -13,9 +14,36 @@ namespace AIS.Narrative {
             Model // view the invasion model
         }
 
+        [System.Serializable]
+        public class Hub : Location
+        {
+            public List<Location> locations = new List<Location>();
+            // public List<Path> paths = new List<Path>();
+            public Vector3 cameraTransform;
+        }
+
+        [System.Serializable]
+        public class Location
+        {
+            public string locationName;
+            public Vector2 position = new Vector2();
+        }
+
+        // [System.Serializable]
+        // public class Path
+        // {
+        //     public Location location1, location2;
+        //     public float travelTime;
+        // }
+
+        private Hub currentHub;
+        private Location currentLocation;
+        public List<Hub> hubs;
+
         private MapMode? currMode = null;
         public Button travelButton, modelButton;
-        public GameObject travelPointContainer;
+        public GameObject travelPointContainer, pathContainer;
+        public GameObject travelPointPrefab;
 
         protected override void Awake() {
             base.Awake();
@@ -63,10 +91,55 @@ namespace AIS.Narrative {
             }
 
             travelPointContainer.SetActive(isTravelMode);
+            SetHubPoints();
 
             // TODO: current code is temporary -- implement proper animation later
             travelButton.GetComponent<RoundedRectGraphic>().color = isTravelMode ? Color.white : Color.gray;
             modelButton.GetComponent<RoundedRectGraphic>().color = isTravelMode ? Color.gray : Color.white;
         }
+
+        public void SetHubPoints()
+        {
+            DestroyAllTravelPoints();
+            foreach(Hub hub in hubs) {
+                GameObject travelPoint = Instantiate(travelPointPrefab, travelPointContainer.transform);
+                travelPoint.GetComponent<Button>().onClick.AddListener(() => SelectHub(hub));
+                travelPoint.GetComponent<RectTransform>().anchoredPosition = hub.position;
+                travelPoint.GetComponent<CursorHint>().TooltipHeader = hub.locationName;
+            }
+
+            // Zoom out
+            Camera.main.transform.position = new Vector3(-1, 0, -10);
+            Camera.main.orthographicSize = 5f;
+        }
+
+        public void SelectHub(Hub hub) {
+            Debug.Log($"[MapDisplayPanel] Selected hub: {hub.locationName}");
+            currentHub = hub;
+            currentLocation = hub.locations[0];
+
+            DestroyAllTravelPoints();
+            foreach(Location loc in hub.locations) {
+                GameObject travelPoint = Instantiate(travelPointPrefab, travelPointContainer.transform);
+                travelPoint.GetComponent<Button>().onClick.AddListener(() => SelectLocation(loc));
+                travelPoint.GetComponent<RectTransform>().anchoredPosition = loc.position;
+                travelPoint.GetComponent<CursorHint>().TooltipHeader = loc.locationName;
+            }
+
+            // Zoom in
+            Camera.main.transform.position = hub.cameraTransform;
+            Camera.main.orthographicSize = 2.5f;
+        }
+
+        public void SelectLocation(Location loc) {
+            currentLocation = loc;
+            Debug.Log($"[MapDisplayPanel] Selected location: {loc.locationName}");
+        }
+
+        private void DestroyAllTravelPoints() {
+            foreach (Transform child in travelPointContainer.transform)
+                Destroy(child.gameObject);
+        }
+
     }
 }
