@@ -110,6 +110,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6124728961818723533, guid: 4fba0b99a65ac2847aa883cc4df70ebd, type: 3}
       insertIndex: -1
       addedObject: {fileID: 664430387701435711}
+    - targetCorrespondingSourceObject: {fileID: 6124728961818723533, guid: 4fba0b99a65ac2847aa883cc4df70ebd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7637185450042217696}
     - targetCorrespondingSourceObject: {fileID: 217437247516734423, guid: 4fba0b99a65ac2847aa883cc4df70ebd, type: 3}
       insertIndex: 2
       addedObject: {fileID: 7591991031972347308}
@@ -153,6 +156,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RootCard: {fileID: 7516723889004339967}
+  HoverOffsetY: 20
+  SelectedOffsetY: 40
 --- !u!1 &5501114549138538821 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6124728961818723533, guid: 4fba0b99a65ac2847aa883cc4df70ebd, type: 3}
@@ -198,6 +203,25 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &7637185450042217696
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5501114549138538821}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a59a59fc4e9a014c8fbb22f00e5eeff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AlwaysFireClickEvents: 0
+  AcceptedMouseButtons: 1
+  CursorType:
+    m_HashValue: 0
+  Flags: 0
+  TooltipHeader: 
+  Tooltip: 
 --- !u!114 &7516723889004339967 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8140342698636322679, guid: 4fba0b99a65ac2847aa883cc4df70ebd, type: 3}
