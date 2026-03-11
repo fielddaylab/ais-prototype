@@ -146,6 +146,11 @@ MonoBehaviour:
   Flags: 0
   TooltipHeader: 
   Tooltip: 
+--- !u!224 &347156711 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 3479410811402406464, guid: 72c851f6dec9d6c409145d5ba2ed91b9, type: 3}
+  m_PrefabInstance: {fileID: 1775199850691655321}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &421623034
 GameObject:
   m_ObjectHideFlags: 0
@@ -906,6 +911,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -1.6147003
       objectReference: {fileID: 0}
+    - target: {fileID: 1232784166204741093, guid: 72c851f6dec9d6c409145d5ba2ed91b9, type: 3}
+      propertyPath: PopupScreen
+      value: 
+      objectReference: {fileID: 347156711}
+    - target: {fileID: 1232784166204741093, guid: 72c851f6dec9d6c409145d5ba2ed91b9, type: 3}
+      propertyPath: NotEnoughBudgetMsg
+      value: 
+      objectReference: {fileID: 6124728961818723533, guid: c9f5e26b66d88e743a385c10d1d62a67, type: 3}
     - target: {fileID: 1389748528093349810, guid: 72c851f6dec9d6c409145d5ba2ed91b9, type: 3}
       propertyPath: m_Enabled
       value: 1
