@@ -404,7 +404,6 @@ namespace FieldDay {
                 Game.Rendering.LateInitialize();
                 Game.Animation.Initialize();
                 Game.Scenes.Prepare();
-                Game.Systems.ProcessInitQueue();
                 Game.Files.Tick();
                 FlushQueue(s_OnBootQueue);
 

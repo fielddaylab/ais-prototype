@@ -5,12 +5,8 @@ using FieldDay.Systems;
 
 namespace FieldDay.Vox {
     [SysUpdate(GameLoopPhaseMask.PreUpdate | GameLoopPhaseMask.UnscaledUpdate | GameLoopPhaseMask.UnscaledLateUpdate, 1001)]
-    internal class VoxRequestSystem : ISystem {
-        public bool HasWork() {
-            return VoxUtility.Requests != null;
-        }
-
-        public void ProcessWork(float deltaTime) {
+    static internal class VoxRequestSystem {
+        static public void ProcessWork(float deltaTime) {
             var requestBuffer = VoxUtility.Requests.ActiveRequests;
             for(int i = requestBuffer.Count - 1; i >= 0; i--) {
                 ref VoxRequest req = ref requestBuffer[i];
@@ -111,12 +107,6 @@ namespace FieldDay.Vox {
             } else {
                 return emitter.CharacterId.ToDebugString();
             }
-        }
-
-        public void Initialize() {
-        }
-
-        public void Shutdown() {
         }
     }
 }

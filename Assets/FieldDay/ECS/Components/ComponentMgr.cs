@@ -6,7 +6,6 @@ using BeauUtil;
 using BeauUtil.Debugger;
 using FieldDay.Systems;
 using Unity.IL2CPP.CompilerServices;
-using ComponentIndex = BeauUtil.TypeIndex<FieldDay.Components.IComponentData>;
 
 namespace FieldDay.Components
 {
@@ -21,12 +20,9 @@ namespace FieldDay.Components
         private RingBuffer<IComponentData> m_RemovalQueue = new RingBuffer<IComponentData>(64, RingBufferMode.Expand);
         private int m_ModificationLock;
 
-        internal ComponentMgr(SystemsMgr systemsMgr)
+        internal ComponentMgr()
         {
-            Assert.NotNull(systemsMgr);
-            m_SystemsMgr = systemsMgr;
             m_ComponentLists = new List<IComponentData>[ComponentIndex.Capacity];
-            m_SystemsMgr.OnSystemRegistered += OnNewSystemRegistered;
         }
 
         #region Registry
@@ -76,15 +72,15 @@ namespace FieldDay.Components
         private void RegisterImpl(IComponentData component)
         {
             Type componentType = component.GetType();
-            var indices = ComponentIndex.GetAll(componentType);
-            foreach (var index in indices) {
-
+            int index = ComponentIndex.Get(componentType);
+            while(index >= 0) {
                 List<IComponentData> components = m_ComponentLists[index];
                 if (components == null) {
                     m_ComponentLists[index] = components = new List<IComponentData>(32);
                 }
                 Assert.False(components.Contains(component), "Component of type '{0}' was registered more than once", componentType.Name);
                 components.Add(component);
+                index = ComponentIndex.GetParent(index);
             }
 
             RegistrationCallbacks.InvokeRegister(component);
@@ -94,13 +90,14 @@ namespace FieldDay.Components
         private void DeregisterImpl(IComponentData component)
         {
             Type componentType = component.GetType();
-            var indices = ComponentIndex.GetAll(componentType);
+            int index = ComponentIndex.Get(componentType);
             bool deregistered = false;
-            foreach (var index in indices) {
+            while (index >= 0) {
                 List<IComponentData> components = m_ComponentLists[index];
                 if (components != null && components.FastRemove(component)) {
                     deregistered = true;
                 }
+                index = ComponentIndex.GetParent(index);
             }
 
             if (deregistered) {
@@ -319,29 +316,8 @@ namespace FieldDay.Components
 
         #region Events
 
-        /// <summary>
-        /// Ensures that new component systems get populated
-        /// with the components already present in the ComponentMgr.
-        /// </summary>
-        private void OnNewSystemRegistered(ISystem system)
-        {
-            ManualFlush();
-
-            IComponentSystem componentSystem = system as IComponentSystem;
-            List<IComponentData> components;
-            if (componentSystem != null && (components = m_ComponentLists[ComponentIndex.Get(componentSystem.ComponentType)]) != null)
-            {
-                foreach (var component in components)
-                {
-                    componentSystem.Add(component);
-                }
-            }
-        }
-
         internal void Shutdown()
         {
-            m_SystemsMgr.OnSystemRegistered -= OnNewSystemRegistered;
-            m_SystemsMgr = null;
             foreach (var list in m_ComponentLists)
             {
                 list?.Clear();

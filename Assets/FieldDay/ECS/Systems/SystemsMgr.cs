@@ -2,6 +2,10 @@
 #define DEVELOPMENT
 #endif // (UNITY_EDITOR && !IGNORE_UNITY_EDITOR) || DEVELOPMENT_BUILD
 
+#if DEVELOPMENT
+#define ECS_VALIDATE_SYSTEM_PERMISSIONS
+#endif // DEVELOPMENT
+
 using BeauPools;
 using BeauUtil;
 using BeauUtil.Debugger;
@@ -12,11 +16,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using Unity.IL2CPP.CompilerServices;
-using UnityEditor;
 using UnityEngine;
-
-using ComponentIndex = BeauUtil.TypeIndex<FieldDay.Components.IComponentData>;
-using SystemIndex = BeauUtil.TypeIndex<FieldDay.Systems.ISystem>;
 
 namespace FieldDay.Systems {
     /// <summary>
@@ -24,23 +24,6 @@ namespace FieldDay.Systems {
     /// </summary>
     public sealed class SystemsMgr {
         #region Types
-
-        // initialization info
-        private struct SystemInitInfo {
-            public int Order;
-            public ISystem System;
-
-            static public SystemInitInfo Create(ISystem system) {
-                SystemInitInfo info;
-                info.System = system;
-
-                SysInitOrderAttribute orderAttr = Reflect.GetAttribute<SysInitOrderAttribute>(system.GetType(), true);
-                info.Order = orderAttr != null ? orderAttr.Order : 0;
-                return info;
-            }
-
-            static public readonly Predicate<SystemInitInfo, ISystem> FindPredicate = (i, s) => i.System == s;
-        }
 
         private struct UpdateRecord : IEquatable<UpdateRecord> {
             public ISystem System;
@@ -78,28 +61,13 @@ namespace FieldDay.Systems {
             };
         }
 
-        public delegate void SystemCallback(ISystem system);
-
         #endregion // Types
 
         internal SystemsMgr() { }
 
         #region System Lists
 
-        private readonly RingBuffer<ISystem> m_AllSystems = new RingBuffer<ISystem>(32, RingBufferMode.Expand);
-        private readonly RingBuffer<SystemInitInfo> m_InitList = new RingBuffer<SystemInitInfo>(32, RingBufferMode.Expand);
-
         private PhaseBuckets<UpdateRecord> m_Updates = new PhaseBuckets<UpdateRecord>(4);
-
-        /// <summary>
-        /// Callback for when a system is registered.
-        /// </summary>
-        public event SystemCallback OnSystemRegistered;
-
-        /// <summary>
-        /// Callback for when a system is deregistered.
-        /// </summary>
-        public event SystemCallback OnSystemDeregistered;
 
         /// <summary>
         /// Queues the given system for registration.
@@ -108,8 +76,8 @@ namespace FieldDay.Systems {
             Assert.NotNull(system);
             Assert.False(m_AllSystems.Contains(system), "System already registered");
 
-            if (!m_InitList.Exists(SystemInitInfo.FindPredicate, system)) {
-                m_InitList.PushBack(SystemInitInfo.Create(system));
+            if (!m_InitList.Contains(system)) {
+                m_InitList.PushBack(system);
             }
         }
 
@@ -119,7 +87,7 @@ namespace FieldDay.Systems {
         public void Deregister(ISystem system) {
             Assert.NotNull(system);
 
-            if (m_InitList.RemoveWhere(SystemInitInfo.FindPredicate, system) > 0) {
+            if (m_InitList.FastRemove(system)) {
                 return;
             }
 
@@ -139,7 +107,6 @@ namespace FieldDay.Systems {
                 DeregisterComponentSystem(componentSystem);
             }
 
-            system.Shutdown();
             Log.Msg("[SystemsMgr] Manager '{0}' shutdown", system.GetType().FullName);
 
             if (OnSystemDeregistered != null) {
@@ -155,9 +122,8 @@ namespace FieldDay.Systems {
                 return;
             }
 
-            m_InitList.Sort((a, b) => a.Order - b.Order);
-            while (m_InitList.TryPopFront(out SystemInitInfo info)) {
-                FinishSystemInit(info.System);
+            while (m_InitList.TryPopFront(out ISystem system)) {
+                FinishSystemInit(system);
             }
         }
 
@@ -172,7 +138,6 @@ namespace FieldDay.Systems {
                 RegisterComponentSystem(componentSystem);
             }
 
-            system.Initialize();
             Log.Msg("[SystemsMgr] System '{0}' initialized", system.GetType().FullName);
 
             SysUpdateAttribute updateInfo = CacheUpdateInfo(system.GetType());
@@ -191,137 +156,6 @@ namespace FieldDay.Systems {
         }
 
         #endregion // System Lists
-
-        #region Component Mapping
-
-        private readonly List<IComponentSystem>[] m_SystemComponentTypeMap = new List<IComponentSystem>[ComponentIndex.Capacity];
-        private readonly List<IComponentSystem>[] m_RelevantSystemsMap = new List<IComponentSystem>[ComponentIndex.Capacity];
-
-        /// <summary>
-        /// Looks up systems for the given component type.
-        /// </summary>
-        public int LookupSystemsForComponent(Type componentType, List<IComponentSystem> systems) {
-            List<IComponentSystem> relevantSystems = GetRelevantSystems(componentType, true);
-            if (relevantSystems != null) {
-                systems.AddRange(relevantSystems);
-                return relevantSystems.Count;
-            }
-
-            return 0;
-        }
-
-        /// <summary>
-        /// Looks up systems for the given component type.
-        /// </summary>
-        public int LookupSystemsForComponent<T>(List<IComponentSystem<T>> systems) where T : class, IComponentData {
-            List<IComponentSystem> relevantSystems = GetRelevantSystems(typeof(T), true);
-            if (relevantSystems != null) {
-                for(int i = 0; i < relevantSystems.Count; i++) {
-                    systems.Add((IComponentSystem<T>) relevantSystems[i]);
-                }
-                return relevantSystems.Count;
-            }
-
-            return 0;
-        }
-
-        /// <summary>
-        /// Adds the given component to all relevant systems.
-        /// </summary>
-        internal void AddComponent(IComponentData component) {
-            Type componentType = component.GetType();
-
-            List<IComponentSystem> relevant = GetRelevantSystems(componentType, true);
-            if (relevant != null && relevant.Count > 0) {
-                for(int i = 0; i < relevant.Count; i++) {
-                    relevant[i].Add(component);
-                }
-            } else {
-                //Log.Warn("[SystemsMgr] Component of type '{0}' does not have any corresponding systems", componentType.FullName);
-            }
-        }
-
-        /// <summary>
-        /// Removes the given component from all relevant systems.
-        /// </summary>
-        internal void RemoveComponent(IComponentData component) {
-            Type componentType = component.GetType();
-
-            List<IComponentSystem> relevant = GetRelevantSystems(componentType, false);
-            if (relevant != null && relevant.Count > 0) {
-                for (int i = 0; i < relevant.Count; i++) {
-                    relevant[i].Remove(component);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Adds the given component system to component system tracking.
-        /// </summary>
-        private void RegisterComponentSystem(IComponentSystem componentSystem) {
-            Type componentType = componentSystem.ComponentType;
-            int index = ComponentIndex.Get(componentType);
-
-            // direct mapping of component type to systems
-            List<IComponentSystem> directList = m_SystemComponentTypeMap[index];
-            if (directList == null) {
-                directList = new List<IComponentSystem>(1);
-                m_SystemComponentTypeMap[index] = directList;
-            }
-            directList.Add(componentSystem);
-
-            // mapping of type to all systems that handle that type
-            List<IComponentSystem> relevantList = m_RelevantSystemsMap[index];
-            if (relevantList == null) {
-                relevantList = new List<IComponentSystem>(2);
-                m_RelevantSystemsMap[index] = relevantList;
-            }
-            relevantList.Add(componentSystem);
-        }
-
-        /// <summary>
-        /// Removes the given component system from component system tracking.
-        /// </summary>
-        private void DeregisterComponentSystem(IComponentSystem componentSystem) {
-            Type componentType = componentSystem.ComponentType;
-            int index = ComponentIndex.Get(componentType);
-
-            // remove from direct list
-            List<IComponentSystem> directList = m_SystemComponentTypeMap[index];
-            if (directList != null) {
-                directList.Remove(componentSystem);
-            }
-
-            // remove from direct relevant list
-            List<IComponentSystem> relevantList = m_RelevantSystemsMap[index];
-            if (relevantList != null) {
-                relevantList.Remove(componentSystem);
-            }
-        }
-
-        /// <summary>
-        /// Retrieves the list of all systems relevant for the given component type.
-        /// </summary>
-        private List<IComponentSystem> GetRelevantSystems(Type componentType, bool createIfNotFound) {
-            int index = ComponentIndex.Get(componentType);
-            List<IComponentSystem> relevantSystems = m_RelevantSystemsMap[index];
-            if (relevantSystems == null && createIfNotFound) {
-                relevantSystems = new List<IComponentSystem>(Math.Max(m_AllSystems.Count / 4, 2));
-
-                foreach(var checkedIndex in ComponentIndex.GetAll(index)) {
-                    List<IComponentSystem> directList = m_SystemComponentTypeMap[checkedIndex];
-                    if (directList != null) {
-                        relevantSystems.AddRange(directList);
-                    }
-                }
-
-                m_RelevantSystemsMap[index] = relevantSystems;
-            }
-
-            return relevantSystems;
-        }
-
-        #endregion // Component Mapping
 
         #region Events
 
@@ -377,20 +211,7 @@ namespace FieldDay.Systems {
         internal void Shutdown() {
             m_Updates.Clear();
 
-            foreach(var list in m_SystemComponentTypeMap) {
-                list?.Clear();
-            }
-            Array.Clear(m_SystemComponentTypeMap, 0, m_SystemComponentTypeMap.Length);
-            foreach(var list in m_RelevantSystemsMap) {
-                list?.Clear();
-            }
-            Array.Clear(m_RelevantSystemsMap, 0, m_SystemComponentTypeMap.Length);
             m_InitList.Clear();
-
-            while(m_AllSystems.TryPopBack(out ISystem sys)) {
-                sys.Shutdown();
-                Log.Msg("[SystemsMgr] System '{0}' has shutdown", sys.GetType().FullName);
-            }
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -404,7 +225,7 @@ namespace FieldDay.Systems {
             foreach(var sys in systems) {
 #if DEVELOPMENT
                 try {
-                    if ((sys.AllowDuringLoad || !isLoading) && (categoryMask & sys.CategoryMask) != 0 && sys.System.HasWork()) {
+                    if ((sys.AllowDuringLoad | !isLoading) & (categoryMask & sys.CategoryMask) != 0) {
                         sys.System.ProcessWork(deltaTime);
                     }
                 } catch(Exception e) {
@@ -412,7 +233,7 @@ namespace FieldDay.Systems {
                     Debug.LogException(e);
                 }
 #else
-                if ((sys.AllowDuringLoad || !isLoading) && (categoryMask & sys.CategoryMask) != 0 && sys.System.HasWork()) {
+                if ((sys.AllowDuringLoad | !isLoading) & (categoryMask & sys.CategoryMask) != 0) {
                     sys.System.ProcessWork(deltaTime);
                 }
 #endif // DEVELOPMENT

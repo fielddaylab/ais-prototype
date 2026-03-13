@@ -1,51 +1,28 @@
+#if (UNITY_EDITOR && !IGNORE_UNITY_EDITOR) || DEVELOPMENT_BUILD
+#define DEVELOPMENT
+#endif // (UNITY_EDITOR && !IGNORE_UNITY_EDITOR) || DEVELOPMENT_BUILD
+
+#if DEVELOPMENT
+#define ECS_VALIDATE_SYSTEM_PERMISSIONS
+#endif // DEVELOPMENT
+
 using System;
+using System.Runtime.CompilerServices;
 using BeauUtil;
+using FieldDay.Components;
+using FieldDay.SharedState;
 using UnityEngine.Scripting;
 
 namespace FieldDay.Systems {
     /// <summary>
-    /// Base interface for a game system.
-    /// Systems should possess no state.
+    /// System function pointer.
     /// </summary>
-    [TypeIndexCapacity(1024)]
-    public interface ISystem {
-        /// <summary>
-        /// Initializes the system.
-        /// </summary>
-        void Initialize();
-
-        /// <summary>
-        /// Shuts down the system.
-        /// </summary>
-        void Shutdown();
-
-        /// <summary>
-        /// Indicates if the system has any work to process.
-        /// </summary>
-        bool HasWork();
-
-        /// <summary>
-        /// Processes available work.
-        /// </summary>
-        void ProcessWork(float deltaTime);
-    }
-
-    /// <summary>
-    /// Attribute defining system initialization order.
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Class, Inherited = true, AllowMultiple = false), Preserve]
-    public sealed class SysInitOrderAttribute : PreserveAttribute {
-        public readonly int Order;
-
-        public SysInitOrderAttribute(int order) {
-            Order = order;
-        }
-    }
+    public delegate void SystemFunction(float deltaTime);
 
     /// <summary>
     /// Attribute defining system update order.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false), Preserve]
+    [AttributeUsage(AttributeTargets.Method, Inherited = false, AllowMultiple = false), Preserve]
     public sealed class SysUpdateAttribute : PreserveAttribute {
         public readonly GameLoopPhaseMask PhaseMask;
         public readonly int Order;
@@ -63,5 +40,23 @@ namespace FieldDay.Systems {
             Order = order;
             CategoryMask = updateMask;
         }
+    }
+
+    /// <summary>
+    /// System execution flags.
+    /// </summary>
+    [Flags]
+    public enum SysFlags : uint {
+        DuringLoading = 0x01,
+    }
+
+    /// <summary>
+    /// System update information.
+    /// </summary>
+    public readonly struct SysUpdate {
+        public readonly GameLoopPhaseMask PhaseMask;
+        public readonly int Order;
+        public readonly int CategoryMask;
+        public readonly SysFlags Flags;
     }
 }

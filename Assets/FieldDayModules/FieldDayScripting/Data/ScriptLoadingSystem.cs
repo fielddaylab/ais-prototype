@@ -8,14 +8,11 @@ using Leaf;
 namespace FieldDay.Scripting {
     [SysUpdate(GameLoopPhaseMask.PreUpdate | GameLoopPhaseMask.LateUpdate, AllowExecutionDuringLoad = true)]
     internal class ScriptLoadingSystem : ISystem {
-        public void Initialize() { }
-        public void Shutdown() { }
-
-        public bool HasWork() {
-            return ScriptUtility.DB != null;
-        }
-
         public void ProcessWork(float dt) {
+            if (ScriptUtility.DB == null) {
+                return;
+            }
+
             if (HandleCurrentLoad(ScriptUtility.DB)) {
                 return;
             }

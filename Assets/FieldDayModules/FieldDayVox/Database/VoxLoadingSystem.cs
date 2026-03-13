@@ -14,10 +14,6 @@ using UnityEngine.Networking;
 namespace FieldDay.Vox {
     [SysUpdate(GameLoopPhaseMask.PreUpdate | GameLoopPhaseMask.UnscaledUpdate | GameLoopPhaseMask.UnscaledLateUpdate, 1000, AllowExecutionDuringLoad = true)]
     internal class VoxLoadingSystem : ISystem {
-        public bool HasWork() {
-            return VoxUtility.DB != null;
-        }
-
         public void ProcessWork(float deltaTime) {
             VoxDatabase db = VoxUtility.DB;
             bool didWork = HandleLoading(db);
@@ -122,12 +118,6 @@ namespace FieldDay.Vox {
             }
 
             return didWork;
-        }
-
-        public void Initialize() {
-        }
-
-        public void Shutdown() {
         }
     }
 }
