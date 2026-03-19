@@ -14,7 +14,6 @@ namespace FieldDay.Components
     /// </summary>
     public sealed class ComponentMgr
     {
-        private SystemsMgr m_SystemsMgr;
         private List<IComponentData>[] m_ComponentLists;
         private RingBuffer<IComponentData> m_AddQueue = new RingBuffer<IComponentData>(64, RingBufferMode.Expand);
         private RingBuffer<IComponentData> m_RemovalQueue = new RingBuffer<IComponentData>(64, RingBufferMode.Expand);
@@ -84,7 +83,6 @@ namespace FieldDay.Components
             }
 
             RegistrationCallbacks.InvokeRegister(component);
-            m_SystemsMgr.AddComponent(component);
         }
 
         private void DeregisterImpl(IComponentData component)
@@ -101,7 +99,6 @@ namespace FieldDay.Components
             }
 
             if (deregistered) {
-                m_SystemsMgr.RemoveComponent(component);
                 RegistrationCallbacks.InvokeDeregister(component);
             }
         }

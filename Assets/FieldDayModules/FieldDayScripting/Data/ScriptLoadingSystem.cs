@@ -6,13 +6,14 @@ using FieldDay.Systems;
 using Leaf;
 
 namespace FieldDay.Scripting {
-    [SysUpdate(GameLoopPhaseMask.PreUpdate | GameLoopPhaseMask.LateUpdate, AllowExecutionDuringLoad = true)]
-    internal class ScriptLoadingSystem : ISystem {
-        public void ProcessWork(float dt) {
-            if (ScriptUtility.DB == null) {
-                return;
-            }
+    internal static  class ScriptLoadingSystem {
+        static public unsafe void RegisterModule() {
+            Game.Systems.Register(&ProcessWork,
+                new SysUpdate(GameLoopPhaseMask.PreUpdate | GameLoopPhaseMask.LateUpdate, -100).AllowDuringLoad(),
+                new SysPermissions().ReadWriteShared<ScriptDatabase>());
+        }
 
+        static public void ProcessWork(float dt) {
             if (HandleCurrentLoad(ScriptUtility.DB)) {
                 return;
             }

@@ -4,8 +4,13 @@ using FieldDay.Audio;
 using FieldDay.Systems;
 
 namespace FieldDay.Vox {
-    [SysUpdate(GameLoopPhaseMask.PreUpdate | GameLoopPhaseMask.UnscaledUpdate | GameLoopPhaseMask.UnscaledLateUpdate, 1001)]
     static internal class VoxRequestSystem {
+        static public unsafe void RegisterModule() {
+            Game.Systems.Register(&ProcessWork,
+                new SysUpdate(GameLoopPhaseMask.PreUpdate | GameLoopPhaseMask.UnscaledUpdate | GameLoopPhaseMask.UnscaledLateUpdate, 1001),
+                new SysPermissions().ReadWriteShared<VoxRequestState>().ReadWrite<VoxEmitter>());
+        }
+
         static public void ProcessWork(float deltaTime) {
             var requestBuffer = VoxUtility.Requests.ActiveRequests;
             for(int i = requestBuffer.Count - 1; i >= 0; i--) {
