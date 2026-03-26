@@ -18,7 +18,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
 using UnityEngine.UI;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace AIS.Narrative {
     [DisallowMultipleComponent]

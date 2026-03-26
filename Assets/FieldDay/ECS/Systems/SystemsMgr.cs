@@ -30,6 +30,7 @@ namespace FieldDay.Systems {
     /// <summary>
     /// Manages game system updates.
     /// </summary>
+    [Il2CppEagerStaticClassConstruction]
     public sealed class SystemsMgr {
         public const int MaxSystems = 128;
 
@@ -37,6 +38,7 @@ namespace FieldDay.Systems {
 
         #region Types
 
+        [Il2CppEagerStaticClassConstruction]
         private struct OrderedSystemReference { // 8 bytes
             public int Order;
             public UniqueId16 Id;

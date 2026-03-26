@@ -2,8 +2,11 @@
 #define DEVELOPMENT
 #endif // (UNITY_EDITOR && !IGNORE_UNITY_EDITOR) || DEVELOPMENT_BUILD
 
-using System;
 using BeauUtil;
+using FieldDay.SharedState;
+using System;
+using System.Runtime.CompilerServices;
+using Unity.IL2CPP.CompilerServices;
 using UnityEngine.Scripting;
 
 namespace FieldDay.Systems {
@@ -61,13 +64,18 @@ namespace FieldDay.Systems {
             };
         }
 
-        public SysUpdate RestrictToCategories(int categoryMask) {
+        public SysUpdate AllowDuringCategories(int categoryMask) {
             return new SysUpdate() {
                 PhaseMask = this.PhaseMask,
                 Flags = this.Flags,
                 Order = this.Order,
                 CategoryMask = categoryMask
             };
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        static public SysUpdate Default(int order = 0) {
+            return new SysUpdate(GameLoopPhase.Update, order);
         }
     }
 }

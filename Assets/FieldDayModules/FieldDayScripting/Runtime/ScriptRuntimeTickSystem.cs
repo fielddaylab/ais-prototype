@@ -6,7 +6,7 @@ namespace FieldDay.Scripting {
     internal static class ScriptRuntimeTickSystem {
         static public unsafe void RegisterModule() {
             Game.Systems.Register(&ProcessWork,
-                new SysUpdate(GameLoopPhase.LateUpdate, 10000).RestrictToCategories(ScriptUtility.RuntimeUpdateMask).AllowDuringLoad(),
+                new SysUpdate(GameLoopPhase.LateUpdate, 10000).AllowDuringCategories(ScriptUtility.RuntimeUpdateMask).AllowDuringLoad(),
                 new SysPermissions().ReadWriteShared<ScriptRuntimeState>());
         }
 

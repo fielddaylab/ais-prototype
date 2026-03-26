@@ -330,36 +330,52 @@ namespace FieldDay.Components
     /// </summary>
     public struct ComponentIterator<T> : IEnumerator<T>, IEnumerable<T>, IDisposable where T : class, IComponentData
     {
+        private List<IComponentData> m_List;
         private List<IComponentData>.Enumerator m_Source;
         private int m_Count;
 
-        internal ComponentIterator(List<IComponentData> source)
-        {
+        internal ComponentIterator(List<IComponentData> source) {
             if (source != null) {
+                m_List = source;
                 m_Source = source.GetEnumerator();
                 m_Count = source.Count;
             } else {
+                m_List = null;
                 m_Source = default;
                 m_Count = 0;
             }
         }
 
-        public T Current
-        {
-            get { return (T)m_Source.Current; }
+        public readonly T Current {
+            get { return Unsafe.FastCast<T>(m_Source.Current); }
         }
 
         /// <summary>
         /// Total number of components in this list.
         /// </summary>
-        public int Count {
+        public readonly int Count {
             get { return m_Count; }
+        }
+
+        /// <summary>
+        /// Returns the component at the given index.
+        /// </summary>
+        public readonly T Get(int index) {
+            return Unsafe.FastCast<T>(m_List[index]);
+        }
+
+        /// <summary>
+        /// Returns the component at the given index.
+        /// </summary>
+        public readonly T this[int index] {
+            get { return Unsafe.FastCast<T>(m_List[index]); }
         }
 
         public void Dispose()
         {
             m_Source = default;
             m_Count = 0;
+            m_List = null;
         }
 
         public bool MoveNext()

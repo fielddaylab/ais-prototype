@@ -52,6 +52,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Root: {fileID: 8955924805368344364}
   Mode: 2
+  SyncDimensions: 3
+  UpdateRootDimensions: 3
   Padding: {x: 24, y: 16}
   MinSize: {x: 24, y: 34}
   Children:
@@ -337,6 +339,7 @@ MonoBehaviour:
   m_pageToDisplay: 1
   m_maxLineWidth: 300
   m_margin: {x: 0, y: 0, z: 0, w: 4}
+  m_roundUpCalculatedPreferredValues: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0

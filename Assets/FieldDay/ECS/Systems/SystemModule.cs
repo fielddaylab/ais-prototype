@@ -11,7 +11,7 @@ namespace FieldDay.Systems {
     public abstract class SystemModule : MonoBehaviour {
         private SystemRegistrationTable m_RegisteredModules;
 
-        protected abstract void RegisterSystems(ref SystemRegistrationTable ecs);
+        protected abstract unsafe void RegisterSystems(ref SystemRegistrationTable ecs);
 
         private void Awake() {
             RegisterSystems(ref m_RegisteredModules);

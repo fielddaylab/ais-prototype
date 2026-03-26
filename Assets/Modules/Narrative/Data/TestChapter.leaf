@@ -32,6 +32,7 @@ $choice .ChooseRanger; Adjust my outdoors-y-ness.
 $choice .ChooseNo; What about no?
     $data   CheckStat = "Communicate"
     $data   CheckStatValue = 4
+    $data   Time = 2
 
 :: ChooseTech
 $call AdjustStat(Tech, 1)
