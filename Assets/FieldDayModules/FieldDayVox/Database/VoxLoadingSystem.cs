@@ -12,9 +12,14 @@ using UnityEngine;
 using UnityEngine.Networking;
 
 namespace FieldDay.Vox {
-    [SysUpdate(GameLoopPhaseMask.PreUpdate | GameLoopPhaseMask.UnscaledUpdate | GameLoopPhaseMask.UnscaledLateUpdate, 1000, AllowExecutionDuringLoad = true)]
-    internal class VoxLoadingSystem : ISystem {
-        public void ProcessWork(float deltaTime) {
+    internal static class VoxLoadingSystem {
+        static public unsafe void RegisterModule() {
+            Game.Systems.Register(&ProcessWork,
+                new SysUpdate(GameLoopPhaseMask.PreUpdate | GameLoopPhaseMask.UnscaledUpdate | GameLoopPhaseMask.UnscaledLateUpdate, 1000).AllowDuringLoad(),
+                new SysPermissions().ReadWriteShared<VoxDatabase>());
+        }
+
+        static public void ProcessWork(float deltaTime) {
             VoxDatabase db = VoxUtility.DB;
             bool didWork = HandleLoading(db);
             if (!didWork) {

@@ -34,7 +34,7 @@ namespace FieldDay.Data {
             }
 
             if (!RootType.IsAssignableFrom(type)) {
-                Assert.Fail("Attempting to allocate index for type '{0}' that does not inherit from the base type '{1}', and is not an interface with the [Indexed] attribute", inType.FullName, typeof(TRootType).FullName);
+                Assert.Fail("Attempting to allocate index for type '{0}' that does not inherit from the base type '{1}', and is not an interface with the [Indexed] attribute", type.FullName, RootType.FullName);
                 return -1;
             }
 

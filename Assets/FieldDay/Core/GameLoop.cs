@@ -312,7 +312,7 @@ namespace FieldDay {
                 Game.Systems = new SystemsMgr();
 
                 Log.Msg("[GameLoop] Creating component manager...");
-                Game.Components = new ComponentMgr(Game.Systems);
+                Game.Components = new ComponentMgr();
 
                 Log.Msg("[GameLoop] Creating shared state manager...");
                 Game.SharedState = new SharedStateMgr();

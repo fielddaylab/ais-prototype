@@ -489,12 +489,13 @@ namespace FieldDay.Assets {
         }
 
         static private void InvokeNamedCallbacks(CastableAction<INamedAsset>[] assets, Type assetType, INamedAsset asset) {
-            var typeIndices = NamedAssetIndex.GetAll(assetType);
-            foreach (var index in typeIndices) {
+            int index = NamedAssetIndex.Get(assetType);
+            while (index >= 0) {
                 var action = assets[index];
                 if (!action.IsEmpty) {
                     action.Invoke(asset);
                 }
+                index = NamedAssetIndex.GetParent(index);
             }
         }
 

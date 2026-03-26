@@ -3,9 +3,14 @@ using BeauUtil.Debugger;
 using FieldDay.Systems;
 
 namespace FieldDay.Scripting {
-    [SysUpdate(GameLoopPhase.LateUpdate, 10000, ScriptUtility.RuntimeUpdateMask, AllowExecutionDuringLoad = true)]
-    internal sealed class ScriptRuntimeTickSystem : ISystem {
-        public void ProcessWork(float deltaTime) {
+    internal static class ScriptRuntimeTickSystem {
+        static public unsafe void RegisterModule() {
+            Game.Systems.Register(&ProcessWork,
+                new SysUpdate(GameLoopPhase.LateUpdate, 10000).RestrictToCategories(ScriptUtility.RuntimeUpdateMask).AllowDuringLoad(),
+                new SysPermissions().ReadWriteShared<ScriptRuntimeState>());
+        }
+
+        static public void ProcessWork(float deltaTime) {
             if (ScriptUtility.Runtime.PauseDepth != 0) {
                 return;
             }

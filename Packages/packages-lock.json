@@ -53,11 +53,11 @@
       "url": "https://package.openupm.com"
     },
     "com.beauprime.tinyil-mono": {
-      "version": "0.2.1",
+      "version": "0.2.2",
       "depth": 0,
       "source": "registry",
       "dependencies": {
-        "com.unity.nuget.mono-cecil": "1.11.4"
+        "com.unity.nuget.mono-cecil": "1.11.6"
       },
       "url": "https://package.openupm.com"
     },
@@ -126,8 +126,8 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.nuget.mono-cecil": {
-      "version": "1.11.4",
-      "depth": 1,
+      "version": "1.11.6",
+      "depth": 0,
       "source": "registry",
       "dependencies": {},
       "url": "https://packages.unity.com"
