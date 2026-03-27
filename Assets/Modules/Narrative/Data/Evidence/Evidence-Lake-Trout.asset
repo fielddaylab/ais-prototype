@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: Evidence-Lake-Trout
   m_EditorClassIdentifier: 
   Label: Sea Lamprey can feed on Lake Trout.
+  id: 9

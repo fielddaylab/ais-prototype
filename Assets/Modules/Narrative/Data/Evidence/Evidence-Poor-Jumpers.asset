@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6374628d737c9d24486747a92e860022, type: 3}
   m_Name: Evidence-Poor-Jumpers
   m_EditorClassIdentifier: 
-  Label: 
+  Label: Sea Lamprey are poor jumpers.
+  id: 2

@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6374628d737c9d24486747a92e860022, type: 3}
   m_Name: Evidence-Eel-Ladder
   m_EditorClassIdentifier: 
-  Label: 
+  Label: "Sea Lamprey can be captured with \u201Ceel-ladder\u201D traps"
+  id: 3
