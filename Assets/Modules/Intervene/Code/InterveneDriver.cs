@@ -175,8 +175,29 @@ namespace AIS.Intervene {
             totalPreyConsumed = Mathf.Min(totalPreyConsumed, totalPrey);
             if (totalPreyConsumed > 0) 
             {
-                eco.ReleasePopulation(preyCounts[0].Item1, totalPreyConsumed);
-                AisGame.Events.Dispatch(InterveneEvents.OnHunt);
+                // eco.ReleasePopulation(preyCounts[0].Item1, totalPreyConsumed);
+                List<Tuple<SerializedHash32, int, PathwayType, ActionTarget>> eachPreyConsumed = new List<Tuple<SerializedHash32, int, PathwayType, ActionTarget>>();
+                for (int i = 0; i < totalPreyConsumed; i++)
+                {
+                    for (int j = 0; j < preyCounts.Count; j++)
+                    {
+                        if (preyCounts[j].Item2 > 0)
+                        {
+                            if (UnityEngine.Random.Range(0, 1f) < preyCounts[j].Item2 / (float)totalPrey)
+                            {
+                                eachPreyConsumed.Add(new Tuple<SerializedHash32, int, PathwayType, ActionTarget>(preyCounts[j].Item1, 1, preyCounts[j].Item3, preyCounts[j].Item4));
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                foreach (var prey in eachPreyConsumed)
+                {
+                    eco.ReleasePopulation(prey.Item1, prey.Item2);
+                }
+
+                Game.Events.Dispatch(InterveneEvents.OnHunt);
             }
 
             Debug.Log("[InterveneDriver] [InterspeciesDynamics] eco " + eco.EcosystemId + " invasives consumed " + totalPreyConsumed);
@@ -393,7 +414,9 @@ namespace AIS.Intervene {
                         if (origPop > 0)
                         {
                             if ((onTryMoveFromOrigEffect.TargetType & ActionTarget.Invasive) != 0) {
-                                origEco.ReleasePopulation(InvasionModel.Instance.CurrModelSetupData.DefaultInvasive.SpeciesId, (int)onTryMoveFromOrigEffect.Value);
+                                // origEco.ReleasePopulation(InvasionModel.Instance.CurrModelSetupData.DefaultInvasive.SpeciesId, (int)onTryMoveFromOrigEffect.Value);
+                                // For trapped pathway (remove), trap 1 species.
+                                origEco.ReleasePopulation(InvasionModel.Instance.CurrModelSetupData.DefaultInvasive.SpeciesId, 1);
                             }
                         }
                     }

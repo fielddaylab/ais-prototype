@@ -49,7 +49,7 @@ namespace AIS.Model
     public enum PathwayEffectType
     {
         BlockAll = 0x01,
-        Remove = 0x02,
+        Remove = 0x02, // trapped
     }
 
     public struct PathwayEffect
@@ -96,7 +96,7 @@ namespace AIS.Model
             DestEcosystemId = setupData.DestEcosystemId;
             PathwayType = setupData.PathwayType;
             SetIsHidden(!setupData.IsNotHidden);
-            SetIsTrapped(false);
+            // SetIsTrapped(false);
             Dir = setupData.StartingDir;
 
             this.transform.position = setupData.Pos;
@@ -164,12 +164,12 @@ namespace AIS.Model
             UpdateVisuals();
         }
 
-        public void SetIsTrapped(bool isTrapped)
-        {
-            IsTrapped = isTrapped;
+        // public void SetIsTrapped(bool isTrapped)
+        // {
+        //     IsTrapped = isTrapped;
 
-            UpdateVisuals();
-        }
+        //     UpdateVisuals();
+        // }
 
         public void AddEffectOnTryMoveFromOrig(PathwayEffect toAdd)
         {
