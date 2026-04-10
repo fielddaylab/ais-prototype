@@ -30,6 +30,8 @@ namespace AIS.Model
     public enum PathwayType
     {
         Currents = 0x01,
+        // Upstream = 0x01
+        // Downstream = 0x02 (need to change all the followings)
         PetTrade = 0x02,
         BoatHulls = 0x04,
         BaitBuckets = 0x08,
@@ -83,6 +85,7 @@ namespace AIS.Model
         public float TransferTriggerChance { get; private set; }
         public float TransferRate { get; private set; }
         public bool IsHidden { get; private set; }
+        public bool IsTrapped { get; private set; }
         public PathDir Dir { get; private set; }
 
         #endregion // Inspector
@@ -93,6 +96,7 @@ namespace AIS.Model
             DestEcosystemId = setupData.DestEcosystemId;
             PathwayType = setupData.PathwayType;
             SetIsHidden(!setupData.IsNotHidden);
+            SetIsTrapped(false);
             Dir = setupData.StartingDir;
 
             this.transform.position = setupData.Pos;
@@ -156,6 +160,13 @@ namespace AIS.Model
         public void SetIsHidden(bool isHidden)
         {
             IsHidden = isHidden;
+
+            UpdateVisuals();
+        }
+
+        public void SetIsTrapped(bool isTrapped)
+        {
+            IsTrapped = isTrapped;
 
             UpdateVisuals();
         }
