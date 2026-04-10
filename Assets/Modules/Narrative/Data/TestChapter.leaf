@@ -40,13 +40,24 @@ $goto .StatBonusLoop
 
 :: ChooseRanger
 $call AdjustStat(Ranger, 1)
-{@} Your Ranger stat is now {$Stat(Tech)}!
+{@} Your Ranger stat is now {$Stat(Ranger)}!
 $if !HasEvidenceCard("Evidence-Angler")
     {@Narrator}     Hang on, I also have something for you...
                     Let me just... check my pockets...
                     Here you go!
     $call GiveEvidenceCard("Evidence-Angler")
     {@}     You obtained an evidence card! Check your Evidence menu for details!
+$endif
+$if HasEvidenceCard("Evidence-Angler")
+    $if !HasEvidenceCard("Evidence-Chemical-Removal")
+        {@Narrator}     Oh, looks like you already know about Bait Buckets.
+                        How about this one?
+        $call GiveEvidenceCard("Evidence-Chemical-Removal")
+        {@}     You obtained an evidence card! Check your Evidence menu for details!
+    $endif
+$endif
+$if HasEvidenceCard("Evidence-Chemical-Removal")
+    {@}   You've got the new action card which allows you to apply chemical removal!
 $endif
 $goto .StatBonusLoop
 
