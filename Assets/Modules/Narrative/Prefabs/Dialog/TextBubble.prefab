@@ -104,7 +104,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 385, y: 103}
+  m_SizeDelta: {x: 349, y: 90}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8122312645557944838
 CanvasRenderer:
@@ -137,8 +137,8 @@ MonoBehaviour:
   m_text: There is so much text here. Why? Does it wrap properly to the next line?
     Does it show up correctly?
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 36d797093e4dc364b982971436debee2, type: 2}
-  m_sharedMaterial: {fileID: -4075072374477642994, guid: 36d797093e4dc364b982971436debee2, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 6983a897c51fa94458b311afe07e49de, type: 2}
+  m_sharedMaterial: {fileID: 8927896117694637700, guid: 6983a897c51fa94458b311afe07e49de, type: 2}
   m_fontSharedMaterials:
   - {fileID: 0}
   m_fontMaterial: {fileID: 0}
@@ -164,8 +164,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 25
-  m_fontSizeBase: 25
+  m_fontSize: 22
+  m_fontSizeBase: 22
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -247,7 +247,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 417, y: 135}
+  m_SizeDelta: {x: 381, y: 122}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &8880998018712746302
 MonoBehaviour:

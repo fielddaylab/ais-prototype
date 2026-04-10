@@ -200,8 +200,10 @@ namespace AIS.Intervene {
             // Reproduce
             int reproduceNum = totalPreyConsumed;
             if (totalInvasives > 1)
+            // check reproduce condition; For Sea Lamprey: “ecosystem must be Tributary”
+            // check if numEgg >= 1
             {
-                reproduceNum = Mathf.FloorToInt(totalPreyConsumed / 2);
+                reproduceNum = Mathf.FloorToInt(totalPreyConsumed / 2); // population + 1, numEgg - 1
             }
 
             for (int i = 0; i < reproduceNum; i++)
@@ -294,8 +296,11 @@ namespace AIS.Intervene {
             // Reproduce
             int reproduceNum = totalPreyConsumed;
             if (totalPredators > 1)
+            // check reproduce condition;
+            // check if numEgg >= 1
             {
                 reproduceNum = Mathf.FloorToInt(totalPreyConsumed / 2);
+                // population + 1, numEgg - 1
             }
 
             for (int i = 0; i < reproduceNum; i++)
@@ -333,6 +338,7 @@ namespace AIS.Intervene {
             InterveneUI.Instance.SetSimPhase("Prey Turn: Reproduce");
             // Reproduce
             int rollResult = UnityEngine.Random.Range(1, 7);
+            // check reproduce condition and if numEgg >= 1
             if (rollResult <= totalPrey)
             {
                 // TODO: how to divvy if multiple types of prey?

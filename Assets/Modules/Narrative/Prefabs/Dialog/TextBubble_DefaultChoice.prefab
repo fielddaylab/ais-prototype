@@ -1,5 +1,80 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7652664095289355435
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 757794079819226211}
+  - component: {fileID: 3101580087255992726}
+  - component: {fileID: 2608534636320442191}
+  m_Layer: 5
+  m_Name: Arrow
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &757794079819226211
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7652664095289355435}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1593249569663048262}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 0}
+  m_AnchoredPosition: {x: -32, y: 4}
+  m_SizeDelta: {x: 32, y: 32}
+  m_Pivot: {x: 0.5, y: 1}
+--- !u!222 &3101580087255992726
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7652664095289355435}
+  m_CullTransparentMesh: 1
+--- !u!114 &2608534636320442191
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7652664095289355435}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 2100000, guid: 4bf7827f87effae4c87139268974fec1, type: 2}
+  m_Color: {r: 0, g: 0.08235294, b: 0.32941177, a: 1}
+  m_RaycastTarget: 0
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 0
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 7471599808022276966, guid: 554a78cbf5b85ca43848808c9fd26ff7, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 1
+  m_PixelsPerUnitMultiplier: 1
 --- !u!1001 &9218796298175134948
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10,7 +85,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3279756846505687581, guid: ffbb30178c6e70b4d9616b06af86c963, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 100
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 3279756846505687581, guid: ffbb30178c6e70b4d9616b06af86c963, type: 3}
       propertyPath: m_SizeDelta.y
@@ -30,7 +105,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3775999569407377305, guid: ffbb30178c6e70b4d9616b06af86c963, type: 3}
       propertyPath: m_maxLineWidth
-      value: 180
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 3775999569407377305, guid: ffbb30178c6e70b4d9616b06af86c963, type: 3}
       propertyPath: m_VerticalAlignment
@@ -42,7 +117,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6422463037750317989, guid: ffbb30178c6e70b4d9616b06af86c963, type: 3}
       propertyPath: m_Name
-      value: TextBubble_Choice
+      value: TextBubble_DefaultChoice
       objectReference: {fileID: 0}
     - target: {fileID: 7634694734445110946, guid: ffbb30178c6e70b4d9616b06af86c963, type: 3}
       propertyPath: m_Pivot.x
@@ -70,7 +145,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7634694734445110946, guid: ffbb30178c6e70b4d9616b06af86c963, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 132
+      value: 92
       objectReference: {fileID: 0}
     - target: {fileID: 7634694734445110946, guid: ffbb30178c6e70b4d9616b06af86c963, type: 3}
       propertyPath: m_SizeDelta.y
@@ -130,7 +205,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8880998018712746302, guid: ffbb30178c6e70b4d9616b06af86c963, type: 3}
       propertyPath: MinSize.x
-      value: 100
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 8880998018712746302, guid: ffbb30178c6e70b4d9616b06af86c963, type: 3}
       propertyPath: Padding.x
@@ -146,7 +221,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 7634694734445110946, guid: ffbb30178c6e70b4d9616b06af86c963, type: 3}
+      insertIndex: 2
+      addedObject: {fileID: 757794079819226211}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 6422463037750317989, guid: ffbb30178c6e70b4d9616b06af86c963, type: 3}
       insertIndex: -1
@@ -228,9 +306,10 @@ MonoBehaviour:
   Text: {fileID: 5442800235022107517}
   CharacterName: {fileID: 0}
   CharacterLayout: {fileID: 0}
-  Tail: {fileID: 0}
+  Tail: {fileID: 757794079819226211}
   BackgroundColor:
   - {fileID: 6848114496992748278}
+  - {fileID: 2608534636320442191}
   ContentColor:
   - {fileID: 5442800235022107517}
   Rounding:

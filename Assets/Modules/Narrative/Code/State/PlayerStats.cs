@@ -19,7 +19,8 @@ namespace AIS.Narrative {
         Research,
         Innovate,
         Ranger,
-        Communicate
+        Communicate,
+        Invalid = 255
     }
 
     [Serializable]

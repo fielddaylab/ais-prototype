@@ -57,20 +57,18 @@ namespace AIS.Narrative {
         }
 
         public void SetCharacterInfo(DialogueCharacterState charState, TextStyleTailMode? tailOverride) {
-            if (!CharacterName) {
-                return;
-            }
-
             CharacterData data = CharacterData.Get(charState.CharacterId);
 
-            if (!string.IsNullOrEmpty(charState.OverrideName)) {
-                CharacterName.SetText(charState.OverrideName);
-                CharacterLayout.gameObject.SetActive(true);
-            } else if (data != null && !string.IsNullOrEmpty(data.DisplayName)) {
-                CharacterName.SetText(data.DisplayName);
-                CharacterLayout.gameObject.SetActive(true);
-            } else {
-                CharacterLayout.gameObject.SetActive(false);
+            if (CharacterName) {
+                if (!string.IsNullOrEmpty(charState.OverrideName)) {
+                    CharacterName.SetText(charState.OverrideName);
+                    CharacterLayout.gameObject.SetActive(true);
+                } else if (data != null && !string.IsNullOrEmpty(data.DisplayName)) {
+                    CharacterName.SetText(data.DisplayName);
+                    CharacterLayout.gameObject.SetActive(true);
+                } else {
+                    CharacterLayout.gameObject.SetActive(false);
+                }
             }
 
             SetTextStyle(Find.NamedAsset<TextStyle>(data.TextStyle), tailOverride);
