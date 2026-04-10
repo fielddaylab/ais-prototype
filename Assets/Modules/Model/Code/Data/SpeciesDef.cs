@@ -11,5 +11,6 @@ namespace AIS.Model
         public SerializedHash32 SpeciesId;
         public Sprite Sprite;
         public int numEggs;
+        // reproduction condition
     }
 }

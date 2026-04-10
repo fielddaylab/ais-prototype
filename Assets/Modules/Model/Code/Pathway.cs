@@ -30,13 +30,13 @@ namespace AIS.Model
     public enum PathwayType
     {
         Currents = 0x01,
-        // Upstream = 0x01
-        // Downstream = 0x02 (need to change all the followings)
         PetTrade = 0x02,
         BoatHulls = 0x04,
         BaitBuckets = 0x08,
         BallastWater = 0x10,
         Aquarium = 0x20,
+        // Upstream = 0x40,
+        // Downstream = 0x80,
     }
 
     public enum RateType
