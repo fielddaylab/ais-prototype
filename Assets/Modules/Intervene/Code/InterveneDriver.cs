@@ -373,6 +373,7 @@ namespace AIS.Intervene {
             SetEcosystemFocused(eco, false);
         }
 
+        private List<Tuple<SerializedHash32, SerializedHash32, int, SerializedHash32>> transferTracker = new List<Tuple<SerializedHash32, SerializedHash32, int, SerializedHash32>>();
         private IEnumerator StagePathwayTransfer(Pathway pathway)
         {
             // for each species in origin which travels along pathway
@@ -415,7 +416,7 @@ namespace AIS.Intervene {
                         {
                             if ((onTryMoveFromOrigEffect.TargetType & ActionTarget.Invasive) != 0) {
                                 // origEco.ReleasePopulation(InvasionModel.Instance.CurrModelSetupData.DefaultInvasive.SpeciesId, (int)onTryMoveFromOrigEffect.Value);
-                                // For trapped pathway (remove), trap 1 species.
+                                // For trapped pathway (defined as Remove pathwayEffectType), trap 1 species.
                                 origEco.ReleasePopulation(InvasionModel.Instance.CurrModelSetupData.DefaultInvasive.SpeciesId, 1);
                             }
                         }
@@ -431,8 +432,9 @@ namespace AIS.Intervene {
                 transferAlloc.TargetType = speciesPair.Item3;
                 m_SpeciesTransfers.Add(transferAlloc);
 
+                transferTracker.Add(new Tuple<SerializedHash32, SerializedHash32, int, SerializedHash32>(pathway.OrigEcosystemId, pathway.DestEcosystemId, transferNum, speciesPair.Item1));
                 // Release species from original ecosystem
-                origEco.ReleasePopulation(speciesPair.Item1, transferNum);
+                // origEco.ReleasePopulation(speciesPair.Item1, transferNum);
             }
 
             yield return SIM_PHASE_DELAY;
@@ -446,6 +448,8 @@ namespace AIS.Intervene {
                 if (!destEco.IsExternal) {
                     destEco.AddPopulation(m_SpeciesTransfers[i].SpeciesId, m_SpeciesTransfers[i].TransferCount, m_SpeciesTransfers[i].TravelType, m_SpeciesTransfers[i].TargetType);
                 }
+
+
                 m_SpeciesTransfers.RemoveAt(i);
             }
         }
