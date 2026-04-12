@@ -16,6 +16,7 @@ namespace AIS.Intervene {
         public struct SpeciesTransferAllocation
         {
             public SerializedHash32 SpeciesId;
+            public SerializedHash32 OrigEcosystemId;
             public SerializedHash32 DestEcosystemId;
             public int TransferCount;
             public PathwayType TravelType;
@@ -373,7 +374,6 @@ namespace AIS.Intervene {
             SetEcosystemFocused(eco, false);
         }
 
-        private List<Tuple<SerializedHash32, SerializedHash32, int, SerializedHash32>> transferTracker = new List<Tuple<SerializedHash32, SerializedHash32, int, SerializedHash32>>();
         private IEnumerator StagePathwayTransfer(Pathway pathway)
         {
             // for each species in origin which travels along pathway
@@ -426,13 +426,13 @@ namespace AIS.Intervene {
                 // split species, between orig and dest clusters
                 var transferAlloc = new SpeciesTransferAllocation();
                 transferAlloc.SpeciesId = speciesPair.Item1;
+                transferAlloc.OrigEcosystemId = pathway.OrigEcosystemId;
                 transferAlloc.DestEcosystemId = pathway.DestEcosystemId;
                 transferAlloc.TransferCount = transferNum;
                 transferAlloc.TravelType = speciesPair.Item2;
                 transferAlloc.TargetType = speciesPair.Item3;
                 m_SpeciesTransfers.Add(transferAlloc);
 
-                transferTracker.Add(new Tuple<SerializedHash32, SerializedHash32, int, SerializedHash32>(pathway.OrigEcosystemId, pathway.DestEcosystemId, transferNum, speciesPair.Item1));
                 // Release species from original ecosystem
                 // origEco.ReleasePopulation(speciesPair.Item1, transferNum);
             }
@@ -444,14 +444,19 @@ namespace AIS.Intervene {
         {
             for (int i = m_SpeciesTransfers.Count - 1; i >= 0; i--)
             {
+                var origEco = InvasionModelContainer.Instance.GetEcosystem(m_SpeciesTransfers[i].OrigEcosystemId);
+                if (!origEco.IsExternal) {
+                    origEco.ReleasePopulation(m_SpeciesTransfers[i].SpeciesId, m_SpeciesTransfers[i].TransferCount);
+                    // decrease population at the end to avoid transferring individuals more than once
+                }
+
                 var destEco = InvasionModelContainer.Instance.GetEcosystem(m_SpeciesTransfers[i].DestEcosystemId);
                 if (!destEco.IsExternal) {
                     destEco.AddPopulation(m_SpeciesTransfers[i].SpeciesId, m_SpeciesTransfers[i].TransferCount, m_SpeciesTransfers[i].TravelType, m_SpeciesTransfers[i].TargetType);
                 }
-
-
                 m_SpeciesTransfers.RemoveAt(i);
             }
+
         }
 
         private void TrySpawnNest(Ecosystem eco)

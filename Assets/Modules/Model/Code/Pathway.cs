@@ -29,14 +29,14 @@ namespace AIS.Model
     [Flags]
     public enum PathwayType
     {
-        Currents = 0x01,
+        // Currents = 0x01,
         PetTrade = 0x02,
         BoatHulls = 0x04,
         BaitBuckets = 0x08,
         BallastWater = 0x10,
         Aquarium = 0x20,
-        // Upstream = 0x40,
-        // Downstream = 0x80,
+        Upstream = 0x40,
+        Downstream = 0x80,
     }
 
     public enum RateType
@@ -49,7 +49,7 @@ namespace AIS.Model
     public enum PathwayEffectType
     {
         BlockAll = 0x01,
-        Remove = 0x02, // trapped
+        Remove = 0x02,
     }
 
     public struct PathwayEffect
@@ -96,7 +96,7 @@ namespace AIS.Model
             DestEcosystemId = setupData.DestEcosystemId;
             PathwayType = setupData.PathwayType;
             SetIsHidden(!setupData.IsNotHidden);
-            // SetIsTrapped(false);
+            SetIsTrapped(false);
             Dir = setupData.StartingDir;
 
             this.transform.position = setupData.Pos;
@@ -164,12 +164,12 @@ namespace AIS.Model
             UpdateVisuals();
         }
 
-        // public void SetIsTrapped(bool isTrapped)
-        // {
-        //     IsTrapped = isTrapped;
+        public void SetIsTrapped(bool isTrapped)
+        {
+            IsTrapped = isTrapped;
 
-        //     UpdateVisuals();
-        // }
+            UpdateVisuals();
+        }
 
         public void AddEffectOnTryMoveFromOrig(PathwayEffect toAdd)
         {
