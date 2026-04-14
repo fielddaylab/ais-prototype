@@ -34,7 +34,7 @@ namespace AIS.Narrative {
         public RingBuffer<DialogueLine> ActiveLines = new RingBuffer<DialogueLine>(8);
 
         private void Awake() {
-            using(TempComponentBuffer<DialogueChoiceButton> buffer = TempComponentBuffer<DialogueChoiceButton>.Create()) {
+            using(TempReferenceBuffer<DialogueChoiceButton> buffer = TempReferenceBuffer<DialogueChoiceButton>.Create()) {
                 foreach(var choice in Choices) {
                     buffer.Add(choice);
                 }

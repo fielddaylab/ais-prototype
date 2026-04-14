@@ -219,8 +219,8 @@ namespace FieldDay.Scripting {
         static private void Initialize() {
             Game.SharedState.Register(new ScriptDatabase());
             Game.SharedState.Register(new ScriptRuntimeState());
-            Game.Systems.Register(new ScriptLoadingSystem());
-            Game.Systems.Register(new ScriptRuntimeTickSystem());
+            ScriptLoadingSystem.RegisterModule();
+            ScriptRuntimeTickSystem.RegisterModule();
         }
 
         #region Tables
