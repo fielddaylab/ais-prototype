@@ -36,6 +36,7 @@ namespace FieldDay.UI {
         [NonSerialized] public StringBuilder DynamicHeader;
         [NonSerialized] public StringBuilder DynamicContent;
         [NonSerialized] public StringBuilder DynamicFooter;
+        [NonSerialized] public CursorTooltipContentDelegate DynamicBuilder;
 
         [NonSerialized] public long LastUpdatedTimestamp = 0;
 
@@ -86,6 +87,8 @@ namespace FieldDay.UI {
             contents.DynamicHeader = hint.DynamicHeader;
             contents.DynamicContents = hint.DynamicContent;
             contents.DynamicFooter = hint.DynamicFooter;
+
+            contents.DynamicBuilder = hint.DynamicBuilder;
         }
 
         #endregion // Tooltips
@@ -271,5 +274,15 @@ namespace FieldDay.UI {
         public StringBuilder DynamicHeader;
         public StringBuilder DynamicContents;
         public StringBuilder DynamicFooter;
+
+        public CursorTooltipContentDelegate DynamicBuilder;
     }
+
+    public struct CursorTooltipBuildState {
+        public StringBuilder Header;
+        public StringBuilder Contents;
+        public StringBuilder Footer;
+    }
+
+    public delegate bool CursorTooltipContentDelegate(CursorHint hint, ref CursorTooltipBuildState buildState);
 }

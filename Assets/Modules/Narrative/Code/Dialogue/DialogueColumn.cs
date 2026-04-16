@@ -23,6 +23,7 @@ using static System.Net.Mime.MediaTypeNames;
 namespace AIS.Narrative {
     [DisallowMultipleComponent]
     public sealed class DialogueColumn : BaseDialoguePrinter, IDialogueChoicePresenter {
+        public DialogueLine.Pool LinePool;
         public DialogueColumnLayout Layout;
 
         [NonSerialized] private IInputLayer m_InputLayer;
@@ -60,8 +61,8 @@ namespace AIS.Narrative {
         }
 
         protected override void PrepareTextDisplay(TagString text, DialogueCharacterState character) {
-            m_CurrentLine = Layout.LinePool.Alloc();
-            Layout.ActiveLines.PushBack(m_CurrentLine);
+            m_CurrentLine = LinePool.Alloc();
+            Layout.ActiveLines.PushBack(m_CurrentLine.Positioner);
             m_CurrentLine.SetCharacterInfo(character, null);
             m_CurrentLine.Populate(text);
 

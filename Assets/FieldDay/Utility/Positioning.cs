@@ -2,7 +2,6 @@ using BeauRoutine;
 using BeauUtil;
 using BeauUtil.Debugger;
 using FieldDay.Collections;
-using FieldDay.UI;
 using ScriptableBake;
 using System;
 using System.Runtime.CompilerServices;
@@ -59,13 +58,46 @@ namespace FieldDay {
         }
 
         /// <summary>
+        /// Returns a temporary buffer containing all active immediate children of the given root.
+        /// Will ignore children with an IgnoreLayout LayoutElement.
+        /// </summary>
+        static public TempReferenceBuffer<RectTransform> QueryLayoutChildren(this RectTransform root) {
+            int count = root.childCount;
+            if (count <= 0) {
+                return default;
+            }
+
+            TempReferenceBuffer<RectTransform> temp = TempReferenceBuffer<RectTransform>.Create(count);
+            QueryLayoutChildren(root, temp);
+            return temp;
+        }
+
+        /// <summary>
         /// Fills a temporary buffer containing all active immediate children of the given root.
         /// </summary>
         static public int QueryActiveChildren(this RectTransform root, TempReferenceBuffer<RectTransform> buffer) {
             int count = root.childCount;
             for(int i = 0; i < count; i++) {
                 Transform t = root.GetChild(i);
+                if (t.gameObject.activeSelf && t is RectTransform) {
+                    buffer.Add(Unsafe.FastCast<RectTransform>(t));
+                }
+            }
+            return count;
+        }
+
+        /// <summary>
+        /// Fills a temporary buffer containing all active immediate children of the given root.
+        /// Will ignore children with an IgnoreLayout LayoutElement.
+        /// </summary>
+        static public int QueryLayoutChildren(this RectTransform root, TempReferenceBuffer<RectTransform> buffer) {
+            int count = root.childCount;
+            for (int i = 0; i < count; i++) {
+                Transform t = root.GetChild(i);
                 if (t.gameObject.activeSelf) {
+                    if (t.TryGetComponent(out LayoutElement elem) && elem.enabled && elem.ignoreLayout) {
+                        continue;
+                    }
                     buffer.Add(Unsafe.FastCast<RectTransform>(t));
                 }
             }
@@ -194,20 +226,31 @@ namespace FieldDay {
         /// <summary>
         /// Horizontally lays out given set of RectTransforms.
         /// </summary>
-        static public float HorizontalLayout(TempReferenceBuffer<RectTransform> buffer, in LayoutOptions options, float basePosition = 0) {
-            return DoHorizontalLayoutRect(buffer, options, basePosition);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        static public LayoutResult HorizontalLayout(TempReferenceBuffer<RectTransform> buffer, in LayoutOptions options, float basePosition = 0) {
+            return DoHorizontalLayoutRect(buffer, options, basePosition, default);
         }
 
-        static private unsafe float DoHorizontalLayoutRect(TempReferenceBuffer<RectTransform> buffer, in LayoutOptions options, float basePosition) {
+        /// <summary>
+        /// Horizontally lays out given set of RectTransforms.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        static public LayoutResult DeferredHorizontalLayout(TempReferenceBuffer<RectTransform> buffer, in LayoutOptions options, float basePosition, UnsafeSpan<float> outputValues) {
+            return DoHorizontalLayoutRect(buffer, options, basePosition, outputValues);
+        }
+
+        static private unsafe LayoutResult DoHorizontalLayoutRect(TempReferenceBuffer<RectTransform> buffer, in LayoutOptions options, float basePosition, UnsafeSpan<float> deferredPositions) {
             int len = buffer.Count;
 
             if (len == 0) {
-                return 0;
+                return default;
             }
 
             float* offsets = stackalloc float[len];
             float* pivots = stackalloc float[len];
             float* sizes = stackalloc float[len];
+            float* paddingBefore = stackalloc float[len];
+            float* paddingAfter = stackalloc float[len];
 
             float totalSize = 0;
 
@@ -216,19 +259,21 @@ namespace FieldDay {
                 case LayoutSource.PreferredSize: {
                     for (int i = 0; i < len; i++) {
                         rect = buffer[i];
-                        sizes[i] = LayoutUtility.GetPreferredHeight(rect);
+                        sizes[i] = GetPreferredWidth(rect);
                         pivots[i] = rect.pivot.x;
+                        GetPaddingX(rect, out paddingBefore[i], out paddingAfter[i]);
                     }
-                    totalSize = ProcessPositionsDynamicSize(len, sizes, pivots, options.Spacing, offsets);
+                    totalSize = ProcessPositionsDynamicSize(len, sizes, pivots, paddingBefore, paddingAfter, options.Spacing, offsets);
                     break;
                 }
                 case LayoutSource.Size: {
                     for (int i = 0; i < len; i++) {
                         rect = buffer[i];
-                        sizes[i] = rect.rect.height;
+                        sizes[i] = rect.rect.width;
                         pivots[i] = rect.pivot.x;
+                        GetPaddingX(rect, out paddingBefore[i], out paddingAfter[i]);
                     }
-                    totalSize = ProcessPositionsDynamicSize(len, sizes, pivots, options.Spacing, offsets);
+                    totalSize = ProcessPositionsDynamicSize(len, sizes, pivots, paddingBefore, paddingAfter, options.Spacing, offsets);
                     break;
                 }
                 case LayoutSource.FixedSize: {
@@ -243,17 +288,26 @@ namespace FieldDay {
 
             basePosition = ComputeBasePosition(basePosition, totalSize, options.NormalizedAlignment);
 
-            for (int i = 0; i < len; i++) {
-                rect = buffer[i];
+            if (deferredPositions) {
+                Assert.True(deferredPositions.Length >= len, "Not enough space in deferred layout storage");
+                for (int i = 0; i < len; i++) {
+                    deferredPositions[i] = basePosition + offsets[i];
+                }
+            } else {
+                for (int i = 0; i < len; i++) {
+                    rect = buffer[i];
 #if UNITY_EDITOR
-                Baking.PrepareUndo(rect, "Horizontal alignment");
+                    Baking.PrepareUndo(rect, "Horizontal alignment");
 #endif // UNITY_EDITOR
-                Vector2 anchoredPos = rect.anchoredPosition;
-                anchoredPos.x = basePosition + offsets[i];
-                rect.anchoredPosition = anchoredPos;
+                    Vector2 anchoredPos = rect.anchoredPosition;
+                    anchoredPos.x = basePosition + offsets[i];
+                    rect.anchoredPosition = anchoredPos;
+                }
             }
 
-            return totalSize;
+            return new LayoutResult() {
+                Size = totalSize
+            };
         }
 
         /// <summary>
@@ -276,6 +330,42 @@ namespace FieldDay {
             }
         }
 
+        /// <summary>
+        /// Returns the maximum width of the given set of RectTransforms;
+        /// </summary>
+        static public float CalculateMaxWidth(TempReferenceBuffer<RectTransform> buffer, in LayoutOptions options) {
+            int len = buffer.Count;
+
+            if (len == 0) {
+                return 0;
+            }
+
+            if (options.Source == LayoutSource.FixedSize) {
+                return options.FixedSize;
+            }
+
+            float size = 0;
+            RectTransform rect;
+            switch (options.Source) {
+                case LayoutSource.PreferredSize: {
+                    for (int i = 0; i < len; i++) {
+                        rect = buffer[i];
+                        size = Math.Max(size, GetPreferredWidth(rect));
+                    }
+                    break;
+                }
+                case LayoutSource.Size: {
+                    for (int i = 0; i < len; i++) {
+                        rect = buffer[i];
+                        size = Math.Max(size, rect.rect.width);
+                    }
+                    break;
+                }
+            }
+
+            return size;
+        }
+
         #endregion // Horizontal Layout
 
         #region Vertical Layout
@@ -283,20 +373,30 @@ namespace FieldDay {
         /// <summary>
         /// Vertically lays out given set of RectTransforms.
         /// </summary>
-        static public float VerticalLayout(TempReferenceBuffer<RectTransform> buffer, in LayoutOptions options, float basePosition = 0) {
-            return DoVerticalLayoutRect(buffer, options, basePosition);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        static public LayoutResult VerticalLayout(TempReferenceBuffer<RectTransform> buffer, in LayoutOptions options, float basePosition = 0) {
+            return DoVerticalLayoutRect(buffer, options, basePosition, default);
+        }
+        /// <summary>
+        /// Vertically lays out given set of RectTransforms.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        static public LayoutResult DeferredVerticalLayout(TempReferenceBuffer<RectTransform> buffer, in LayoutOptions options, float basePosition, UnsafeSpan<float> outputValues) {
+            return DoVerticalLayoutRect(buffer, options, basePosition, outputValues);
         }
 
-        static private unsafe float DoVerticalLayoutRect(TempReferenceBuffer<RectTransform> buffer, in LayoutOptions options, float basePosition) {
+        static private unsafe LayoutResult DoVerticalLayoutRect(TempReferenceBuffer<RectTransform> buffer, in LayoutOptions options, float basePosition, UnsafeSpan<float> deferredPositions) {
             int len = buffer.Count;
 
             if (len == 0) {
-                return 0;
+                return default;
             }
 
             float* offsets = stackalloc float[len];
             float* pivots = stackalloc float[len];
             float* sizes = stackalloc float[len];
+            float* paddingBefore = stackalloc float[len];
+            float* paddingAfter = stackalloc float[len];
             float totalSize = 0;
 
             float direction = -1;
@@ -307,14 +407,15 @@ namespace FieldDay {
             }
 
             RectTransform rect;
-            switch(options.Source) {
+            switch (options.Source) {
                 case LayoutSource.PreferredSize: {
                     for (int i = 0; i < len; i++) {
                         rect = buffer[i];
-                        sizes[i] = LayoutUtility.GetPreferredHeight(rect);
+                        sizes[i] = GetPreferredHeight(rect);
                         pivots[i] = ConditionalFlipPivot(rect.pivot.y, flipPivot);
+                        GetPaddingY(rect, out paddingBefore[i], out paddingAfter[i]);
                     }
-                    totalSize = ProcessPositionsDynamicSize(len, sizes, pivots, options.Spacing, offsets);
+                    totalSize = ProcessPositionsDynamicSize(len, sizes, pivots, paddingBefore, paddingAfter, options.Spacing, offsets);
                     break;
                 }
                 case LayoutSource.Size: {
@@ -322,8 +423,9 @@ namespace FieldDay {
                         rect = buffer[i];
                         sizes[i] = rect.rect.height;
                         pivots[i] = ConditionalFlipPivot(rect.pivot.y, flipPivot);
+                        GetPaddingY(rect, out paddingBefore[i], out paddingAfter[i]);
                     }
-                    totalSize = ProcessPositionsDynamicSize(len, sizes, pivots, options.Spacing, offsets);
+                    totalSize = ProcessPositionsDynamicSize(len, sizes, pivots, paddingBefore, paddingAfter, options.Spacing, offsets);
                     break;
                 }
                 case LayoutSource.FixedSize: {
@@ -338,17 +440,26 @@ namespace FieldDay {
 
             basePosition = ComputeBasePosition(basePosition, direction * totalSize, ConditionalFlipPivot(options.NormalizedAlignment, flipPivot));
 
-            for (int i = 0; i < len; i++) {
-                rect = buffer[i];
+            if (deferredPositions) {
+                Assert.True(deferredPositions.Length >= len, "Not enough space in deferred layout storage");
+                for (int i = 0; i < len; i++) {
+                    deferredPositions[i] = basePosition + direction * offsets[i];
+                }
+            } else {
+                for (int i = 0; i < len; i++) {
+                    rect = buffer[i];
 #if UNITY_EDITOR
-                Baking.PrepareUndo(rect, "Vertical alignment");
+                    Baking.PrepareUndo(rect, "Vertical alignment");
 #endif // UNITY_EDITOR
-                Vector2 anchoredPos = rect.anchoredPosition;
-                anchoredPos.y = basePosition + direction * offsets[i];
-                rect.anchoredPosition = anchoredPos;
+                    Vector2 anchoredPos = rect.anchoredPosition;
+                    anchoredPos.y = basePosition + direction * offsets[i];
+                    rect.anchoredPosition = anchoredPos;
+                }
             }
 
-            return totalSize;
+            return new LayoutResult() {
+                Size = totalSize
+            };
         }
 
         /// <summary>
@@ -371,6 +482,42 @@ namespace FieldDay {
             }
         }
 
+        /// <summary>
+        /// Returns the maximum height of the given set of RectTransforms;
+        /// </summary>
+        static public float CalculateMaxHeight(TempReferenceBuffer<RectTransform> buffer, in LayoutOptions options) {
+            int len = buffer.Count;
+
+            if (len == 0) {
+                return 0;
+            }
+
+            if (options.Source == LayoutSource.FixedSize) {
+                return options.FixedSize;
+            }
+
+            float size = 0;
+            RectTransform rect;
+            switch (options.Source) {
+                case LayoutSource.PreferredSize: {
+                    for (int i = 0; i < len; i++) {
+                        rect = buffer[i];
+                        size = Math.Max(size, GetPreferredHeight(rect));
+                    }
+                    break;
+                }
+                case LayoutSource.Size: {
+                    for (int i = 0; i < len; i++) {
+                        rect = buffer[i];
+                        size = Math.Max(size, rect.rect.height);
+                    }
+                    break;
+                }
+            }
+
+            return size;
+        }
+
         #endregion // Vertical Layout
 
         #region Axis Layout
@@ -378,15 +525,15 @@ namespace FieldDay {
         /// <summary>
         /// Lays out given set of Transforms along the given axis.
         /// </summary>
-        static public float AxisLayout(TempReferenceBuffer<Transform> buffer, in LayoutOptions options, float basePosition, Axis axis) {
-            return DoAxisLayout(buffer, options, basePosition, axis);
+        static public LayoutResult AxisLayout(TempReferenceBuffer<Transform> buffer, in LayoutOptions options, float basePosition, Axis axis) {
+            return DoAxisLayout(buffer, options, basePosition, axis, default);
         }
 
-        static private unsafe float DoAxisLayout(TempReferenceBuffer<Transform> buffer, in LayoutOptions options, float basePosition, Axis axis) {
+        static private unsafe LayoutResult DoAxisLayout(TempReferenceBuffer<Transform> buffer, in LayoutOptions options, float basePosition, Axis axis, UnsafeSpan<float> deferredPositions) {
             int len = buffer.Count;
 
             if (len == 0) {
-                return 0;
+                return default;
             }
 
             Assert.True(axis == Axis.X || axis == Axis.Y || axis == Axis.Z, "Invalid axis");
@@ -395,6 +542,8 @@ namespace FieldDay {
             float* offsets = stackalloc float[len];
             float* pivots = stackalloc float[len];
             float* sizes = stackalloc float[len];
+            float* paddingBefore = stackalloc float[len];
+            float* paddingAfter = stackalloc float[len];
             float totalSize = 0;
 
             Transform transform;
@@ -412,7 +561,7 @@ namespace FieldDay {
                             sizes[i] = transform.localScale[axisIndex];
                         }
                     }
-                    totalSize = ProcessPositionsDynamicSize(len, sizes, pivots, options.Spacing, offsets);
+                    totalSize = ProcessPositionsDynamicSize(len, sizes, pivots, paddingBefore, paddingAfter, options.Spacing, offsets);
                     break;
                 }
                 case LayoutSource.FixedSize: {
@@ -431,31 +580,82 @@ namespace FieldDay {
 
             basePosition = ComputeBasePosition(basePosition, totalSize, options.NormalizedAlignment);
 
-            for (int i = 0; i < len; i++) {
-                transform = buffer[i];
+            if (deferredPositions) {
+                for (int i = 0; i < len; i++) {
+                    deferredPositions[i] = basePosition + offsets[i];
+                }
+            } else {
+                for (int i = 0; i < len; i++) {
+                    transform = buffer[i];
 #if UNITY_EDITOR
-                Baking.PrepareUndo(transform, "Axis alignment");
+                    Baking.PrepareUndo(transform, "Axis alignment");
 #endif // UNITY_EDITOR
-                Vector3 localPos = transform.localPosition;
-                localPos[axisIndex] = basePosition + offsets[i];
-                transform.localPosition = localPos;
+                    Vector3 localPos = transform.localPosition;
+                    localPos[axisIndex] = basePosition + offsets[i];
+                    transform.localPosition = localPos;
+                }
             }
 
-            return totalSize;
+            return new LayoutResult() {
+                Size = totalSize
+            };
         }
 
         #endregion // Axis Layout
 
+        #region Property Retrieval
+
+        [Il2CppSetOption(Option.NullChecks, false)]
+        static private float GetPreferredWidth(RectTransform rect) {
+            if (rect.TryGetComponent(out LayoutSizeInfo sizeInfo)) {
+                return sizeInfo.Size.x;
+            } else {
+                return LayoutUtility.GetPreferredWidth(rect);
+            }
+        }
+
+        [Il2CppSetOption(Option.NullChecks, false)]
+        static private float GetPreferredHeight(RectTransform rect) {
+            if (rect.TryGetComponent(out LayoutSizeInfo sizeInfo)) {
+                return sizeInfo.Size.y;
+            } else {
+                return LayoutUtility.GetPreferredHeight(rect);
+            }
+        }
+
+        [Il2CppSetOption(Option.NullChecks, false)]
+        static private void GetPaddingX(RectTransform rect, out float paddingPre, out float paddingPost) {
+            if (rect.TryGetComponent(out LayoutPaddingInfo paddingInfo)) {
+                paddingPre = paddingInfo.PaddingBefore.x;
+                paddingPost = paddingInfo.PaddingAfter.x;
+            } else {
+                paddingPre = paddingPost = 0;
+            }
+        }
+
+        [Il2CppSetOption(Option.NullChecks, false)]
+        static private void GetPaddingY(RectTransform rect, out float paddingPre, out float paddingPost) {
+            if (rect.TryGetComponent(out LayoutPaddingInfo paddingInfo)) {
+                paddingPre = paddingInfo.PaddingBefore.y;
+                paddingPost = paddingInfo.PaddingAfter.y;
+            } else {
+                paddingPre = paddingPost = 0;
+            }
+        }
+
+        #endregion // Property Retrieval
+
         #region Layout Math
 
         [Il2CppSetOption(Option.NullChecks, false)]
-        static private unsafe float ProcessPositionsDynamicSize(int entryCount, float* sizes, float* pivots, float spacing, float* results) {
+        static private unsafe float ProcessPositionsDynamicSize(int entryCount, float* sizes, float* pivots, float* paddingBefore, float* paddingAfter, float spacing, float* results) {
             float total = 0;
             float size;
             for(int i = 0; i < entryCount; i++) {
+                total += paddingBefore[i];
                 size = sizes[i];
                 results[i] = total + (1 - pivots[i]) * size;
-                total += spacing + size;
+                total += spacing + size + paddingAfter[i];
             }
             total -= spacing;
             return total;
@@ -463,12 +663,10 @@ namespace FieldDay {
 
         [Il2CppSetOption(Option.NullChecks, false)]
         static private unsafe float ProcessPositionsFixedSize(int entryCount, float size, float* pivots, float spacing, float* results) {
-            float total = 0;
             for (int i = 0; i < entryCount; i++) {
-                results[i] = total + (1 - pivots[i]) * size;
-                total += spacing + size;
+                results[i] = i * (spacing + size) + (1 - pivots[i]) * size;
             }
-            total -= spacing;
+            float total = (spacing + size) * entryCount - size;
             return total;
         }
 
@@ -493,7 +691,11 @@ namespace FieldDay {
 
     [Flags]
     public enum LayoutFlags : ushort {
-        VerticalLayoutUp = 0x01,
+        VerticalLayoutUp = 0x01
+    }
+
+    public struct LayoutResult {
+        public float Size;
     }
 
     [Serializable]

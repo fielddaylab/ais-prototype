@@ -22,7 +22,9 @@ namespace AIS.Narrative {
         [Serializable] public sealed class Pool : SerializablePool<DialogueLine> { }
 
         [Header("Layout")]
+        public DialogueColumnLayoutElement Positioner;
         public LayoutSizeGroup Layout;
+        public LayoutPaddingInfo Padding;
         public RectTransform RootPivot;
         public CanvasGroup Visibility;
         public LayoutOffset Offset;
@@ -68,6 +70,10 @@ namespace AIS.Narrative {
                     CharacterLayout.gameObject.SetActive(true);
                 } else {
                     CharacterLayout.gameObject.SetActive(false);
+                }
+
+                if (Padding) {
+                    Padding.PaddingAfter.y = CharacterLayout.gameObject.activeSelf ? CharacterName.preferredHeight + CharacterLayout.Padding.y : 0;
                 }
             }
 
@@ -137,6 +143,9 @@ namespace AIS.Narrative {
                     Positioning.SetAnchorOffsetX(Tail, 1, -32f);
                     break;
                 }
+            }
+            if (Padding) {
+                Padding.PaddingBefore.y = tailMode != TextStyleTailMode.Hidden ? 32 : 0;
             }
         }
 

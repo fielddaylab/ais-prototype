@@ -22,35 +22,36 @@ using UnityEngine.UI;
 namespace AIS.Narrative {
     [DisallowMultipleComponent]
     public sealed class DialogueColumnLayout : MonoBehaviour {
-        public DialogueLine.Pool LinePool;
-
         public DialogueChoiceButton DefaultNextButton;
         public DialogueChoiceButton[] Choices;
 
         public float LineBaseOffset = 0;
-        public float LineSpacing = 300;
-        public int MaxLines = 3;
+        public LayoutOptions VerticalLayout;
+        public float CullDistance = 400;
 
-        public RingBuffer<DialogueLine> ActiveLines = new RingBuffer<DialogueLine>(8);
-
-        private void Awake() {
-            using(TempReferenceBuffer<DialogueChoiceButton> buffer = TempReferenceBuffer<DialogueChoiceButton>.Create()) {
-                foreach(var choice in Choices) {
-                    buffer.Add(choice);
-                }
-            }
-        }
+        public RingBuffer<DialogueColumnLayoutElement> ActiveLines = new RingBuffer<DialogueColumnLayoutElement>(32);
 
         public void RecomputePositioning() {
-            while(ActiveLines.Count > MaxLines) {
-                LinePool.Free(ActiveLines.PopFront());
+            using(var lineBuffer = TempReferenceBuffer<RectTransform>.Create(ActiveLines.Count)) {
+                for(int i = ActiveLines.Count; i-- > 0;) {
+                    lineBuffer.Add(ActiveLines[i].RectTransform);
+                }
+                Positioning.VerticalLayout(lineBuffer, VerticalLayout, LineBaseOffset);
             }
 
-            int totalLineCount = ActiveLines.Count;
-            for(int i = 0; i < totalLineCount; i++) {
-                RectTransform position = (RectTransform) ActiveLines[i].transform;
-                int index = totalLineCount - i;
-                position.anchoredPosition = new Vector2(0, LineBaseOffset + LineSpacing * index);
+            CullOffscreenElements();
+        }
+
+        public void CullOffscreenElements() {
+            while(ActiveLines.TryPeekFront(out DialogueColumnLayoutElement elem)) {
+                float y = elem.RectTransform.anchoredPosition.y;
+                y += elem.RectTransform.rect.y;
+                if (y >= LineBaseOffset + CullDistance) {
+                    Pool.TryFree(elem);
+                    ActiveLines.PopFront();
+                } else {
+                    break;
+                }
             }
         }
     }

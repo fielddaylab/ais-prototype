@@ -2,6 +2,7 @@ using BeauPools;
 using BeauUtil;
 using BeauUtil.Debugger;
 using System;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using TinyIL;
 using Unity.IL2CPP.CompilerServices;
@@ -73,6 +74,30 @@ namespace FieldDay.Collections {
 
         static public TempReferenceBuffer<T> Create(int capacity) {
             return new TempReferenceBuffer<T>(PooledObjectWorkList.GetPoolForCapacity(capacity));
+        }
+
+        static public TempReferenceBuffer<T> Create(RingBuffer<T> source) {
+            TempReferenceBuffer<T> dst = new TempReferenceBuffer<T>(PooledObjectWorkList.GetPoolForCapacity(source.Count));
+            for(int i = 0; i < source.Count; i++) {
+                dst.Add(source[i]);
+            }
+            return dst;
+        }
+
+        static public TempReferenceBuffer<T> Create(List<T> source) {
+            TempReferenceBuffer<T> dst = new TempReferenceBuffer<T>(PooledObjectWorkList.GetPoolForCapacity(source.Count));
+            for (int i = 0; i < source.Count; i++) {
+                dst.Add(source[i]);
+            }
+            return dst;
+        }
+
+        static public TempReferenceBuffer<T> Create(IList<T> source) {
+            TempReferenceBuffer<T> dst = new TempReferenceBuffer<T>(PooledObjectWorkList.GetPoolForCapacity(source.Count));
+            for (int i = 0; i < source.Count; i++) {
+                dst.Add(source[i]);
+            }
+            return dst;
         }
     }
 

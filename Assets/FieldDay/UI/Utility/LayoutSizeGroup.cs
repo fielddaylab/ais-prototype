@@ -47,7 +47,7 @@ namespace FieldDay.UI {
 
         [ContextMenu("Force Sync")]
         public void Sync() {
-            if ((Mode == SyncMode.PreferredSize || Mode == SyncMode.PreferredSizeUpdateRoot) && isActiveAndEnabled) {
+            if ((Mode == SyncMode.PreferredSize || Mode == SyncMode.PreferredSizeUpdateRoot) && !isActiveAndEnabled) {
                 m_SyncQueued = true;
                 return;
             }
@@ -132,9 +132,13 @@ namespace FieldDay.UI {
                 return;
             }
 
-            using (var activeChildren = Positioning.QueryActiveChildren(Root)) {
-                float width = Positioning.HorizontalLayout(activeChildren, options, basePosition);
-                SetSize(width, m_LastKnownSize.y);
+            using (var activeChildren = Positioning.QueryLayoutChildren(Root)) {
+                LayoutResult result = Positioning.HorizontalLayout(activeChildren, options, basePosition);
+                float height = m_LastKnownSize.y;
+                if ((SyncDimensions & Dimensions.Vertical) != 0) {
+                    height = Positioning.CalculateMaxHeight(activeChildren, options);
+                }
+                SetSize(result.Size, height);
             }
         }
 
@@ -146,9 +150,13 @@ namespace FieldDay.UI {
                 return;
             }
 
-            using (var activeChildren = Positioning.QueryActiveChildren(Root)) {
-                float height = Positioning.VerticalLayout(activeChildren, options, basePosition);
-                SetSize(m_LastKnownSize.x, height);
+            using (var activeChildren = Positioning.QueryLayoutChildren(Root)) {
+                LayoutResult result = Positioning.VerticalLayout(activeChildren, options, basePosition);
+                float width = m_LastKnownSize.x;
+                if ((SyncDimensions & Dimensions.Horizontal) != 0) {
+                    width = Positioning.CalculateMaxWidth(activeChildren, options);
+                }
+                SetSize(width, result.Size);
             }
         }
 

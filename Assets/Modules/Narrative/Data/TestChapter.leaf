@@ -1,3 +1,9 @@
+#macro ChoiceStatCheck(statName, statValue) \
+    $data   CheckStat = "$statName" \
+    $data   CheckStatValue = $statValue
+#macro ChoiceTime(time) \
+    $data   TIme = $time
+
 #basePath TestChapter
 
 :: Start
@@ -30,8 +36,7 @@ $set local:pointsToAllocate - 1
 $choice .ChooseTech; Adjust my tech.
 $choice .ChooseRanger; Adjust my outdoors-y-ness.
 $choice .ChooseNo; What about no?
-    $data   CheckStat = "Communicate"
-    $data   CheckStatValue = 4
+    $ChoiceStatCheck(Communicate, 4)
 
 :: ChooseTech
 $call AdjustStat(Tech, 1)

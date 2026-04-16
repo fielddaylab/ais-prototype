@@ -205,6 +205,7 @@ MonoBehaviour:
   m_pageToDisplay: 1
   m_maxLineWidth: 400
   m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_roundUpCalculatedPreferredValues: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -263,6 +264,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Root: {fileID: 3279756846505687581}
   Mode: 2
+  SyncDimensions: 3
+  UpdateRootDimensions: 3
   Padding: {x: 32, y: 32}
   MinSize: {x: 200, y: 35}
   Children:
