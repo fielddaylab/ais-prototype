@@ -333,6 +333,33 @@ namespace AIS.Model
             
         }
 
+        public Cluster GetCluster(SerializedHash32 speciesId, bool isSecondary = false)
+        {
+            if (isSecondary && !SecondarySlotDict.ContainsKey(speciesId))
+            {
+                return null;
+            }
+
+            if (!isSecondary && !SpeciesSlotDict.ContainsKey(speciesId))
+            {
+                return null;
+            }
+
+            int slotIndex = isSecondary ? SecondarySlotDict[speciesId].SlotIndex : SpeciesSlotDict[speciesId].SlotIndex;
+            var speciesSlot = isSecondary ? SecondarySlots[slotIndex] : MainSlots[slotIndex];
+
+            foreach (var cluster in speciesSlot.Clusters)
+            {
+                if (cluster.ContentsId.Equals(speciesId))
+                {
+                    return cluster;
+                }
+            }
+
+            Debug.LogWarning("[Ecosystem] Tried to query cluster on a species not in ecosystem!");
+            return null;
+        }
+
         public int GetPopulation(SerializedHash32 speciesId, bool isSecondary = false)
         {
             if (isSecondary && !SecondarySlotDict.ContainsKey(speciesId))

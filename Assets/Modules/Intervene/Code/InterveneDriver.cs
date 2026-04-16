@@ -228,11 +228,24 @@ namespace AIS.Intervene {
                 reproduceNum = Mathf.FloorToInt(totalPreyConsumed / 2); // population + 1, numEgg - 1
             }
 
-            for (int i = 0; i < reproduceNum; i++)
+            var cluster = eco.GetCluster(invasiveCounts[0].Item1);
+            if (cluster != null)
             {
-                eco.AddPopulation(invasiveCounts[0].Item1, 1, invasiveCounts[0].Item3, invasiveCounts[0].Item4);
-                AisGame.Events.Dispatch(InterveneEvents.OnReproduce);
+                cluster.NumEgg += reproduceNum;
+
+                if (cluster.NumEgg > 0 && cluster.IsSpawnable)
+                {
+                    eco.AddPopulation(invasiveCounts[0].Item1, 1, invasiveCounts[0].Item3, invasiveCounts[0].Item4);
+                    cluster.NumEgg -= 1;
+                    AisGame.Events.Dispatch(InterveneEvents.OnReproduce);
+                }
             }
+
+            // for (int i = 0; i < reproduceNum; i++)
+            // {
+            //     eco.AddPopulation(invasiveCounts[0].Item1, 1, invasiveCounts[0].Item3, invasiveCounts[0].Item4);
+            //     AisGame.Events.Dispatch(InterveneEvents.OnReproduce);
+            // }
             Debug.Log("[InterveneDriver] [InterspeciesDynamics] eco " + eco.EcosystemId + " invasives reproduced " + reproduceNum);
             yield return SIM_PHASE_SHORT_DELAY;
 
@@ -325,11 +338,24 @@ namespace AIS.Intervene {
                 // population + 1, numEgg - 1
             }
 
-            for (int i = 0; i < reproduceNum; i++)
+            var predatorCluster = eco.GetCluster(predatorCounts[0].Item1);
+            if (predatorCluster != null)
             {
-                eco.AddPopulation(predatorCounts[0].Item1, 1, predatorCounts[0].Item3, predatorCounts[0].Item4);
-                AisGame.Events.Dispatch(InterveneEvents.OnReproduce);
+                predatorCluster.NumEgg += reproduceNum;
+
+                if (predatorCluster.NumEgg > 0 && predatorCluster.IsSpawnable)
+                {
+                    eco.AddPopulation(predatorCounts[0].Item1, 1, predatorCounts[0].Item3, predatorCounts[0].Item4);
+                    predatorCluster.NumEgg -= 1;
+                    AisGame.Events.Dispatch(InterveneEvents.OnReproduce);
+                }
             }
+
+            // for (int i = 0; i < reproduceNum; i++)
+            // {
+            //     eco.AddPopulation(predatorCounts[0].Item1, 1, predatorCounts[0].Item3, predatorCounts[0].Item4);
+            //     AisGame.Events.Dispatch(InterveneEvents.OnReproduce);
+            // }
             Debug.Log("[InterveneDriver] [InterspeciesDynamics] eco " + eco.EcosystemId + " predator reproduced " + reproduceNum);
            
             yield return SIM_PHASE_DELAY;
@@ -361,10 +387,21 @@ namespace AIS.Intervene {
             // Reproduce
             int rollResult = UnityEngine.Random.Range(1, 7);
             // check reproduce condition and if numEgg >= 1
+            var preyCluster = eco.GetCluster(preyCounts[0].Item1);
+
             if (rollResult <= totalPrey)
+            {
+                if (preyCluster != null)
+                {
+                    preyCluster.NumEgg += 1;
+                }
+            }
+
+            if (preyCluster != null && preyCluster.NumEgg > 0 && preyCluster.IsSpawnable)
             {
                 // TODO: how to divvy if multiple types of prey?
                 eco.AddPopulation(preyCounts[0].Item1, 1, preyCounts[0].Item3, preyCounts[0].Item4);
+                preyCluster.NumEgg -= 1;
                 Debug.Log("[InterveneDriver] [InterspeciesDynamics] eco " + eco.EcosystemId + " prey reproduced 1");
                 AisGame.Events.Dispatch(InterveneEvents.OnReproduce);
             }

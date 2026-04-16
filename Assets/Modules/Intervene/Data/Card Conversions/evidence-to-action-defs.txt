@@ -8,6 +8,7 @@
 @from	example-evidence-card-1
 @to		example-action-card-1
 
+
 ::
 @from	example-evidence-card-2
 @to		example-action-card-2
@@ -53,3 +54,19 @@
 @to		example-action-card-12
 
 // END
+
+// ::
+// @from   Evidence-Chemical-Removal
+// @to     Lampricide
+
+// ::
+// @from   Evidence-Eel-Ladder
+// @to     Lamprey-Trap
+
+// ::
+// @from   Evidence-Pheromones
+// @to     Pheromone-Traps
+
+// ::
+// @from   Evidence-Poor-Jumpers
+// @to     Lamprey-Barrier
