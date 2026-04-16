@@ -12,6 +12,7 @@ namespace AIS.Narrative {
         public ToolbarButton StatsButton;
         public ToolbarButton MapButton;
         public ToolbarButton EvidenceButton;
+        public GuiCounter TimeCounter;
 
         IEnumerator<WorkSlicer.Result?> IScenePreload.Preload() {
             StatsButton.Listener.onClick.Register(ToggleStats);

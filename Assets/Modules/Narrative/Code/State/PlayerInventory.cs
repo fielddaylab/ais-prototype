@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using BeauUtil;
 using BeauUtil.Variants;
@@ -27,6 +28,16 @@ namespace AIS.Narrative {
         void IRegistrationCallbacks.OnDeregister() {
             ScriptUtility.UnbindTable("global");
             ScriptUtility.UnbindTable("level");
+        }
+    }
+
+    static public partial class PlayerUtility {
+        static public void DecreaseTime(int chunks) {
+            PlayerInventory inv = Find.State<PlayerInventory>();
+            if (chunks > 0) {
+                inv.TimeRemaining = Math.Max(0, inv.TimeRemaining - chunks);
+                Find.GuiModule<ToolbarPanel>().TimeCounter.SetValue(inv.TimeRemaining);
+            }
         }
     }
 }

@@ -1,24 +1,15 @@
 using BeauPools;
-using BeauRoutine;
 using BeauUtil;
 using BeauUtil.Debugger;
 using BeauUtil.Tags;
-using BeauUtil.UI;
 using FieldDay;
-using FieldDay.Components;
 using FieldDay.Scripting;
 using FieldDay.UI;
 using Leaf;
 using Leaf.Runtime;
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Threading;
-using TMPro;
 using UnityEngine;
-using UnityEngine.TextCore.Text;
-using UnityEngine.UI;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace AIS.Narrative {
     [DisallowMultipleComponent]
@@ -72,7 +63,6 @@ namespace AIS.Narrative {
                 m_CurrentLine.CharacterLayout.Sync();
             }
             m_CurrentLine.Layout.Sync();
-            Positioning.SetAnchor((RectTransform) m_CurrentLine.transform, TextAnchor.LowerCenter);
             m_CurrentLine.SetVisible(false);
         }
 
@@ -194,6 +184,11 @@ namespace AIS.Narrative {
             for(int i = 0; i < choiceCount; i++) {
                 Layout.Choices[i].Content.SetVisible(false);
                 Layout.Choices[i].gameObject.SetActive(false);
+            }
+
+            var chosenRequirements = DialogueChoiceRequirements.Read(choice, choice.ChosenIndex());
+            if (chosenRequirements.TimeConsumed > 0) {
+                PlayerUtility.DecreaseTime(chosenRequirements.TimeConsumed);
             }
         }
     }

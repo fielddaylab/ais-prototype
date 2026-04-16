@@ -1,11 +1,27 @@
+using BeauUtil;
 using BeauUtil.Tags;
+using FieldDay;
 using FieldDay.Audio;
 using FieldDay.Scripting;
 using FieldDay.UI;
 using System.Collections;
+using System.Threading;
 
 namespace AIS.Narrative {
     static public class TextUtility {
+        static public IEnumerator DisplayNewEvidence(DialogueColumn column, StringHash32 evidenceId) {
+            EvidenceCard data = Find.NamedAsset<EvidenceCard>(evidenceId);
+            NewCardElement newElem = column.NewCardPool.Alloc();
+            column.Layout.ActiveLines.PushBack(newElem.Positioner);
+            newElem.Widget.Content.SetText(data.Label);
+            newElem.Layout.VerticalLayout(LayoutOptions.PreferredSize(4, 1));
+            newElem.SetVisible(true);
+            column.Layout.RecomputePositioning();
+
+            yield return 0.1f;
+            yield return column.CompleteLine();
+        }
+
         static public IEnumerator DisplayAndWaitForDefaultChoice(DialogueChoiceButton nextButton, string constText, IInputLayer inputLayer) {
             nextButton.Content.Populate("...");
             nextButton.Content.SetCharacterInfo(default, null);

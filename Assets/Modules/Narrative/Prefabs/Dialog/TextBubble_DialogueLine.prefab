@@ -543,6 +543,7 @@ MonoBehaviour:
   CharacterName: {fileID: 6002357686512341577}
   CharacterLayout: {fileID: 8783009594861381729}
   Tail: {fileID: 7401037625113379502}
+  AdjustPivots: 1
   BackgroundColor:
   - {fileID: 6848114496992748278}
   - {fileID: 3447726798470415462}

@@ -223,6 +223,24 @@ namespace FieldDay.Scripting {
             ScriptRuntimeTickSystem.RegisterModule();
         }
 
+        #region Replace
+
+        /// <summary>
+        /// Registers a text replacement rule.
+        /// </summary>
+        static public CustomTagParserConfig.ReplaceRule.Builder RegisterReplaceRule(string format) {
+            return Runtime.TagParserConfig.AddReplace(format);
+        }
+
+        /// <summary>
+        /// Registers a text replacement rule.
+        /// </summary>
+        static public void RegisterReplaceRule(char character, string replacement) {
+            Runtime.TagParserConfig.AddReplace(character, replacement);
+        }
+
+        #endregion // Replace
+
         #region Tables
 
         /// <summary>

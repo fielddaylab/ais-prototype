@@ -33,25 +33,18 @@ namespace AIS.Narrative {
             PlayerInventory inv = Find.State<PlayerInventory>();
             if (inv.EvidenceCards.Add(id)) {
                 if (thread.IsSkipping()) {
-                    yield break;
+                    return null;
                 }
 
                 DialogueColumn column = (DialogueColumn) thread.GetPrinter();
                 if (!column) {
-                    yield break;
+                    return null;
                 }
 
-                EvidenceCard data = Find.NamedAsset<EvidenceCard>(id);
-                NewCardElement newElem = column.NewCardPool.Alloc();
-                column.Layout.ActiveLines.PushBack(newElem.Positioner);
-                newElem.Widget.Content.SetText(data.Label);
-                newElem.Layout.VerticalLayout(LayoutOptions.PreferredSize(4, 1));
-                newElem.SetVisible(true);
-                column.Layout.RecomputePositioning();
-
-                yield return 0.1f;
-                yield return column.CompleteLine();
+                return TextUtility.DisplayNewEvidence(column, id);
             }
+
+            return null;
         }
 
         [LeafMember("HasEvidenceCard")]

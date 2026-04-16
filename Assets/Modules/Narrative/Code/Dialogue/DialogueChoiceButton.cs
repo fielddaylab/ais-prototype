@@ -52,6 +52,7 @@ namespace AIS.Narrative {
         public PlayerStatId StatId;
         public int StatThreshold;
         public int TimeConsumed;
+        public bool Once;
 
         static public DialogueChoiceRequirements Read(LeafChoice choice, int choiceIndex) {
             DialogueChoiceRequirements requirements = default;
@@ -77,6 +78,8 @@ namespace AIS.Narrative {
 
             choice.TryGetCustomData(choiceIndex, "Time", out var timeValue);
             requirements.TimeConsumed = (int) Math.Min(timeValue.AsUInt(), MaxTimeConsumed);
+
+            requirements.Once = choice.HasCustomData(choiceIndex, "Once");
 
             return requirements;
         }

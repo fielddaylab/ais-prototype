@@ -6,57 +6,142 @@
 
 #basePath TestChapter
 
+// #region Opening
+
 :: Start
 @trigger    ChapterStart
 @cutscene
 
-{@Narrator} {char-name ???} "'Twas a dark and stormy..."
-            Hang on. Wrong story. Let me start over.
-            "And then at the stroke of..."
-            No no that's all wrong too. Oh for...
-{@Player}   Hello?
-{@Narrator} {char-name ???}     Oh dang it, I thought I'd been really quiet too.
-                Guess I'll need to start your story from scratch <i>again</i>.
-{@Player}       Uhhhhhh what do you mean?
-{@Narrator}     Listen, kid, we don't have much time.
-                I need you to take some stat bonuses.
-                But first let me go to this room.
+{@}     They're late.
+        Those two asked you to meet and they're <i>late</i>.
+        At least, you think they're late.
+$choice .Start.Late.A; Who?
+$choice .Start.Late.B; I think?
+$choose branch
+{@}     Might as well pass the time until they arrive.
+
+$choice .Start.Bench; Sit on the bench.
+$choice .Start.Railing; Lean over the railing.
+$choose branch
+
+{@}     ...
+        Why did you come to this town?
+$choice .Start.Arrival.A; To investigate
+$choice .Start.Arrival.B; To escape
+$choice .Start.Arrival.C; I don't remember.
+$choose branch
+
+{@}     ...
+        Okay, they're officially too late.
+        The anglers might have just... forgotten about you.
+        That's fine. You can still enjoy the sights.
+$choice .Start.EndOfDock; Walk to the end of the dock.
+$choose branch
+
+$goto .WakeUp
+
+:: Start.Late.A
+{@}     The anglers.
+        They said they had "something important to show you."
+        And it had to be in person, for whatever reason.
+
+:: Start.Late.B
+{@}     You could be wrong.
+        You've been known to forget things from time to time.
+        But you're pretty sure the anglers were supposed to be here by now.
+
+:: Start.Bench
+{@}     You park yourself on a nearby bench.
+        The boards creak softly in response.
+
+:: Start.Railing
+{@}     You lean your weight on the railing.
+        Some rust flakes off on your skin.
+        
+:: Start.Arrival.A
+$set level:dream.arrival.reason = "investigate"
+{@}     That's right.
+        You were sent to look into...
+$choice .Start.Arrival.A.Fish; Fish populations
+$choice .Start.Arrival.A.Food; Local restaurants
+$choice .Start.Arrival.A.Joke; A murder! Ooh spooky
+
+:: Start.Arrival.A.Fish
+{@}     Fish populations.
+        They were trending downward, if I recall.
+        You are an... ecologist.
+
+:: Start.Arrival.A.Food
+{@}     Local restaurants.
+        There's an up-and-coming poutine place downtown.
+        You are a... famous food critic. Sure.
+
+:: Start.Arrival.A.Joke
+{@}     A... murder.
+        Not sure what crows have to do with this, but okay.
+        You are an... ornithologist. Fine.
+
+:: Start.Arrival.B
+$set level:dream.arrival.reason = "escape"
+{@}     That's right.
+        You wanted to escape from...
+$choice .Start.Arrival.B.Job; A dead-end job
+$choice .Start.Arrival.B.Brooding; Myself (oh so brooding)
+$choice .Start.Arrival.B.Joke; ...A giant trout?
+
+:: Start.Arrival.B.Job
+{@}     A dead-end job.
+        A living wage was out-of-reach there, and rent kept climbing.
+        You hope... to make rent out here.
+
+:: Start.Arrival.B.Brooding
+{@}     ...Yourself.
+        A little on-the-nose I think.
+        But sure I can roll with that.
+
+:: Start.Arrival.B.Joke
+{@}     A... giant trout?
+        ...What?
+        Okay fine a giant trout was chasing you and you fled heroically.
+
+:: Start.Arrival.C
+$set level:dream.arrival.reason = "unknown"
+{@}     You don't remember.
+        How curious.
+
+:: Start.EndOfDock
+{@}     You see yourself in the murky water.
+
+$choice .Start.EndOfDock.A; She stares back.
+$choice .Start.EndOfDock.B; They stare back.
+$choice .Start.EndOfDock.C; He stares back.
+$choose branch
+
+{@}     {pg His|Her|Their} face suddenly sinks beneath the waves.
+        Your heart follows suit and crashes to your stomach.
+        The stench of rotting fish wafts up. You suppress the urge to gag.
+        The surface of the water begins to writhe and contort.
+
+:: Start.EndOfDock.A
+$set global:gender="f"
+
+:: Start.EndOfDock.B
+$set global:gender="x"
+
+:: Start.EndOfDock.C
+$set global:gender="m"
+
+// #endregion
+
+// #region Bedroom
+
+:: WakeUp
+@cutscene
 
 $call SetBackground("bg/Room.png")
-$set local:pointsToAllocate = 4
-$branch .StatBonusLoop
+{@}     Reality arrives swiftly and disorients you.
 
-:: StatBonusLoop
-$if !local:pointsToAllocate
-    $goto .Finishing
-$endif // 
-
-$set local:pointsToAllocate - 1
-
-$choice .ChooseTech; Adjust my tech.
-$choice .ChooseRanger; Adjust my outdoors-y-ness.
-$choice .ChooseNo; What about no?
-    $ChoiceStatCheck(Communicate, 4)
-
-:: ChooseTech
-$call AdjustStat(Tech, 1)
-{@} Your Tech stat is now {$Stat(Tech)}!
-$goto .StatBonusLoop
-
-:: ChooseRanger
-$call AdjustStat(Ranger, 1)
-{@} Your Ranger stat is now {$Stat(Tech)}!
-$if !HasEvidenceCard("Evidence-Angler")
-    {@Narrator}     Hang on, I also have something for you...
-                    Let me just... check my pockets...
-                    Here you go!
-    $call GiveEvidenceCard("Evidence-Angler")
-$endif
-$goto .StatBonusLoop
-
-:: ChooseNo
-{@Narrator}     ...huh.
-$goto .Finishing
+// #endregion
 
 :: Finishing
 
