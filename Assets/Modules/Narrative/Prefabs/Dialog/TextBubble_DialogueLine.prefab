@@ -498,7 +498,7 @@ PrefabInstance:
       addedObject: {fileID: 2478593858480635927}
     - targetCorrespondingSourceObject: {fileID: 6422463037750317989, guid: ffbb30178c6e70b4d9616b06af86c963, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 8515585799564803020}
+      addedObject: {fileID: 7744198750544927613}
   m_SourcePrefab: {fileID: 100100000, guid: ffbb30178c6e70b4d9616b06af86c963, type: 3}
 --- !u!114 &346806614066988506 stripped
 MonoBehaviour:
@@ -535,7 +535,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Positioner: {fileID: 2478593858480635927}
   Layout: {fileID: 346806614066988506}
-  Padding: {fileID: 8515585799564803020}
+  Padding: {fileID: 7744198750544927613}
   RootPivot: {fileID: 1593249569663048262}
   Visibility: {fileID: 8767833143502191583}
   Offset: {fileID: 7372205226503040868}
@@ -592,7 +592,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d7f2d84bd0a7cf41b051794cc6d2dd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &8515585799564803020
+--- !u!114 &7744198750544927613
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -601,11 +601,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 2796333468060299073}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a5035d7a322975245ae012949aa45ae2, type: 3}
+  m_Script: {fileID: 11500000, guid: 7bbb768d2eb2b12469fa658b6efadbb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PaddingBefore: {x: 0, y: 0, z: 0}
-  PaddingAfter: {x: 0, y: 0, z: 0}
+  Style:
+    MarginLower: {x: 0, y: 0, z: 0}
+    MarginUpper: {x: 0, y: 0, z: 0}
+    PaddingLower: {x: 0, y: 0, z: 0}
+    PaddingUpper: {x: 0, y: 0, z: 0}
 --- !u!114 &3786592432372020327 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5432207164625995907, guid: ffbb30178c6e70b4d9616b06af86c963, type: 3}

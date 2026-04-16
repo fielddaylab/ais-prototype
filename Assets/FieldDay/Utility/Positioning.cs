@@ -255,13 +255,16 @@ namespace FieldDay {
             float totalSize = 0;
 
             RectTransform rect;
+            LayoutStyle style;
             switch (options.Source) {
                 case LayoutSource.PreferredSize: {
                     for (int i = 0; i < len; i++) {
                         rect = buffer[i];
                         sizes[i] = GetPreferredWidth(rect);
                         pivots[i] = rect.pivot.x;
-                        GetPaddingX(rect, out paddingBefore[i], out paddingAfter[i]);
+                        GetStyle(rect, out style);
+                        paddingBefore[i] = style.MarginLower.x;
+                        paddingAfter[i] = style.MarginUpper.x;
                     }
                     totalSize = ProcessPositionsDynamicSize(len, sizes, pivots, paddingBefore, paddingAfter, options.Spacing, offsets);
                     break;
@@ -271,7 +274,9 @@ namespace FieldDay {
                         rect = buffer[i];
                         sizes[i] = rect.rect.width;
                         pivots[i] = rect.pivot.x;
-                        GetPaddingX(rect, out paddingBefore[i], out paddingAfter[i]);
+                        GetStyle(rect, out style);
+                        paddingBefore[i] = style.MarginLower.x;
+                        paddingAfter[i] = style.MarginUpper.x;
                     }
                     totalSize = ProcessPositionsDynamicSize(len, sizes, pivots, paddingBefore, paddingAfter, options.Spacing, offsets);
                     break;
@@ -407,13 +412,16 @@ namespace FieldDay {
             }
 
             RectTransform rect;
+            LayoutStyle style;
             switch (options.Source) {
                 case LayoutSource.PreferredSize: {
                     for (int i = 0; i < len; i++) {
                         rect = buffer[i];
                         sizes[i] = GetPreferredHeight(rect);
                         pivots[i] = ConditionalFlipPivot(rect.pivot.y, flipPivot);
-                        GetPaddingY(rect, out paddingBefore[i], out paddingAfter[i]);
+                        GetStyle(rect, out style);
+                        paddingBefore[i] = flipPivot ? style.MarginLower.y : style.MarginUpper.y;
+                        paddingAfter[i] = flipPivot ? style.MarginUpper.y : style.MarginLower.y;
                     }
                     totalSize = ProcessPositionsDynamicSize(len, sizes, pivots, paddingBefore, paddingAfter, options.Spacing, offsets);
                     break;
@@ -423,7 +431,9 @@ namespace FieldDay {
                         rect = buffer[i];
                         sizes[i] = rect.rect.height;
                         pivots[i] = ConditionalFlipPivot(rect.pivot.y, flipPivot);
-                        GetPaddingY(rect, out paddingBefore[i], out paddingAfter[i]);
+                        GetStyle(rect, out style);
+                        paddingBefore[i] = flipPivot ? style.MarginLower.y : style.MarginUpper.y;
+                        paddingAfter[i] = flipPivot ? style.MarginUpper.y : style.MarginLower.y;
                     }
                     totalSize = ProcessPositionsDynamicSize(len, sizes, pivots, paddingBefore, paddingAfter, options.Spacing, offsets);
                     break;
@@ -610,7 +620,11 @@ namespace FieldDay {
             if (rect.TryGetComponent(out LayoutSizeInfo sizeInfo)) {
                 return sizeInfo.Size.x;
             } else {
-                return LayoutUtility.GetPreferredWidth(rect);
+                float size = LayoutUtility.GetPreferredWidth(rect);
+                if (size <= 0) {
+                    size = rect.rect.width;
+                }
+                return size;
             }
         }
 
@@ -619,27 +633,20 @@ namespace FieldDay {
             if (rect.TryGetComponent(out LayoutSizeInfo sizeInfo)) {
                 return sizeInfo.Size.y;
             } else {
-                return LayoutUtility.GetPreferredHeight(rect);
+                float size = LayoutUtility.GetPreferredHeight(rect);
+                if (size <= 0) {
+                    size = rect.rect.height;
+                }
+                return size;
             }
         }
 
         [Il2CppSetOption(Option.NullChecks, false)]
-        static private void GetPaddingX(RectTransform rect, out float paddingPre, out float paddingPost) {
-            if (rect.TryGetComponent(out LayoutPaddingInfo paddingInfo)) {
-                paddingPre = paddingInfo.PaddingBefore.x;
-                paddingPost = paddingInfo.PaddingAfter.x;
+        static private void GetStyle(RectTransform rect, out LayoutStyle style) {
+            if (rect.TryGetComponent(out LayoutStyleInfo styleInfo)) {
+                style = styleInfo.Style;
             } else {
-                paddingPre = paddingPost = 0;
-            }
-        }
-
-        [Il2CppSetOption(Option.NullChecks, false)]
-        static private void GetPaddingY(RectTransform rect, out float paddingPre, out float paddingPost) {
-            if (rect.TryGetComponent(out LayoutPaddingInfo paddingInfo)) {
-                paddingPre = paddingInfo.PaddingBefore.y;
-                paddingPost = paddingInfo.PaddingAfter.y;
-            } else {
-                paddingPre = paddingPost = 0;
+                style = default;
             }
         }
 
@@ -696,6 +703,14 @@ namespace FieldDay {
 
     public struct LayoutResult {
         public float Size;
+    }
+
+    [Serializable]
+    public struct LayoutStyle {
+        public Vector3 MarginLower;
+        public Vector3 MarginUpper;
+        public Vector3 PaddingLower;
+        public Vector3 PaddingUpper;
     }
 
     [Serializable]

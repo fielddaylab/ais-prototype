@@ -51,7 +51,6 @@ $if !HasEvidenceCard("Evidence-Angler")
                     Let me just... check my pockets...
                     Here you go!
     $call GiveEvidenceCard("Evidence-Angler")
-    {@}     You obtained an evidence card! Check your Evidence menu for details!
 $endif
 $goto .StatBonusLoop
 

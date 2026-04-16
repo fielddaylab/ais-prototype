@@ -1,6 +1,9 @@
 using BeauUtil;
 using FieldDay;
+using FieldDay.Scripting;
+using FieldDay.UI;
 using Leaf.Runtime;
+using System.Collections;
 
 namespace AIS.Narrative {
     static public class ScriptHooks {
@@ -26,9 +29,29 @@ namespace AIS.Narrative {
         }
 
         [LeafMember("GiveEvidenceCard")]
-        static public bool GiveEvidence(StringHash32 id) {
+        static public IEnumerator ScriptGiveEvidence([BindThread] ScriptThread thread, StringHash32 id) {
             PlayerInventory inv = Find.State<PlayerInventory>();
-            return inv.EvidenceCards.Add(id);
+            if (inv.EvidenceCards.Add(id)) {
+                if (thread.IsSkipping()) {
+                    yield break;
+                }
+
+                DialogueColumn column = (DialogueColumn) thread.GetPrinter();
+                if (!column) {
+                    yield break;
+                }
+
+                EvidenceCard data = Find.NamedAsset<EvidenceCard>(id);
+                NewCardElement newElem = column.NewCardPool.Alloc();
+                column.Layout.ActiveLines.PushBack(newElem.Positioner);
+                newElem.Widget.Content.SetText(data.Label);
+                newElem.Layout.VerticalLayout(LayoutOptions.PreferredSize(4, 1));
+                newElem.SetVisible(true);
+                column.Layout.RecomputePositioning();
+
+                yield return 0.1f;
+                yield return column.CompleteLine();
+            }
         }
 
         [LeafMember("HasEvidenceCard")]

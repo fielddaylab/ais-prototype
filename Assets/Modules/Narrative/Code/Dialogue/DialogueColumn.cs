@@ -24,6 +24,8 @@ namespace AIS.Narrative {
     [DisallowMultipleComponent]
     public sealed class DialogueColumn : BaseDialoguePrinter, IDialogueChoicePresenter {
         public DialogueLine.Pool LinePool;
+        public NewCardElement.Pool NewCardPool;
+
         public DialogueColumnLayout Layout;
 
         [NonSerialized] private IInputLayer m_InputLayer;

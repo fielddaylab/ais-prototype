@@ -31,6 +31,7 @@ namespace AIS.Narrative {
         public GameObject TimeGroup;
 
         [NonSerialized] public bool Clicked;
+
         private void Awake() {
             Listener.onClick.Register(() => Clicked = true);
         }
@@ -75,7 +76,7 @@ namespace AIS.Narrative {
             requirements.StatThreshold = checkStatValue.AsInt();
 
             choice.TryGetCustomData(choiceIndex, "Time", out var timeValue);
-            requirements.TimeConsumed = Math.Min(timeValue.AsInt(), MaxTimeConsumed);
+            requirements.TimeConsumed = (int) Math.Min(timeValue.AsUInt(), MaxTimeConsumed);
 
             return requirements;
         }

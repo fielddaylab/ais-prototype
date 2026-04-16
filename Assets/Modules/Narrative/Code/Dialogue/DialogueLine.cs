@@ -24,7 +24,7 @@ namespace AIS.Narrative {
         [Header("Layout")]
         public DialogueColumnLayoutElement Positioner;
         public LayoutSizeGroup Layout;
-        public LayoutPaddingInfo Padding;
+        public LayoutStyleInfo Padding;
         public RectTransform RootPivot;
         public CanvasGroup Visibility;
         public LayoutOffset Offset;
@@ -73,7 +73,7 @@ namespace AIS.Narrative {
                 }
 
                 if (Padding) {
-                    Padding.PaddingAfter.y = CharacterLayout.gameObject.activeSelf ? CharacterName.preferredHeight + CharacterLayout.Padding.y : 0;
+                    Padding.Style.MarginUpper.y = CharacterLayout.gameObject.activeSelf ? CharacterName.preferredHeight + CharacterLayout.Padding.y : 0;
                 }
             }
 
@@ -145,7 +145,7 @@ namespace AIS.Narrative {
                 }
             }
             if (Padding) {
-                Padding.PaddingBefore.y = tailMode != TextStyleTailMode.Hidden ? 32 : 0;
+                Padding.Style.MarginLower.y = tailMode != TextStyleTailMode.Hidden ? 32 : 0;
             }
         }
 
