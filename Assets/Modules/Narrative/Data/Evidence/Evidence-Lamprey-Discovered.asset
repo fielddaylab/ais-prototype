@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6374628d737c9d24486747a92e860022, type: 3}
-  m_Name: Evidence-Angler
+  m_Name: Evidence-Lamprey-Discovered
   m_EditorClassIdentifier: 
-  Label: You learned that species can spread through the use of Bait Buckets by local
-    Anglers.
+  Label: Sea Lamprey found in the area!
+  id: 11

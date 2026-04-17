@@ -175,7 +175,7 @@ $endif
 
 {@}     On your desk, you spot several notes you've taken.
 
-$call GiveEvidenceCard("Evidence-Angler")
+$call GiveEvidenceCard("Evidence-Lamprey-Discovered")
 
 $goto .Finishing
 
