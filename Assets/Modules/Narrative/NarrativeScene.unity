@@ -1082,6 +1082,15 @@ MonoBehaviour:
     m_DefaultPoolRoot: {fileID: 787332428}
     m_DefaultSpawnRoot: {fileID: 1426750215}
     m_ResetTransformOnAlloc: 0
+  StatChangePool:
+    m_Prefab: {fileID: 6304736712798160740, guid: f25de0b2b4c2ed8409298fdc040d801f, type: 3}
+    m_Name: 
+    m_InitialCapacity: 4
+    m_PrewarmOnInitialize: 1
+    m_InitialPrewarm: 4
+    m_DefaultPoolRoot: {fileID: 787332428}
+    m_DefaultSpawnRoot: {fileID: 1426750215}
+    m_ResetTransformOnAlloc: 0
   Layout: {fileID: 1426750217}
 --- !u!114 &1426750217
 MonoBehaviour:
@@ -1100,6 +1109,13 @@ MonoBehaviour:
   - {fileID: 1204762793}
   - {fileID: 1121560002}
   - {fileID: 873377627}
+  ChoiceGroup: {fileID: 665037695}
+  ChoiceLayout:
+    Source: 2
+    Flags: 0
+    NormalizedAlignment: 0.5
+    Spacing: 4
+    FixedSize: 0
   LineBaseOffset: 200
   VerticalLayout:
     Source: 2

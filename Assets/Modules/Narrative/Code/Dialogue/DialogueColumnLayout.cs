@@ -25,6 +25,11 @@ namespace AIS.Narrative {
         public DialogueChoiceButton DefaultNextButton;
         public DialogueChoiceButton[] Choices;
 
+        [Header("Choices")]
+        public RectTransform ChoiceGroup;
+        public LayoutOptions ChoiceLayout;
+
+        [Header("Dialogue Column")]
         public float LineBaseOffset = 0;
         public LayoutOptions VerticalLayout;
         public float CullDistance = 400;

@@ -16,6 +16,7 @@ namespace AIS.Narrative {
     public sealed class DialogueColumn : BaseDialoguePrinter, IDialogueChoicePresenter {
         public DialogueLine.Pool LinePool;
         public NewCardElement.Pool NewCardPool;
+        public StatChangeElement.Pool StatChangePool;
 
         public DialogueColumnLayout Layout;
 
@@ -154,7 +155,7 @@ namespace AIS.Narrative {
                     btn.Listener.enabled = choiceAvailable;
 
                     if (choiceAvailable) {
-                        btn.Content.SetCharacterInfo(ScriptUtility.GetCharacterState(thread.TagString, default), null);
+                        btn.Content.SetCharacterInfo(ScriptUtility.GetCharacterState(thread.TagString, new DialogueCharacterState() { CharacterId = "_PlayerAction" }), null);
                     } else {
                         btn.Content.SetTextStyle(Find.NamedAsset<TextStyle>("DisabledChoice"), null);
                     }
@@ -167,6 +168,10 @@ namespace AIS.Narrative {
             for (int i = choiceCount; i < Layout.Choices.Length; i++) {
                 DialogueChoiceButton btn = Layout.Choices[i];
                 btn.gameObject.SetActive(false);
+            }
+
+            using (var query = Layout.ChoiceGroup.QueryLayoutChildren()) {
+                Positioning.HorizontalLayout(query, Layout.ChoiceLayout);
             }
 
             bool chosen = false;

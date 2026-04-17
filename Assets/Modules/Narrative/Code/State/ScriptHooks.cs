@@ -12,15 +12,43 @@ namespace AIS.Narrative {
             return Find.State<PlayerStats>().StatBlock[statId];
         }
 
-        [LeafMember("AdjustStat")]
-        static public int AdjustStat(PlayerStatId statId, int adjustment) {
+        [LeafMember("SetStat")]
+        static public void SetStat(PlayerStatId statId, int value) {
+            ref PlayerStatBlock statBlock = ref Find.State<PlayerStats>().StatBlock;
+            statBlock[statId] = (sbyte) PlayerStatBlock.Clamp(value);
+        }
+
+        [LeafMember("SilentAdjustStat")]
+        static public void SilentAdjustStat(PlayerStatId statId, int adjustment) {
             ref PlayerStatBlock statBlock = ref Find.State<PlayerStats>().StatBlock;
             int currentStat = statBlock[statId];
             if (adjustment != 0) {
                 currentStat = PlayerStatBlock.Clamp(currentStat + adjustment);
                 statBlock[statId] = (sbyte) currentStat;
             }
-            return currentStat;
+        }
+
+        [LeafMember("AdjustStat")]
+        static public IEnumerator AdjustStat([BindThread] ScriptThread thread, PlayerStatId statId, int adjustment) {
+            ref PlayerStatBlock statBlock = ref Find.State<PlayerStats>().StatBlock;
+            int currentStat = statBlock[statId];
+            int originalValue = currentStat;
+            if (adjustment != 0) {
+                currentStat = PlayerStatBlock.Clamp(currentStat + adjustment);
+                statBlock[statId] = (sbyte) currentStat;
+                if (thread.IsSkipping()) {
+                    return null;
+                }
+
+                DialogueColumn column = (DialogueColumn) thread.GetPrinter();
+                if (!column) {
+                    return null;
+                }
+
+                return TextUtility.DisplayStatUpdate(column, statId, originalValue, currentStat);
+            }
+
+            return null;
         }
 
         [LeafMember("BeginIntervention")]
@@ -45,6 +73,16 @@ namespace AIS.Narrative {
             }
 
             return null;
+        }
+
+        [LeafMember("ClearVisibleLines")]
+        static public void ScriptClearVisibleLines([BindThread] ScriptThread thread) {
+            DialogueColumn column = (DialogueColumn) thread.GetPrinter();
+            if (!column) {
+                return;
+            }
+
+            TextUtility.ClearAllLines(column.Layout);
         }
 
         [LeafMember("HasEvidenceCard")]

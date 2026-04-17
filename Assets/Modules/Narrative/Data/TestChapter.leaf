@@ -59,7 +59,7 @@ $goto .WakeUp
         Some rust flakes off on your skin.
         
 :: Start.Arrival.A
-$set level:dream.arrival.reason = "investigate"
+$set local:dream.arrival.reason = "investigate"
 {@}     That's right.
         You were sent to look into...
 $choice .Start.Arrival.A.Fish; Fish populations
@@ -67,22 +67,28 @@ $choice .Start.Arrival.A.Food; Local restaurants
 $choice .Start.Arrival.A.Joke; A murder! Ooh spooky
 
 :: Start.Arrival.A.Fish
+$set local:dream.ecology + 1
 {@}     Fish populations.
         They were trending downward, if I recall.
         You are an... ecologist.
+$call AdjustStat(Research, 1)
 
 :: Start.Arrival.A.Food
+$set local:dream.otherjob + 1
 {@}     Local restaurants.
         There's an up-and-coming poutine place downtown.
         You are a... famous food critic. Sure.
+$call AdjustStat(Innovate, 1)
 
 :: Start.Arrival.A.Joke
+$set local:dream.joke + 1
 {@}     A... murder.
         Not sure what crows have to do with this, but okay.
         You are an... ornithologist. Fine.
+$call AdjustStat(Communicate, 1)
 
 :: Start.Arrival.B
-$set level:dream.arrival.reason = "escape"
+$set local:dream.arrival.reason = "escape"
 {@}     That's right.
         You wanted to escape from...
 $choice .Start.Arrival.B.Job; A dead-end job
@@ -90,19 +96,25 @@ $choice .Start.Arrival.B.Brooding; Myself (oh so brooding)
 $choice .Start.Arrival.B.Joke; ...A giant trout?
 
 :: Start.Arrival.B.Job
+$set local:dream.broke + 1
 {@}     A dead-end job.
         A living wage was out-of-reach there, and rent kept climbing.
         You hope... to make rent out here.
+$call AdjustStat(Ranger, 1)
 
 :: Start.Arrival.B.Brooding
+$set local:dream.joke + 1
 {@}     ...Yourself.
         A little on-the-nose I think.
         But sure I can roll with that.
+$call AdjustStat(Communicate, 1)
 
 :: Start.Arrival.B.Joke
+$set local:dream.joke + 1
 {@}     A... giant trout?
         ...What?
         Okay fine a giant trout was chasing you and you fled heroically.
+$call AdjustStat(Tech, 1)
 
 :: Start.Arrival.C
 $set level:dream.arrival.reason = "unknown"
@@ -138,6 +150,7 @@ $set global:gender="m"
 :: WakeUp
 @cutscene
 
+$call ClearVisibleLines()
 $call SetBackground("bg/Room.png")
 {@}     Reality arrives swiftly and disorients you.
 
