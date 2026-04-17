@@ -105,7 +105,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3775999569407377305, guid: ffbb30178c6e70b4d9616b06af86c963, type: 3}
       propertyPath: m_maxLineWidth
-      value: 200
+      value: 400
       objectReference: {fileID: 0}
     - target: {fileID: 3775999569407377305, guid: ffbb30178c6e70b4d9616b06af86c963, type: 3}
       propertyPath: m_VerticalAlignment
@@ -305,6 +305,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Positioner: {fileID: 3799624443006632802}
   Layout: {fileID: 346806614066988506}
+  Padding: {fileID: 0}
   RootPivot: {fileID: 1593249569663048262}
   Visibility: {fileID: 4396757449713183671}
   Offset: {fileID: 2463905484463831699}
@@ -312,6 +313,7 @@ MonoBehaviour:
   CharacterName: {fileID: 0}
   CharacterLayout: {fileID: 0}
   Tail: {fileID: 757794079819226211}
+  AdjustPivots: 0
   BackgroundColor:
   - {fileID: 6848114496992748278}
   - {fileID: 2608534636320442191}

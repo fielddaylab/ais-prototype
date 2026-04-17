@@ -20,6 +20,8 @@ namespace AIS.Narrative {
 
         public DialogueColumnLayout Layout;
 
+        [NonSerialized] private bool m_AutoContinue;
+
         [NonSerialized] private IInputLayer m_InputLayer;
         [NonSerialized] private DialogueLine m_CurrentLine;
 
@@ -52,6 +54,8 @@ namespace AIS.Narrative {
 
         protected override void ConfigureEventHandler(TagStringEventHandler handler) {
             base.ConfigureEventHandler(handler);
+
+            handler.Register("auto-continue", () => m_AutoContinue = true);
         }
 
         protected override void PrepareTextDisplay(TagString text, DialogueCharacterState character) {
@@ -65,12 +69,19 @@ namespace AIS.Narrative {
             }
             m_CurrentLine.Layout.Sync();
             m_CurrentLine.SetVisible(false);
+
+            m_AutoContinue = false;
         }
 
         public override void FastForwardLine(int visibleCount, int richCount) { }
 
         public override IEnumerator CompleteLine() {
             m_CurrentLine = null;
+
+            if (m_AutoContinue) {
+                yield return 0.1f;
+                yield break;
+            }
 
             if (LeafRuntime.PredictChoice(CurrentThread)) {
                 yield break;

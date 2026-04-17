@@ -64,7 +64,7 @@ namespace FieldDay.Scripting {
             m_OverrideHandler.Base = parentHandler;
 
             PrepareTextDisplay(text, character);
-            return parentHandler;
+            return m_OverrideHandler;
         }
 
         protected virtual void ConfigureEventHandler(TagStringEventHandler handler) { }

@@ -42,6 +42,8 @@ public sealed class AisGame : Game {
                 return (gender == "m" ? args[0] : (gender == "f" ? args[1] : args[2])).ToString();
             }
         });
+
+        ScriptUtility.RegisterEventRule("auto", "auto-continue");
     }
 
     static private readonly char[] PipeChars = new char[] { '|' };

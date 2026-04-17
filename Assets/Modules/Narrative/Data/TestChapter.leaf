@@ -12,6 +12,8 @@
 @trigger    ChapterStart
 @cutscene
 
+$call SetBackground("bg/Nightmare.png")
+
 {@}     They're late.
         Those two asked you to meet and they're <i>late</i>.
         At least, you think they're late.
@@ -67,21 +69,21 @@ $choice .Start.Arrival.A.Food; Local restaurants
 $choice .Start.Arrival.A.Joke; A murder! Ooh spooky
 
 :: Start.Arrival.A.Fish
-$set local:dream.ecology + 1
+$set local:dream.fish = true
 {@}     Fish populations.
         They were trending downward, if I recall.
         You are an... ecologist.
 $call AdjustStat(Research, 1)
 
 :: Start.Arrival.A.Food
-$set local:dream.otherjob + 1
+$set local:dream.restaurant = true
 {@}     Local restaurants.
         There's an up-and-coming poutine place downtown.
         You are a... famous food critic. Sure.
 $call AdjustStat(Innovate, 1)
 
 :: Start.Arrival.A.Joke
-$set local:dream.joke + 1
+$set local:dream.crows = true
 {@}     A... murder.
         Not sure what crows have to do with this, but okay.
         You are an... ornithologist. Fine.
@@ -96,21 +98,21 @@ $choice .Start.Arrival.B.Brooding; Myself (oh so brooding)
 $choice .Start.Arrival.B.Joke; ...A giant trout?
 
 :: Start.Arrival.B.Job
-$set local:dream.broke + 1
+$set local:dream.broke = true
 {@}     A dead-end job.
-        A living wage was out-of-reach there, and rent kept climbing.
+        A living wage was out-of-reach there, and rent just kept climbing.
         You hope... to make rent out here.
 $call AdjustStat(Ranger, 1)
 
 :: Start.Arrival.B.Brooding
-$set local:dream.joke + 1
+$set local:dream.brooding = true
 {@}     ...Yourself.
         A little on-the-nose I think.
         But sure I can roll with that.
 $call AdjustStat(Communicate, 1)
 
 :: Start.Arrival.B.Joke
-$set local:dream.joke + 1
+$set local:dream.trout = true
 {@}     A... giant trout?
         ...What?
         Okay fine a giant trout was chasing you and you fled heroically.
@@ -152,7 +154,30 @@ $set global:gender="m"
 
 $call ClearVisibleLines()
 $call SetBackground("bg/Room.png")
-{@}     Reality arrives swiftly and disorients you.
+{@}     Reality arrives swiftly and disorientingly.
+{@Player}   Ugh, haven't had one of those in ages.{auto}
+$if local:dream.restaurant
+            I could really go for some fries right now...
+$elseif local:dream.crows
+            And what was that about birds...
+$elseif local:dream.fish
+            Upcoming job's really got me stressed out...
+$elseif local:dream.broke
+            Finances haven't been that tight, right?
+$elseif local:dream.brooding
+            Thought I was over that by now...
+$elseif local:dream.trout
+            Utter nonsense...
+$else
+            So strange...
+$endif
+{@Player}   Welp, another one for my therapist.
+
+{@}     On your desk, you spot several notes you've taken.
+
+$call GiveEvidenceCard("Evidence-Angler")
+
+$goto .Finishing
 
 // #endregion
 

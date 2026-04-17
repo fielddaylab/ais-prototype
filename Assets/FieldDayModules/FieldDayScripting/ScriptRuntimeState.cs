@@ -241,6 +241,17 @@ namespace FieldDay.Scripting {
 
         #endregion // Replace
 
+        #region Tag Events
+
+        /// <summary>
+        /// Registers a custom tag event parser.
+        /// </summary>
+        static public CustomTagParserConfig.EventRule.Builder RegisterEventRule(string format, StringHash32 eventId) {
+            return Runtime.TagParserConfig.AddEvent(format, eventId);
+        }
+
+        #endregion // Tag Events
+
         #region Tables
 
         /// <summary>
