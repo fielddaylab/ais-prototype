@@ -16,6 +16,7 @@ namespace AIS.Intervene {
         public struct SpeciesTransferAllocation
         {
             public SerializedHash32 SpeciesId;
+            public SerializedHash32 OrigEcosystemId;
             public SerializedHash32 DestEcosystemId;
             public int TransferCount;
             public PathwayType TravelType;
@@ -175,7 +176,29 @@ namespace AIS.Intervene {
             totalPreyConsumed = Mathf.Min(totalPreyConsumed, totalPrey);
             if (totalPreyConsumed > 0) 
             {
-                eco.ReleasePopulation(preyCounts[0].Item1, totalPreyConsumed);
+                // eco.ReleasePopulation(preyCounts[0].Item1, totalPreyConsumed);
+                List<Tuple<SerializedHash32, int, PathwayType, ActionTarget>> eachPreyConsumed = new List<Tuple<SerializedHash32, int, PathwayType, ActionTarget>>();
+                for (int i = 0; i < totalPreyConsumed; i++)
+                {
+                    for (int j = 0; j < preyCounts.Count; j++)
+                    {
+                        if (preyCounts[j].Item2 > 0)
+                        {
+                            if (UnityEngine.Random.Range(0, 1f) < preyCounts[j].Item2 / (float)totalPrey)
+                            {
+                                eachPreyConsumed.Add(new Tuple<SerializedHash32, int, PathwayType, ActionTarget>(preyCounts[j].Item1, 1, preyCounts[j].Item3, preyCounts[j].Item4));
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                foreach (var prey in eachPreyConsumed)
+                {
+                    eco.ReleasePopulation(prey.Item1, prey.Item2);
+                }
+
+                Game.Events.Dispatch(InterveneEvents.OnHunt);
             }
 
             Debug.Log("[InterveneDriver] [InterspeciesDynamics] eco " + eco.EcosystemId + " invasives consumed " + totalPreyConsumed);
@@ -190,6 +213,7 @@ namespace AIS.Intervene {
                 {
                     eco.ReleasePopulation(invasiveCounts[0].Item1, 1);
                     Debug.Log("[InterveneDriver] [InterspeciesDynamics] eco " + eco.EcosystemId + " invasives starved 1");
+                    AisGame.Events.Dispatch(InterveneEvents.OnStarve);
                 }
             }
             yield return SIM_PHASE_SHORT_DELAY;
@@ -204,10 +228,24 @@ namespace AIS.Intervene {
                 reproduceNum = Mathf.FloorToInt(totalPreyConsumed / 2); // population + 1, numEgg - 1
             }
 
-            for (int i = 0; i < reproduceNum; i++)
+            var cluster = eco.GetCluster(invasiveCounts[0].Item1);
+            if (cluster != null)
             {
-                eco.AddPopulation(invasiveCounts[0].Item1, 1, invasiveCounts[0].Item3, invasiveCounts[0].Item4);
+                cluster.NumEgg += reproduceNum;
+
+                if (cluster.NumEgg > 0 && cluster.IsSpawnable)
+                {
+                    eco.AddPopulation(invasiveCounts[0].Item1, 1, invasiveCounts[0].Item3, invasiveCounts[0].Item4);
+                    cluster.NumEgg -= 1;
+                    AisGame.Events.Dispatch(InterveneEvents.OnReproduce);
+                }
             }
+
+            // for (int i = 0; i < reproduceNum; i++)
+            // {
+            //     eco.AddPopulation(invasiveCounts[0].Item1, 1, invasiveCounts[0].Item3, invasiveCounts[0].Item4);
+            //     AisGame.Events.Dispatch(InterveneEvents.OnReproduce);
+            // }
             Debug.Log("[InterveneDriver] [InterspeciesDynamics] eco " + eco.EcosystemId + " invasives reproduced " + reproduceNum);
             yield return SIM_PHASE_SHORT_DELAY;
 
@@ -216,6 +254,7 @@ namespace AIS.Intervene {
             if (totalInvasives >= NEST_THRESHOLD)
             {
                 TrySpawnNest(eco);
+                AisGame.Events.Dispatch(InterveneEvents.OnNestSpawn);
             }
 
             yield return SIM_PHASE_DELAY;
@@ -268,7 +307,7 @@ namespace AIS.Intervene {
             if (totalPreyConsumed > 0)
             {
                 eco.ReleasePopulation(preyCounts[0].Item1, totalPreyConsumed);
-                AisGame.Events.Dispatch(InterveneEvents.OnPredatorEatPrey);
+                AisGame.Events.Dispatch(InterveneEvents.OnHunt);
             }
 
             Debug.Log("[InterveneDriver] [InterspeciesDynamics] eco " + eco.EcosystemId + " predators consumed " + totalPreyConsumed);
@@ -283,6 +322,7 @@ namespace AIS.Intervene {
                 {
                     eco.ReleasePopulation(predatorCounts[0].Item1, 1);
                     Debug.Log("[InterveneDriver] [InterspeciesDynamics] eco " + eco.EcosystemId + " predators starved 1");
+                    AisGame.Events.Dispatch(InterveneEvents.OnStarve);
                 }
             }
             yield return SIM_PHASE_SHORT_DELAY;
@@ -298,10 +338,24 @@ namespace AIS.Intervene {
                 // population + 1, numEgg - 1
             }
 
-            for (int i = 0; i < reproduceNum; i++)
+            var predatorCluster = eco.GetCluster(predatorCounts[0].Item1);
+            if (predatorCluster != null)
             {
-                eco.AddPopulation(predatorCounts[0].Item1, 1, predatorCounts[0].Item3, predatorCounts[0].Item4);
+                predatorCluster.NumEgg += reproduceNum;
+
+                if (predatorCluster.NumEgg > 0 && predatorCluster.IsSpawnable)
+                {
+                    eco.AddPopulation(predatorCounts[0].Item1, 1, predatorCounts[0].Item3, predatorCounts[0].Item4);
+                    predatorCluster.NumEgg -= 1;
+                    AisGame.Events.Dispatch(InterveneEvents.OnReproduce);
+                }
             }
+
+            // for (int i = 0; i < reproduceNum; i++)
+            // {
+            //     eco.AddPopulation(predatorCounts[0].Item1, 1, predatorCounts[0].Item3, predatorCounts[0].Item4);
+            //     AisGame.Events.Dispatch(InterveneEvents.OnReproduce);
+            // }
             Debug.Log("[InterveneDriver] [InterspeciesDynamics] eco " + eco.EcosystemId + " predator reproduced " + reproduceNum);
            
             yield return SIM_PHASE_DELAY;
@@ -333,11 +387,23 @@ namespace AIS.Intervene {
             // Reproduce
             int rollResult = UnityEngine.Random.Range(1, 7);
             // check reproduce condition and if numEgg >= 1
+            var preyCluster = eco.GetCluster(preyCounts[0].Item1);
+
             if (rollResult <= totalPrey)
+            {
+                if (preyCluster != null)
+                {
+                    preyCluster.NumEgg += 1;
+                }
+            }
+
+            if (preyCluster != null && preyCluster.NumEgg > 0 && preyCluster.IsSpawnable)
             {
                 // TODO: how to divvy if multiple types of prey?
                 eco.AddPopulation(preyCounts[0].Item1, 1, preyCounts[0].Item3, preyCounts[0].Item4);
+                preyCluster.NumEgg -= 1;
                 Debug.Log("[InterveneDriver] [InterspeciesDynamics] eco " + eco.EcosystemId + " prey reproduced 1");
+                AisGame.Events.Dispatch(InterveneEvents.OnReproduce);
             }
 
             yield return SIM_PHASE_DELAY;
@@ -386,7 +452,9 @@ namespace AIS.Intervene {
                         if (origPop > 0)
                         {
                             if ((onTryMoveFromOrigEffect.TargetType & ActionTarget.Invasive) != 0) {
-                                origEco.ReleasePopulation(InvasionModel.Instance.CurrModelSetupData.DefaultInvasive.SpeciesId, (int)onTryMoveFromOrigEffect.Value);
+                                // origEco.ReleasePopulation(InvasionModel.Instance.CurrModelSetupData.DefaultInvasive.SpeciesId, (int)onTryMoveFromOrigEffect.Value);
+                                // For trapped pathway (defined as Remove pathwayEffectType), trap 1 species.
+                                origEco.ReleasePopulation(InvasionModel.Instance.CurrModelSetupData.DefaultInvasive.SpeciesId, 1);
                             }
                         }
                     }
@@ -395,6 +463,7 @@ namespace AIS.Intervene {
                 // split species, between orig and dest clusters
                 var transferAlloc = new SpeciesTransferAllocation();
                 transferAlloc.SpeciesId = speciesPair.Item1;
+                transferAlloc.OrigEcosystemId = pathway.OrigEcosystemId;
                 transferAlloc.DestEcosystemId = pathway.DestEcosystemId;
                 transferAlloc.TransferCount = transferNum;
                 transferAlloc.TravelType = speciesPair.Item2;
@@ -402,7 +471,7 @@ namespace AIS.Intervene {
                 m_SpeciesTransfers.Add(transferAlloc);
 
                 // Release species from original ecosystem
-                origEco.ReleasePopulation(speciesPair.Item1, transferNum);
+                // origEco.ReleasePopulation(speciesPair.Item1, transferNum);
             }
 
             yield return SIM_PHASE_DELAY;
@@ -412,12 +481,19 @@ namespace AIS.Intervene {
         {
             for (int i = m_SpeciesTransfers.Count - 1; i >= 0; i--)
             {
+                var origEco = InvasionModelContainer.Instance.GetEcosystem(m_SpeciesTransfers[i].OrigEcosystemId);
+                if (!origEco.IsExternal) {
+                    origEco.ReleasePopulation(m_SpeciesTransfers[i].SpeciesId, m_SpeciesTransfers[i].TransferCount);
+                    // decrease population at the end to avoid transferring individuals more than once
+                }
+
                 var destEco = InvasionModelContainer.Instance.GetEcosystem(m_SpeciesTransfers[i].DestEcosystemId);
                 if (!destEco.IsExternal) {
                     destEco.AddPopulation(m_SpeciesTransfers[i].SpeciesId, m_SpeciesTransfers[i].TransferCount, m_SpeciesTransfers[i].TravelType, m_SpeciesTransfers[i].TargetType);
                 }
                 m_SpeciesTransfers.RemoveAt(i);
             }
+
         }
 
         private void TrySpawnNest(Ecosystem eco)
@@ -510,6 +586,7 @@ namespace AIS.Intervene {
                             if (UnityEngine.Random.Range(0, 1f) < trap.TriggerOdds)
                             {
                                 eco.ReleasePopulation(trap.TrapSpeciesId, trap.TrapAmt * cluster.Population);
+                                AisGame.Events.Dispatch(InterveneEvents.OnTrapTriggered);
                             }
                         }
                     }
@@ -548,6 +625,7 @@ namespace AIS.Intervene {
             {
                 tag.SetCustomHighlight(InterveneUI.Instance.FocusColor);
                 tag.ShowHighlight(true);
+                AisGame.Events.Dispatch(InterveneEvents.OnPathwayHighlighted);
             }
             else
             {

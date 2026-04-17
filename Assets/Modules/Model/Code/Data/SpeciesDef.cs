@@ -1,4 +1,5 @@
 using BeauUtil;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,6 +11,5 @@ namespace AIS.Model
     {
         public SerializedHash32 SpeciesId;
         public Sprite Sprite;
-        public int numEggs;
     }
 }

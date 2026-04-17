@@ -5,6 +5,6 @@ namespace AIS.Narrative {
     [CreateAssetMenu(menuName ="Narrative/Evidence Card")]
     public sealed class EvidenceCard : NamedAsset {
         public string Label;
-        public int id;
+                public int id;
     }
 }

@@ -10,9 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dc4a12e31f72d6040a99115010bf0fe7, type: 3}
-  m_Name: Oneshot.PredatorEatPrey
+  m_Name: Oneshot.Starve
   m_EditorClassIdentifier: 
-  Samples: []
+  Samples:
+  - {fileID: 8300000, guid: f8d0cb5130a804de7b6983b0966a58f9, type: 3}
   Stream: 
   PreloadSamples: 1
   UnloadAfterPlayback: 0

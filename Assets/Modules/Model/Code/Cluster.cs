@@ -30,8 +30,10 @@ namespace AIS.Model
         [HideInInspector] public int Population;
         [HideInInspector] public PathwayType TravelType;
         [HideInInspector] public ActionTarget TargetType;
-
         [HideInInspector] public Ecosystem ParentEcosystem;
+        [HideInInspector] public int NumEgg;
+        
+        [HideInInspector]public bool IsSpawnable; // spawn condition placeholder
 
         /*
         public void LoadData(SpeciesSetupData setupData)
@@ -46,6 +48,8 @@ namespace AIS.Model
             Population = population;
             TravelType = travelType;
             TargetType = targetType;
+            NumEgg = 1;
+            IsSpawnable = true; // placeholder for now
 
             ActionTag.TargetType = TargetType;
 

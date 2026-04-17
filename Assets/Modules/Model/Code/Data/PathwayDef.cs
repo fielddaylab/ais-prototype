@@ -11,6 +11,5 @@ namespace AIS.Model
         public PathwayType PathType;
         public Sprite Sprite;
         public bool IsHidden;
-        public bool IsTrapped;
     }
 }

@@ -28,9 +28,16 @@ namespace AIS.Intervene
 
         public static StringHash32 OnInvasionLevelChanged = "on-invasion-level-changed";
 
+        // Events for SFX
         public static StringHash32 OnHoverZone = "on-hover-zone";
         public static StringHash32 OnUiSelected = "on-ui-selected";
         public static StringHash32 OnEndTurn = "on-end-turn";
-        public static StringHash32 OnPredatorEatPrey = "on-predator-eat-prey";
+    
+        public static StringHash32 OnPathwayHighlighted = "on-pathway-highlighted";
+        public static StringHash32 OnHunt = "on-hunt";
+        public static StringHash32 OnStarve = "on-starve";
+        public static StringHash32 OnReproduce = "on-reproduce";
+        public static StringHash32 OnNestSpawn = "on-nest-spawn";
+        public static StringHash32 OnTrapTriggered = "on-trap-triggered";
     }
 }
