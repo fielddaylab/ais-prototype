@@ -20,7 +20,6 @@ namespace AIS.Narrative {
             column.Layout.RecomputePositioning();
 
             yield return 0.1f;
-            yield return column.CompleteLine();
         }
 
         static public IEnumerator DisplayStatUpdate(DialogueColumn column, PlayerStatId statId, int originalValue, int newValue) {
@@ -47,7 +46,6 @@ namespace AIS.Narrative {
                 column.Layout.RecomputePositioning();
 
                 yield return 0.1f;
-                yield return column.CompleteLine();
             }
         }
 

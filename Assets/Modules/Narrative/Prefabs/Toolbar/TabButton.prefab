@@ -124,6 +124,7 @@ MonoBehaviour:
   Listener: {fileID: 6553197160556178368}
   Display: {fileID: 8517469443237463300}
   Flash: {fileID: 459757971713120765}
+  Fader: {fileID: 8060690063128109222}
 --- !u!1 &4329408484865497124
 GameObject:
   m_ObjectHideFlags: 0

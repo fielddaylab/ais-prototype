@@ -30,25 +30,29 @@ namespace AIS.Narrative {
 
         [LeafMember("AdjustStat")]
         static public IEnumerator AdjustStat([BindThread] ScriptThread thread, PlayerStatId statId, int adjustment) {
-            ref PlayerStatBlock statBlock = ref Find.State<PlayerStats>().StatBlock;
+            PlayerStats stats = Find.State<PlayerStats>();
+            PlayerInventory inv = Find.State<PlayerInventory>();
+            PlayerStatBlock statBlock = stats.StatBlock;
             int currentStat = statBlock[statId];
             int originalValue = currentStat;
             if (adjustment != 0) {
                 currentStat = PlayerStatBlock.Clamp(currentStat + adjustment);
                 statBlock[statId] = (sbyte) currentStat;
+                stats.StatBlock = statBlock;
+
                 if (thread.IsSkipping()) {
-                    return null;
+                    yield break;
                 }
 
                 DialogueColumn column = (DialogueColumn) thread.GetPrinter();
-                if (!column) {
-                    return null;
+                if (column) {
+                    yield return TextUtility.DisplayStatUpdate(column, statId, originalValue, currentStat);
+                    yield return EnsureStatsVisible(inv);
+                    yield return column.CompleteLine();
+                } else {
+                    yield return EnsureStatsVisible(inv);
                 }
-
-                return TextUtility.DisplayStatUpdate(column, statId, originalValue, currentStat);
             }
-
-            return null;
         }
 
         [LeafMember("BeginIntervention")]
@@ -61,17 +65,44 @@ namespace AIS.Narrative {
             PlayerInventory inv = Find.State<PlayerInventory>();
             if (inv.EvidenceCards.Add(id)) {
                 if (thread.IsSkipping()) {
-                    return null;
+                    yield break;
                 }
 
                 DialogueColumn column = (DialogueColumn) thread.GetPrinter();
-                if (!column) {
-                    return null;
+                if (column) {
+                    yield return TextUtility.DisplayNewEvidence(column, id);
+                    yield return EnsureEvidenceVisible(inv);
+                    yield return column.CompleteLine();
+                } else {
+                    yield return EnsureEvidenceVisible(inv);
                 }
-
-                return TextUtility.DisplayNewEvidence(column, id);
             }
+        }
 
+        static private IEnumerator EnsureEvidenceVisible(PlayerInventory inv) {
+            if ((inv.ToolbarItems & PlayerToolbarMask.Evidence) == 0) {
+                inv.ToolbarItems |= PlayerToolbarMask.Evidence;
+                ToolbarPanel toolbar = Find.GuiModule<ToolbarPanel>();
+                return ToolbarPanel.UnlockToolbarButtonAnimation(toolbar.EvidenceMissing, toolbar.EvidenceButton);
+            }
+            return null;
+        }
+
+        static private IEnumerator EnsureMapVisible(PlayerInventory inv) {
+            if ((inv.ToolbarItems & PlayerToolbarMask.Map) == 0) {
+                inv.ToolbarItems |= PlayerToolbarMask.Map;
+                ToolbarPanel toolbar = Find.GuiModule<ToolbarPanel>();
+                return ToolbarPanel.UnlockToolbarButtonAnimation(toolbar.MapMissing, toolbar.MapButton);
+            }
+            return null;
+        }
+
+        static private IEnumerator EnsureStatsVisible(PlayerInventory inv) {
+            if ((inv.ToolbarItems & PlayerToolbarMask.Stats) == 0) {
+                inv.ToolbarItems |= PlayerToolbarMask.Stats;
+                ToolbarPanel toolbar = Find.GuiModule<ToolbarPanel>();
+                return ToolbarPanel.UnlockToolbarButtonAnimation(toolbar.StatsMissing, toolbar.StatsButton);
+            }
             return null;
         }
 

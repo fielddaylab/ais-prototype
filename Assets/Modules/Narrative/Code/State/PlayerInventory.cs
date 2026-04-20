@@ -12,12 +12,14 @@ namespace AIS.Narrative {
         public readonly VariantTable GlobalVars;
         public readonly VariantTable LevelVars;
         public int TimeRemaining;
+        public PlayerToolbarMask ToolbarItems;
 
         public PlayerInventory() {
             EvidenceCards = SetUtils.Create<StringHash32>(24);
             GlobalVars = new VariantTable("global", 32);
             LevelVars = new VariantTable("level", 32);
             TimeRemaining = 20;
+            ToolbarItems = 0;
         }
 
         void IRegistrationCallbacks.OnRegister() {
@@ -31,6 +33,16 @@ namespace AIS.Narrative {
         }
     }
 
+    [Flags]
+    public enum PlayerToolbarMask : uint {
+        Evidence = 0x01,
+        Map = 0x02,
+        Stats = 0x04,
+        Time = 0x08,
+
+        All = Evidence | Map | Stats | Time
+    }
+
     static public partial class PlayerUtility {
         static public void DecreaseTime(int chunks) {
             PlayerInventory inv = Find.State<PlayerInventory>();
@@ -38,6 +50,12 @@ namespace AIS.Narrative {
                 inv.TimeRemaining = Math.Max(0, inv.TimeRemaining - chunks);
                 Find.GuiModule<ToolbarPanel>().TimeCounter.SetValue(inv.TimeRemaining);
             }
+        }
+
+        static public void SetTime(int chunks) {
+            PlayerInventory inv = Find.State<PlayerInventory>();
+            inv.TimeRemaining = Math.Max(0, inv.TimeRemaining - chunks);
+            Find.GuiModule<ToolbarPanel>().TimeCounter.SetValue(inv.TimeRemaining);
         }
     }
 }

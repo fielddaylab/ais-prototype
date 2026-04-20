@@ -6,13 +6,16 @@
 
 #basePath TestChapter
 
+:: Preload
+@function    ChapterPreload
+
+$call SetBackground("bg/Nightmare.png")
+
 // #region Opening
 
 :: Start
 @trigger    ChapterStart
 @cutscene
-
-$call SetBackground("bg/Nightmare.png")
 
 {@}     They're late.
         Those two asked you to meet and they're <i>late</i>.
