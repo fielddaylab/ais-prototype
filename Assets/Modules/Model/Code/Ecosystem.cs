@@ -15,6 +15,7 @@ namespace AIS.Model
         public Vector2 Pos;
         public Sprite Sprite;
         public bool IsExternal;
+        public bool IsTributary;
 
         public Vector2[] MainSlotPoses;
         public Vector2[] SecondarySlotPoses;
@@ -28,6 +29,7 @@ namespace AIS.Model
 
         public SerializedHash32 EcosystemId;
         public bool IsExternal;
+        public bool IsTributary;
 
         public List<SerializedHash32> SpeciesInEcosystem = new List<SerializedHash32>();
         public Dictionary<SerializedHash32, ClusterSlotData> SpeciesSlotDict = new Dictionary<SerializedHash32, ClusterSlotData>();
@@ -42,6 +44,7 @@ namespace AIS.Model
         {
             EcosystemId = setupData.EcosystemId;
             IsExternal = setupData.IsExternal;
+            IsTributary = setupData.IsTributary; // for now, external ecosystems are also tributary
 
             this.transform.position = setupData.Pos;
             MainRenderer.sprite = setupData.Sprite;

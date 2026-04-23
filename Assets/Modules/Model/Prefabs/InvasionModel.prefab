@@ -293,7 +293,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Prefabs: {fileID: 6411420342871478010}
   m_ModelContainer: {fileID: 8961839981816191731}
-  m_InitModelSetupData: {fileID: 11400000, guid: 1cd13b047af69f64e89173976332935b, type: 2}
+  m_InitModelSetupData: {fileID: 11400000, guid: cfb6bb919b5e3554d961a339ac2267c4, type: 2}
 --- !u!114 &3795131110483000347
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -405,6 +405,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1cafaa9a8600cc846894a674fe613016, type: 2}
   - {fileID: 11400000, guid: d763cc96cf0b3d14ba733a039b975c8c, type: 2}
   - {fileID: 11400000, guid: 7432bbff7f0266541bb6e2e6d7310ca9, type: 2}
+  - {fileID: 11400000, guid: 80d899c09a561ce459b268d4a9a3197b, type: 2}
+  - {fileID: 11400000, guid: f68a740d609102141a8bc1a07afd97d1, type: 2}
+  - {fileID: 11400000, guid: 6239a7ea86bc7b246a8a5797c6e01449, type: 2}
   m_AllPathwayDefs:
   - {fileID: 11400000, guid: 648d9471692cea34f8cae882e4abb26b, type: 2}
   - {fileID: 11400000, guid: c4b372aa1c2fc6e428daeca5a0f65b55, type: 2}
@@ -413,6 +416,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f4cd6e516c7f6e24e9e9bef034f3957b, type: 2}
   - {fileID: 11400000, guid: 1b6b8e632eafc694184f75bfe87e8c99, type: 2}
   - {fileID: 11400000, guid: d67298fb5d53a894c8c47d706fba08fb, type: 2}
+  - {fileID: 11400000, guid: 2cc272e9d7fd00c418e13941d1d2f6f2, type: 2}
+  - {fileID: 11400000, guid: 19415f5484e56df4fbe8b662110f1b93, type: 2}
 --- !u!1 &5781543188441483023
 GameObject:
   m_ObjectHideFlags: 0
