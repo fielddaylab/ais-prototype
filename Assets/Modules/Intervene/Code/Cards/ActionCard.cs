@@ -268,7 +268,6 @@ namespace AIS.Intervene {
 
         private static bool EvaluatePathwayEffectType(ActionTargetCondition condition, ModelTag tag)
         {
-            Debug.Log("[ActionCardUtility] Evaluating pathway effect type condition with str check " + condition.StrCheck);
             if (tag == null) { return false; }
 
             // check if pathway
@@ -280,7 +279,7 @@ namespace AIS.Intervene {
                 {
                     foreach (var effect in pathway.OnTryMoveFromOrig)
                     {
-                        if (effect.EffectType == PathwayEffectType.Trapped)
+                        if ((effect.EffectType & PathwayEffectType.Trapped) != 0)
                         {
                             return true;
                         }

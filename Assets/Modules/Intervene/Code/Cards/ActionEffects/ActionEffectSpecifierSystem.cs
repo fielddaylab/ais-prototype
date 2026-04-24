@@ -578,7 +578,6 @@ namespace AIS.Intervene
 
         public static bool TryIncrease(GameObject queriable, ActionVerbDetails verbDetails)
         {
-            Debug.Log("[ActionEffectUtility] Trying to increase on " + queriable.name + " with verb details: verb - " + verbDetails.Verb + ", values - " + verbDetails.Values[0] + ", mod type - " + verbDetails.ModType);
             var toIncrease = queriable.GetComponent<IIncreasable>();
 
             if (toIncrease != null)

@@ -8,7 +8,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using UnityEngine;
-using Debug = UnityEngine.Debug;
 
 namespace AIS.Intervene
 {
@@ -758,7 +757,7 @@ namespace AIS.Intervene
                 }
             }
             // Pathway Type conditions (only with = operator)
-            else if (variableName.Contains("effectType") && variableName.Contains("pathway") && operatorChar == EQ_CHAR)
+            else if ((variableName.Contains("effectType") || variableName.Contains("effect")) && operatorChar == EQ_CHAR)
             {
                 condition.Condition = ActionCondition.PathwayEffectType;
                 condition.StrCheck = valueStr;
@@ -873,7 +872,6 @@ namespace AIS.Intervene
                     return ActionVerb.Reduce;
                 case "increase":
                 case "inc":
-                    Debug.Log("Parsed verb: increase");
                     return ActionVerb.Increase;
                 case "remove":
                 case "rem":

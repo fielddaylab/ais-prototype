@@ -272,7 +272,6 @@ namespace AIS.Intervene
 
         private void SummonHighlights()
         {
-            Debug.Log("[ActionEffectChunkMgr] Summoning highlights for effect " + m_EffectToProcess.AllTargets.Length);
             List<ModelTag> filteredTags = ModelTagMgr.Instance.FilterTagsByTargetDetails(m_EffectToProcess.AllTargets, m_EffectToProcess.GetAllVerbs(), filterExternal: true);
 
             ModelTagMgr.Instance.HighlightTags(filteredTags);

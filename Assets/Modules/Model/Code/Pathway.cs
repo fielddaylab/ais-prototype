@@ -208,7 +208,6 @@ namespace AIS.Model
 
         public bool TryIncrease(List<float> amts, ModifierType modType)
         {
-            Debug.Log("[Pathway] Trying to increase pathway " + this.name + " with amt " + amts[0] + " and mod type " + modType);
             if (modType == ModifierType.Fixed)
             {
                 AdjustTransferRate(amts[0]);
