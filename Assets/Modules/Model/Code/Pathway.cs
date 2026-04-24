@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using System;
 using AIS.Intervene;
 using TMPro;
+using Debug = UnityEngine.Debug;
 
 namespace AIS.Model
 {
@@ -49,7 +50,7 @@ namespace AIS.Model
     public enum PathwayEffectType
     {
         BlockAll = 0x01,
-        Remove = 0x02,
+        Trapped = 0x02,
     }
 
     public struct PathwayEffect
@@ -67,7 +68,7 @@ namespace AIS.Model
         Output
     }
 
-    public class Pathway : MonoBehaviour, IReducible, IIncreasable, IRemovable, IRevealable
+    public class Pathway : MonoBehaviour, IReducible, IIncreasable, IRemovable, IRevealable, IAddTrapable
     {
         #region Inspector
 
@@ -85,7 +86,6 @@ namespace AIS.Model
         public float TransferTriggerChance { get; private set; }
         public float TransferRate { get; private set; }
         public bool IsHidden { get; private set; }
-        public bool IsTrapped { get; private set; }
         public PathDir Dir { get; private set; }
 
         #endregion // Inspector
@@ -96,7 +96,6 @@ namespace AIS.Model
             DestEcosystemId = setupData.DestEcosystemId;
             PathwayType = setupData.PathwayType;
             SetIsHidden(!setupData.IsNotHidden);
-            SetIsTrapped(false);
             Dir = setupData.StartingDir;
 
             this.transform.position = setupData.Pos;
@@ -164,13 +163,6 @@ namespace AIS.Model
             UpdateVisuals();
         }
 
-        public void SetIsTrapped(bool isTrapped)
-        {
-            IsTrapped = isTrapped;
-
-            UpdateVisuals();
-        }
-
         public void AddEffectOnTryMoveFromOrig(PathwayEffect toAdd)
         {
             OnTryMoveFromOrig.Add(toAdd);
@@ -216,6 +208,7 @@ namespace AIS.Model
 
         public bool TryIncrease(List<float> amts, ModifierType modType)
         {
+            Debug.Log("[Pathway] Trying to increase pathway " + this.name + " with amt " + amts[0] + " and mod type " + modType);
             if (modType == ModifierType.Fixed)
             {
                 AdjustTransferRate(amts[0]);
@@ -251,6 +244,20 @@ namespace AIS.Model
             return true;
         }
 
+        // IAddTrapable
+
+        public bool TryAddTrap(int trapNum)
+        {
+            AddEffectOnTryMoveFromOrig(new PathwayEffect{
+                EffectId = "trap",
+                EffectType = PathwayEffectType.Trapped,
+                TargetType = ActionTarget.Pathway,
+                Value = 1
+            });
+            UpdateVisuals();
+            return true;
+        }
+
         #endregion // Interfaces
 
         #region Visuals
@@ -274,10 +281,17 @@ namespace AIS.Model
                 if (TransferRateType == RateType.Ratio) {
                     text = TransferRate * 100 + "% per turn";
                 }
+                // update trapped visuals
+                if (OnTryMoveFromOrigContains("trap"))
+                {
+                    text += "\n(Trapped)";
+                    if (ColorUtility.TryParseHtmlString("#f3b7b7", out Color trapColor)) {
+                        PathwayTypeBGRenderer.color = trapColor;
+                    }
+                }
                 TransferRateText.SetText(text);
             }
         }
-
         #endregion // Visuals
     }
 
@@ -288,6 +302,18 @@ namespace AIS.Model
             PathwayType type = 0;
 
             if (Enum.TryParse<PathwayType>(toParse, true, out PathwayType result))
+            {
+                return result;
+            }
+
+            return type;
+        }
+
+        public static PathwayEffectType StrToPathwayEffectType(string toParse)
+        {
+            PathwayEffectType type = 0;
+
+            if (Enum.TryParse<PathwayEffectType>(toParse, true, out PathwayEffectType result))
             {
                 return result;
             }

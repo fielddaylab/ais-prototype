@@ -446,7 +446,7 @@ namespace AIS.Intervene {
                     {
                         transferNum = 0;
                     }
-                    if ((onTryMoveFromOrigEffect.EffectType & PathwayEffectType.Remove) != 0)
+                    if ((onTryMoveFromOrigEffect.EffectType & PathwayEffectType.Trapped) != 0)
                     {
                         int origPop = origEco.GetPopulation(speciesPair.Item1);
                         if (origPop > 0)
@@ -455,6 +455,7 @@ namespace AIS.Intervene {
                                 // origEco.ReleasePopulation(InvasionModel.Instance.CurrModelSetupData.DefaultInvasive.SpeciesId, (int)onTryMoveFromOrigEffect.Value);
                                 // For trapped pathway (defined as Remove pathwayEffectType), trap 1 species.
                                 origEco.ReleasePopulation(InvasionModel.Instance.CurrModelSetupData.DefaultInvasive.SpeciesId, 1);
+                                transferNum = Mathf.Max(0, transferNum - 1);
                             }
                         }
                     }

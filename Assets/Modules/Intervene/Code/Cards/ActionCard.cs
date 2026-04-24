@@ -3,7 +3,9 @@ using BeauUtil;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 
 namespace AIS.Intervene {
     #region Structs and Enums
@@ -54,6 +56,7 @@ namespace AIS.Intervene {
         AwarenessGreaterThan,
         PathwayType,
         // TODO: more below as needed
+        PathwayEffectType,
         SocialLessThan,
         SocialEqualTo,
         SocialGreaterThan,
@@ -191,6 +194,8 @@ namespace AIS.Intervene {
                 case ActionCondition.PathwayType:
                     return EvaluatePathway(condition, tag);
                 // TODO: convert the below to the IComparable system
+                case ActionCondition.PathwayEffectType:
+                    return EvaluatePathwayEffectType(condition, tag);
                 case ActionCondition.PopulationLessThan:
                     return tag.QueriableObj.GetComponent<Cluster>().Population < condition.NumericalCheck;
                 case ActionCondition.PopulationEqualTo:
@@ -241,7 +246,7 @@ namespace AIS.Intervene {
             if (tag == null) { return false; }
 
             // check if pathway
-            if (((tag.TargetType & ActionTarget.Pathway) != 0))
+            if ((tag.TargetType & ActionTarget.Pathway) != 0)
             {
                 // check if type matches
                 Pathway pathway = tag.QueriableObj.GetComponent<Pathway>();
@@ -261,12 +266,37 @@ namespace AIS.Intervene {
             return false;
         }
 
+        private static bool EvaluatePathwayEffectType(ActionTargetCondition condition, ModelTag tag)
+        {
+            Debug.Log("[ActionCardUtility] Evaluating pathway effect type condition with str check " + condition.StrCheck);
+            if (tag == null) { return false; }
+
+            // check if pathway
+            if ((tag.TargetType & ActionTarget.Pathway) != 0)
+            {
+                // check if effectType matches
+                Pathway pathway = tag.QueriableObj.GetComponent<Pathway>();
+                if (pathway != null)
+                {
+                    foreach (var effect in pathway.OnTryMoveFromOrig)
+                    {
+                        if (effect.EffectType == PathwayEffectType.Trapped)
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            return false;
+        }
+
         private static bool EvaluatePathDir(ActionTargetCondition condition, ModelTag tag)
         {
             if (tag == null) { return false; }
 
             // check if pathway
-            if (((tag.TargetType & ActionTarget.Pathway) != 0))
+            if ((tag.TargetType & ActionTarget.Pathway) != 0)
             {
                 // check if type matches
                 Pathway pathway = tag.QueriableObj.GetComponent<Pathway>();

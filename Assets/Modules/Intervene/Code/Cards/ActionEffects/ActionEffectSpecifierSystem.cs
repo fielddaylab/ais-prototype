@@ -3,7 +3,9 @@ using BeauRoutine;
 using FieldDay.Audio;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 using static UnityEngine.GraphicsBuffer;
 
 namespace AIS.Intervene
@@ -500,7 +502,7 @@ namespace AIS.Intervene
                         PathwayEffect ballastEffect = new PathwayEffect();
                         ballastEffect.EffectId = effectId;
                         ballastEffect.EffectType |= PathwayEffectType.BlockAll;
-                        ballastEffect.EffectType |= PathwayEffectType.Remove;
+                        ballastEffect.EffectType |= PathwayEffectType.Trapped;
                         ballastEffect.TargetType = ActionTarget.Invasive;
                         ballastEffect.Value = 1;
 
@@ -576,6 +578,7 @@ namespace AIS.Intervene
 
         public static bool TryIncrease(GameObject queriable, ActionVerbDetails verbDetails)
         {
+            Debug.Log("[ActionEffectUtility] Trying to increase on " + queriable.name + " with verb details: verb - " + verbDetails.Verb + ", values - " + verbDetails.Values[0] + ", mod type - " + verbDetails.ModType);
             var toIncrease = queriable.GetComponent<IIncreasable>();
 
             if (toIncrease != null)

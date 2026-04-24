@@ -6,7 +6,9 @@ using FieldDay.SharedState;
 using Leaf.Runtime;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 
 namespace AIS.Intervene
 {
@@ -756,7 +758,12 @@ namespace AIS.Intervene
                 }
             }
             // Pathway Type conditions (only with = operator)
-            else if ((variableName.Contains("type") || variableName.Contains("pathway")) && operatorChar == EQ_CHAR)
+            else if (variableName.Contains("effectType") && variableName.Contains("pathway") && operatorChar == EQ_CHAR)
+            {
+                condition.Condition = ActionCondition.PathwayEffectType;
+                condition.StrCheck = valueStr;
+            }
+            else if ((variableName.Contains("path") || variableName.Contains("type")) && operatorChar == EQ_CHAR)
             {
                 condition.Condition = ActionCondition.PathwayType;
                 condition.StrCheck = valueStr;
@@ -777,7 +784,11 @@ namespace AIS.Intervene
             {
                 // Could be any string-based condition
                 // For now, attempt to determine if it's a pathway type
-                if (variableName.Contains("path") || variableName.Contains("type"))
+                if (variableName.Contains("path") && variableName.Contains("effectType"))
+                {
+                    condition.Condition = ActionCondition.PathwayEffectType;
+                }
+                else if (variableName.Contains("path") || variableName.Contains("type"))
                 {
                     condition.Condition = ActionCondition.PathwayType;
                 }
@@ -862,6 +873,7 @@ namespace AIS.Intervene
                     return ActionVerb.Reduce;
                 case "increase":
                 case "inc":
+                    Debug.Log("Parsed verb: increase");
                     return ActionVerb.Increase;
                 case "remove":
                 case "rem":
