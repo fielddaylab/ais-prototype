@@ -180,10 +180,148 @@ $endif
 
 $call GiveEvidenceCard("Evidence-Lamprey-Discovered")
 
-$goto .Finishing
+// #endregion 
 
-// #endregion
+// #region Docks
+ 
+$goto .TravelDocks
 
-:: Finishing
+:: TravelDocks
 
-$call BeginIntervention()
+{@}     Your remember hearing about Sea Lampreys. 
+        The Anglers by the docks were making whispers of them. 
+        
+$choice .Docks.A; Guess I should go ask those anglers. 
+
+:: .Docks.A
+
+{@} 
+        You make your way to the docks.
+
+$goto .AnglersDocks
+
+:: AnglersDocks
+
+{@}     As you approach the docks, you see two Anglers. 
+
+{@Angler1}      
+        Never thought we'd see the day. 
+{@Angler2}      
+        I've been tellin' ya, they gettin' bolder. 
+
+{@}     
+        You decide to say hello. 
+{@Player}   
+        Hi there! 
+
+{@}    
+        They don't seem to notice you. 
+
+$choice .Docks.Attention.A; <i>say nothing and slowly approach<i>
+$choice .Docks.Attention.B; Uhm... hi? Is everything alright? 
+$choice .Docks.Attention.C; Is this how Anglers typically greet people?
+$choose branch
+
+{@Angler1}     
+        Take a closer look. 
+
+{@}     He holds the fish up to you. 
+        You notice that the bite marks are nothing familiar to the region.
+        Infact, they're uniquely circular.  
+
+{@Angler2} 
+        They have been on many of the fish we catch. Whitefish and Walleye. 
+
+{@Angler1} 
+        And Lamprey feed on them. 
+        
+$call GiveEvidenceCard("Evidence-Lake-Whitefish")
+
+$call GiveEvidenceCard("Evidence-Lake-Trout")
+
+{@Angler1} 
+        A good chunk of those fish wind up dead. 
+
+{@Angler2}
+        Dead fish means rotten fish. 
+
+{@Angler1} 
+        Rotten fish means you can't sell the fish. 
+
+{@Player} 
+        Not only are you guys out of your jobs, but the entire town's economy is at threat.
+
+{@}     The anglers nod their heads in unison. 
+        You think for a moment, understanding the gravity of the situation.
+
+{@Player} 
+        What can I do to help? 
+
+{@Angler1}   
+        Talking to someone who knows more about Sea Lamprey's may be a good idea. 
+        Maybe going to the <i>DNR Office<i> or even the <i>University Researh Lab<i>. 
+
+{@Angler2} 
+        Going to the <i>Town Hall<i> may be a good idea as well. 
+
+{@} 
+        You think to yourself, where would be the best next place to go. 
+
+$choice .DNR.Office; DNR Office
+$choice .University.Research.Lab; The Research Lab
+$choice .Town.Hall; Town Hall
+$choose branch
+
+:: Docks.Attention.A
+{@}     As you approach, you notice the Anglers staring at a whitefish.
+        On the whitefish is a bite mark. 
+        Before you could study it further, Angler 1 and Angler 2 turn towards you startled. 
+
+{@Angler1}      Holy worms kid! Can't sneak on an old soul like that! 
+{@Angler2}      Ye' tryin' to kill us? 
+
+{@Player}       No! Sorry, I... just... what's with the fish? 
+ 
+:: Docks.Attention.B
+
+{@Angler1}      Huh? Oh kid! Nice to see ya! To answer your question...
+{@Angler2}      Nay, things be not well... 
+
+{@Player}       How come? 
+
+:: Docks.Attention.C
+
+{@} Both the Anglers turn your way. 
+
+{@Angler2} Aye. When the lady of the lake be singing her solemn song. 
+{@Angler1} ...Pardon him. But he's right, it's a solemn day indeed. 
+
+{@Player} What's wrong?
+
+:: DNR.Office
+
+{@Player} The DNR Office seems the best place to go. 
+
+{@Angler1} Good choice, they may provide more info on what's going on. 
+
+:: University.Research.Lab
+
+{@Player} The University Research Lab. I remember hearing they were studying lampreys. 
+
+{@Angler2} Aye, they might put a stop to this. 
+
+:: Town.Hall
+
+{@Player} I can always bring it to Town Hall. 
+
+{@Angler1} Ah. Politics. Have fun convincing them to do anything. 
+
+:: Town.Hall.Location 
+
+
+:: University.Research.Lab.Location
+
+
+:: DNR.LocationS
+
+
