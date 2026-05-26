@@ -12,5 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6374628d737c9d24486747a92e860022, type: 3}
   m_Name: Evidence-Lake-Walleye
   m_EditorClassIdentifier: 
-  Label: Sea Lamprey can feed on Lake Whitefish.
-  id: 10
+  Label: Sea Lamprey can feed on Walleye.

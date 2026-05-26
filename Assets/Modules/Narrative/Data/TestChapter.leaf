@@ -11,11 +11,8 @@ $call SetBackground("bg/Room.png")
 @trigger    ChapterStart
 @cutscene
 
-{@}     Reality arrives swiftly and disorientingly.
-
-{@Player}   Welp, another one for my therapist.
-
-{@}     On your desk, you spot several notes you've taken.
+{@}   
+       You review your notes on Sea Lamprey. 
 
 $call GiveEvidenceCard("Evidence-Lamprey-Discovered")
 
@@ -107,13 +104,13 @@ $choice .University.Research.Lab.A; The Research Lab
 $choice .Town.Hall.A; Town Hall
 $choose branch
 
-:: Nature.Museum
+:: Nature.Museum.A
 
 {@Player} The Museum seems the best place to go. 
 
 {@Angler1} Good choice, they may provide more info on what's going on. 
 
-$goto .Nature.Museum.Location
+$goto .Nature.Museum.Location.A 
 
 :: University.Research.Lab.A
 
@@ -121,7 +118,7 @@ $goto .Nature.Museum.Location
 
 {@Angler2} Aye, they might put a stop to this. 
 
-$goto .University.Research.Lab.Location
+$goto .University.Research.Lab.Location.A 
 
 
 :: Town.Hall.A
@@ -266,7 +263,7 @@ $goto .Field.Station.Trib.Location.A
 
 // #region University Lab
 
-:: University.Research.Lab.Location
+:: University.Research.Lab.Location.A 
 
 {@} 
         You make your way to the University Research Lab.
@@ -288,10 +285,10 @@ $choose branch
 {@Player} Pheremones seems like a good way to go about this. 
 
 {@Researcher} 
-They're effective. If you want to learn more go to the DNR office. 
-However, they're not the only method.
-You can always introduce sterile Sea Lamprey into the population, which the Fish Hatchery knows a lot about! 
-Or use Lampricide, something that the researchers at the Field Station have been working on. 
+        They're effective. If you want to learn more go to the DNR office. 
+        However, they're not the only method.
+        You can always introduce sterile Sea Lamprey into the population, which the Fish Hatchery knows a lot about!    
+        Or use Lampricide, something that the researchers at the Field Station have been working on. 
 
 $choice .DNR.Office.A; The DNR Office 
 $choice .Field.Station.Trib.B; The Field Station
@@ -306,7 +303,7 @@ $choose branch
 {@Researcher} 
         Yes... very concerning. Seems like the Sea Lamprey in our region are getting worse. 
 
-$choice .Lamprey.Phermones; How might you get rid of them?
+$choice .Lamprey.Pheremones; How might you get rid of them?
 
 :: Lamprey.Pheremones
 
@@ -375,12 +372,20 @@ $choose branch
 
 :: Nature.Museum.B
 
-{@} You make your way to the Nature Museum 
+{@Player} 
+        I'll check out the Museum. 
 
-$goto .Nature.Museum.Location 
+{@Mayor} 
+        Curator will be a great source! 
+
+$goto .Nature.Museum.Location.A 
 
 :: University.Research.Lab.B
 
-{@} You make your way to the University Research Lab
+{@}     
+        The University's Ressearch Lab may be wise. 
 
-$goto .University.Research.Lab.Location
+{@Mayor} 
+        Best of luck! 
+
+$goto .University.Research.Lab.Location.A

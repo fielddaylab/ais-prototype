@@ -1,0 +1,353 @@
+
+#basePath TestChapter
+
+:: Preload
+@function    ChapterPreload
+
+$call SetBackground("bg/Room.png")
+
+// #region Bedroom 
+
+:: Start
+@trigger    ChapterStart
+@cutscene
+
+{@}     Reality arrives swiftly and disorientingly.
+
+{@Player}   Welp, another one for my therapist.
+
+{@}     On your desk, you spot several notes you've taken.
+
+$call GiveEvidenceCard("Evidence-Lamprey-Discovered")
+
+// #endregion 
+
+// #region Docks
+ 
+$goto .TravelDocks
+
+:: TravelDocks
+
+{@}     Your remember hearing about Sea Lampreys. 
+        The Anglers by the docks were making whispers of them. 
+        
+$choice .Docks.A; Guess I should go ask those anglers. 
+
+:: .Docks.A
+
+{@} 
+        You make your way to the docks.
+
+$goto .AnglersDocks
+
+:: AnglersDocks
+
+{@}     As you approach the docks, you see two Anglers. 
+
+{@Angler1}      
+        Never thought we'd see the day. 
+{@Angler2}      
+        I've been tellin' ya, they gettin' bolder. 
+
+{@}     
+        You decide to say hello. 
+{@Player}   
+        Hi there! 
+
+{@}    
+        They don't seem to notice you. 
+
+$choice .Docks.Attention.A; <i>say nothing and slowly approach<i>
+$choice .Docks.Attention.B; Uhm... hi? Is everything alright? 
+$choice .Docks.Attention.C; Is this how Anglers typically greet people?
+$choose branch
+
+{@Angler1}     
+        Take a closer look. 
+
+{@}     He holds the fish up to you. 
+        You notice that the bite marks are nothing familiar to the region.
+        Infact, they're uniquely circular.  
+        You take a picture of it on your phone. 
+
+{@Angler2} 
+        They have been on many of the fish we catch. Whitefish and Walleye. 
+
+{@Angler1} 
+        And Lamprey feed on them. 
+        
+$call GiveEvidenceCard("Evidence-Lake-Walleye")
+
+$call GiveEvidenceCard("Evidence-Lake-Trout")
+
+{@Angler1} 
+        A good chunk of those fish wind up dead. 
+
+{@Angler2}
+        Dead fish means rotten fish. 
+
+{@Angler1} 
+        Rotten fish means you can't sell the fish. 
+
+{@Player} 
+        Not only are you guys out of your jobs, but the entire town's economy is at threat.
+
+{@}     The anglers nod their heads in unison. 
+        You think for a moment, understanding the gravity of the situation.
+
+{@Player} 
+        What can I do to help? 
+
+{@Angler1}   
+        Talking to someone who knows more about Sea Lamprey's may be a good idea. 
+        Maybe going to the <i>Museum<i> or even the <i>University Researh Lab<i>. 
+
+{@Angler2} 
+        Going to the <i>Town Hall<i> may be a good idea as well. 
+
+{@} 
+        You think to yourself, where would be the best next place to go. 
+
+$choice .DNR.Office; DNR Office
+$choice .University.Research.Lab; The Research Lab
+$choice .Town.Hall; Town Hall
+$choose branch
+
+:: Docks.Attention.A
+{@}     As you approach, you notice the Anglers staring at a whitefish.
+        On the whitefish is a bite mark. 
+        Before you could study it further, Angler 1 and Angler 2 turn towards you startled. 
+
+{@Angler1}      Holy worms kid! Can't sneak on an old soul like that! 
+{@Angler2}      Ye' tryin' to kill us? 
+
+{@Player}       No! Sorry, I... just... what's with the fish? 
+ 
+:: Docks.Attention.B
+
+{@Angler1}      Huh? Oh kid! Nice to see ya! To answer your question...
+{@Angler2}      Nay, things be not well... 
+
+{@Player}       How come? 
+
+:: Docks.Attention.C
+
+{@} Both the Anglers turn your way. 
+
+{@Angler2} Aye. When the lady of the lake be singing her solemn song. 
+{@Angler1} ...Pardon him. But he's right, it's a solemn day indeed. 
+
+{@Player} What's wrong?
+
+:: Nature.Museum
+
+$goto .Nature.Museum.Location
+
+{@Player} The Museuam seems the best place to go. 
+
+{@Angler1} Good choice, they may provide more info on what's going on. 
+
+:: University.Research.Lab
+
+{@Player} The University Research Lab. I remember hearing they were studying lampreys. 
+
+{@Angler2} Aye, they might put a stop to this. 
+
+$goto .University.Research.Lab.Location
+
+:: Town.Hall
+
+{@Player} I can always bring it to Town Hall. 
+
+{@Angler1} Ah. Politics. Have fun convincing them to do anything. 
+
+$goto .Town.Hall.Location.One
+
+//endregion 
+
+// #region Museum 
+
+:: Museum.Location
+
+{@} 
+        You make your way to the Museum.
+        You see the curator entranced in a book. It's titled <i>Sea Lamprey<i> 
+        She speaks to you, still reading her book. 
+
+{@Curator}
+        Welcome to the Nature Museum. Tours on the right. Studies on the left. Have fun. 
+
+{@Player} 
+        Actually, I was wondering if I could learn more about Sea Lamprey. 
+
+{@}     The Curator's eyes glance up at you for the first time. They light up. 
+
+{@Curator} 
+        You're interested in Sea Lamprey? 
+
+{@Player} 
+        Uh... yes-- 
+
+{@} 
+        The curator shoots up, digs under their desk and lays out several documents and books. 
+        All of the books are related to Sea Lamprey. 
+        The Curator has an eager grin on their face. 
+
+{@Curator} 
+        What do you want to know? 
+
+$choice .Lamprey.Bites; Could you confirm that these bites are Sea Lamprey? 
+$choice .Lamprey.Origin; Where do sea lamprey come from? 
+$choice .Lamprey.Invasive; Why are Sea Lamprey considered invasive? 
+$choose 
+
+:: Lamprey.Bites 
+
+{@}
+        You show the curator the picture of the bite on your phone. 
+
+{@Curator}
+        Yes. Sea Lamprey are known for their circular bites. This came from the docks? 
+
+{@}     You nod your head. 
+
+{@Curator} 
+        This would make sense, given my research. 
+
+{@}     
+        That confirms the anglers concerns. 
+
+{@Curator}
+        What else did you want to learn about Sea Lamprey? 
+
+$choice .Lamprey.Stop; How do we put a stop to the Sea Lamprey? 
+$choice .Lamprey.Origin; Where are they coming from?  
+$choice .Lamprey.Invasive; Is there any vital info I should know about Sea Lamprey? 
+
+:: Lamprey.Origin 
+
+$set local:Lamprey.Origin = true 
+
+{@Curator} 
+        Sea Lamprey originated from the canals that lead tot he Atalantic. 
+        They were introduced to the region when shipping routes were made to bypass Niagra Falls. 
+
+$if local:Lamprey.Origin = true 
+$endif local:Lamprey.Invasive = false 
+
+
+
+$if local:Lamprey.Origin = true 
+$endif local:Lamprey.Invasive = true 
+
+
+
+
+
+
+:: Lamprey.Invasive 
+
+$set local:Lamprey.Invasive = true 
+
+:: Lamprey.Stop 
+
+
+
+
+
+
+//endregion 
+
+//#region Uni. RL
+
+:: University.Research.Lab.Location
+
+// #DEVNOTE - Create Grad Student Character in Unity 
+
+
+
+
+
+
+
+
+
+
+// #region Town Hall 
+
+:: Town.Hall.Location.One
+
+{@}     You walk towards the Town Hall. 
+        You enter the building and it just so happens the mayor is standing in the lobby. 
+        How convenient. 
+
+{@Player}      
+        Madam Mayor!
+
+{@Mayor} 
+        Hi! Do... I know you? 
+
+{@Player} 
+        I'm investigating the Sea Lamprey in town. Mayor, it's serious. We need to do something. 
+
+{@Mayor} 
+        I see, well, I can't just do anything based on hearsay. You got anything to back up these claims? 
+
+$choice .Town.Hall.A; Both
+$choice .Town.Hall.B; One
+$choice .Town.Hall.C; Zero
+$choose branch
+
+//NOTE - Test function is compatible, may run into issues using conjuncting terms. DNR and Uni need to be completed before testing.  
+
+::Town.Hall.A
+
+//NOTE - Figure out conditions for true/false statements
+        
+
+{@Mayor} 
+        Great! Lets get to work. 
+
+:: Town.Hall.B
+
+{@Mayor} 
+        This is good, but still not enough. Looks like you could go to the DNR. 
+
+$endif local:Complete.University || local:Complete.DNR
+
+{@Mayor} 
+        This is good, but still not enough. Looks like you could go to the University. 
+
+::Town.Hall.C
+$set local:Complete.Uniserity = false
+$set local:Complete.DNR = false
+
+{@Mayor} 
+        Sorry, I don't think I can do anything without proper evidence/actions. 
+        Try going to the DNR or the University, then you can come back!
+
+
+
+:: DNR.Location
+// #DEVNOTE - Create Researcher Character in Unity 
+
+{@} 
+        You make your way to the DNR Office. 
+        You find a DNR Researcher. They greet you with a smile. 
+
+{@Researcher} 
+        Hi there! Welcome to the DNR Station. We're one of two in town. 
+        How can I help you? 
+
+{@Player}
+        I'm hoping to learn more about Sea Lamprey. 
+
+
+
+:: Complete.Mueseum 
+
+:: Complete.University
+$set local:Complete.University = true 
+
+:: Complete.DNR
+$set local:Complete.DNR = true 
