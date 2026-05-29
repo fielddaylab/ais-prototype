@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 02e7d789d0f14614aa645180b1a71e33, type: 3}
-  m_Name: Curator
+  m_Name: Boss
   m_EditorClassIdentifier: 
-  DisplayName: Curator
+  DisplayName: Boss
   TextStyle:
-    m_HashValue: 2517740986
+    m_HashValue: 0
