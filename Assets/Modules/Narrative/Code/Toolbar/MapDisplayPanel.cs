@@ -20,6 +20,7 @@ namespace AIS.Narrative
 
 
         public GameObject travelPointsContainer;
+        public GameObject mapImage;
         public TravelPointsDisplay hubSelectionDisplay;
         public TravelPointsDisplay[] travelPointsDisplays;
         private int currentHubIdx;
@@ -29,6 +30,11 @@ namespace AIS.Narrative
         {
             base.Awake();
             Hide();
+
+            if (InvasionModel.Instance != null)
+            {
+                InvasionModel.Instance.gameObject.SetActive(false);
+            }
 
             travelButton.onClick.AddListener(() => SwitchMapMode(MapMode.Travel));
             modelButton.onClick.AddListener(() => SwitchMapMode(MapMode.Model));
@@ -48,8 +54,19 @@ namespace AIS.Narrative
             Game.Gui.PopPriority(m_InputLayer);
             base.Hide();
 
+            if (mapImage != null)
+            {
+                mapImage.SetActive(false);
+            }
+
             if (InvasionModel.Instance != null)
-                SwitchMapMode(MapMode.Model); // enable all icons in InvasionModel before closing
+            {
+                InvasionModel.Instance.gameObject.SetActive(false);
+            }
+
+            //if (InvasionModel.Instance != null)
+            //    SwitchMapMode(MapMode.Model); // enable all icons in InvasionModel before closing
+            currMode = null;
         }
 
         private void SwitchMapMode(MapMode newMode)
@@ -58,10 +75,20 @@ namespace AIS.Narrative
 
             currMode = newMode;
             Debug.Log($"[MapDisplayPanel] Switch map to {newMode}");
-
-            Transform container = InvasionModel.Instance.gameObject.transform.GetChild(1);
+            //Transform container = InvasionModel.Instance.gameObject.transform.GetChild(1);
             bool isTravelMode = newMode == MapMode.Travel;
 
+            if (InvasionModel.Instance != null)
+            {
+                InvasionModel.Instance.gameObject.SetActive(!isTravelMode);
+            }
+
+            if (mapImage != null)
+            {
+                mapImage.SetActive(isTravelMode);
+            }
+
+            /*
             for (int i = 0; i < container.childCount; i++)
             {
                 GameObject child = container.GetChild(i).gameObject;
@@ -77,6 +104,7 @@ namespace AIS.Narrative
                     child.SetActive(!isTravelMode);
                 }
             }
+            */
 
             travelPointsContainer.SetActive(isTravelMode);
             if (isTravelMode)

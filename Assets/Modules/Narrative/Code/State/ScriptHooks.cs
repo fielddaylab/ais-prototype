@@ -79,6 +79,21 @@ namespace AIS.Narrative {
             }
         }
 
+        [LeafMember("EnableMapButton")]
+        static public IEnumerator EnableMapButton()
+        {
+            PlayerInventory inv = Find.State<PlayerInventory>();
+            yield return EnsureMapVisible(inv);
+        }
+
+        [LeafMember("DisableMapButton")]
+        static public void DisableMapButton()
+        {
+            var toolbar = Find.GuiModule<ToolbarPanel>();
+            toolbar.MapButton.Fader.blocksRaycasts = false;
+            toolbar.MapButton.Fader.alpha = 0;
+        }
+
         static private IEnumerator EnsureEvidenceVisible(PlayerInventory inv) {
             if ((inv.ToolbarItems & PlayerToolbarMask.Evidence) == 0) {
                 inv.ToolbarItems |= PlayerToolbarMask.Evidence;

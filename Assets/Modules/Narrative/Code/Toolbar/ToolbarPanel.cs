@@ -60,10 +60,13 @@ namespace AIS.Narrative {
             } else {
                 statPanel.Hide();
                 evidencePanel.Hide();
+                if (InvasionModel.Instance != null) {
+                    InvasionModel.Instance.gameObject.SetActive(false);
+                }
                 mapPanel.Show();
             }
             Find.GuiModule<DialoguePanel>().SetVisible(!mapPanel.IsShowing());
-            InvasionModel.Instance.gameObject.SetActive(mapPanel.IsShowing());
+            //InvasionModel.Instance.gameObject.SetActive(mapPanel.IsShowing());
         }
 
         private void ToggleEvidence() {
