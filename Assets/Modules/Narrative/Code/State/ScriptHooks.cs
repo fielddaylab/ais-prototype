@@ -12,6 +12,11 @@ namespace AIS.Narrative {
             return Find.State<PlayerStats>().StatBlock[statId];
         }
 
+        [LeafMember("StatCheck")]
+        static public bool StatCheck(PlayerStatId statId, int value) {
+            return Find.State<PlayerStats>().StatBlock[statId] >= value;
+        }
+
         [LeafMember("SetStat")]
         static public void SetStat(PlayerStatId statId, int value) {
             ref PlayerStatBlock statBlock = ref Find.State<PlayerStats>().StatBlock;
@@ -120,6 +125,26 @@ namespace AIS.Narrative {
         static public bool HasEvidenceCard(StringHash32 id) {
             PlayerInventory inv = Find.State<PlayerInventory>();
             return inv.EvidenceCards.Contains(id);
+        }
+
+        [LeafMember("DecreaseTime")]
+        static public void DecreaseTime(int chunks) {
+            PlayerUtility.DecreaseTime(chunks);
+        }
+
+        [LeafMember("HasTime")]
+        static public bool HasTime(int chunks = 1) {
+            return Find.State<PlayerInventory>().TimeRemaining >= chunks;
+        }
+
+        [LeafMember("IsOutOfTime")]
+        static public bool IsOutOfTime() {
+            return Find.State<PlayerInventory>().TimeRemaining <= 0;
+        }
+
+        [LeafMember("HasChoices")]
+        static public bool HasChoices([BindThread] ScriptThread thread) {
+            return thread.AvailableOptionCount(DialogueChoiceUtility.SelectablePredicate) > 0;
         }
     }
 }

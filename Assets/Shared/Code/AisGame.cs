@@ -26,6 +26,7 @@ public sealed class AisGame : Game {
     static private void OnBoot() {
         SharedState.Register(new PlayerInventory());
         SharedState.Register(new PlayerStats());
+        SharedState.Register(new ScriptMemory());
 
         ScriptUtility.RegisterReplaceRule("pg").ReplaceWith((TagData inTag, object inContext) => {
             TempList8<StringSlice> args = default;
