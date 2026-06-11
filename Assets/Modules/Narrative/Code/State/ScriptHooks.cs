@@ -94,6 +94,13 @@ namespace AIS.Narrative {
             toolbar.MapButton.Fader.alpha = 0;
         }
 
+        [LeafMember("EnableModelButton")]
+        static public IEnumerator EnableModelButton()
+        {
+            PlayerInventory inv = Find.State<PlayerInventory>();
+            yield return EnsureStatsVisible(inv);
+        }
+
         static private IEnumerator EnsureEvidenceVisible(PlayerInventory inv) {
             if ((inv.ToolbarItems & PlayerToolbarMask.Evidence) == 0) {
                 inv.ToolbarItems |= PlayerToolbarMask.Evidence;
@@ -111,12 +118,13 @@ namespace AIS.Narrative {
             }
             return null;
         }
-
+        
+        // TODO: stats are not a toolbar tab anymore
         static private IEnumerator EnsureStatsVisible(PlayerInventory inv) {
-            if ((inv.ToolbarItems & PlayerToolbarMask.Stats) == 0) {
-                inv.ToolbarItems |= PlayerToolbarMask.Stats;
+            if ((inv.ToolbarItems & PlayerToolbarMask.Model) == 0) {
+                inv.ToolbarItems |= PlayerToolbarMask.Model;
                 ToolbarPanel toolbar = Find.GuiModule<ToolbarPanel>();
-                return ToolbarPanel.UnlockToolbarButtonAnimation(toolbar.StatsMissing, toolbar.StatsButton);
+                return ToolbarPanel.UnlockToolbarButtonAnimation(toolbar.ModelMissing, toolbar.ModelButton);
             }
             return null;
         }

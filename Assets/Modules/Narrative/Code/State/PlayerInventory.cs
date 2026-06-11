@@ -37,10 +37,10 @@ namespace AIS.Narrative {
     public enum PlayerToolbarMask : uint {
         Evidence = 0x01,
         Map = 0x02,
-        Stats = 0x04,
+        Model = 0x04,
         Time = 0x08,
 
-        All = Evidence | Map | Stats | Time
+        All = Evidence | Map | Model | Time
     }
 
     static public partial class PlayerUtility {

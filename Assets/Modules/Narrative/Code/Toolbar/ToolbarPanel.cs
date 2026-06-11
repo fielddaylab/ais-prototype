@@ -12,8 +12,8 @@ using UnityEngine.UI;
 
 namespace AIS.Narrative {
     public sealed class ToolbarPanel : BaseGuiModule, IScenePreload {
-        public ToolbarButton StatsButton;
-        public Image StatsMissing;
+        public ToolbarButton ModelButton;
+        public Image ModelMissing;
         public ToolbarButton MapButton;
         public Image MapMissing;
         public ToolbarButton EvidenceButton;
@@ -23,11 +23,11 @@ namespace AIS.Narrative {
         public GuiCounter TimeCounter;
 
         IEnumerator<WorkSlicer.Result?> IScenePreload.Preload() {
-            StatsButton.Listener.onClick.Register(ToggleStats);
+            ModelButton.Listener.onClick.Register(ToggleModel);
             MapButton.Listener.onClick.Register(ToggleMap);
             EvidenceButton.Listener.onClick.Register(ToggleEvidence);
 
-            ResetToolbarButton(StatsMissing, StatsButton, false);
+            ResetToolbarButton(ModelMissing, ModelButton, false);
             ResetToolbarButton(MapMissing, MapButton, false);
             ResetToolbarButton(EvidenceMissing, EvidenceButton, false);
             ResetTimeGroup(TimeGroup, false);
@@ -35,49 +35,52 @@ namespace AIS.Narrative {
             return null;
         }
 
-        private void ToggleStats() {
+        private void ToggleModel() {
             var mapPanel = Find.Panel<MapDisplayPanel>();
-            var statPanel = Find.Panel<StatDisplayPanel>();
+            var modelPanel = Find.Panel<ModelDisplayPanel>();
             var evidencePanel = Find.Panel<EvidenceDisplayPanel>();
-            if (statPanel.IsShowing()) {
-                statPanel.Hide();
+
+            if (modelPanel.IsShowing()) {
+                modelPanel.Hide();
+                InvasionModel.Instance.gameObject.SetActive(false);
             } else {
                 mapPanel.Hide();
                 evidencePanel.Hide();
-                statPanel.Populate(Find.State<PlayerStats>().StatBlock);
-                statPanel.Show();
+                //modelPanel.Populate(Find.State<PlayerStats>().StatBlock);
+                modelPanel.Show();
             }
-            Find.GuiModule<DialoguePanel>().SetVisible(true);
-            InvasionModel.Instance.gameObject.SetActive(false);
+            Find.GuiModule<DialoguePanel>().SetVisible(!modelPanel.IsShowing());
+            //InvasionModel.Instance.gameObject.SetActive(modelPanel.IsShowing());
         }
 
         private void ToggleMap() {
             var mapPanel = Find.Panel<MapDisplayPanel>();
-            var statPanel = Find.Panel<StatDisplayPanel>();
+            var modelPanel = Find.Panel<ModelDisplayPanel>();
             var evidencePanel = Find.Panel<EvidenceDisplayPanel>();
             if (mapPanel.IsShowing()) {
                 mapPanel.Hide();
             } else {
-                statPanel.Hide();
+                modelPanel.Hide();
+                InvasionModel.Instance.gameObject.SetActive(false);
                 evidencePanel.Hide();
-                if (InvasionModel.Instance != null) {
-                    InvasionModel.Instance.gameObject.SetActive(false);
-                }
+                //if (InvasionModel.Instance != null) {
+                //    InvasionModel.Instance.gameObject.SetActive(false);
+                //}
                 mapPanel.Show();
             }
             Find.GuiModule<DialoguePanel>().SetVisible(!mapPanel.IsShowing());
-            //InvasionModel.Instance.gameObject.SetActive(mapPanel.IsShowing());
         }
 
         private void ToggleEvidence() {
             var mapPanel = Find.Panel<MapDisplayPanel>();
-            var statPanel = Find.Panel<StatDisplayPanel>();
+            var modelPanel = Find.Panel<ModelDisplayPanel>();
             var evidencePanel = Find.Panel<EvidenceDisplayPanel>();
             if (evidencePanel.IsShowing()) {
                 evidencePanel.Hide();
             } else {
                 mapPanel.Hide();
-                statPanel.Hide();
+                modelPanel.Hide();
+                InvasionModel.Instance.gameObject.SetActive(false);
                 evidencePanel.Populate(Find.State<PlayerInventory>());
                 evidencePanel.Show();
             }

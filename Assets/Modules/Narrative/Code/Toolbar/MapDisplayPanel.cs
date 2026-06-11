@@ -15,7 +15,7 @@ namespace AIS.Narrative
             Travel, // move between locations
             Model // view the invasion model
         }
-        private MapMode? currMode = null;
+        private MapMode? currMode = MapMode.Travel;
         public Button travelButton, modelButton;
 
 
@@ -30,14 +30,9 @@ namespace AIS.Narrative
         {
             base.Awake();
             Hide();
+            //travelButton.onClick.AddListener(() => SwitchMapMode(MapMode.Travel));
+            ShowMap(); // default to travel mode
 
-            if (InvasionModel.Instance != null)
-            {
-                InvasionModel.Instance.gameObject.SetActive(false);
-            }
-
-            travelButton.onClick.AddListener(() => SwitchMapMode(MapMode.Travel));
-            modelButton.onClick.AddListener(() => SwitchMapMode(MapMode.Model));
             currentHubIdx = 0;
         }
 
@@ -46,7 +41,7 @@ namespace AIS.Narrative
             base.Show();
             Game.Gui.PushPriority(m_InputLayer);
 
-            SwitchMapMode(MapMode.Travel); // default
+            ShowMap();
         }
 
         public override void Hide()
@@ -59,54 +54,21 @@ namespace AIS.Narrative
                 mapImage.SetActive(false);
             }
 
-            if (InvasionModel.Instance != null)
-            {
-                InvasionModel.Instance.gameObject.SetActive(false);
-            }
-
-            //if (InvasionModel.Instance != null)
-            //    SwitchMapMode(MapMode.Model); // enable all icons in InvasionModel before closing
-            currMode = null;
+            //currMode = null;
         }
 
-        private void SwitchMapMode(MapMode newMode)
+        private void ShowMap()
         {
-            if (currMode == newMode) return;
-
-            currMode = newMode;
-            Debug.Log($"[MapDisplayPanel] Switch map to {newMode}");
-            //Transform container = InvasionModel.Instance.gameObject.transform.GetChild(1);
-            bool isTravelMode = newMode == MapMode.Travel;
-
-            if (InvasionModel.Instance != null)
-            {
-                InvasionModel.Instance.gameObject.SetActive(!isTravelMode);
-            }
-
             if (mapImage != null)
             {
-                mapImage.SetActive(isTravelMode);
+                mapImage.SetActive(true);
             }
+
+            travelPointsContainer.SetActive(true);
+            selectedHubIdx = currentHubIdx;
+            TravelToSelectedHub();
 
             /*
-            for (int i = 0; i < container.childCount; i++)
-            {
-                GameObject child = container.GetChild(i).gameObject;
-                // Travel mode: Hide icons
-                // Model mode: Show icons
-                if (child.name.StartsWith("Pathway"))
-                {
-                    child.transform.GetChild(1).gameObject.SetActive(!isTravelMode);
-                    child.transform.GetChild(2).gameObject.SetActive(!isTravelMode);
-                }
-                else if (child.name.StartsWith("Species"))
-                {
-                    child.SetActive(!isTravelMode);
-                }
-            }
-            */
-
-            travelPointsContainer.SetActive(isTravelMode);
             if (isTravelMode)
             {
                 selectedHubIdx = currentHubIdx;
@@ -118,10 +80,11 @@ namespace AIS.Narrative
                 Camera.main.transform.position = hubSelectionDisplay.cameraTransform;
                 Camera.main.orthographicSize = 5f;
             }
+            */
 
             // TODO: current code is temporary -- implement proper animation later
-            travelButton.GetComponent<RoundedRectGraphic>().color = isTravelMode ? Color.white : Color.gray;
-            modelButton.GetComponent<RoundedRectGraphic>().color = isTravelMode ? Color.gray : Color.white;
+            //travelButton.GetComponent<RoundedRectGraphic>().color = isTravelMode ? Color.white : Color.gray;
+            //modelButton.GetComponent<RoundedRectGraphic>().color = isTravelMode ? Color.gray : Color.white;
         }
 
         public void ShowHubSelectionPanel()

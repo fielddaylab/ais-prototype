@@ -1546,7 +1546,7 @@ PrefabInstance:
       objectReference: {fileID: -3226023648401506539, guid: a755f22d07c6e174daea5823df199281, type: 3}
     - target: {fileID: 3282974178959211452, guid: 64a566afa857e504ea29d3fcd3a1ebdd, type: 3}
       propertyPath: m_Name
-      value: Stats
+      value: Model
       objectReference: {fileID: 0}
     - target: {fileID: 3387960625443548020, guid: 64a566afa857e504ea29d3fcd3a1ebdd, type: 3}
       propertyPath: m_Pivot.x
@@ -1630,7 +1630,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5259678250882653231, guid: 64a566afa857e504ea29d3fcd3a1ebdd, type: 3}
       propertyPath: m_text
-      value: Stats
+      value: Model
       objectReference: {fileID: 0}
     - target: {fileID: 5259678250882653231, guid: 64a566afa857e504ea29d3fcd3a1ebdd, type: 3}
       propertyPath: m_ActiveFontFeatures.Array.data[0]
@@ -1638,7 +1638,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6553197160556178368, guid: 64a566afa857e504ea29d3fcd3a1ebdd, type: 3}
       propertyPath: TooltipHeader
-      value: Stats
+      value: Model
       objectReference: {fileID: 0}
     - target: {fileID: 8517469443237463300, guid: 64a566afa857e504ea29d3fcd3a1ebdd, type: 3}
       propertyPath: m_Sprite
