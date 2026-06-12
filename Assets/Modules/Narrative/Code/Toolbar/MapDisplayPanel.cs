@@ -1,10 +1,11 @@
 using AIS.Model;
 using AIS.Narrative;
+using BeauUtil;
+using BeauUtil.UI;
 using FieldDay;
 using FieldDay.UI;
 using UnityEngine;
 using UnityEngine.UI;
-using BeauUtil.UI;
 
 namespace AIS.Narrative
 {
@@ -115,7 +116,7 @@ namespace AIS.Narrative
         }
 
         //TODO: control location accessibility via script hooks
-        public void UnlockLocation(string locationId)
+        public void UnlockLocation(StringHash32 locationId)
         {
 
         }
