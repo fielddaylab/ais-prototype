@@ -66,24 +66,17 @@ namespace AIS.Narrative
 
             travelPointsContainer.SetActive(true);
             selectedHubIdx = currentHubIdx;
-            TravelToSelectedHub();
+            travelPointsDisplays[selectedHubIdx].TravelToSelectedLocation();
 
-            /*
-            if (isTravelMode)
-            {
-                selectedHubIdx = currentHubIdx;
-                TravelToSelectedHub();
-            }
-            else
-            {
-                // Zoom out
-                Camera.main.transform.position = hubSelectionDisplay.cameraTransform;
-                Camera.main.orthographicSize = 5f;
-            }
-            */
+            selectedHubIdx = currentHubIdx;
+            TravelToSelectedHub();
+            
+            // Zoom out
+            //Camera.main.transform.position = hubSelectionDisplay.cameraTransform;
+            //Camera.main.orthographicSize = 5f;
 
             // TODO: current code is temporary -- implement proper animation later
-            //travelButton.GetComponent<RoundedRectGraphic>().color = isTravelMode ? Color.white : Color.gray;
+            //travelButton.GetComponent<RoundedRectGraphic>().color = Color.white;
             //modelButton.GetComponent<RoundedRectGraphic>().color = isTravelMode ? Color.gray : Color.white;
         }
 
@@ -120,5 +113,6 @@ namespace AIS.Narrative
             hubSelectionDisplay.TravelToSelectedLocation();
             travelPointsDisplays[currentHubIdx].gameObject.SetActive(true);
         }
+        
     }
 }

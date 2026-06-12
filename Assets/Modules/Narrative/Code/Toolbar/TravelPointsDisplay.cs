@@ -16,7 +16,11 @@ namespace AIS.Narrative
         [System.Serializable]
         public class Path
         {
-            public Image[] connectedLocations;
+            //public Image[] connectedLocations;
+            public Image Origin;
+            public Image Destination;
+            public Image[] connectedLocations => new Image[] { Origin, Destination };
+            // origin & dest
             public float travelTime;
             public GameObject time;
             public Image line;
@@ -61,11 +65,8 @@ namespace AIS.Narrative
                 bool isConnected = path.connectedLocations.Contains(locations[currentLocationIdx]);
                 path.line.color = isConnected ? Color.white : Color.gray;
                 path.time.SetActive(false);
-                if (isConnected)
-                {
-                    path.connectedLocations[0].GetComponent<Button>().interactable = true;
-                    path.connectedLocations[1].GetComponent<Button>().interactable = true;
-                }
+                path.connectedLocations[0].GetComponent<Button>().interactable = true;
+                path.connectedLocations[1].GetComponent<Button>().interactable = true;
             }
 
             locations[currentLocationIdx].color = Color.magenta;
@@ -78,16 +79,18 @@ namespace AIS.Narrative
             if (selectedLocationIdx != currentLocationIdx)
             {
                 locations[selectedLocationIdx].color = Color.cyan;
-                selectedPath.line.color = Color.white;
-                selectedPath.time.SetActive(false);
+                //selectedPath.line.color = Color.white;
+                //selectedPath.time.SetActive(false);
             }
 
             // Return to hub selection if player is currently at hub and selected hub
+            /*
             if (currentLocationIdx == 0 && index == 0)
             {
                 mapDisplayPanel.ShowHubSelectionPanel();
                 return;
             }
+            */
 
             // Highlight new selected location and path
             selectedLocationIdx = index;
@@ -98,8 +101,8 @@ namespace AIS.Narrative
                     selectedPath = path;
             }
             locations[index].color = Color.yellow;
-            selectedPath.line.color = Color.yellow;
-            selectedPath.time.SetActive(true);
+            //selectedPath.line.color = Color.yellow;
+            //selectedPath.time.SetActive(true);
 
             travelButton.interactable = true;
         }
