@@ -144,5 +144,10 @@ namespace AIS.Narrative {
             PlayerInventory inv = Find.State<PlayerInventory>();
             return inv.EvidenceCards.Contains(id);
         }
-    }
+
+        [LeafMember("UnlockLocation")]
+        static public void UnlockLocation(StringHash32 locationId) {
+            var mapPanel = Find.Panel<MapDisplayPanel>();
+            mapPanel.UnlockLocation(locationId);
+        }
 }

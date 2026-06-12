@@ -21,8 +21,8 @@ namespace AIS.Narrative
             public Image Destination;
             public Image[] connectedLocations => new Image[] { Origin, Destination };
             // origin & dest
-            public float travelTime;
-            public GameObject time;
+            //public float travelTime;
+            //public GameObject time;
             public Image line;
         }
 
@@ -41,15 +41,21 @@ namespace AIS.Narrative
         private void Awake()
         {
             SetCurrentLocation(0);
+            locations[currentLocationIdx].color = Color.cyan;
         }
 
         public void SetCurrentLocation(int index)
         {
             // Deselect current location
             locations[currentLocationIdx].color = Color.cyan;
+            for (int i = 0; i < locations.Length; i++)
+            {
+                if (i == currentLocationIdx) { continue; }
+                locations[i].color = Color.magenta;
+            }
             
             // Deselect selected location and path
-            locations[selectedLocationIdx].color = Color.cyan;
+            //locations[selectedLocationIdx].color = Color.yellow;
             selectedPath = null;
             
             currentLocationIdx = index;
@@ -57,28 +63,28 @@ namespace AIS.Narrative
 
             foreach (Image location in locations)
             {
-                location.GetComponent<Button>().interactable = false;
+                location.GetComponent<Button>().interactable = true;
             }
 
             foreach (Path path in paths)
             {
                 bool isConnected = path.connectedLocations.Contains(locations[currentLocationIdx]);
-                path.line.color = isConnected ? Color.white : Color.gray;
-                path.time.SetActive(false);
+                path.line.color = Color.white;
                 path.connectedLocations[0].GetComponent<Button>().interactable = true;
                 path.connectedLocations[1].GetComponent<Button>().interactable = true;
             }
 
-            locations[currentLocationIdx].color = Color.magenta;
+            //locations[currentLocationIdx].color = Color.magenta;
             travelButton.interactable = false;
         }
 
         public void SelectLocation(int index)
         {
             // Deselect current selected location
-            if (selectedLocationIdx != currentLocationIdx)
+            if (selectedLocationIdx != index)
             {
-                locations[selectedLocationIdx].color = Color.cyan;
+                locations[selectedLocationIdx].color = Color.magenta;
+                locations[currentLocationIdx].color = Color.cyan;
                 //selectedPath.line.color = Color.white;
                 //selectedPath.time.SetActive(false);
             }
@@ -97,7 +103,7 @@ namespace AIS.Narrative
             foreach (Path path in paths)
             {
                 if (path.connectedLocations.Contains(locations[currentLocationIdx]) &&
-                path.connectedLocations.Contains(locations[index]))
+                    path.connectedLocations.Contains(locations[index]))
                     selectedPath = path;
             }
             locations[index].color = Color.yellow;
@@ -109,7 +115,7 @@ namespace AIS.Narrative
 
         public void TravelToSelectedLocation()
         {   
-            Debug.Log($"[TravelPointsDisplay] Travel to {locations[selectedLocationIdx]} in {selectedPath?.travelTime * 15} minutes");
+            Debug.Log($"[TravelPointsDisplay] Travel to {locations[selectedLocationIdx]}");
             SetCurrentLocation(selectedLocationIdx);
         }
     }

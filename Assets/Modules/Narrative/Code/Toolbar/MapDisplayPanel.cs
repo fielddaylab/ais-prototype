@@ -113,6 +113,11 @@ namespace AIS.Narrative
             hubSelectionDisplay.TravelToSelectedLocation();
             travelPointsDisplays[currentHubIdx].gameObject.SetActive(true);
         }
-        
+
+        //TODO: control location accessibility via script hooks
+        public void UnlockLocation(string locationId)
+        {
+
+        }
     }
 }
