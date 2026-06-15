@@ -82,6 +82,11 @@ namespace AIS.Narrative {
                 modelPanel.Hide();
                 InvasionModel.Instance.gameObject.SetActive(false);
                 evidencePanel.Populate(Find.State<PlayerInventory>());
+
+                var stats = Find.State<PlayerStats>();
+                Debug.Log($"PlayerStats: {stats}, StatBlock: {stats?.StatBlock}");
+                Debug.Log($"Stats length: {stats.StatBlock.Communicate}");
+                evidencePanel.PopulateStats(Find.State<PlayerStats>().StatBlock);
                 evidencePanel.Show();
             }
             Find.GuiModule<DialoguePanel>().SetVisible(true);

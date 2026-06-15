@@ -56,12 +56,12 @@ namespace AIS.Narrative {
                 if (column)
                 {
                     yield return TextUtility.DisplayStatUpdate(column, statId, originalValue, currentStat);
-                    yield return EnsureStatsVisible(inv);
+                    yield return EnsureModelVisible(inv);
                     yield return column.CompleteLine();
                 }
                 else
                 {
-                    yield return EnsureStatsVisible(inv);
+                    yield return EnsureModelVisible(inv);
                 }
             }
         }
@@ -87,14 +87,21 @@ namespace AIS.Narrative {
                 if (column)
                 {
                     yield return TextUtility.DisplayNewEvidence(column, id);
-                    yield return EnsureEvidenceVisible(inv);
+                    yield return EnsureNotesVisible(inv);
                     yield return column.CompleteLine();
                 }
                 else
                 {
-                    yield return EnsureEvidenceVisible(inv);
+                    yield return EnsureNotesVisible(inv);
                 }
             }
+        }
+
+        [LeafMember("EnableFieldNotesButton")]
+        static public IEnumerator EnableNotesButton()
+        {
+            PlayerInventory inv = Find.State<PlayerInventory>();
+            yield return EnsureNotesVisible(inv);
         }
 
         [LeafMember("EnableMapButton")]
@@ -116,10 +123,10 @@ namespace AIS.Narrative {
         static public IEnumerator EnableModelButton()
         {
             PlayerInventory inv = Find.State<PlayerInventory>();
-            yield return EnsureStatsVisible(inv);
+            yield return EnsureModelVisible(inv);
         }
 
-        static private IEnumerator EnsureEvidenceVisible(PlayerInventory inv)
+        static private IEnumerator EnsureNotesVisible(PlayerInventory inv)
         {
             if ((inv.ToolbarItems & PlayerToolbarMask.Evidence) == 0)
             {
@@ -142,7 +149,7 @@ namespace AIS.Narrative {
         }
 
         // TODO: stats are not a toolbar tab anymore
-        static private IEnumerator EnsureStatsVisible(PlayerInventory inv)
+        static private IEnumerator EnsureModelVisible(PlayerInventory inv)
         {
             if ((inv.ToolbarItems & PlayerToolbarMask.Model) == 0)
             {

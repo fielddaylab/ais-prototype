@@ -133,6 +133,7 @@ MonoBehaviour:
   m_pageToDisplay: 1
   m_maxLineWidth: 0
   m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_roundUpCalculatedPreferredValues: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -361,6 +362,7 @@ MonoBehaviour:
   Flags: 0
   TooltipHeader: 
   Tooltip: 
+  TooltipFooter: 
 --- !u!114 &8206488227437912378
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -444,14 +446,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 2100000, guid: 4bf7827f87effae4c87139268974fec1, type: 2}
-  m_Color: {r: 0, g: 1, b: 0.08817577, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -6568162969243666371, guid: 345fbaa501b7c4c4a908be902f7fe16c, type: 3}
+  m_Sprite: {fileID: -1057867682, guid: a5cf73bba1cdc4919b0a016891c9389c, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -476,12 +478,12 @@ MonoBehaviour:
   Sprite: {fileID: 0}
   GuiSprite: {fileID: 5425194139748410991}
   Values:
-  - {fileID: 398039776799915940, guid: 345fbaa501b7c4c4a908be902f7fe16c, type: 3}
-  - {fileID: 7361351941042997837, guid: 345fbaa501b7c4c4a908be902f7fe16c, type: 3}
-  - {fileID: -7761206666640964530, guid: 345fbaa501b7c4c4a908be902f7fe16c, type: 3}
-  - {fileID: -6568162969243666371, guid: 345fbaa501b7c4c4a908be902f7fe16c, type: 3}
-  - {fileID: 9141688026468077146, guid: 345fbaa501b7c4c4a908be902f7fe16c, type: 3}
-  - {fileID: 2469997176580674408, guid: 345fbaa501b7c4c4a908be902f7fe16c, type: 3}
+  - {fileID: -1928280648, guid: a5cf73bba1cdc4919b0a016891c9389c, type: 3}
+  - {fileID: -502554856, guid: a5cf73bba1cdc4919b0a016891c9389c, type: 3}
+  - {fileID: -1057867682, guid: a5cf73bba1cdc4919b0a016891c9389c, type: 3}
+  - {fileID: -1648479924, guid: a5cf73bba1cdc4919b0a016891c9389c, type: 3}
+  - {fileID: -1062580349, guid: a5cf73bba1cdc4919b0a016891c9389c, type: 3}
+  - {fileID: 710450867, guid: a5cf73bba1cdc4919b0a016891c9389c, type: 3}
 --- !u!1 &2951974425976790317
 GameObject:
   m_ObjectHideFlags: 0

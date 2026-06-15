@@ -11,6 +11,7 @@ $call SetBackground("bg/Room.png")
 @trigger    ChapterStart
 @cutscene
 
+$call EnableFieldNotesButton()
 $call EnableMapButton()
 $call EnableModelButton()
 
