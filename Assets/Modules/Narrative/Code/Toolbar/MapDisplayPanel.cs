@@ -4,6 +4,7 @@ using BeauUtil;
 using BeauUtil.UI;
 using FieldDay;
 using FieldDay.UI;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,14 +12,7 @@ namespace AIS.Narrative
 {
     public sealed class MapDisplayPanel : SharedPanel
     {
-        private enum MapMode
-        {
-            Travel, // move between locations
-            Model // view the invasion model
-        }
-        private MapMode? currMode = MapMode.Travel;
         public Button travelButton, modelButton;
-
 
         public GameObject travelPointsContainer;
         public GameObject mapImage;
@@ -116,9 +110,10 @@ namespace AIS.Narrative
         }
 
         //TODO: control location accessibility via script hooks
-        public void UnlockLocation(StringHash32 locationId)
+        public void UnlockLocation(int index)
         {
-
+            TravelPointsDisplay currentHub = travelPointsDisplays[currentHubIdx];
+            currentHub.UnlockedLocations.Add(currentHub.locations[index]);
         }
     }
 }

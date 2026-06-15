@@ -173,10 +173,10 @@ namespace AIS.Narrative {
         }
 
         [LeafMember("UnlockLocation")]
-        static public void UnlockLocation(StringHash32 locationId)
+        static public void UnlockLocation(int index)
         {
             var mapPanel = Find.Panel<MapDisplayPanel>();
-            mapPanel.UnlockLocation(locationId);
+            mapPanel.UnlockLocation(index);
         }
     }
 }

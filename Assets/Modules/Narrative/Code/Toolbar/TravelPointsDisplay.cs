@@ -30,6 +30,7 @@ namespace AIS.Narrative
         public MapDisplayPanel mapDisplayPanel;
 
         public Image[] locations;
+        [HideInInspector] public List<Image> UnlockedLocations = new List<Image>();
         public Path[] paths;
 
         private int currentLocationIdx;
@@ -40,6 +41,7 @@ namespace AIS.Narrative
 
         private void Awake()
         {
+            UnlockedLocations.Add(locations[0]);
             SetCurrentLocation(0);
             locations[currentLocationIdx].color = Color.cyan;
         }
@@ -51,7 +53,17 @@ namespace AIS.Narrative
             for (int i = 0; i < locations.Length; i++)
             {
                 if (i == currentLocationIdx) { continue; }
-                locations[i].color = Color.magenta;
+
+                if (UnlockedLocations.Contains(locations[i]))
+                {
+                    locations[i].color = Color.magenta;
+                    locations[i].GetComponent<Button>().interactable = true;
+                }
+                else
+                {
+                    locations[i].color = Color.grey;
+                    locations[i].GetComponent<Button>().interactable = false;
+                }
             }
             
             // Deselect selected location and path
@@ -61,10 +73,10 @@ namespace AIS.Narrative
             currentLocationIdx = index;
             selectedLocationIdx = index;
 
-            foreach (Image location in locations)
-            {
-                location.GetComponent<Button>().interactable = true;
-            }
+            //foreach (Image location in locations)
+            //{
+            //    location.GetComponent<Button>().interactable = true;
+            //}
 
             foreach (Path path in paths)
             {
@@ -80,6 +92,12 @@ namespace AIS.Narrative
 
         public void SelectLocation(int index)
         {
+            if (!UnlockedLocations.Contains(locations[index]))
+            {
+                travelButton.interactable = false;
+                return;
+            }
+
             // Deselect current selected location
             if (selectedLocationIdx != index)
             {
