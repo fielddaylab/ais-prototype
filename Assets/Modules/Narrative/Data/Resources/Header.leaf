@@ -1,0 +1,38 @@
+// Shared choice macros. Include at the top of every chapter file:
+//   #include "Header.leaf"
+// (This file must stay in a Resources folder - leaf resolves #include via Resources.Load.)
+//
+// All macro choices disappear after their target node is visited ("Once").
+// For a repeatable choice, use a plain $choice (with $data Time = n if it costs time).
+
+// Time cost + once: the standard hub choice. Grays out when the player
+// can't afford the time.
+#macro HubChoice(nodeId, text, time) \
+    $choice $nodeId; $text \
+        $data Time = $time \
+        $data Once
+
+// Same as HubChoice, under a more literal name.
+#macro TimeChoice(nodeId, text, time) \
+    $choice $nodeId; $text \
+        $data Time = $time \
+        $data Once
+
+// Disappears after its target node is visited.
+#macro OnceChoice(nodeId, text) \
+    $choice $nodeId; $text \
+        $data Once
+
+// Stat requirement + once. Grays out (with a requirement label) unless the
+// player's stat meets the value. Stats: Tech, Research, Innovate, Ranger, Communicate.
+// To hide instead of gray, use a condition: $if StatCheck(Ranger, 3) ... $endif
+#macro StatChoice(nodeId, text, stat, value) \
+    $choice $nodeId; $text \
+        $data CheckStat = "$stat" \
+        $data CheckStatValue = $value \
+        $data Once
+
+// Only appears when no other choice is selectable. A hub with one of these
+// never triggers the engine's Fallback.OutOfOptions redirect.
+#macro FallbackChoice(nodeId, text) \
+    $choice $nodeId, !HasChoices(); $text

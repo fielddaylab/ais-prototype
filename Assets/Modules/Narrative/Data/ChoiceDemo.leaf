@@ -1,0 +1,172 @@
+#include "Header.leaf"
+
+// Demo of the choice systems, authored with the shared Header.leaf macros.
+// Every macro choice disappears after its target node is visited ("Once"):
+//   1. $OnceChoice              - once only
+//   2. $TimeChoice / $HubChoice - once + time cost; unaffordable choices gray out
+//   3. $StatChoice              - once + stat requirement; grays out with a label when unmet
+//   4. $FallbackChoice          - writer-authored fallback via !HasChoices()
+//   5. Fallback.OutOfOptions    - engine auto-jump when nothing is selectable (time left)
+//   6. Fallback.OutOfTime       - engine auto-jump when nothing is selectable (clock at 0)
+// Add this file to a ScriptLoader (in place of TestChapter) to run it.
+
+#basePath ChoiceDemo
+
+:: Preload
+@function   ChapterPreload
+
+$call SetBackground("bg/Room.png")
+
+:: Start
+@trigger    ChapterStart
+@cutscene
+
+{@}     Welcome to the choice demo.
+        First stop, the plaza. Every choice there is a once-only choice.
+        Pick one, and when you circle back, it will be gone.
+        When nothing is left, the game jumps to a fallback node on its own.
+
+$goto .Plaza.Hub
+
+// #region DEMO 1: Once filtering + engine OutOfOptions fallback
+
+:: Plaza.Hub
+
+{@}     The plaza. A few folks are out enjoying the morning.
+
+// All three are OnceChoices. Note: inspecting the fountain flows into the
+// mayor's scene via $goto - that counts as a visit, so "Flag down the mayor"
+// disappears too, even if it was never picked directly.
+$OnceChoice(.Plaza.Angler, "Talk to the angler hauling a cooler")
+$OnceChoice(.Plaza.Mayor, "Flag down the mayor")
+$OnceChoice(.Plaza.Fountain, "Inspect the fountain")
+$choose branch
+
+// branches return here; loop until the engine fallback fires
+$goto .Plaza.Hub
+
+:: Plaza.Angler
+
+{@Angler1}
+        Caught nothing all morning. Used to pull three, four trout out of here easy.
+
+{@Player}
+        Noted. Something is going on with this lake.
+
+:: Plaza.Mayor
+
+{@Mayor}
+        Oh - you're the one from the DNR, aren't you?
+        Whatever you find out there, the council will want numbers, not hunches.
+
+{@Player}
+        Numbers I can do.
+
+:: Plaza.Fountain
+
+{@}     The fountain's basin is spotless. Someone scrubbed it recently.
+        While you're leaning over the edge, the mayor walks up behind you.
+
+$goto .Plaza.Mayor
+
+// #endregion
+
+// #region DEMO 2: $StatChoice + writer-authored $FallbackChoice
+
+:: Square.Hub
+
+{@}     The town square. A notice board, a stray cat, and a lookout tower.
+
+// The tower is a StatChoice needing Ranger 2 (your starting value), so it's
+// selectable and disappears after the climb like any macro choice. Raise the
+// requirement to 3 to see it gray out with a label instead - grayed choices
+// stay visible, unlike once-picked ones, which are hidden.
+// (To hide a stat-gated choice instead, wrap it in $if StatCheck(Ranger, 3).)
+// The FallbackChoice only appears once nothing else is selectable. Because it
+// becomes selectable, the engine's Fallback.OutOfOptions never fires here.
+$OnceChoice(.Square.Notice, "Read the notice board")
+$OnceChoice(.Square.Cat, "Follow the stray cat")
+$StatChoice(.Square.Tower, "Climb the lookout tower", Ranger, 2)
+$FallbackChoice(.Square.Leave, "Nothing left to do here. Head for the docks.")
+$choose branch
+
+$goto .Square.Hub
+
+:: Square.Notice
+
+{@}     "Town council meets Friday. Agenda: the lake."
+
+:: Square.Cat
+
+{@}     The cat leads you halfway down an alley, then loses interest. Typical.
+
+:: Square.Tower
+
+{@}     From up here the whole shoreline is visible. Worth the climb.
+
+:: Square.Leave
+
+{@Player}
+        Time to see the docks.
+
+// DecreaseTime() spends time outside of a choice - here it burns the clock
+// down to 8 so the docks demo reaches zero in two picks.
+$call DecreaseTime(12)
+
+$goto .Docks.Hub
+
+// #endregion
+
+// #region DEMO 3: $TimeChoice + engine OutOfTime fallback
+
+:: Docks.Hub
+
+{@}     The docks. Everything here costs time - watch the counter.
+
+// HasTime() lets a writer react to the clock before the engine fallback fires.
+$if !HasTime(8)
+{@Angler1}
+        Light's fading. Better wrap it up soon.
+$endif
+
+// You arrive with 8 chunks; each TimeChoice costs 4. Two picks drain the
+// clock to 0, and the engine jumps to Fallback.OutOfTime. (If time ran out
+// with choices still unpicked, they'd gray out before the redirect.)
+$TimeChoice(.Docks.Nets, "Help haul nets", 4)
+$TimeChoice(.Docks.Stories, "Swap fishing stories", 4)
+$choose branch
+
+$goto .Docks.Hub
+
+:: Docks.Nets
+
+{@}     Heavy work. The nets come up with more lamprey scars than fish.
+
+:: Docks.Stories
+
+{@Angler1}
+        ...and THAT one was longer than your arm. Promise.
+
+// #endregion
+
+// #region Fallbacks
+
+// The engine jumps here when a hub has no selectable choices but time remains.
+// For this demo it routes onward to the square.
+:: Fallback.OutOfOptions
+
+{@}     You've done everything there is to do here.
+        (Engine fallback: Fallback.OutOfOptions)
+
+$goto .Square.Hub
+
+// The engine jumps here when choices come up and the clock is at zero.
+:: Fallback.OutOfTime
+
+{@}     You're out of time.
+        (Engine fallback: Fallback.OutOfTime)
+        That's the whole tour - thanks for playing the demo.
+
+$stop
+
+// #endregion

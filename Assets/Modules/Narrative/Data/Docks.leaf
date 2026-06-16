@@ -1,0 +1,119 @@
+#basePath Docks
+
+// #region Docks
+ 
+$goto .TravelDocks
+
+:: TravelDocks
+
+{@}     
+       You make your way into the lovely town of Mittenson. 
+       Leading into town are an accompaniment of Sugar Maples and Birches. 
+       It's May after all. 
+       The trees are finally getting back their color from a sleepy winter. 
+       As you make your way to the docks, you spot two fishing guides. 
+
+        
+$choice .Docks.A; Guess I should go ask those guides. 
+
+:: .Docks.A
+
+{@} 
+        You walk towards them.
+
+$goto .AnglersDocks
+
+:: AnglersDocks
+
+
+{@Angler1}      
+        Odd isn't?
+{@Angler2}      
+        Feels like they're just disappearin'...
+
+{@Player} 
+        Hiya! 
+
+{@}
+        The anglers turn your way. 
+
+{@Angler1}
+        Can I help you? 
+
+{@Player}
+        I'm with the DNR, the Boss sent me. 
+
+{@Angler1} 
+        Oh! Right! Well welcome to Mittenson! 
+        
+{@Angler2}
+        Maybe you can help us.
+
+{@Player} 
+        How so? 
+
+{@Angler1}
+        We've... been noticing a troubling trend. 
+
+{@Angler2} 
+        We give fishing tours on the lake, it's a big business here. 
+
+{@Angler1}
+        Thing is... the Lake Trout...
+
+{@Angler2} 
+        There's hardly any. We ususally catch a few a day but now, well we haven't seen any. 
+
+{@Angler1} 
+        And we were hoping you could figure out why. 
+
+{@Player} 
+        I see... how long has this been happening?  
+
+{@Angler2}
+        Maybe... the past month or two? 
+        The populations take a bit to adjust due to winter.
+        But it's like they... for the most part, disappeared. 
+
+{@Player}
+        Just to confirm, you would say the fish population has decreased from last year? 
+
+{@Angler1}     
+        Yep. 
+
+$call GiveEvidenceCard("Evidence-Decreasing-Fish-Populations")
+     
+{@Player} 
+        This... is concerning. Thanks for your help, gentlemen. 
+
+{@Angler2}
+        Any idea to what it could be?
+
+{@Player}
+        I need to get some more information on what's going on.
+        So... no.  
+        But, the town needs to be aware. I'm heading to Town Hall. 
+
+{@Angler1}
+        Yea, best that they know. 
+
+{@Player}
+        See you gentlemen! Nice meeting you! 
+
+{@}
+        The anglers nod their heads and wave as you start to head away from the docks. 
+        Decreasing fish populations at Barter Lake. 
+        You think back to your college days and remember a case study mentioning Barter Lake and the town of Mittenson. 
+        You can't seem to recall it. 
+        Anyways, best you go to Town Hall. 
+
+$choice .Town.Hall.A; Time to notify the mayor. 
+
+:: Town.Hall.A
+
+{@}
+        You get into your car and make your way towards the town center.
+        
+$goto TownHall.Town.Hall.Location.A
+
+//endregion 

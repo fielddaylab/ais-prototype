@@ -68,7 +68,7 @@ namespace AIS.Narrative {
                     requirements.StatId = PlayerStatId.Ranger;
                 } else if (statIdHash == "Research") {
                     requirements.StatId = PlayerStatId.Research;
-                } else if (statIdHash == "Innovator") {
+                } else if (statIdHash == "Innovate" || statIdHash == "Innovator") {
                     requirements.StatId = PlayerStatId.Innovate;
                 }
             }
