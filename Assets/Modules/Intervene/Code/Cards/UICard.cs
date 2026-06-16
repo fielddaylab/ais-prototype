@@ -14,9 +14,12 @@ namespace AIS.Intervene {
 
         [Header("Front")]
         public CanvasGroup FrontGroup;
+        public Image Suit;
+        public GameObject SuitRequirement;
         public TMP_Text Title;
         public TMP_Text CostText;
         public TMP_Text Description;
+        public TMP_Text AdditionalDesc;
         public Image Img;
         public Image Highlight;
         public Button ClickBtn;
