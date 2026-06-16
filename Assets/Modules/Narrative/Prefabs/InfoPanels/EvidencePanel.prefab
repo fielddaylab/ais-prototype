@@ -300,6 +300,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_PanelGroup:
     m_HashValue: 0
+  modelIcon: {fileID: 21300000, guid: 76d5b75713a5a8445a4264a746a7b49a, type: 3}
+  actionableIcon: {fileID: 21300000, guid: 968d5b1e9516948478006f6717e60c77, type: 3}
   Widgets:
   - {fileID: 6579644595441631885}
   - {fileID: 75439906523903264}
