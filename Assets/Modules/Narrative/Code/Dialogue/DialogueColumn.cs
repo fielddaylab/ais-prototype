@@ -99,20 +99,45 @@ namespace AIS.Narrative {
         }
 
         public IEnumerator ShowOptions(LeafChoice choice, LeafNode node, ScriptThread thread, DialogueCharacterState character) {
-            int choiceCount = choice.Count;
-            if (choiceCount > Layout.Choices.Length) {
-                choiceCount = Layout.Choices.Length;
-                Log.Warn("[DialogueColumn] Too many choices");
-            }
-
             PlayerStatBlock currentStats = Find.State<PlayerStats>().StatBlock;
             PlayerInventory inv = Find.State<PlayerInventory>();
             GameIcons icons = Find.GlobalAsset<GameIcons>();
 
+            int[] visibleOptions = new int[Layout.Choices.Length];
+            int choiceCount = 0;
+            bool anySelectable = false;
+
+            for (int i = 0; i < choice.Count; i++) {
+                if (!DialogueChoiceUtility.IsVisible(choice, choice[i])) {
+                    continue;
+                }
+                if (choiceCount >= Layout.Choices.Length) {
+                    Log.Warn("[DialogueColumn] Too many choices");
+                    break;
+                }
+                visibleOptions[choiceCount++] = i;
+                anySelectable |= DialogueChoiceUtility.IsSelectable(choice, choice[i]);
+            }
+
+            if (!anySelectable) {
+                StringHash32 fallbackId = DialogueChoiceUtility.ResolveFallbackNode((ScriptNode) node, inv.TimeRemaining <= 0);
+                if (!fallbackId.IsEmpty) {
+                    DialogueChoiceUtility.Redirect(choice, fallbackId);
+                    yield break;
+                }
+
+                Log.Error("[DialogueColumn] No selectable choices on node '{0}' and no fallback node found", node.Id());
+                if (choiceCount == 0) {
+                    choice.Choose(0);
+                    yield break;
+                }
+            }
+
             using (PooledStringBuilder psb = PooledStringBuilder.Create()) {
 
                 for (int i = 0; i < choiceCount; i++) {
-                    var data = choice[i];
+                    int optionIndex = visibleOptions[i];
+                    var data = choice[optionIndex];
                     DialogueChoiceButton btn = Layout.Choices[i];
                     btn.gameObject.SetActive(true);
 
@@ -120,7 +145,7 @@ namespace AIS.Narrative {
                     btn.Content.Populate(thread.TagString);
                     bool choiceAvailable = data.IsAvailable;
 
-                    DialogueChoiceRequirements req = DialogueChoiceRequirements.Read(choice, i);
+                    DialogueChoiceRequirements req = DialogueChoiceRequirements.Read(choice, optionIndex);
                     if (req.TimeConsumed > 0) {
                         btn.TimeGroup.SetActive(true);
                         btn.TimeRequirement.sprite = icons.TimeIcons[req.TimeConsumed];
@@ -189,7 +214,7 @@ namespace AIS.Narrative {
             while(!chosen) {
                 for(int i = 0; i < choiceCount; i++) {
                     if (Layout.Choices[i].ConsumeClick()) {
-                        choice.Choose(i);
+                        choice.Choose(visibleOptions[i]);
                         chosen = true;
                         break;
                     }

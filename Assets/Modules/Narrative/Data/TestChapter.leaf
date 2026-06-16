@@ -1,3 +1,4 @@
+#include "Header.leaf"
 #basePath TestChapter
 
 :: Preload
@@ -539,9 +540,28 @@ $call GiveEvidenceCard("Evidence-Pheromones")
 // $goto .DNR.Office.Location.A
 
 
-:: Field.Station.Trib.C 
+:: Field.Station.Trib.C
 
 {@}
-        You make your way to the Field Station. 
+        You make your way to the Field Station.
 
 // $goto .Field.Station.Trib.Location.A
+$goto .Field.Station.Trib.Location.A
+
+// #region Fallbacks
+
+// The game jumps here automatically (instead of showing choices) when the player
+// has run out of time. Define a node with this name in each chapter file to customize.
+:: Fallback.OutOfTime
+
+{@}
+        You're out of time.
+
+// The game jumps here automatically when the player still has time, but every
+// remaining choice has already been exhausted.
+:: Fallback.OutOfOptions
+
+{@}
+        There's nothing more you can do here.
+
+// #endregion
