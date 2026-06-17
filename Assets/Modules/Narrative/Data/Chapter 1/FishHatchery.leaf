@@ -1,0 +1,74 @@
+#include "Header.leaf"
+#basePath FishHatchery
+
+// #region Fish Hatchery
+
+:: Fish.Hatchery.Location.A
+
+{@} 
+        You make your way to the Mittenson Fish Hatchery.
+        
+
+{@Biologist}
+        Hi there! How can I help you? 
+
+{@Player} 
+        I'm with the DNR. I was hoping to get some more information regarding the fish populations.  
+
+{@Biologist}
+        Yep... we've noticed the decrease as well.  
+
+{@Player}
+        You have any idea as to why that may be? 
+
+{@Biologist}
+        Actually... yes. Take a look.
+
+{@}
+        The biologist take our their phone. They show several Lake Trout with circular bite marks. 
+
+{@Player}      
+        Sea Lamprey...
+
+$call GiveEvidenceCard ("Evidence-Lamprey-Discovered")
+       
+{@Biologist} 
+        We might be able to help. 
+        We do have a few Sterile Sea Lamprey on hand, though we will need more time to collect more. 
+        We can help out as best as we can. 
+
+$call GiveEvidenceCard ("Evidence-Sterile-Lamprey-Discovered")
+
+{@Player} 
+        Thanks. 
+        In the mean time, I should go somewhere else to learn more on what's going on. 
+
+$choice .DNR.Office.A; The DNR Office
+$choice .Field.Station.Trib.B; The Field Station
+$choice .University.Research.Lab.A; The University Research Lab
+$choose branch 
+
+
+:: DNR.Office.A 
+
+{@} 
+        You make your way to the DNR Office. 
+
+// $goto .DNR.Office.Location.A
+
+:: Field.Station.Trib.B
+
+{@}
+        You make your way to the Field Station
+
+// $goto .Field.Station.Trib.Location.B
+
+:: University.Research.Lab.B
+
+{@}     
+        You make your way to the University Research Lab. 
+
+$goto .University.Research.Lab.Location.A
+
+
+//endregion 

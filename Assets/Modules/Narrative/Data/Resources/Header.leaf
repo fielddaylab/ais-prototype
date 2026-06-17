@@ -1,6 +1,5 @@
 // Shared choice macros. Include at the top of every chapter file:
 //   #include "Header.leaf"
-// (This file must stay in a Resources folder - leaf resolves #include via Resources.Load.)
 //
 // All macro choices disappear after their target node is visited ("Once").
 // For a repeatable choice, use a plain $choice (with $data Time = n if it costs time).

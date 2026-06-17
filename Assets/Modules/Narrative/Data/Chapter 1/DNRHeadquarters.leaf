@@ -1,11 +1,11 @@
-#basePath Bedroom
+#basePath DNRHeadquarters
 
 :: Preload
 @function    ChapterPreload
 
 $call SetBackground("bg/Room.png")
 
-// #region Bedroom 
+// #region DNRHeadquarters 
 
 :: Start
 @trigger    ChapterStart

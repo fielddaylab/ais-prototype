@@ -1,0 +1,26 @@
+#include "Header.leaf"
+#basePath FieldStationTributary
+
+
+//#region Field Station Trib A 
+
+:: Field.Station.Trib.Location.A
+
+{@} 
+        You find yourself at the tributary. 
+        The sound of the rushing water is accompanied alongside bird-sung melodies. 
+        As you traverse the rocky stream, you spot two field techs.
+
+        You decide to approach. 
+
+{@FieldTech1} 
+        Do you think they'll even approve it? 
+
+{@FieldTech2}
+        Hope so... otherwise we're gonna run into some major issues. 
+
+{@Player}
+        Hi! 
+
+
+//endregion 
