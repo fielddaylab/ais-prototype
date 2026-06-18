@@ -113,7 +113,7 @@ namespace AIS.Narrative
         public void UnlockLocation(int index)
         {
             TravelPointsDisplay currentHub = travelPointsDisplays[currentHubIdx];
-            currentHub.UnlockedLocations.Add(currentHub.locations[index]);
+            currentHub.UnlockedLocations.Add(currentHub.locations[index].MainImg);
         }
     }
 }
