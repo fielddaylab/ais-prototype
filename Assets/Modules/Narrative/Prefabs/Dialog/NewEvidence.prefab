@@ -346,6 +346,7 @@ MonoBehaviour:
   Layout: {fileID: 346806614066988506}
   Visibility: {fileID: 8767833143502191583}
   Offset: {fileID: 7372205226503040868}
+  DependencyWidget: {fileID: 0}
   Widget: {fileID: 7978398559694764947}
   Button: {fileID: 1065690463749826505}
 --- !u!1 &3520520521600492604

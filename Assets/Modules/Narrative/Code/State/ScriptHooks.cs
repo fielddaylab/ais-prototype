@@ -91,9 +91,10 @@ namespace AIS.Narrative {
                 DialogueColumn column = (DialogueColumn)thread.GetPrinter();
                 if (column)
                 {
-                    yield return TextUtility.DisplayNewEvidence(column, id);
+                    NewCardElement card = TextUtility.SpawnEvidenceCard(column, id);
+                    yield return TextUtility.WaitForConfirm(card);
                     yield return EnsureNotesVisible(inv);
-                    yield return column.CompleteLine();
+                    yield return TextUtility.FlyCardToToolbar(card, Find.GuiModule<ToolbarPanel>().EvidenceButton);
                 }
                 else
                 {
@@ -116,9 +117,10 @@ namespace AIS.Narrative {
                 DialogueColumn column = (DialogueColumn)thread.GetPrinter();
                 if (column)
                 {
-                    yield return TextUtility.DisplayNewAction(column, id);
+                    NewCardElement card = TextUtility.SpawnActionCard(column, id);
+                    yield return TextUtility.WaitForConfirm(card);
                     yield return EnsureNotesVisible(inv);
-                    yield return column.CompleteLine();
+                    yield return TextUtility.FlyCardToToolbar(card, Find.GuiModule<ToolbarPanel>().EvidenceButton);
                 }
                 else
                 {

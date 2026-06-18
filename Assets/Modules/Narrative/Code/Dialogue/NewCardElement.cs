@@ -32,7 +32,11 @@ namespace AIS.Narrative {
         public EvidenceDisplayWidget Widget;
         public Button Button;
 
+        [NonSerialized] public Routine GiveAnim; // stored so the fly anim can be adjusted/stopped
+        [NonSerialized] public bool Clicked;
+
         private void Awake() {
+            Button.onClick.AddListener(() => Clicked = true);
             SetVisible(false);
         }
 
@@ -40,8 +44,19 @@ namespace AIS.Narrative {
             Visibility.alpha = visible ? 1 : 0;
             Visibility.blocksRaycasts = visible;
             if (visible) {
+                Clicked = false;
+                Button.gameObject.SetActive(true);
                 PopAnim.Play(Offset, PopAnim.Default);
             }
+        }
+
+        public bool ConsumeClick() {
+            if (Clicked) {
+                Clicked = false;
+                return true;
+            }
+
+            return false;
         }
     }
 
