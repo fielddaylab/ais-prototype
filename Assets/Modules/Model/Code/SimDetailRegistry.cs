@@ -103,17 +103,12 @@ namespace AIS.Narrative
         {
             HideAll();
             PlayerInventory inv = Find.State<PlayerInventory>();
-            foreach(StringHash32 card in inv.EvidenceCards)
+            foreach(StringHash32 card in inv.EvidenceChips)
             {
-<<<<<<< HEAD
                 foreach(ISimDetail simDetail in MapEvidenceToDetail(card))
                 {
                     DetailsToShow.Add(simDetail);
                 }
-=======
-                bool unlocked = inv.EvidenceChips.Contains(detail.EvidenceId);
-                detail.Target.SetActive(unlocked);
->>>>>>> develop
             }
         }
     }
