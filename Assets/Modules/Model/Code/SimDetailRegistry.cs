@@ -36,7 +36,7 @@ namespace AIS.Narrative
             PlayerInventory inv = Find.State<PlayerInventory>();
             foreach (SimDetail detail in Details)
             {
-                bool unlocked = inv.EvidenceCards.Contains(detail.EvidenceId);
+                bool unlocked = inv.EvidenceChips.Contains(detail.EvidenceId);
                 detail.Target.SetActive(unlocked);
             }
         }

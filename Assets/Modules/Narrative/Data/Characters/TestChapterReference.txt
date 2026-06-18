@@ -18,7 +18,7 @@ $call SetBackground("bg/Room.png")
 
 {@}     On your desk, you spot several notes you've taken.
 
-$call GiveEvidenceCard("Evidence-Lamprey-Discovered")
+$call GiveEvidenceChip("Evidence-Lamprey-Discovered")
 
 // #endregion 
 
@@ -76,9 +76,9 @@ $choose branch
 {@Angler1} 
         And Lamprey feed on them. 
         
-$call GiveEvidenceCard("Evidence-Lake-Walleye")
+$call GiveEvidenceChip("Evidence-Lake-Walleye")
 
-$call GiveEvidenceCard("Evidence-Lake-Trout")
+$call GiveEvidenceChip("Evidence-Lake-Trout")
 
 {@Angler1} 
         A good chunk of those fish wind up dead. 

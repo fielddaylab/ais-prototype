@@ -10,12 +10,27 @@ using System.Threading;
 
 namespace AIS.Narrative {
     static public class TextUtility {
-        static public IEnumerator DisplayNewEvidence(DialogueColumn column, StringHash32 evidenceId) {
+        static public IEnumerator DisplayNewEvidence(DialogueColumn column, StringHash32 evidenceId)
+        {
             EvidenceCard data = Find.NamedAsset<EvidenceCard>(evidenceId);
-            NewCardElement newElem = column.NewCardPool.Alloc();
+            NewCardElement newElem = column.NewEvidencePool.Alloc();
             column.Layout.ActiveLines.PushBack(newElem.Positioner);
             newElem.Widget.Content.SetText(data.Label);
-            newElem.Layout.VerticalLayout(LayoutOptions.PreferredSize(4, 1));
+            //newElem.Layout.VerticalLayout(LayoutOptions.PreferredSize(4, 1));
+            newElem.SetVisible(true);
+            column.Layout.RecomputePositioning();
+
+            yield return 0.1f;
+        }
+
+        static public IEnumerator DisplayNewAction(DialogueColumn column, StringHash32 evidenceId) {
+            EvidenceCard data = Find.NamedAsset<EvidenceCard>(evidenceId);
+            // TODO: EvidenceCard dependencyData = ...;
+            NewCardElement newElem = column.NewActionCardPool.Alloc();
+            column.Layout.ActiveLines.PushBack(newElem.Positioner);
+            // TODO: newElem.DependencyWidget.Content.SetText(dependencyData.Label);
+            newElem.Widget.Content.SetText(data.Label);
+            // newElem.Layout.VerticalLayout(LayoutOptions.PreferredSize(4, 1));
             newElem.SetVisible(true);
             column.Layout.RecomputePositioning();
 

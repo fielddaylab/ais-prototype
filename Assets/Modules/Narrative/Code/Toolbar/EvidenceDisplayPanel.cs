@@ -19,7 +19,7 @@ namespace AIS.Narrative {
 
         public void Populate(in PlayerInventory parms) {
             int widgetIndex = 0;
-            foreach (var evidenceId in parms.EvidenceCards) {
+            foreach (var evidenceId in parms.EvidenceChips) {
                 EvidenceCard data = Find.NamedAsset<EvidenceCard>(evidenceId);
 
                 EvidenceDisplayWidget widget = Widgets[widgetIndex++];

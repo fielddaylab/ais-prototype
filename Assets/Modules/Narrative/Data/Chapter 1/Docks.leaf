@@ -79,7 +79,7 @@ $goto .AnglersDocks
 {@Angler1}     
         Yep. 
 
-$call GiveEvidenceCard("Evidence-Decreasing-Fish-Populations")
+$call GiveEvidenceChip("Evidence-Decreasing-Fish-Populations")
      
 {@Player} 
         This... is concerning. Thanks for your help, gentlemen. 

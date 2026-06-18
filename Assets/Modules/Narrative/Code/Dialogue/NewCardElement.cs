@@ -28,7 +28,9 @@ namespace AIS.Narrative {
         public LayoutOffset Offset;
 
         [Header("Content")]
+        public EvidenceDisplayWidget DependencyWidget;
         public EvidenceDisplayWidget Widget;
+        public Button Button;
 
         private void Awake() {
             SetVisible(false);

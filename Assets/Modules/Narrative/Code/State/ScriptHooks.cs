@@ -77,11 +77,11 @@ namespace AIS.Narrative {
             Game.Scenes.LoadMainScene(SceneReference.FromName("Intervene"));
         }
 
-        [LeafMember("GiveEvidenceCard")]
+        [LeafMember("GiveEvidenceChip")]
         static public IEnumerator ScriptGiveEvidence([BindThread] ScriptThread thread, StringHash32 id)
         {
             PlayerInventory inv = Find.State<PlayerInventory>();
-            if (inv.EvidenceCards.Add(id))
+            if (inv.EvidenceChips.Add(id))
             {
                 if (thread.IsSkipping())
                 {
@@ -92,6 +92,31 @@ namespace AIS.Narrative {
                 if (column)
                 {
                     yield return TextUtility.DisplayNewEvidence(column, id);
+                    yield return EnsureNotesVisible(inv);
+                    yield return column.CompleteLine();
+                }
+                else
+                {
+                    yield return EnsureNotesVisible(inv);
+                }
+            }
+        }
+
+        [LeafMember("GiveActionCard")]
+        static public IEnumerator ScriptGiveAction([BindThread] ScriptThread thread, StringHash32 id)
+        {
+            PlayerInventory inv = Find.State<PlayerInventory>();
+            if (inv.ActionCards.Add(id))
+            {
+                if (thread.IsSkipping())
+                {
+                    yield break;
+                }
+
+                DialogueColumn column = (DialogueColumn)thread.GetPrinter();
+                if (column)
+                {
+                    yield return TextUtility.DisplayNewAction(column, id);
                     yield return EnsureNotesVisible(inv);
                     yield return column.CompleteLine();
                 }
@@ -181,7 +206,7 @@ namespace AIS.Narrative {
         static public bool HasEvidenceCard(StringHash32 id)
         {
             PlayerInventory inv = Find.State<PlayerInventory>();
-            return inv.EvidenceCards.Contains(id);
+            return inv.EvidenceChips.Contains(id);
         }
 
         [LeafMember("UnlockLocation")]
