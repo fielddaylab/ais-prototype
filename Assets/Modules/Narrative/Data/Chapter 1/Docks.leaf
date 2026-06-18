@@ -3,7 +3,7 @@
 // #region Docks
 
 :: TravelDocks
-
+@exposed
 {@}     
        You make your way into the lovely town of Mittenson. 
        Leading into town are an accompaniment of Sugar Maples and Birches. 

@@ -48,7 +48,7 @@ namespace AIS.Narrative {
                 evidencePanel.Hide();
                 //modelPanel.Populate(Find.State<PlayerStats>().StatBlock);
                 modelPanel.Show();
-                InvasionModel.Instance.GetComponentInChildren<SimDetailRegistry>().RefreshVisibility();
+                //InvasionModel.Instance.GetComponentInChildren<SimDetailRegistry>().RefreshVisibility();
             }
             Find.GuiModule<DialoguePanel>().SetVisible(!modelPanel.IsShowing());
             //InvasionModel.Instance.gameObject.SetActive(modelPanel.IsShowing());

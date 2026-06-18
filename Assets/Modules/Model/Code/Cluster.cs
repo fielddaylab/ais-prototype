@@ -18,7 +18,7 @@ namespace AIS.Model
         public ActionTarget StartingTargetType;
     }
 
-    public class Cluster : MonoBehaviour, IReducible, IIncreasable, IRemovable
+    public class Cluster : MonoBehaviour, IReducible, IIncreasable, IRemovable, ISimDetail
     {
         public SpriteRenderer BGRenderer;
         public SpriteRenderer IconRenderer;
@@ -133,6 +133,23 @@ namespace AIS.Model
             ParentEcosystem.ReleasePopulation(ContentsId, Population, isSecondary: isSecondary);
 
             return true;
+        }
+
+        // ISimDetail
+
+        public void Show()
+        {
+            this.gameObject.SetActive(true);
+        }
+
+        public void Hide()
+        {
+            this.gameObject.SetActive(false);
+        }
+
+        public StringHash32 Id()
+        {
+            return ContentsId;
         }
 
         #endregion // Interfaces

@@ -704,6 +704,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: InvasionModel
       objectReference: {fileID: 0}
+    - target: {fileID: 7659072234784217292, guid: 878caef155bfd84448b843d5305ddbc1, type: 3}
+      propertyPath: Details.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8844354057996248262, guid: 878caef155bfd84448b843d5305ddbc1, type: 3}
       propertyPath: m_Camera
       value: 

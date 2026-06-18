@@ -67,10 +67,11 @@ namespace AIS.Model
         Output
     }
 
-    public class Pathway : MonoBehaviour, IReducible, IIncreasable, IRemovable, IRevealable
+    public class Pathway : MonoBehaviour, IReducible, IIncreasable, IRemovable, IRevealable, ISimDetail
     {
         #region Inspector
 
+        public StringHash32 PathwayId;
         public SpriteRenderer MainRenderer;
         public SpriteRenderer PathwayTypeBGRenderer;
         public SpriteRenderer PathwayTypeRenderer;
@@ -92,6 +93,7 @@ namespace AIS.Model
 
         public void LoadData(PathwaySetupData setupData)
         {
+            PathwayId = setupData.PathwayId;
             OrigEcosystemId = setupData.OrigEcosystemId;
             DestEcosystemId = setupData.DestEcosystemId;
             PathwayType = setupData.PathwayType;
@@ -249,6 +251,23 @@ namespace AIS.Model
             SetIsHidden(false);
 
             return true;
+        }
+
+        // ISimDetail
+
+        public void Show()
+        {
+            this.gameObject.SetActive(true);
+        }
+
+        public void Hide()
+        {
+            this.gameObject.SetActive(false);
+        }
+
+        public StringHash32 Id()
+        {
+            return PathwayId;
         }
 
         #endregion // Interfaces
