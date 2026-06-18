@@ -68,7 +68,7 @@ $choose branch
 {@}     
         You make your way to the University Research Lab. 
 
-$goto .University.Research.Lab.Location.A
+$goto UniversityResearchLab.University.Research.Lab.Location.A
 
 
 //endregion 
