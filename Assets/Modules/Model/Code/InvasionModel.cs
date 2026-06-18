@@ -24,10 +24,10 @@ namespace AIS.Model
         #region Inspector
 
         [SerializeField] private InvasionModelPrefabs m_Prefabs;
-        [SerializeField] private InvasionModelContainer m_ModelContainer;
+        [SerializeField] public InvasionModelContainer m_ModelContainer;
+        [SerializeField] private SimDetailRegistry simDetailRegistry;
 
         public InvasionModelSetupData m_InitModelSetupData; // TEMP
-        private SimDetailRegistry simDetailRegistry;
 
         #endregion // Inspector
 
@@ -54,14 +54,18 @@ namespace AIS.Model
             SetModelSetupData(m_InitModelSetupData);
             RefreshSetup(invasionCurve);
 
-            foreach(SimDetail simDetail in simDetailRegistry.Details)
+            simDetailRegistry?.InitDetails();
+            if (simDetailRegistry != null)
             {
-                foreach(ISimDetail detail in simDetail.Targets)
+                foreach (SimDetail simDetail in simDetailRegistry.Details)
                 {
-                    if (simDetailRegistry.DetailsToShow.Contains(detail))
-                        detail.Show();
-                    else
-                        detail.Hide();
+                    foreach (ISimDetail detail in simDetail.Targets)
+                    {
+                        if (simDetailRegistry.DetailsToShow.Contains(detail))
+                            detail.Show();
+                        else
+                            detail.Hide();
+                    }
                 }
             }
         }

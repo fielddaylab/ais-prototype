@@ -21,10 +21,10 @@ namespace AIS.Narrative
         [SerializeField] public SimDetail[] Details = new SimDetail[6]; // length should be number of evidence cards (model info)
         public List<ISimDetail> DetailsToShow; // keep track of all gameobjects that should be revealed
 
-        private void Awake()
-        {   
+        private void Start()
+        {
             HideAll();
-            InitDetails();
+            //InitDetails();
         }
 
         public void InitDetails()
@@ -46,8 +46,8 @@ namespace AIS.Narrative
         public List<ISimDetail> MapEvidenceToDetail(StringHash32 evidenceId)
         {
             List<ISimDetail> targets = new List<ISimDetail>();
-            List<Ecosystem> ecosystems = InvasionModelContainer.Instance.m_Ecosystems;
-            List<Pathway> pathways = InvasionModelContainer.Instance.m_Pathways;
+            List<Ecosystem> ecosystems = InvasionModel.Instance.m_ModelContainer.m_Ecosystems;
+            List<Pathway> pathways = InvasionModel.Instance.m_ModelContainer.m_Pathways;
 
             //TODO: map the atcual evidence cards to details in InvasionModel components
 
