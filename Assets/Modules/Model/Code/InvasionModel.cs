@@ -27,7 +27,7 @@ namespace AIS.Model
         [SerializeField] private InvasionModelContainer m_ModelContainer;
 
         public InvasionModelSetupData m_InitModelSetupData; // TEMP
-        public SimDetailRegistry m_SimDetailRegistry;
+        private SimDetailRegistry simDetailRegistry;
 
         #endregion // Inspector
 
@@ -54,11 +54,11 @@ namespace AIS.Model
             SetModelSetupData(m_InitModelSetupData);
             RefreshSetup(invasionCurve);
 
-            foreach(SimDetail simDetail in m_SimDetailRegistry.Details)
+            foreach(SimDetail simDetail in simDetailRegistry.Details)
             {
                 foreach(ISimDetail detail in simDetail.Targets)
                 {
-                    if (m_SimDetailRegistry.DetailsToShow.Contains(detail))
+                    if (simDetailRegistry.DetailsToShow.Contains(detail))
                         detail.Show();
                     else
                         detail.Hide();

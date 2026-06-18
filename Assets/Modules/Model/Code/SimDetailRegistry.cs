@@ -49,6 +49,8 @@ namespace AIS.Narrative
             List<Ecosystem> ecosystems = InvasionModelContainer.Instance.m_Ecosystems;
             List<Pathway> pathways = InvasionModelContainer.Instance.m_Pathways;
 
+            //TODO: map the atcual evidence cards to details in InvasionModel components
+
             if (evidenceId.Equals("Evidence-Lamprey-Discovered"))
             {
                 StringHash32 invasiveId = InvasionModel.Instance.m_InitModelSetupData.DefaultInvasive.SpeciesId;
