@@ -30,14 +30,14 @@
 {@Player}      
         Sea Lamprey...
 
-$call GiveEvidenceCard ("Evidence-Lamprey-Discovered")
+$call GiveEvidenceChip ("Evidence-Lamprey-Discovered")
        
 {@Biologist} 
         We might be able to help. 
         We do have a few Sterile Sea Lamprey on hand, though we will need more time to collect more. 
         We can help out as best as we can. 
 
-$call GiveEvidenceCard ("Evidence-Sterile-Lamprey-Discovered")
+$call GiveEvidenceChip ("Evidence-Sterile-Lamprey-Discovered")
 
 {@Player} 
         Thanks. 

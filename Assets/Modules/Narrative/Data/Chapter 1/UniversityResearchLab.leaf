@@ -50,7 +50,7 @@ $choice .Lamprey.Pheromones; What preventatives have you been researching?
 {@Player}
         So pheromones could be a real effective tool against the Sea Lamprey... 
 
-$call GiveEvidenceCard("Evidence-Pheromones")
+$call GiveEvidenceChip("Evidence-Pheromones")
 
 :: DNR.Office.B
 

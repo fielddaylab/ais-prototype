@@ -51,8 +51,8 @@ namespace AIS.Intervene
             inStats[3] = stats.Research;
 
             var inventory = Find.State<PlayerInventory>();
-            StringHash32[] evidenceIds = new StringHash32[inventory.EvidenceCards.Count];
-            inventory.EvidenceCards.CopyTo(evidenceIds);
+            StringHash32[] evidenceIds = new StringHash32[inventory.EvidenceChips.Count];
+            inventory.EvidenceChips.CopyTo(evidenceIds);
             List<SerializedHash32> inEvidenceIds = new List<SerializedHash32>();
             foreach (var evidenceId in evidenceIds)
             {
