@@ -488,12 +488,12 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 4810600634135982818}
+  m_Father: {fileID: 3144813524851641569}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 0.99500275, y: -115.899994}
-  m_SizeDelta: {x: -20, y: 23.9}
+  m_AnchoredPosition: {x: 58.995003, y: -29.19999}
+  m_SizeDelta: {x: 117.990005, y: 23.9}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8955212132010489301
 CanvasRenderer:
@@ -909,7 +909,6 @@ RectTransform:
   - {fileID: 8422780787224533868}
   - {fileID: 349212696496479292}
   - {fileID: 1336353695698903124}
-  - {fileID: 1024360983659947604}
   - {fileID: 6745422599477637830}
   - {fileID: 7184080486211555343}
   - {fileID: 3144813524851641569}
@@ -1091,8 +1090,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3144813524851641569}
+  - component: {fileID: 7120391185211090412}
   m_Layer: 5
-  m_Name: Suit Requirement
+  m_Name: Override Group
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1112,6 +1112,7 @@ RectTransform:
   m_Children:
   - {fileID: 7313426839800533509}
   - {fileID: 8516787318805366508}
+  - {fileID: 1024360983659947604}
   m_Father: {fileID: 4810600634135982818}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -1119,6 +1120,18 @@ RectTransform:
   m_AnchoredPosition: {x: -58, y: -86.7}
   m_SizeDelta: {x: 62.01, y: 37.73}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!225 &7120391185211090412
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5215688087487687538}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!1 &6124728961818723533
 GameObject:
   m_ObjectHideFlags: 0
@@ -1184,12 +1197,14 @@ MonoBehaviour:
     m_HashValue: 0
   FrontGroup: {fileID: 2362178741812331165}
   Suit: {fileID: 2593017919382640791}
-  SuitRequirement: {fileID: 5215688087487687538}
   Title: {fileID: 3375735252084277930}
   CostText: {fileID: 6792356229901021320}
   Description: {fileID: 1401272034637932551}
-  AdditionalDesc: {fileID: 8418520129235447612}
   Img: {fileID: 539388177470372488}
+  OverrideGroup: {fileID: 7120391185211090412}
+  RequirementSuit: {fileID: 182136478901919750}
+  RequirementNumber: {fileID: 9093319686823107167}
+  AdditionalDesc: {fileID: 8418520129235447612}
   Highlight: {fileID: 7329351257558610628}
   ClickBtn: {fileID: 4131172515278573204}
   CanvasOverride: {fileID: 0}

@@ -30,6 +30,7 @@
     specificity: all
 
 @overrideEffect if social > 0
+    desc: Additional +1 Awareness
     target: aware
     verb: increase, 2, fixed
     specificity: all
@@ -59,6 +60,7 @@
     maxTargets: 0
 
 @overrideEffect if social > 1
+    desc: Remove 1 affected pathway.
     target: pathway, if type = BoatHulls
     verb: remove, 0, fixed
     specificity: specific
@@ -100,6 +102,7 @@
     specificity: specific
     maxtargets: 0
 @overrideEffect if outdoor > 0
+    desc: -1 Invasive in same lake
     target: invasive
     verb: reduce, 1, fixed
     specificity: specific
@@ -144,6 +147,7 @@
     specificity: specific
     maxtargets: 0
 @overrideEffect if tech > 0
+    desc: Place another trap in another lake
     target: ecosystem
     verb: addtrap, 1, fixed
     specificity: specific
@@ -203,6 +207,7 @@
     specificity: specific
     maxtargets: 1
 @overrideEffect if research > 0
+    desc: Decrease the revealed pathway by 1
     target: pathway, if type = unknown
     verb: reveal, 0, fixed
     verb: reduce, 1, fixed
@@ -228,6 +233,7 @@
     specificity: specific
     maxtargets: 1
 @overrideEffect if research > 0
+    desc: Skip -1 Prey
     target: ecosystem
     verb: modify, (-2; -1; 0), fixed
     specificity: specific
@@ -247,6 +253,7 @@
     specificity: all
     maxtargets: -1
 @overrideEffect if research > 0
+    desc: Decrease all Nests by an additional 1.
     target: nest
     verb: reduce, 2, fixed
     specificity: all

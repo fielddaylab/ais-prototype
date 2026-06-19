@@ -79,6 +79,7 @@ namespace AIS.Intervene
         private static readonly string VERB_LINE = "verb:";
         private static readonly string SPEC_LINE = "specificity:";
         private static readonly string MAX_TARGETS_LINE = "maxtargets:";
+        private static readonly string OVERRIDE_DESC_LINE = "desc:";
         private static readonly string IF_KEYWORD = "if";
         private static readonly string ODDS_KEYWORD = "odds";
         private static readonly string RELATIVE_KEYWORD = "relative";
@@ -312,6 +313,7 @@ namespace AIS.Intervene
             string overrideEffectBlock = null;
             ActionTargetCondition overrideTargetCondition = new ActionTargetCondition();
             overrideTargetCondition.Condition = ActionCondition.None;
+            string overrideDesc = String.Empty;
 
             if (overrideIndex != -1)
             {
@@ -328,6 +330,10 @@ namespace AIS.Intervene
                 {
                     overrideTargetCondition = ParseCondition(conditionPart);
                 }
+
+                // Parse the optional player-facing description line within the block
+                // Format: "desc: Additional +1 Awareness"
+                overrideDesc = ParseOverrideDesc(overrideEffectBlock);
             }
             else
             {
@@ -350,13 +356,32 @@ namespace AIS.Intervene
                 ActionEffectOverride effectOverride = new ActionEffectOverride
                 {
                     Condition = overrideTargetCondition,
-                    Override = overrideEffect
+                    Override = overrideEffect,
+                    Description = overrideDesc
                 };
 
                 effectBundle.EffectOverride = effectOverride;
             }
 
             return effectBundle;
+        }
+
+        // Extracts the optional "desc:" line from an @overrideEffect block.
+        // Returns String.Empty if no desc line is present.
+        static private string ParseOverrideDesc(string overrideEffectBlock)
+        {
+            string[] lines = overrideEffectBlock.Split(END_DELIMS, StringSplitOptions.RemoveEmptyEntries);
+
+            foreach (string line in lines)
+            {
+                string trimmedLine = line.Trim();
+                if (trimmedLine.ToLower().StartsWith(OVERRIDE_DESC_LINE))
+                {
+                    return trimmedLine.Substring(OVERRIDE_DESC_LINE.Length).Trim();
+                }
+            }
+
+            return String.Empty;
         }
 
         static private ActionEffect ParseEffect(string effectBlock, string cardIdStr)
