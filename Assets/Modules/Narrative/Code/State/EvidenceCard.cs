@@ -24,8 +24,15 @@ namespace AIS.Narrative {
         public PlayerStatId Suit;
         public Image Illustration;
         [Multiline] public string Label;
+
         public bool isActionable;
         [EnableIfField(nameof(isActionable))]
         public MapLocation ActivateLocation;
+
+        [EnableIfField(nameof(isActionable))]
+        private bool isActivated = false;
+
+        public bool getIsActivated() { return this.isActivated; }
+        public void activateCard() { this.isActivated = true; }
     }
 }

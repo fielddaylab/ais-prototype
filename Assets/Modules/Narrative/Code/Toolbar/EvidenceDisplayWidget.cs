@@ -51,6 +51,11 @@ namespace AIS.Narrative {
             {
                 widget.ActionContents.gameObject.SetActive(true);
                 widget.ActionContents.GetComponentInChildren<TMP_Text>().SetText(data.ActivateLocation.ToString());
+
+                if (data.getIsActivated())
+                {
+                    widget.ActionSlot.GetComponent<SpriteRenderer>().color = Color.gray;
+                }
             }
             else
             {
