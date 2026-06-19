@@ -237,5 +237,11 @@ namespace AIS.Narrative {
         static public bool HasChoices([BindThread] ScriptThread thread) {
             return thread.AvailableOptionCount(DialogueChoiceUtility.SelectablePredicate) > 0;
         }
+
+        [LeafMember("AllowTravelToFishingDocks")]
+        static public bool AllowTravelToFishingDocks()
+        {
+
+        }
     }
 }

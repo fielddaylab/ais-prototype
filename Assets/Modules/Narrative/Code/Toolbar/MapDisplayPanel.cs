@@ -116,4 +116,15 @@ namespace AIS.Narrative
             currentHub.UnlockedLocations.Add(currentHub.locations[index].MainImg);
         }
     }
+
+    public static class MapThreadUtility {
+        // For enable/disable map locations within a thread
+
+
+        public static void EnableLocations()
+        {
+
+        }
+
+    }
 }
