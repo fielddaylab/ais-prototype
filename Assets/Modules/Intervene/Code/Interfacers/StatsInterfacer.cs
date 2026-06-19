@@ -14,6 +14,7 @@ namespace AIS.Intervene
         public const string OUTDOOR_KEY = "outdoor";
         public const string TECH_KEY = "tech";
         public const string RESEARCH_KEY = "research";
+        public const string INNOVATE_KEY = "innovate";
 
         public enum StatType
         {
@@ -21,19 +22,21 @@ namespace AIS.Intervene
             Outdoor,
             Tech,
             Research,
+            Innovate
         }
 
         public struct InterveneStats
         {
             public Dictionary<StatType, int> StatDict;
 
-            public InterveneStats(int social, int outdoor, int tech, int research)
+            public InterveneStats(int social, int outdoor, int tech, int research, int innovate)
             {
                 StatDict = new Dictionary<StatType, int>();
                 StatDict.Add(StatType.Social, social);
                 StatDict.Add(StatType.Outdoor, outdoor);
                 StatDict.Add(StatType.Tech, tech);
                 StatDict.Add(StatType.Research, research);
+                StatDict.Add(StatType.Innovate, innovate);
             }
 
             public void AdjustStat(StatType stat, int val)
@@ -61,9 +64,9 @@ namespace AIS.Intervene
 
         #endregion // Unity Callbacks
 
-        public void LoadPlayerStats(int social, int outdoor, int tech, int research)
+        public void LoadPlayerStats(int social, int outdoor, int tech, int research, int innovate)
         {
-            WorkingStats = new InterveneStats(social, outdoor, tech, research);
+            WorkingStats = new InterveneStats(social, outdoor, tech, research, innovate);
         }
 
         public void AdjustPlayerStat(StatType stat, int amt)
@@ -92,6 +95,8 @@ namespace AIS.Intervene
                     return WorkingStats.StatDict[StatType.Tech];
                 case RESEARCH_KEY:
                     return WorkingStats.StatDict[StatType.Research];
+                case INNOVATE_KEY:
+                    return WorkingStats.StatDict[StatType.Innovate];
                 default:
                     return -1;
             }

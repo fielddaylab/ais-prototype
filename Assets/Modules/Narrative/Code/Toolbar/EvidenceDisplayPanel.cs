@@ -6,8 +6,6 @@ using UnityEngine;
 
 namespace AIS.Narrative {
     public sealed class EvidenceDisplayPanel : SharedPanel, IParameterizedGuiPanel<PlayerInventory> {
-        public Sprite modelIcon;
-        public Sprite actionableIcon;
         public EvidenceDisplayWidget[] Widgets;
         public StatDisplayWidget[] Stats;
 
@@ -24,9 +22,7 @@ namespace AIS.Narrative {
 
                 EvidenceDisplayWidget widget = Widgets[widgetIndex++];
                 widget.gameObject.SetActive(true);
-                widget.Illustration = data.Illustration;
-                widget.Type.sprite = data.isActionable ? actionableIcon : modelIcon;
-                widget.Content.SetText(data.Label);
+                EvidenceDisplayWidgetUtility.Populate(widget, data);
             }
 
             for(; widgetIndex < Widgets.Length; widgetIndex++) {
