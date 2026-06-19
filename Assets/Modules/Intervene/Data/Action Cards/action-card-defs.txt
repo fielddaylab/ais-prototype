@@ -20,7 +20,7 @@
 ::example-action-card-1
 @title		Outreach Campaign
 @suit		ranger
-@desc		+1 Awareness || SOCIAL Additional +1 Awareness
+@desc		+1 Awareness
 @path		temp.png
 @cost		2
 
@@ -38,7 +38,7 @@
 ::example-action-card-2
 @title		Boat Washing Stations
 @suit		ranger
-@desc		Decrease all "Boat Hulls" pathways by 1. || SOCIAL Remove 1 affected pathway.
+@desc		Decrease all "Boat Hulls" pathways by 1.
 @path		temp.png
 @cost		3
 
@@ -85,7 +85,7 @@
 ::example-action-card-4
 @title		Manual Removal
 @suit		ranger
-@desc		-1 Invasive OR -1 Nest. || OUTDOORS -1 Invasive in same lake
+@desc		-1 Invasive OR -1 Nest.
 @path		temp.png
 @cost		2
 
@@ -111,7 +111,7 @@
 ::eat-the-invasive
 @title		Eat the Invasive
 @suit		ranger
-@desc		For every 2 Awareness, remove 1 Invasive from a different ecosystem. || OUTDOOR -1 additional Invasive (not per Awareness).
+@desc		For every 2 Awareness, remove 1 Invasive from a different ecosystem.
 @path		temp.png
 @cost		3
 
@@ -131,7 +131,7 @@
 ::example-action-card-6
 @title		Place Trap
 @suit		ranger
-@desc		Place a trap in an Ecosystem. It has a 1/6 chance of triggering per round. || TECH Place another trap in another lake
+@desc		Place a trap in an Ecosystem. It has a 1/6 chance of triggering per round.
 @path		temp.png
 @cost		1
 
@@ -191,7 +191,7 @@
 ::example-action-card-9
 @title		Field Research
 @suit		ranger
-@desc		Flip one unknown Pathway. || RESEARCH Decrease the revealed pathway by 1
+@desc		Flip one unknown Pathway.
 @path		temp.png
 @cost		1
 
@@ -217,7 +217,7 @@
 ::example-action-card-10
 @title		Chemical Removal
 @suit		ranger
-@desc		In one Ecosystem: -2 Invasive, -1 Predator, -1 Prey || RESEARCH Skip -1 Prey
+@desc		In one Ecosystem: -2 Invasive, -1 Predator, -1 Prey
 @path		temp.png
 @cost		2
 
@@ -243,7 +243,7 @@
 ::example-action-card-11
 @title		Reproduction Supressor
 @suit		ranger
-@desc		Decrease all Nests by 1. || RESEARCH Decrease all Nests by an additional 1.
+@desc		Decrease all Nests by 1.
 @path		temp.png
 @cost		3
 
