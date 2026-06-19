@@ -121,9 +121,9 @@ namespace AIS.Narrative
         // For enable/disable map locations within a thread
 
 
-        public static void EnableLocations()
+        public static void EnableLocations(MapLocation location)
         {
-
+            
         }
 
     }

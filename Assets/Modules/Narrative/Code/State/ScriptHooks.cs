@@ -239,7 +239,7 @@ namespace AIS.Narrative {
         }
 
         [LeafMember("AllowTravelToFishingDocks")]
-        static public bool AllowTravelToFishingDocks()
+        static public void AllowTravelToFishingDocks()
         {
 
         }
