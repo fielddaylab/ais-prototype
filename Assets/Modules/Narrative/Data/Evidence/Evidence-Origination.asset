@@ -17,4 +17,4 @@ MonoBehaviour:
   Suit: 4
   Illustration: {fileID: 0}
   Label: Sea Lamprey originated from the Atlantic Ocean.
-  isActionable: 0
+  isActionable: 1

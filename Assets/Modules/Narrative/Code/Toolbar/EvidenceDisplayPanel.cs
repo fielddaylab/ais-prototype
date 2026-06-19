@@ -2,6 +2,7 @@ using System;
 using FieldDay;
 using FieldDay.UI;
 using FieldDay.UI.Widgets;
+using TMPro;
 using UnityEngine;
 
 namespace AIS.Narrative {
@@ -26,6 +27,19 @@ namespace AIS.Narrative {
                 widget.gameObject.SetActive(true);
                 widget.Illustration = data.Illustration;
                 widget.Type.sprite = data.isActionable ? actionableIcon : modelIcon;
+                if (data.isActionable)
+                {
+                    widget.Type.sprite = actionableIcon;
+                    widget.ActionSlot.gameObject.SetActive(true);
+                    
+                    widget.ActionContents.GetComponentInChildren<TMP_Text>().SetText(data.ActivateLocation.ToString());
+                }
+                else
+                {
+                    widget.Type.sprite = modelIcon;
+                    widget.ActionSlot.gameObject.SetActive(false);
+                }
+
                 widget.Content.SetText(data.Label);
             }
 

@@ -17,4 +17,4 @@ MonoBehaviour:
   Suit: 1
   Illustration: {fileID: 0}
   Label: Sea Lamprey is vulnerable to chemical removal.
-  isActionable: 0
+  isActionable: 1

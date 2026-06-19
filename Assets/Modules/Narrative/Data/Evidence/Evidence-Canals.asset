@@ -12,5 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6374628d737c9d24486747a92e860022, type: 3}
   m_Name: Evidence-Canals
   m_EditorClassIdentifier: 
+  Id:
+    m_HashValue: 0
+  Suit: 0
+  Illustration: {fileID: 0}
   Label: Canals connected the Great Lakes to the Atlantic Ocean.
-  id: 8
+  isActionable: 1

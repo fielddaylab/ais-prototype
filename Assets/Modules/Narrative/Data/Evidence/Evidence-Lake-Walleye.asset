@@ -17,4 +17,4 @@ MonoBehaviour:
   Suit: 3
   Illustration: {fileID: 0}
   Label: Sea Lamprey can feed on Walleye.
-  isActionable: 0
+  isActionable: 1
