@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 136f45fed4bf5be46b6d3316e76c74f6, type: 3}
+  m_Name: CardVisualLookup
+  m_EditorClassIdentifier: 
+  SuitIcons:
+  - Suit: 0
+    Icon: {fileID: 21300000, guid: c1a193d58804b0a459709b944c24c88e, type: 3}
+  - Suit: 1
+    Icon: {fileID: 21300000, guid: ada683ef771fdc74fac907f7613afe89, type: 3}
+  - Suit: 2
+    Icon: {fileID: 21300000, guid: 628101e898687ec46b55b8e6b1aca0e7, type: 3}
+  - Suit: 3
+    Icon: {fileID: 21300000, guid: a44aa0dd1bfbadc479ad3da81e2cbad1, type: 3}
+  - Suit: 4
+    Icon: {fileID: 21300000, guid: a81f2c149ceef3d40bc36ed6c1ba1b24, type: 3}
+  ModelIcon: {fileID: 21300000, guid: 76d5b75713a5a8445a4264a746a7b49a, type: 3}
+  ActionableIcon: {fileID: 21300000, guid: 968d5b1e9516948478006f6717e60c77, type: 3}

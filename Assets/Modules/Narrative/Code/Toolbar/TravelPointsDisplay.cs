@@ -29,7 +29,7 @@ namespace AIS.Narrative
         public Vector3 cameraTransform;
         public MapDisplayPanel mapDisplayPanel;
 
-        public Image[] locations;
+        public TravelPoint[] locations;
         [HideInInspector] public List<Image> UnlockedLocations = new List<Image>();
         public Path[] paths;
 
@@ -41,27 +41,27 @@ namespace AIS.Narrative
 
         private void Awake()
         {
-            UnlockedLocations.Add(locations[0]);
+            UnlockedLocations.Add(locations[0].MainImg);
             SetCurrentLocation(0);
-            locations[currentLocationIdx].color = Color.cyan;
+            locations[currentLocationIdx].MainImg.color = Color.cyan;
         }
 
         public void SetCurrentLocation(int index)
         {
             // Deselect current location
-            locations[currentLocationIdx].color = Color.cyan;
+            locations[currentLocationIdx].MainImg.color = Color.cyan;
             for (int i = 0; i < locations.Length; i++)
             {
                 if (i == currentLocationIdx) { continue; }
 
-                if (UnlockedLocations.Contains(locations[i]))
+                if (UnlockedLocations.Contains(locations[i].MainImg))
                 {
-                    locations[i].color = Color.magenta;
+                    locations[i].MainImg.color = Color.magenta;
                     locations[i].GetComponent<Button>().interactable = true;
                 }
                 else
                 {
-                    locations[i].color = Color.grey;
+                    locations[i].MainImg.color = Color.grey;
                     locations[i].GetComponent<Button>().interactable = false;
                 }
             }
@@ -80,7 +80,7 @@ namespace AIS.Narrative
 
             foreach (Path path in paths)
             {
-                bool isConnected = path.connectedLocations.Contains(locations[currentLocationIdx]);
+                bool isConnected = path.connectedLocations.Contains(locations[currentLocationIdx].MainImg);
                 path.line.color = Color.white;
                 path.connectedLocations[0].GetComponent<Button>().interactable = true;
                 path.connectedLocations[1].GetComponent<Button>().interactable = true;
@@ -92,7 +92,7 @@ namespace AIS.Narrative
 
         public void SelectLocation(int index)
         {
-            if (!UnlockedLocations.Contains(locations[index]))
+            if (!UnlockedLocations.Contains(locations[index].MainImg))
             {
                 travelButton.interactable = false;
                 return;
@@ -101,8 +101,8 @@ namespace AIS.Narrative
             // Deselect current selected location
             if (selectedLocationIdx != index)
             {
-                locations[selectedLocationIdx].color = Color.magenta;
-                locations[currentLocationIdx].color = Color.cyan;
+                locations[selectedLocationIdx].MainImg.color = Color.magenta;
+                locations[currentLocationIdx].MainImg.color = Color.cyan;
                 //selectedPath.line.color = Color.white;
                 //selectedPath.time.SetActive(false);
             }
@@ -120,11 +120,11 @@ namespace AIS.Narrative
             selectedLocationIdx = index;
             foreach (Path path in paths)
             {
-                if (path.connectedLocations.Contains(locations[currentLocationIdx]) &&
-                    path.connectedLocations.Contains(locations[index]))
+                if (path.connectedLocations.Contains(locations[currentLocationIdx].MainImg) &&
+                    path.connectedLocations.Contains(locations[index].MainImg))
                     selectedPath = path;
             }
-            locations[index].color = Color.yellow;
+            locations[index].MainImg.color = Color.yellow;
             //selectedPath.line.color = Color.yellow;
             //selectedPath.time.SetActive(true);
 

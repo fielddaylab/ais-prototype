@@ -7,8 +7,6 @@ using UnityEngine;
 
 namespace AIS.Narrative {
     public sealed class EvidenceDisplayPanel : SharedPanel, IParameterizedGuiPanel<PlayerInventory> {
-        public Sprite modelIcon;
-        public Sprite actionableIcon;
         public EvidenceDisplayWidget[] Widgets;
         public StatDisplayWidget[] Stats;
 
