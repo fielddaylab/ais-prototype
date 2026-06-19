@@ -46,6 +46,16 @@ namespace AIS.Narrative {
             if (widget.Type != null) {
                 widget.Type.sprite = CardVisualLookupUtility.LookupTypeIcon(data.isActionable);
             }
+
+            if (data.isActionable && data.ActivateLocation != MapLocation.None)
+            {
+                widget.ActionContents.gameObject.SetActive(true);
+                widget.ActionContents.GetComponentInChildren<TMP_Text>().SetText(data.ActivateLocation.ToString());
+            }
+            else
+            {
+                widget.ActionContents.gameObject.SetActive(false);
+            }
         }
     }
 }

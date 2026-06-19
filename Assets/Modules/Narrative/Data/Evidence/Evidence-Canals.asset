@@ -18,3 +18,4 @@ MonoBehaviour:
   Illustration: {fileID: 0}
   Label: Canals connected the Great Lakes to the Atlantic Ocean.
   isActionable: 1
+  ActivateLocation: 5

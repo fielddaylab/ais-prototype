@@ -23,22 +23,7 @@ namespace AIS.Narrative {
 
                 EvidenceDisplayWidget widget = Widgets[widgetIndex++];
                 widget.gameObject.SetActive(true);
-                widget.Illustration = data.Illustration;
-                widget.Type.sprite = data.isActionable ? actionableIcon : modelIcon;
-                if (data.isActionable)
-                {
-                    widget.Type.sprite = actionableIcon;
-                    widget.ActionSlot.gameObject.SetActive(true);
-                    
-                    widget.ActionContents.GetComponentInChildren<TMP_Text>().SetText(data.ActivateLocation.ToString());
-                }
-                else
-                {
-                    widget.Type.sprite = modelIcon;
-                    widget.ActionSlot.gameObject.SetActive(false);
-                }
-
-                widget.Content.SetText(data.Label);
+                EvidenceDisplayWidgetUtility.Populate(widget, data);
             }
 
             for(; widgetIndex < Widgets.Length; widgetIndex++) {

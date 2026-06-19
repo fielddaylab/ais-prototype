@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 namespace AIS.Narrative {
-    public enum Location: byte
+    public enum MapLocation: byte
     {
         FishingDocks,
         TownHall,
@@ -13,7 +13,8 @@ namespace AIS.Narrative {
         BarrierSite,
         FieldStation,
         ResearchLab,
-        ArmyCorps
+        ArmyCorps,
+        None = 255
     }
 
 
@@ -25,6 +26,6 @@ namespace AIS.Narrative {
         [Multiline] public string Label;
         public bool isActionable;
         [EnableIfField(nameof(isActionable))]
-        public Location ActivateLocation;
+        public MapLocation ActivateLocation;
     }
 }
