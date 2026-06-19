@@ -1,4 +1,5 @@
-﻿using BeauUtil;
+﻿using AIS.Narrative;
+using BeauUtil;
 using BeauUtil.Debugger;
 using FieldDay;
 using FieldDay.Debugging;
@@ -16,6 +17,7 @@ namespace AIS.Intervene
         public string Title;
         public string Description;
         public string ImgPath;
+        public PlayerStatId Suit;
 
         public int Cost;
         public ActionEffectBundle[] DiscoverResults;
@@ -23,12 +25,13 @@ namespace AIS.Intervene
 
         public bool IsValid;
 
-        public ActionCardData(SerializedHash32 cardID, string title, string desc, string imgPath, int cost, ActionEffectBundle[] discoverResults, ActionEffectBundle[] effects)
+        public ActionCardData(SerializedHash32 cardID, string title, string desc, string imgPath, PlayerStatId suit, int cost, ActionEffectBundle[] discoverResults, ActionEffectBundle[] effects)
         {
             CardID = cardID;
             Title = title;
             Description = desc;
             ImgPath = imgPath;
+            Suit = suit;
 
             Cost = cost;
             DiscoverResults = discoverResults;
@@ -63,6 +66,7 @@ namespace AIS.Intervene
         #region Card Definition Parsing
 
         private static readonly string TITLE_TAG = "@title";
+        private static readonly string SUIT_TAG = "@suit";
         private static readonly string DESC_TAG = "@desc";
         private static readonly string IMAGE_PATH_TAG = "@path";
         private static readonly string COST_TAG = "@cost";
@@ -128,6 +132,7 @@ namespace AIS.Intervene
             string title = "";
             string desc = "";
             string imgPath = "";
+            PlayerStatId suit = PlayerStatId.Invalid;
 
             // Parse into data
 
@@ -150,6 +155,16 @@ namespace AIS.Intervene
                 Debug.Log("[CardUtility] title syntax error!");
 
                 throw new Exception("Title");
+            }
+
+            // Suit comes after @suit (optional)
+            int suitIndex = cardDef.ToLower().IndexOf(SUIT_TAG);
+            if (suitIndex != -1)
+            {
+                string afterSuit = cardDef.Substring(suitIndex);
+                int offset = SUIT_TAG.Length;
+                string suitStr = cardDef.Substring(suitIndex + offset, afterSuit.IndexOfAny(END_DELIMS) - offset).Trim();
+                suit = ParsePlayerStat(suitStr);
             }
 
             // Description comes after @desc
@@ -211,7 +226,7 @@ namespace AIS.Intervene
             // Action Effects parsing
             ActionEffectBundle[] effects = ParseEffects(cardDef, cardIdStr);
 
-            return new ActionCardData(cardID, title, desc, imgPath, cost, discoverResults, effects);
+            return new ActionCardData(cardID, title, desc, imgPath, suit, cost, discoverResults, effects);
         }
 
         #region Effect Parsing Helpers
@@ -755,6 +770,35 @@ namespace AIS.Intervene
                     condition.NumericalCheck = numValue;
                 }
             }
+            // Innovate conditions
+            else if (variableName.Contains("innovate"))
+            {
+                if (operatorChar == LE_CHAR || operatorChar == '≤')
+                {
+                    condition.Condition = ActionCondition.InnovateLessThan;
+                }
+                else if (operatorChar == GR_CHAR || operatorChar == '≥')
+                {
+                    condition.Condition = ActionCondition.InnovateGreaterThan;
+                }
+                else if (operatorChar == EQ_CHAR)
+                {
+                    condition.Condition = ActionCondition.InnovateEqualTo;
+                }
+
+                if (float.TryParse(valueStr, out float numValue))
+                {
+                    if (operatorChar == '≤')
+                    {
+                        numValue++;
+                    }
+                    else if (operatorChar == '≥')
+                    {
+                        numValue--;
+                    }
+                    condition.NumericalCheck = numValue;
+                }
+            }
             // Pathway Type conditions (only with = operator)
             else if ((variableName.Contains("type") || variableName.Contains("pathway")) && operatorChar == EQ_CHAR)
             {
@@ -883,6 +927,29 @@ namespace AIS.Intervene
                 default:
                     Debug.LogWarning("[CardUtility] Unknown verb: " + verbStr);
                     return ActionVerb.Reduce; // default fallback
+            }
+        }
+
+        static private PlayerStatId ParsePlayerStat(string suitStr)
+        {
+            suitStr = suitStr.ToLower().Trim();
+
+            switch (suitStr)
+            {
+                case "tech":
+                    return PlayerStatId.Tech;
+                case "research":
+                    return PlayerStatId.Research;
+                case "innovate":
+                    return PlayerStatId.Innovate;
+                case "ranger":
+                    return PlayerStatId.Ranger;
+                case "communicate":
+                case "social":
+                    return PlayerStatId.Communicate;
+                default:
+                    Debug.LogWarning("[CardUtility] Unknown suit: " + suitStr);
+                    return PlayerStatId.Invalid; // default fallback
             }
         }
 

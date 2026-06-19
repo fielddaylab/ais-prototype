@@ -1,4 +1,6 @@
 using AIS.Model;
+using AIS.Narrative;
+using AIS.Shared;
 using BeauUtil;
 using System;
 using System.Collections;
@@ -66,6 +68,9 @@ namespace AIS.Intervene {
         ResearchLessThan,
         ResearchEqualTo,
         ResearchGreaterThan,
+        InnovateLessThan,
+        InnovateEqualTo,
+        InnovateGreaterThan,
         IsInput,
         IsOutput,
     }
@@ -150,6 +155,7 @@ namespace AIS.Intervene {
         public string Title;
         public string Description;
         public string ImgPath;
+        public PlayerStatId Suit;
 
         public ActionEffectBundle[] DiscoverResults;
         public ActionEffectBundle[] Effects;
@@ -160,6 +166,11 @@ namespace AIS.Intervene {
             toPopulate.CostText.SetText("$" + GetAdjustedCost().ToStringLookup());
             toPopulate.Description.SetText(Description);
             toPopulate.CardData = this;
+
+            if (toPopulate.Suit != null)
+            {
+                toPopulate.Suit.sprite = CardVisualLookupUtility.LookupSuitIcon(Suit);
+            }
             // TODO: img
             // toPopulate.Img.SetText(Title);
         }
@@ -227,6 +238,12 @@ namespace AIS.Intervene {
                     return StatsInterfacer.Instance.GetValue(StatsInterfacer.RESEARCH_KEY) == condition.NumericalCheck;
                 case ActionCondition.ResearchGreaterThan:
                     return StatsInterfacer.Instance.GetValue(StatsInterfacer.RESEARCH_KEY) > condition.NumericalCheck;
+                case ActionCondition.InnovateLessThan:
+                    return StatsInterfacer.Instance.GetValue(StatsInterfacer.INNOVATE_KEY) < condition.NumericalCheck;
+                case ActionCondition.InnovateEqualTo:
+                    return StatsInterfacer.Instance.GetValue(StatsInterfacer.INNOVATE_KEY) == condition.NumericalCheck;
+                case ActionCondition.InnovateGreaterThan:
+                    return StatsInterfacer.Instance.GetValue(StatsInterfacer.INNOVATE_KEY) > condition.NumericalCheck;
                 case ActionCondition.IsInput:
                 case ActionCondition.IsOutput:
                     return EvaluatePathDir(condition, tag);
