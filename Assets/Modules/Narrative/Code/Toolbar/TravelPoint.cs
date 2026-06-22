@@ -8,7 +8,9 @@ namespace AIS.Narrative
 {
     public class TravelPoint : BatchedComponent
     {
+        public MapLocation LocationName;
         public Image MainImg;
         public Image EmphasisImg;
+        public GameObject Time;
     }
 }

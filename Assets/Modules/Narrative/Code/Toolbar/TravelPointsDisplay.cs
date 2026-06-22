@@ -8,6 +8,7 @@ using UnityEngine.UI;
 using BeauUtil.UI;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 
 namespace AIS.Narrative
 {
@@ -38,9 +39,11 @@ namespace AIS.Narrative
         private Path selectedPath;
 
         public Button travelButton;
+        public Button returnButton;
 
         private void Awake()
         {
+            returnButton.gameObject.SetActive(false);
             UnlockedLocations.Add(locations[0].MainImg);
             SetCurrentLocation(0);
             locations[currentLocationIdx].MainImg.color = Color.cyan;
@@ -58,6 +61,7 @@ namespace AIS.Narrative
                 {
                     locations[i].MainImg.color = Color.magenta;
                     locations[i].GetComponent<Button>().interactable = true;
+                    locations[i].Time.gameObject.SetActive(true);
                 }
                 else
                 {
@@ -78,13 +82,13 @@ namespace AIS.Narrative
             //    location.GetComponent<Button>().interactable = true;
             //}
 
-            foreach (Path path in paths)
-            {
-                bool isConnected = path.connectedLocations.Contains(locations[currentLocationIdx].MainImg);
-                path.line.color = Color.white;
-                path.connectedLocations[0].GetComponent<Button>().interactable = true;
-                path.connectedLocations[1].GetComponent<Button>().interactable = true;
-            }
+            //foreach (Path path in paths)
+            //{
+            //    bool isConnected = path.connectedLocations.Contains(locations[currentLocationIdx].MainImg);
+            //    path.line.color = Color.white;
+            //    path.connectedLocations[0].GetComponent<Button>().interactable = true;
+            //    path.connectedLocations[1].GetComponent<Button>().interactable = true;
+            //}
 
             //locations[currentLocationIdx].color = Color.magenta;
             travelButton.interactable = false;
@@ -117,18 +121,38 @@ namespace AIS.Narrative
             */
 
             // Highlight new selected location and path
+
+            // TODO: Set up paths between every pair of locations that can be traveled one to another
             selectedLocationIdx = index;
             foreach (Path path in paths)
             {
                 if (path.connectedLocations.Contains(locations[currentLocationIdx].MainImg) &&
                     path.connectedLocations.Contains(locations[index].MainImg))
+                {
                     selectedPath = path;
+                    path.line.gameObject.SetActive(true);
+                }
+                else
+                    path.line.gameObject.SetActive(false);
             }
             locations[index].MainImg.color = Color.yellow;
             //selectedPath.line.color = Color.yellow;
             //selectedPath.time.SetActive(true);
 
             travelButton.interactable = true;
+        }
+
+        public void SetTravelTime(TravelPoint destination)
+        {
+            // TODO: decide the exact amount of time needed
+            destination.Time.gameObject.SetActive(true);
+        }
+
+        public void EnableReturnTo(int originIdx)
+        {
+            selectedLocationIdx = originIdx;
+            returnButton.gameObject.SetActive(true);
+            returnButton.interactable = true;
         }
 
         public void TravelToSelectedLocation()

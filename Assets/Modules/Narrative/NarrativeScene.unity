@@ -3068,6 +3068,18 @@ PrefabInstance:
       propertyPath: locations.Array.data[15]
       value: 
       objectReference: {fileID: 6293211549355827437}
+    - target: {fileID: 8591202225820836632, guid: 1035e6bbdf8f3418584f107a9ced40b6, type: 3}
+      propertyPath: m_Colors.m_DisabledColor.b
+      value: 0.6226415
+      objectReference: {fileID: 0}
+    - target: {fileID: 8591202225820836632, guid: 1035e6bbdf8f3418584f107a9ced40b6, type: 3}
+      propertyPath: m_Colors.m_DisabledColor.g
+      value: 0.6226415
+      objectReference: {fileID: 0}
+    - target: {fileID: 8591202225820836632, guid: 1035e6bbdf8f3418584f107a9ced40b6, type: 3}
+      propertyPath: m_Colors.m_DisabledColor.r
+      value: 0.6226415
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 3485179526842857505, guid: 1035e6bbdf8f3418584f107a9ced40b6, type: 3}

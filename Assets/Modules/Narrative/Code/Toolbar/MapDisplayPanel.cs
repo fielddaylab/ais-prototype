@@ -7,6 +7,7 @@ using FieldDay.UI;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 namespace AIS.Narrative
 {
@@ -115,16 +116,17 @@ namespace AIS.Narrative
             TravelPointsDisplay currentHub = travelPointsDisplays[currentHubIdx];
             currentHub.UnlockedLocations.Add(currentHub.locations[index].MainImg);
         }
-    }
 
-    public static class MapThreadUtility {
-        // For enable/disable map locations within a thread
-
-
-        public static void EnableLocations(MapLocation location)
+        public void SetInThreadLocks()
         {
-            
+            TravelPointsDisplay currentHub = travelPointsDisplays[currentHubIdx];
+            currentHub.UnlockedLocations = new List<Image>();
         }
 
+        public void ReturnTo(int locationIdx)
+        {
+            TravelPointsDisplay currentHub = travelPointsDisplays[currentHubIdx];
+            currentHub.EnableReturnTo(locationIdx);
+        }
     }
 }

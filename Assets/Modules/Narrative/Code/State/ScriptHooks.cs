@@ -211,6 +211,18 @@ namespace AIS.Narrative {
             return inv.EvidenceChips.Contains(id);
         }
 
+        /*
+         * Lock every location. To unlock a location in thread, SetInThreadLocks disables every 
+         * location on the map at first (to clean up previously unlocked places), and need to 
+         * unlock designed location by calling UnlockLocation next.
+         */
+        [LeafMember("SetInThreadLocks")]
+        static public void SetInThreadLocks()
+        {
+            var mapPanel = Find.Panel<MapDisplayPanel>();
+            mapPanel.SetInThreadLocks();
+        }
+
         [LeafMember("UnlockLocation")]
         static public void UnlockLocation(int index)
         {
@@ -238,10 +250,11 @@ namespace AIS.Narrative {
             return thread.AvailableOptionCount(DialogueChoiceUtility.SelectablePredicate) > 0;
         }
 
-        [LeafMember("AllowTravelToFishingDocks")]
-        static public void AllowTravelToFishingDocks()
+        [LeafMember("ReturnTo")]
+        static public void ReturnTo(int index)
         {
-
+            var mapPanel = Find.Panel<MapDisplayPanel>();
+            
         }
     }
 }
