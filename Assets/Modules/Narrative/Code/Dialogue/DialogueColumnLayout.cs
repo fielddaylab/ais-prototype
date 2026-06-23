@@ -34,7 +34,15 @@ namespace AIS.Narrative {
         public LayoutOptions VerticalLayout;
         public float CullDistance = 400;
 
+        [Header("Horizontal Shift")]
+        public RectTransform ColumnRoot;
+        public float ColumnShift = 250;
+        public TweenSettings ShiftAnim = new TweenSettings(0.2f, Curve.Smooth);
+
         public RingBuffer<DialogueColumnLayoutElement> ActiveLines = new RingBuffer<DialogueColumnLayoutElement>(32);
+
+        [NonSerialized] public DialogueColumnAlignment CurrentAlignment;
+        [NonSerialized] private Routine m_ShiftRoutine;
 
         public void RecomputePositioning() {
             using(var lineBuffer = TempReferenceBuffer<RectTransform>.Create(ActiveLines.Count)) {
@@ -59,5 +67,67 @@ namespace AIS.Narrative {
                 }
             }
         }
+
+        #region Horizontal Shift
+
+        /// <summary>
+        /// Slides the entire dialogue column to the given horizontal alignment.
+        /// </summary>
+        public IEnumerator ShiftTo(DialogueColumnAlignment alignment) {
+            if (alignment == CurrentAlignment) {
+                yield break;
+            }
+
+            Assert.NotNull(ColumnRoot, "[DialogueColumnLayout] ColumnRoot is not assigned - cannot shift dialogue layout");
+
+            CurrentAlignment = alignment;
+
+            m_ShiftRoutine.Replace(this, ColumnRoot.AnchorPosTo(GetAlignmentX(alignment), ShiftAnim, Axis.X));
+            yield return m_ShiftRoutine.Wait();
+        }
+
+        /// <summary>
+        /// Immediately applies the given horizontal alignment, with no animation.
+        /// </summary>
+        public void SnapTo(DialogueColumnAlignment alignment) {
+            if (alignment == CurrentAlignment) {
+                return;
+            }
+
+            Assert.NotNull(ColumnRoot, "[DialogueColumnLayout] ColumnRoot is not assigned - cannot snap dialogue layout");
+
+            m_ShiftRoutine.Stop();
+            CurrentAlignment = alignment;
+            ColumnRoot.SetAnchorPos(GetAlignmentX(alignment), Axis.X);
+        }
+
+        /// <summary>
+        /// Snaps the dialogue column back to center, with no animation.
+        /// </summary>
+        public void ResetAlignment() {
+            SnapTo(DialogueColumnAlignment.Center);
+        }
+
+        private float GetAlignmentX(DialogueColumnAlignment alignment) {
+            switch (alignment) {
+                case DialogueColumnAlignment.Left: {
+                    return -ColumnShift;
+                }
+                case DialogueColumnAlignment.Right: {
+                    return ColumnShift;
+                }
+                default: {
+                    return 0;
+                }
+            }
+        }
+
+        #endregion // Horizontal Shift
+    }
+
+    public enum DialogueColumnAlignment {
+        Center,
+        Left,
+        Right
     }
 }
