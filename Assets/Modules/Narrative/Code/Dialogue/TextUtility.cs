@@ -1,4 +1,5 @@
 using AIS.Intervene;
+using AIS.Shared;
 using BeauPools;
 using BeauRoutine;
 using BeauUtil;
@@ -22,8 +23,8 @@ namespace AIS.Narrative {
             EvidenceCard data = Find.NamedAsset<EvidenceCard>(evidenceId);
             NewCardElement newElem = column.NewEvidencePool.Alloc();
             column.Layout.ActiveLines.PushBack(newElem.Positioner);
-            newElem.Widget.gameObject.SetActive(true);
-            newElem.Widget.Content.SetText(data.Label);
+            newElem.Card.gameObject.SetActive(true);
+            PopulateCardVisual(newElem.Card, data);
             newElem.SetVisible(true);
             column.Layout.RecomputePositioning();
             return newElem;
@@ -44,14 +45,29 @@ namespace AIS.Narrative {
 
             NewCardElement newElem = column.NewActionCardPool.Alloc();
             column.Layout.ActiveLines.PushBack(newElem.Positioner);
-            newElem.Widget.gameObject.SetActive(true);
+            newElem.Card.gameObject.SetActive(true);
             if (dependencyData != null) {
                 newElem.DependencyWidget.Content.SetText(dependencyData.Label);
             }
-            newElem.Widget.Content.SetText(data.Label);
+            PopulateCardVisual(newElem.Card, data);
             newElem.SetVisible(true);
             column.Layout.RecomputePositioning();
             return newElem;
+        }
+
+        // Fills a UICard's face from an EvidenceCard: label as title, plus suit and illustration.
+        static private void PopulateCardVisual(UICard card, EvidenceCard data) {
+            if (card == null || data == null) { return; }
+
+            if (card.Title != null) {
+                card.Title.SetText(data.Label);
+            }
+            if (card.Suit != null) {
+                card.Suit.sprite = CardVisualLookupUtility.LookupSuitIcon(data.Suit);
+            }
+            if (card.Img != null) {
+                card.Img.sprite = data.Illustration != null ? data.Illustration.sprite : null;
+            }
         }
 
         // Waits for the player to click the card's confirm button (Add Evidence / Create), then hides it.
@@ -68,12 +84,12 @@ namespace AIS.Narrative {
         // The panel stays in the dialogue column as history; only the given card disappears.
         static public IEnumerator FlyCardToToolbar(NewCardElement card, ToolbarButton target) {
             // Only the widget itself flies/shrinks; the rest of the panel stays put.
-            RectTransform widgetRect = card.Widget.Rect;
+            RectTransform widgetRect = (RectTransform) card.Card.transform;
             Transform origParent = widgetRect.parent;
             int origSiblingIndex = widgetRect.GetSiblingIndex();
             Vector3 origLocalPos = widgetRect.localPosition;
             Vector3 origLocalScale = widgetRect.localScale;
-            LayoutOffset widgetOffset = card.Widget.LayoutOffset;
+            LayoutOffset widgetOffset = card.Card.GetComponent<LayoutOffset>();
             if (widgetOffset) {
                 widgetOffset.enabled = false;
             }
@@ -95,7 +111,7 @@ namespace AIS.Narrative {
 
             // Hide the given widget but leave its panel in the column, and restore the widget
             // back under its panel so the pooled instance is clean if this card is reused.
-            card.Widget.gameObject.SetActive(false);
+            card.Card.gameObject.SetActive(false);
             widgetRect.SetParent(origParent, false);
             widgetRect.SetSiblingIndex(origSiblingIndex);
             widgetRect.localPosition = origLocalPos;

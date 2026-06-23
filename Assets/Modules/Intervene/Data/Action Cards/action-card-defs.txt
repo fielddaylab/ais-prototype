@@ -2,6 +2,7 @@
 
 ::aquaculturist-outreach
 @title		Aquaculturist Outreach
+@suit		ranger
 @desc		Roll 1d6. If below Awareness, decrease all known Aquarium pathways.
 @path		temp.png
 @cost		1
@@ -18,7 +19,8 @@
 
 ::example-action-card-1
 @title		Outreach Campaign
-@desc		+1 Awareness || SOCIAL Additional +1 Awareness
+@suit		ranger
+@desc		+1 Awareness
 @path		temp.png
 @cost		2
 
@@ -28,13 +30,15 @@
     specificity: all
 
 @overrideEffect if social > 0
+    desc: Additional +1 Awareness
     target: aware
     verb: increase, 2, fixed
     specificity: all
 
 ::example-action-card-2
 @title		Boat Washing Stations
-@desc		Decrease all "Boat Hulls" pathways by 1. || SOCIAL Remove 1 affected pathway.
+@suit		ranger
+@desc		Decrease all "Boat Hulls" pathways by 1.
 @path		temp.png
 @cost		3
 
@@ -56,6 +60,7 @@
     maxTargets: 0
 
 @overrideEffect if social > 1
+    desc: Remove 1 affected pathway.
     target: pathway, if type = BoatHulls
     verb: remove, 0, fixed
     specificity: specific
@@ -63,6 +68,7 @@
 
 ::angler-outreach
 @title		Angler Outreach
+@suit		ranger
 @desc		Roll 1d6. If below Awareness, decrease all Bait Bucket pathways by 1.
 @path		temp.png
 @cost		1
@@ -78,7 +84,8 @@
 
 ::example-action-card-4
 @title		Manual Removal
-@desc		-1 Invasive OR -1 Nest. || OUTDOORS -1 Invasive in same lake
+@suit		ranger
+@desc		-1 Invasive OR -1 Nest.
 @path		temp.png
 @cost		2
 
@@ -95,6 +102,7 @@
     specificity: specific
     maxtargets: 0
 @overrideEffect if outdoor > 0
+    desc: -1 Invasive in same lake
     target: invasive
     verb: reduce, 1, fixed
     specificity: specific
@@ -102,7 +110,8 @@
 
 ::eat-the-invasive
 @title		Eat the Invasive
-@desc		For every 2 Awareness, remove 1 Invasive from a different ecosystem. || OUTDOOR -1 additional Invasive (not per Awareness).
+@suit		ranger
+@desc		For every 2 Awareness, remove 1 Invasive from a different ecosystem.
 @path		temp.png
 @cost		3
 
@@ -121,7 +130,8 @@
 
 ::example-action-card-6
 @title		Place Trap
-@desc		Place a trap in an Ecosystem. It has a 1/6 chance of triggering per round. || TECH Place another trap in another lake
+@suit		ranger
+@desc		Place a trap in an Ecosystem. It has a 1/6 chance of triggering per round.
 @path		temp.png
 @cost		1
 
@@ -137,6 +147,7 @@
     specificity: specific
     maxtargets: 0
 @overrideEffect if tech > 0
+    desc: Place another trap in another lake
     target: ecosystem
     verb: addtrap, 1, fixed
     specificity: specific
@@ -144,6 +155,7 @@
 
 ::example-action-card-7
 @title		Electric Barrier
+@suit		ranger
 @desc		Remove one "Currents" pathway.
 @path		temp.png
 @cost		2
@@ -162,6 +174,7 @@
 
 ::ballast-treatment
 @title		Ballast Treatment
+@suit		ranger
 @desc		When a "Ballast" pathway activates, -1 Invasive from source instead of moving.
 @path		temp.png
 @cost		3
@@ -177,7 +190,8 @@
 
 ::example-action-card-9
 @title		Field Research
-@desc		Flip one unknown Pathway. || RESEARCH Decrease the revealed pathway by 1
+@suit		ranger
+@desc		Flip one unknown Pathway.
 @path		temp.png
 @cost		1
 
@@ -193,6 +207,7 @@
     specificity: specific
     maxtargets: 1
 @overrideEffect if research > 0
+    desc: Decrease the revealed pathway by 1
     target: pathway, if type = unknown
     verb: reveal, 0, fixed
     verb: reduce, 1, fixed
@@ -201,7 +216,8 @@
 
 ::example-action-card-10
 @title		Chemical Removal
-@desc		In one Ecosystem: -2 Invasive, -1 Predator, -1 Prey || RESEARCH Skip -1 Prey
+@suit		ranger
+@desc		In one Ecosystem: -2 Invasive, -1 Predator, -1 Prey
 @path		temp.png
 @cost		2
 
@@ -217,6 +233,7 @@
     specificity: specific
     maxtargets: 1
 @overrideEffect if research > 0
+    desc: Skip -1 Prey
     target: ecosystem
     verb: modify, (-2; -1; 0), fixed
     specificity: specific
@@ -225,7 +242,8 @@
 
 ::example-action-card-11
 @title		Reproduction Supressor
-@desc		Decrease all Nests by 1. || RESEARCH Decrease all Nests by an additional 1.
+@suit		ranger
+@desc		Decrease all Nests by 1.
 @path		temp.png
 @cost		3
 
@@ -235,6 +253,7 @@
     specificity: all
     maxtargets: -1
 @overrideEffect if research > 0
+    desc: Decrease all Nests by an additional 1.
     target: nest
     verb: reduce, 2, fixed
     specificity: all
@@ -242,6 +261,7 @@
 
 ::example-action-card-12
 @title		Fundraising
+@suit		ranger
 @desc		Set Budget equal to Awareness.
 @path		temp.png
 @cost		1
