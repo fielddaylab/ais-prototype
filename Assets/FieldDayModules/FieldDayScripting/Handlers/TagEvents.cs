@@ -1,3 +1,4 @@
+using System.Collections;
 using BeauUtil;
 using BeauUtil.Tags;
 using Leaf;
@@ -12,6 +13,7 @@ namespace FieldDay.Scripting {
         static public readonly StringHash32 HasNoVox = "vox-not-present";
         static public readonly StringHash32 VoxOnly = "vox-only";
         static public readonly StringHash32 SetStyle = "set-style";
+        static public readonly StringHash32 Layout = "layout";
 
         static internal void ConfigureParsers(CustomTagParserConfig parser, ILeafPlugin plugin) {
             LeafUtils.ConfigureDefaultParsers(parser, plugin, null);
@@ -25,6 +27,7 @@ namespace FieldDay.Scripting {
             parser.AddEvent("srt", SubtitleTimecodes).WithFloatData();
             parser.AddEvent("dispatch-event", DispatchEvent).WithStringHashData();
             parser.AddEvent("style", SetStyle).WithStringHashData();
+            parser.AddEvent("layout", Layout).WithStringData().CloseWith(Layout);
 
             parser.AddReplace("icon", ReplaceIcon);
         }
@@ -38,6 +41,7 @@ namespace FieldDay.Scripting {
             handler.Register(LeafUtils.Events.Character, Event_SetCharacter);
             handler.Register(LeafUtils.Events.Pose, Event_SetPose);
             handler.Register(SetStyle, Event_SetStyle);
+            handler.Register(Layout, Event_Layout);
 
             handler.Register(SubtitleTimecodes, Event_NoOp);
             handler.Register(HasVox, Event_NoOp);
@@ -89,6 +93,23 @@ namespace FieldDay.Scripting {
 
         static private void Event_DispatchEvent(TagEventData evt, object context) {
             Game.Events.Dispatch(evt.GetStringHash());
+        }
+
+        static private IEnumerator Event_Layout(TagEventData evt, object context) {
+            var thread = (ScriptThread) context;
+            var printer = thread.GetPrinter() as IDialogueLayoutPrinter;
+            if (printer == null) {
+                return null;
+            }
+
+            // While skipping, the runtime discards generated coroutines, so snap to the
+            // final layout instantly instead of returning an (unused) animation routine.
+            if (thread.IsSkipping()) {
+                printer.SnapLayout(evt.StringArgument);
+                return null;
+            }
+
+            return printer.ShiftLayout(evt.StringArgument);
         }
     }
 }

@@ -13,7 +13,7 @@ using UnityEngine;
 
 namespace AIS.Narrative {
     [DisallowMultipleComponent]
-    public sealed class DialogueColumn : BaseDialoguePrinter, IDialogueChoicePresenter {
+    public sealed class DialogueColumn : BaseDialoguePrinter, IDialogueChoicePresenter, IDialogueLayoutPrinter {
         public DialogueLine.Pool LinePool;
         public NewCardElement.Pool NewEvidencePool;
         public NewCardElement.Pool NewActionCardPool;
@@ -57,6 +57,18 @@ namespace AIS.Narrative {
             base.ConfigureEventHandler(handler);
 
             handler.Register("auto-continue", () => m_AutoContinue = true);
+        }
+
+        public IEnumerator ShiftLayout(StringSlice alignmentArg) {
+            return Layout.ShiftTo(ParseAlignment(alignmentArg));
+        }
+
+        public void SnapLayout(StringSlice alignmentArg) {
+            Layout.SnapTo(ParseAlignment(alignmentArg));
+        }
+
+        static private DialogueColumnAlignment ParseAlignment(StringSlice alignmentArg) {
+            return StringParser.ConvertTo(alignmentArg, DialogueColumnAlignment.Center);
         }
 
         protected override void PrepareTextDisplay(TagString text, DialogueCharacterState character) {
