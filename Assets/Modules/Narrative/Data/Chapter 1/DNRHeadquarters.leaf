@@ -13,7 +13,6 @@ $call SetBackground("bg/Room.png")
 
 $call EnableFieldNotesButton()
 $call EnableMapButton()
-$call EnableModelButton()
 
 {@}   
        The Mid-West Regional DNR Headquarters. 

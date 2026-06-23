@@ -61,12 +61,12 @@ namespace AIS.Narrative {
                 if (column)
                 {
                     yield return TextUtility.DisplayStatUpdate(column, statId, originalValue, currentStat);
-                    yield return EnsureModelVisible(inv);
+                    //yield return EnsureModelVisible(inv);
                     yield return column.CompleteLine();
                 }
                 else
                 {
-                    yield return EnsureModelVisible(inv);
+                    //yield return EnsureModelVisible(inv);
                 }
             }
         }
@@ -152,11 +152,11 @@ namespace AIS.Narrative {
         }
 
         [LeafMember("EnableModelButton")]
-        static public IEnumerator EnableModelButton()
-        {
-            PlayerInventory inv = Find.State<PlayerInventory>();
-            yield return EnsureModelVisible(inv);
-        }
+        //static public IEnumerator EnableModelButton()
+        //{
+        //    PlayerInventory inv = Find.State<PlayerInventory>();
+        //    yield return EnsureModelVisible(inv);
+        //}
 
         static private IEnumerator EnsureNotesVisible(PlayerInventory inv)
         {
@@ -181,16 +181,16 @@ namespace AIS.Narrative {
         }
 
         // TODO: stats are not a toolbar tab anymore
-        static private IEnumerator EnsureModelVisible(PlayerInventory inv)
-        {
-            if ((inv.ToolbarItems & PlayerToolbarMask.Model) == 0)
-            {
-                inv.ToolbarItems |= PlayerToolbarMask.Model;
-                ToolbarPanel toolbar = Find.GuiModule<ToolbarPanel>();
-                return ToolbarPanel.UnlockToolbarButtonAnimation(toolbar.ModelMissing, toolbar.ModelButton);
-            }
-            return null;
-        }
+        //static private IEnumerator EnsureModelVisible(PlayerInventory inv)
+        //{
+        //    if ((inv.ToolbarItems & PlayerToolbarMask.Model) == 0)
+        //    {
+        //        inv.ToolbarItems |= PlayerToolbarMask.Model;
+        //        ToolbarPanel toolbar = Find.GuiModule<ToolbarPanel>();
+        //        return ToolbarPanel.UnlockToolbarButtonAnimation(toolbar.ModelMissing, toolbar.ModelButton);
+        //    }
+        //    return null;
+        //}
 
         [LeafMember("ClearVisibleLines")]
         static public void ScriptClearVisibleLines([BindThread] ScriptThread thread)
