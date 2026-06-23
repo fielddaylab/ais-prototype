@@ -1,7 +1,7 @@
 // Evidence To Action Conversions
 
 ::
-@from	Evidence-Angler
+@from	Evidence-Canals
 @to		angler-outreach
 
 ::

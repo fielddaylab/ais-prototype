@@ -16,6 +16,7 @@ namespace AIS.Intervene
         public SerializedHash32 CardID;
         public string Title;
         public string Description;
+        public string FocusDescription; // extra player-facing text shown in the field notes focus area
         public string ImgPath;
         public PlayerStatId Suit;
 
@@ -25,11 +26,12 @@ namespace AIS.Intervene
 
         public bool IsValid;
 
-        public ActionCardData(SerializedHash32 cardID, string title, string desc, string imgPath, PlayerStatId suit, int cost, ActionEffectBundle[] discoverResults, ActionEffectBundle[] effects)
+        public ActionCardData(SerializedHash32 cardID, string title, string desc, string focusDesc, string imgPath, PlayerStatId suit, int cost, ActionEffectBundle[] discoverResults, ActionEffectBundle[] effects)
         {
             CardID = cardID;
             Title = title;
             Description = desc;
+            FocusDescription = focusDesc;
             ImgPath = imgPath;
             Suit = suit;
 
@@ -68,6 +70,7 @@ namespace AIS.Intervene
         private static readonly string TITLE_TAG = "@title";
         private static readonly string SUIT_TAG = "@suit";
         private static readonly string DESC_TAG = "@desc";
+        private static readonly string FOCUS_DESC_TAG = "@focusdescription";
         private static readonly string IMAGE_PATH_TAG = "@path";
         private static readonly string COST_TAG = "@cost";
         private static readonly string DISCOVER_RESULT_TAG = "@discoverresult";
@@ -132,6 +135,7 @@ namespace AIS.Intervene
             string cardIdStr = "";
             string title = "";
             string desc = "";
+            string focusDesc = "";
             string imgPath = "";
             PlayerStatId suit = PlayerStatId.Invalid;
 
@@ -168,8 +172,10 @@ namespace AIS.Intervene
                 suit = ParsePlayerStat(suitStr);
             }
 
-            // Description comes after @desc
-            int descIndex = cardDef.ToLower().IndexOf(DESC_TAG);
+            // Description comes after @desc.
+            // Use IndexOfTag (line-anchored) so we don't accidentally match the "@desc" substring
+            // inside "@focusdescription".
+            int descIndex = IndexOfTag(cardDef, DESC_TAG);
 
             if (descIndex != -1)
             {
@@ -183,6 +189,15 @@ namespace AIS.Intervene
                 Debug.Log("[CardUtility] description syntax error!");
 
                 throw new Exception("Description");
+            }
+
+            // Focus Description comes after @focusdescription (optional, defaults to empty)
+            int focusDescIndex = cardDef.ToLower().IndexOf(FOCUS_DESC_TAG);
+            if (focusDescIndex != -1)
+            {
+                string afterFocusDesc = cardDef.Substring(focusDescIndex);
+                int offset = FOCUS_DESC_TAG.Length;
+                focusDesc = cardDef.Substring(focusDescIndex + offset, afterFocusDesc.IndexOfAny(END_DELIMS) - offset).Trim();
             }
 
 
@@ -227,7 +242,28 @@ namespace AIS.Intervene
             // Action Effects parsing
             ActionEffectBundle[] effects = ParseEffects(cardDef, cardIdStr);
 
-            return new ActionCardData(cardID, title, desc, imgPath, suit, cost, discoverResults, effects);
+            return new ActionCardData(cardID, title, desc, focusDesc, imgPath, suit, cost, discoverResults, effects);
+        }
+
+        // Finds a "@tag" occurrence that begins a line (or the string), so a shorter tag like "@desc"
+        // is not matched inside a longer tag like "@focusdescription". Search is case-insensitive.
+        static private int IndexOfTag(string cardDef, string tag)
+        {
+            string lower = cardDef.ToLower();
+            int searchStart = 0;
+            while (true)
+            {
+                int index = lower.IndexOf(tag, searchStart);
+                if (index == -1) { return -1; }
+
+                char before = index == 0 ? '\n' : lower[index - 1];
+                if (before == '\n' || before == '\r')
+                {
+                    return index;
+                }
+
+                searchStart = index + tag.Length;
+            }
         }
 
         #region Effect Parsing Helpers

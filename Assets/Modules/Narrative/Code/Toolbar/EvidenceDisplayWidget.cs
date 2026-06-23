@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace AIS.Narrative {
     public sealed class EvidenceDisplayWidget : GuiWidget {
-        public Image suit;
+        public Image Suit;
         public Image Illustration;
         public TMP_Text Content;
         public Image Type; // model info or actionable card
@@ -31,8 +31,8 @@ namespace AIS.Narrative {
         public static void Populate(EvidenceDisplayWidget widget, EvidenceCard data) {
             if (widget == null || data == null) { return; }
 
-            if (widget.suit != null) {
-                widget.suit.sprite = CardVisualLookupUtility.LookupSuitIcon(data.Suit);
+            if (widget.Suit != null) {
+                widget.Suit.sprite = CardVisualLookupUtility.LookupSuitIcon(data.Suit);
             }
 
             if (widget.Illustration != null) {

@@ -155,6 +155,7 @@ namespace AIS.Intervene {
     {
         public string Title;
         public string Description;
+        public string FocusDescription; // extra player-facing text shown in the field notes focus area
         public string ImgPath;
         public PlayerStatId Suit;
 
@@ -255,6 +256,81 @@ namespace AIS.Intervene {
 
     public static class ActionCardUtility
     {
+        // Populates a UICard directly from an ActionCardData struct (e.g. the field notes panel, which
+        // works with parsed ActionCardData rather than runtime ActionCard instances).
+        // Uses the static Cost from the data, since GetAdjustedCost() requires the Intervene-scene
+        // InvasionCurveInterfacer singleton that is not present in other scenes.
+        public static void PopulateCardUI(UICard toPopulate, in ActionCardData data)
+        {
+            if (toPopulate == null) { return; }
+
+            toPopulate.CardID = data.CardID;
+            toPopulate.Title.SetText(data.Title);
+            toPopulate.CostText.SetText("$" + data.Cost.ToStringLookup());
+            toPopulate.Description.SetText(data.Description);
+
+            if (toPopulate.Suit != null)
+            {
+                toPopulate.Suit.sprite = CardVisualLookupUtility.LookupSuitIcon(data.Suit);
+            }
+
+            PopulateOverrideUI(toPopulate, data.Effects);
+        }
+
+        // Mirrors ActionCard.PopulateOverrideUI for the ActionCardData path.
+        private static void PopulateOverrideUI(UICard toPopulate, ActionEffectBundle[] effects)
+        {
+            if (toPopulate.OverrideGroup == null) { return; }
+
+            // Find the first effect that carries an override ability.
+            ActionEffectOverride effectOverride = new ActionEffectOverride();
+            effectOverride.Condition.Condition = ActionCondition.None;
+            bool hasOverride = false;
+            if (effects != null)
+            {
+                foreach (var bundle in effects)
+                {
+                    if (bundle.EffectOverride.Condition.Condition != ActionCondition.None)
+                    {
+                        effectOverride = bundle.EffectOverride;
+                        hasOverride = true;
+                        break;
+                    }
+                }
+            }
+
+            ActionTargetCondition condition = effectOverride.Condition;
+
+            // No override ability: hide the whole group.
+            if (!hasOverride)
+            {
+                toPopulate.OverrideGroup.alpha = 0f;
+                toPopulate.OverrideGroup.blocksRaycasts = false;
+                toPopulate.OverrideGroup.interactable = false;
+                return;
+            }
+
+            toPopulate.OverrideGroup.alpha = 1f;
+            toPopulate.OverrideGroup.blocksRaycasts = true;
+            toPopulate.OverrideGroup.interactable = true;
+
+            if (toPopulate.RequirementSuit != null)
+            {
+                toPopulate.RequirementSuit.sprite = CardVisualLookupUtility.LookupSuitIcon(
+                    GetConditionStat(condition.Condition));
+            }
+
+            if (toPopulate.RequirementNumber != null)
+            {
+                toPopulate.RequirementNumber.SetText(GetConditionThreshold(condition).ToStringLookup());
+            }
+
+            if (toPopulate.AdditionalDesc != null)
+            {
+                toPopulate.AdditionalDesc.SetText(effectOverride.Description);
+            }
+        }
+
         // Maps a stat-check condition to the player stat (suit) it checks.
         // Non-stat conditions (population, awareness, pathway, etc.) return Invalid.
         public static PlayerStatId GetConditionStat(ActionCondition condition)

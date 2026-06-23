@@ -94,7 +94,7 @@ namespace AIS.Narrative {
                     NewCardElement card = TextUtility.SpawnEvidenceCard(column, id);
                     yield return TextUtility.WaitForConfirm(card);
                     yield return EnsureNotesVisible(inv);
-                    yield return TextUtility.FlyCardToToolbar(card, Find.GuiModule<ToolbarPanel>().EvidenceButton);
+                    yield return TextUtility.FlyChipToToolbar(card, Find.GuiModule<ToolbarPanel>().EvidenceButton);
                 }
                 else
                 {

@@ -4759,7 +4759,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2938437397583468834}
   - {fileID: 648121316629421666}
   - {fileID: 3479410811402406464}
   - {fileID: 2687455144993488269}
@@ -6024,53 +6023,6 @@ MonoBehaviour:
   CardMgr: {fileID: 6828545506619963183}
   CurveInterfacer: {fileID: 8371057105511762094}
   InvasionModel: {fileID: 0}
---- !u!1 &8222209630151226154
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2938437397583468834}
-  - component: {fileID: 3953942114184700021}
-  m_Layer: 0
-  m_Name: ActionCardsState
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2938437397583468834
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8222209630151226154}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 4932482906635926712}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3953942114184700021
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8222209630151226154}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b26a365caedc25946a584769c6b4d67d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  UnlockedActionCards: []
-  CardSources:
-  - {fileID: 4900000, guid: 28e89f5def105324eb7c2026585147ea, type: 3}
 --- !u!1 &8332147115827053594
 GameObject:
   m_ObjectHideFlags: 0
