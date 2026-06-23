@@ -172,6 +172,7 @@ namespace AIS.Narrative {
             while(layout.ActiveLines.TryPopFront(out var line)) {
                 Pool.TryFree(line);
             }
+            layout.ResetAlignment();
         }
     }
 }
