@@ -254,7 +254,7 @@ namespace AIS.Narrative {
         static public void ReturnTo(int index)
         {
             var mapPanel = Find.Panel<MapDisplayPanel>();
-            
+            mapPanel.ReturnTo(index);
         }
     }
 }
