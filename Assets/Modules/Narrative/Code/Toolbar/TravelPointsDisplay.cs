@@ -151,6 +151,8 @@ namespace AIS.Narrative
         public void EnableReturnTo(int originIdx)
         {
             selectedLocationIdx = originIdx;
+            UnlockedLocations = new List<Image>() { locations[originIdx].MainImg };
+
             returnButton.gameObject.SetActive(true);
             returnButton.interactable = true;
         }

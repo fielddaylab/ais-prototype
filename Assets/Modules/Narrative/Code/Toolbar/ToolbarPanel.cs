@@ -12,8 +12,8 @@ using UnityEngine.UI;
 
 namespace AIS.Narrative {
     public sealed class ToolbarPanel : BaseGuiModule, IScenePreload {
-        public ToolbarButton ModelButton;
-        public Image ModelMissing;
+        //public ToolbarButton ModelButton;
+        //public Image ModelMissing;
         public ToolbarButton MapButton;
         public Image MapMissing;
         public ToolbarButton EvidenceButton;
@@ -23,11 +23,11 @@ namespace AIS.Narrative {
         public GuiCounter TimeCounter;
 
         IEnumerator<WorkSlicer.Result?> IScenePreload.Preload() {
-            ModelButton.Listener.onClick.Register(ToggleModel);
+            //ModelButton.Listener.onClick.Register(ToggleModel);
             MapButton.Listener.onClick.Register(ToggleMap);
             EvidenceButton.Listener.onClick.Register(ToggleEvidence);
 
-            ResetToolbarButton(ModelMissing, ModelButton, false);
+            //ResetToolbarButton(ModelMissing, ModelButton, false);
             ResetToolbarButton(MapMissing, MapButton, false);
             ResetToolbarButton(EvidenceMissing, EvidenceButton, false);
             ResetTimeGroup(TimeGroup, false);
@@ -35,24 +35,24 @@ namespace AIS.Narrative {
             return null;
         }
 
-        private void ToggleModel() {
-            var mapPanel = Find.Panel<MapDisplayPanel>();
-            var modelPanel = Find.Panel<ModelDisplayPanel>();
-            var evidencePanel = Find.Panel<EvidenceDisplayPanel>();
+        //private void ToggleModel() {
+        //    var mapPanel = Find.Panel<MapDisplayPanel>();
+        //    var modelPanel = Find.Panel<ModelDisplayPanel>();
+        //    var evidencePanel = Find.Panel<EvidenceDisplayPanel>();
 
-            if (modelPanel.IsShowing()) {
-                modelPanel.Hide();
-                InvasionModel.Instance.gameObject.SetActive(false);
-            } else {
-                mapPanel.Hide();
-                evidencePanel.Hide();
-                //modelPanel.Populate(Find.State<PlayerStats>().StatBlock);
-                modelPanel.Show();
-                //InvasionModel.Instance.GetComponentInChildren<SimDetailRegistry>().RefreshVisibility();
-            }
-            Find.GuiModule<DialoguePanel>().SetVisible(!modelPanel.IsShowing());
-            //InvasionModel.Instance.gameObject.SetActive(modelPanel.IsShowing());
-        }
+        //    if (modelPanel.IsShowing()) {
+        //        modelPanel.Hide();
+        //        InvasionModel.Instance.gameObject.SetActive(false);
+        //    } else {
+        //        mapPanel.Hide();
+        //        evidencePanel.Hide();
+        //        //modelPanel.Populate(Find.State<PlayerStats>().StatBlock);
+        //        modelPanel.Show();
+        //        //InvasionModel.Instance.GetComponentInChildren<SimDetailRegistry>().RefreshVisibility();
+        //    }
+        //    Find.GuiModule<DialoguePanel>().SetVisible(!modelPanel.IsShowing());
+        //    //InvasionModel.Instance.gameObject.SetActive(modelPanel.IsShowing());
+        //}
 
         private void ToggleMap() {
             var mapPanel = Find.Panel<MapDisplayPanel>();
