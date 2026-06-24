@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using AIS.Intervene;
+using AIS.Model;
 using BeauPools;
 using BeauRoutine;
 using BeauUtil;
@@ -15,6 +16,9 @@ using UnityEngine.UI;
 namespace AIS.Narrative {
     public sealed class EvidenceDisplayPanel : SharedPanel, IParameterizedGuiPanel<PlayerInventory> {
         [Serializable] public sealed class UICardPool : SerializablePool<UICard> { }
+
+        public Button ToModelButton;
+        public Button CloseButton;
 
         [Header("Evidence")]
         public EvidenceDisplayWidget[] Widgets;
@@ -52,6 +56,8 @@ namespace AIS.Narrative {
         protected override void Awake() {
             base.Awake();
             Stats = GetComponentsInChildren<StatDisplayWidget>();
+            ToModelButton.onClick.AddListener(PanelUtility.ToggleModel);
+            CloseButton.onClick.AddListener(Hide);
             Hide();
         }
 

@@ -4,14 +4,19 @@ using FieldDay.UI;
 using FieldDay.UI.Widgets;
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace AIS.Narrative {
     public sealed class ModelDisplayPanel : SharedPanel, IParameterizedGuiPanel<PlayerStatBlock> {
         //public StatDisplayWidget[] Widgets;
         [SerializeField] public GameObject ModelContainer;
+        public Button ToNotesButton;
+        public Button CloseButton;
 
         protected override void Awake() {
             base.Awake();
+            ToNotesButton.onClick.AddListener(PanelUtility.ToggleEvidence);
+            CloseButton.onClick.AddListener(Hide);
             Hide();
         }
 
@@ -43,11 +48,12 @@ namespace AIS.Narrative {
         public override void Hide() {
             Game.Gui.PopPriority(m_InputLayer);
             base.Hide();
-            //ModelContainer.SetActive(false);
+            // ModelContainer.SetActive(false);
 
-            //if (InvasionModel.Instance != null)
-            //    InvasionModel.Instance.gameObject.SetActive(false);
-
+            if (InvasionModel.Instance != null)
+            {
+                InvasionModel.Instance.gameObject.SetActive(false);
+            }
         }
     }
 }
