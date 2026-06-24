@@ -27,6 +27,8 @@ namespace AIS.Model
         [SerializeField] public InvasionModelContainer m_ModelContainer;
         [SerializeField] private SimDetailRegistry simDetailRegistry;
 
+        public Camera RenderCam;
+
         public InvasionModelSetupData m_InitModelSetupData; // TEMP
 
         #endregion // Inspector

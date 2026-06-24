@@ -31,13 +31,19 @@ namespace AIS.Narrative {
             base.Show();
             Game.Gui.PushPriority(m_InputLayer);
             DisplayModel();
+            ScriptHooks.HideToolbar();
         }
 
         private void DisplayModel()
         {
-            Instantiate(InvasionModel.Instance, ModelContainer.transform);
-            InvasionModel.Instance.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
-            InvasionModel.Instance.transform.localPosition = new Vector3(-2.5f, 2.5f, 0f);
+            if (InvasionModel.Instance == null)
+            {
+                Instantiate(InvasionModel.Instance, ModelContainer.transform);
+            }
+
+            // InvasionModel.Instance.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+            InvasionModel.Instance.transform.localPosition = new Vector3(100f, 0f, 0f);
+            InvasionModel.Instance.RenderCam.transform.localPosition = new Vector3(100f, 0f, -10f);
 
             if (InvasionModel.Instance != null)
                 InvasionModel.Instance.gameObject.SetActive(true);
@@ -48,6 +54,8 @@ namespace AIS.Narrative {
         public override void Hide() {
             Game.Gui.PopPriority(m_InputLayer);
             base.Hide();
+            ScriptHooks.RevealToolbar();
+
             // ModelContainer.SetActive(false);
 
             if (InvasionModel.Instance != null)

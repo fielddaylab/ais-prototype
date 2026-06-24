@@ -297,12 +297,14 @@ namespace AIS.Narrative {
         public override void Show() {
             base.Show();
             Game.Gui.PushPriority(m_InputLayer);
+            ScriptHooks.HideToolbar();
         }
 
         public override void Hide() {
             Game.Gui.PopPriority(m_InputLayer);
             ClearFocus();
             base.Hide();
+            ScriptHooks.RevealToolbar();
         }
     }
 }
