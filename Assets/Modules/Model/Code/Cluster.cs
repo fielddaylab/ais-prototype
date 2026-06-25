@@ -1,4 +1,6 @@
 using AIS.Intervene;
+using AIS.Narrative;
+using AIS.Shared;
 using BeauUtil;
 using System;
 using System.Collections;
@@ -20,9 +22,10 @@ namespace AIS.Model
 
     public class Cluster : MonoBehaviour, IReducible, IIncreasable, IRemovable, ISimDetail
     {
-        public SpriteRenderer BGRenderer;
+        //public SpriteRenderer BGRenderer;
         public SpriteRenderer IconRenderer;
         public TMP_Text PopulationText;
+        public SpriteRenderer TextHider;
 
         public ModelTag ActionTag;
 
@@ -58,9 +61,14 @@ namespace AIS.Model
             IconRenderer.sprite = ModelSpriteLookup.Instance.LookupSpeciesIcon(contentsId);
             PopulationText.SetText("x" + Population.ToStringLookup());
             ActionTag.Highlight.sortingOrder = InvasionModelSorting.SPECIES_SORTING;
-            BGRenderer.sortingOrder = InvasionModelSorting.SPECIES_SORTING + 10;
+            //BGRenderer.sortingOrder = InvasionModelSorting.SPECIES_SORTING + 10;
+
+            TextHider.sortingOrder = InvasionModelSorting.SPECIES_SORTING + 17;
+            Transform SuitIcon = TextHider.transform.GetChild(0);
+            SuitIcon.GetComponent<SpriteRenderer>().sortingOrder = InvasionModelSorting.SPECIES_SORTING + 18;
+
             IconRenderer.sortingOrder = InvasionModelSorting.SPECIES_SORTING + 20;
-            PopulationText.GetComponent<MeshRenderer>().sortingOrder = InvasionModelSorting.SPECIES_SORTING + 20;
+            PopulationText.GetComponent<MeshRenderer>().sortingOrder = InvasionModelSorting.SPECIES_SORTING + 15;
         }
 
         public void AdjustPopulation(int amt)
@@ -142,9 +150,33 @@ namespace AIS.Model
             this.gameObject.SetActive(true);
         }
 
+        // Reveal species population
+        public void Show(SerializedHash32 speciesId)
+        {
+            TextHider.gameObject.SetActive(false);
+        }
+
         public void Hide()
         {
             this.gameObject.SetActive(false);
+        }
+
+        public void Hide(string detail, PlayerStatId suit = PlayerStatId.Invalid) // e.g. someCluster.Hide("population")
+        {
+            // In case if hiding other specific details are needed, for example, species icon/num eggs, etc.
+            switch (detail)
+            {
+                case "population":
+                    TextHider.gameObject.SetActive(true);
+                    if (suit != PlayerStatId.Invalid)
+                    {
+                        Transform SuitIcon = TextHider.transform.GetChild(0);
+                        SuitIcon.GetComponent<SpriteRenderer>().sprite = CardVisualLookupUtility.LookupSuitIcon(suit);
+                    }
+                    break;
+                default:
+                    break;
+            }
         }
 
         public StringHash32 Id()

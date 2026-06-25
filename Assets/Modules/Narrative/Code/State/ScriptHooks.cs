@@ -154,7 +154,7 @@ namespace AIS.Narrative {
             toolbar.MapButton.Fader.alpha = 0;
         }
 
-        [LeafMember("EnableModelButton")]
+        //[LeafMember("EnableModelButton")]
         //static public IEnumerator EnableModelButton()
         //{
         //    PlayerInventory inv = Find.State<PlayerInventory>();

@@ -15,4 +15,4 @@ MonoBehaviour:
   SpeciesId:
     m_Source: snail
     m_HashValue: 2331752522
-  Sprite: {fileID: 21300000, guid: 865a1d2b3d332134591f29fcd54f724f, type: 3}
+  Sprite: {fileID: 21300000, guid: 04c13592ba241324fb34d82ce2ea7843, type: 3}
