@@ -1,0 +1,30 @@
+#basePath P2_Lampricide
+
+:: Start
+@trigger    OnLocationChanged
+// "NONE" ensures no other threads are in-progress
+@when       global:threadId == "NONE", location == "[Location]"
+@cutscene
+// Lock all location on map
+$call SetInThreadLocks()
+
+// Mark start of thread
+$set global:threadId = "P2_Lampricide"
+
+{@}   
+       This is one of two threads in Phase 2.
+
+// TODO: Rest of thread here
+
+// TODO: Give evidence chip
+// $call GiveEvidenceChip([Evidence])
+
+// TODO: Give action card
+// $call GiveActionCard([Action])
+
+// TODO: Unlock next locations
+// $call UnlockLocation([Location 1])
+// $call UnlockLocation([Location 2])
+
+// Mark end of thread
+$set global:currentThread = "NONE"

@@ -1,0 +1,27 @@
+#basePath P0_Intro
+
+:: Preload
+@function    ChapterPreload
+
+$call SetBackground("bg/Room.png")
+
+:: Start
+@trigger    ChapterStart
+@cutscene
+// Lock all location on map
+$call SetInThreadLocks()
+
+// Mark start of thread
+$set global:threadId = "P0_Intro"
+
+{@}   
+       This is the introductory thread in Phase 0.
+
+// TODO: Rest of thread here
+
+// TODO: Unlock next locations
+// $call UnlockLocation([Location 1])
+// $call UnlockLocation([Location 2])
+
+// Mark end of thread
+$set global:currentThread = "NONE"

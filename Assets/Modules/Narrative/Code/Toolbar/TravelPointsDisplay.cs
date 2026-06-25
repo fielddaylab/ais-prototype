@@ -1,6 +1,7 @@
 using AIS.Model;
 using AIS.Narrative;
 using FieldDay;
+using FieldDay.Scripting;
 using FieldDay.UI;
 using FieldDay.UI.Widgets;
 using UnityEngine;
@@ -158,9 +159,22 @@ namespace AIS.Narrative
         }
 
         public void TravelToSelectedLocation()
-        {   
+        {
             Debug.Log($"[TravelPointsDisplay] Travel to {locations[selectedLocationIdx]}");
+
+            bool locationChanged = currentLocationIdx != selectedLocationIdx;
+            MapLocation location = locations[selectedLocationIdx].LocationName;
+
             SetCurrentLocation(selectedLocationIdx);
+
+            if (locationChanged)
+            {
+                using (TempVarTable table = TempVarTable.Alloc())
+                {
+                    table.Set("location", location.ToString());
+                    ScriptUtility.Trigger("OnLocationChanged", table);
+                }
+            }
         }
     }
 }

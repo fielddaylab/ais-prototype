@@ -1,0 +1,26 @@
+#basePath P1_NativeLamprey
+
+:: Start
+@trigger    OnLocationChanged
+// "NONE" ensures no other threads are in-progress
+@when       global:threadId == "NONE", location == "[Location]"
+@cutscene
+// Lock all location on map
+$call SetInThreadLocks()
+
+// Mark start of thread
+$set global:threadId = "P1_NativeLamprey"
+{@}     
+       This is the second main thread in Phase 1.
+
+// TODO: Rest of thread here
+
+// TODO: Give evidence chip
+// $call GiveEvidenceChip([Evidence])
+
+// TODO: Unlock next locations
+// $call UnlockLocation([Location 1])
+// $call UnlockLocation([Location 2])
+
+// Mark end of thread
+$set global:currentThread = "NONE"
