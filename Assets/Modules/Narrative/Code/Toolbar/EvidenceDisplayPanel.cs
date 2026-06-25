@@ -20,6 +20,13 @@ namespace AIS.Narrative {
         public Button ToModelButton;
         public Button CloseButton;
 
+        [Header("Sim Reveal Queue")]
+        public CanvasGroup RevealQueueGroup;
+        public TMP_Text RevealQueueCountText;
+
+        [Header("Data")]
+        public ScenarioData CurrScenario;
+
         [Header("Evidence")]
         public EvidenceDisplayWidget[] Widgets;
 
@@ -57,7 +64,7 @@ namespace AIS.Narrative {
             base.Awake();
             Stats = GetComponentsInChildren<StatDisplayWidget>();
             ToModelButton.onClick.AddListener(PanelUtility.ToggleModel);
-            CloseButton.onClick.AddListener(Hide);
+            CloseButton.onClick.AddListener(PanelUtility.ToggleEvidence);
             Hide();
         }
 
@@ -67,6 +74,13 @@ namespace AIS.Narrative {
             RecomputeStats(parms);
             PopulateStats(Find.State<PlayerStats>().StatBlock);
             PopulateActionCards(parms);
+            UpdateRevealQueueDisplay();
+        }
+
+        private void UpdateRevealQueueDisplay() {
+            int count = InvasionModel.Instance?.SimDetailRegistry?.RevealQueue.Count ?? 0;
+            RevealQueueGroup.alpha = count > 0 ? 1 : 0;
+            RevealQueueCountText.SetText(count.ToString());
         }
 
         #region Evidence
@@ -93,10 +107,8 @@ namespace AIS.Narrative {
         #region Scenario
 
         private void PopulateScenario() {
-            // TODO: Load the active ScenarioData (type not yet implemented) and fill in the overview.
-            //   ScenarioData scenario = Find.State<...>().CurrentScenario; // or Find.NamedAsset<ScenarioData>(currentScenarioId)
-            //   if (ScenarioIllustration != null) ScenarioIllustration.sprite = scenario.Illustration;
-            //   if (ScenarioOverviewText != null) ScenarioOverviewText.SetText(scenario.OverviewText);
+            if (ScenarioIllustration != null) ScenarioIllustration.sprite = CurrScenario.Illustration;
+            if (ScenarioOverviewText != null) ScenarioOverviewText.SetText(CurrScenario.OverviewText);
         }
 
         #endregion // Scenario
@@ -132,7 +144,10 @@ namespace AIS.Narrative {
         public void PopulateStats(in PlayerStatBlock parms) {
             for (int i = 0; i < Stats.Length; i++) {
                 StatDisplayWidget widget = Stats[i];
-                widget.StatValueCounter.SetValue(parms[widget.StatId], GuiWidgetUpdateFlags.Force | GuiWidgetUpdateFlags.NoAnimation);
+                // widget.StatValueCounter.SetValue(parms[widget.StatId], GuiWidgetUpdateFlags.Force | GuiWidgetUpdateFlags.NoAnimation);
+
+                widget.CountText.SetText(parms[widget.StatId].ToStringLookup());
+                widget.Label.SetText(widget.StatId.ToString());
             }
         }
 
@@ -297,12 +312,15 @@ namespace AIS.Narrative {
         public override void Show() {
             base.Show();
             Game.Gui.PushPriority(m_InputLayer);
+            UpdateRevealQueueDisplay();
+            ScriptHooks.HideToolbar();
         }
 
         public override void Hide() {
             Game.Gui.PopPriority(m_InputLayer);
             ClearFocus();
             base.Hide();
+            ScriptHooks.RevealToolbar();
         }
     }
 }
