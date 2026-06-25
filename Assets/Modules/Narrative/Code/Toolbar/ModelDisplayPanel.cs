@@ -127,10 +127,15 @@ namespace AIS.Narrative {
         }
 
         private IEnumerator RevealDetailAnimated(ISimDetail detail) {
-            // TODO: author reveal animation (fade-in, scale pop, etc.)
-            yield return 1;
+            MonoBehaviour detailMono = detail as MonoBehaviour;
+            Assert.IsNotNull(detailMono, "ISimDetail implementation must be a MonoBehaviour for sparkle reveal");
+
+            SimDetailRegistry registry = InvasionModel.Instance.SimDetailRegistry;
+            SparkleEffect effect = registry.SparklePool.Alloc();
+            effect.Prepare(detailMono.transform.position, registry.SparkleSprite);
             detail.Show();
-            yield break;
+            yield return effect.Play();
+            registry.SparklePool.Free(effect);
         }
 
         private void FlushRevealQueue() {

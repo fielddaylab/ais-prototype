@@ -19,6 +19,8 @@ namespace AIS.Narrative
     public sealed class SimDetailRegistry : MonoBehaviour
     {
         [SerializeField] public SimDetail[] Details = new SimDetail[6]; // length should be number of evidence cards (model info)
+        public Sprite SparkleSprite;
+        public SparkleEffectPool SparklePool;
         public List<ISimDetail> DetailsToShow; // keep track of all gameobjects that should be revealed
         public Queue<StringHash32> RevealQueue = new Queue<StringHash32>(); // evidence IDs pending animated reveal
 

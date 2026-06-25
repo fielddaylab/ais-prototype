@@ -44,6 +44,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d5696324ee830f44982f79ca39e34b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1519295369513757493
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7537511018184211927}
+  m_Layer: 0
+  m_Name: Pools
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &7537511018184211927
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1519295369513757493}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3199809854720407860}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &2990232826339371408
 GameObject:
   m_ObjectHideFlags: 0
@@ -286,7 +321,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da51b32cfa2eb484482f7f7cda785448, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Details: []
+  SparkleSprite: {fileID: 21300000, guid: c092ef11e2353b447a2099af1ef4af2d, type: 3}
+  SparklePool:
+    m_Prefab: {fileID: 6553249305378777492, guid: efd336a6fbb2a4846ae32ca2117c1bdd, type: 3}
+    m_Name: 
+    m_InitialCapacity: 4
+    m_PrewarmOnInitialize: 1
+    m_InitialPrewarm: 4
+    m_DefaultPoolRoot: {fileID: 7537511018184211927}
+    m_DefaultSpawnRoot: {fileID: 3353440139170790847}
+    m_ResetTransformOnAlloc: 1
 --- !u!1 &5203912826279457964
 GameObject:
   m_ObjectHideFlags: 0
@@ -322,6 +366,7 @@ RectTransform:
   - {fileID: 8617641913759949888}
   - {fileID: 80351783776028656}
   - {fileID: 3951513724418677625}
+  - {fileID: 7537511018184211927}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -343,6 +388,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Prefabs: {fileID: 6411420342871478010}
   m_ModelContainer: {fileID: 8961839981816191731}
+  simDetailRegistry: {fileID: 0}
+  RenderCam: {fileID: 0}
   m_InitModelSetupData: {fileID: 11400000, guid: 1cd13b047af69f64e89173976332935b, type: 2}
 --- !u!114 &3795131110483000347
 MonoBehaviour:
@@ -405,6 +452,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BGRenderer: {fileID: 9181802933919069812}
+  m_Ecosystems: []
+  m_Pathways: []
+  m_SpeciesClusters: []
 --- !u!1 &5734697835257798532
 GameObject:
   m_ObjectHideFlags: 0
