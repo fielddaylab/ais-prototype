@@ -20,6 +20,9 @@ namespace AIS.Narrative {
         public Button ToModelButton;
         public Button CloseButton;
 
+        [Header("Data")]
+        public ScenarioData CurrScenario;
+
         [Header("Evidence")]
         public EvidenceDisplayWidget[] Widgets;
 
@@ -93,10 +96,8 @@ namespace AIS.Narrative {
         #region Scenario
 
         private void PopulateScenario() {
-            // TODO: Load the active ScenarioData (type not yet implemented) and fill in the overview.
-            //   ScenarioData scenario = Find.State<...>().CurrentScenario; // or Find.NamedAsset<ScenarioData>(currentScenarioId)
-            //   if (ScenarioIllustration != null) ScenarioIllustration.sprite = scenario.Illustration;
-            //   if (ScenarioOverviewText != null) ScenarioOverviewText.SetText(scenario.OverviewText);
+            if (ScenarioIllustration != null) ScenarioIllustration.sprite = CurrScenario.Illustration;
+            if (ScenarioOverviewText != null) ScenarioOverviewText.SetText(CurrScenario.OverviewText);
         }
 
         #endregion // Scenario
