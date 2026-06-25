@@ -97,7 +97,7 @@ namespace AIS.Narrative {
                 evidencePanel.PopulateStats(Find.State<PlayerStats>().StatBlock);
                 evidencePanel.Show();
             }
-            Find.GuiModule<DialoguePanel>().SetVisible(true);
+            Find.GuiModule<DialoguePanel>().SetVisible(!(modelPanel.IsShowing() || evidencePanel.IsShowing()));
             InvasionModel.Instance.gameObject.SetActive(false);
         }
 
@@ -143,7 +143,7 @@ namespace AIS.Narrative {
                 modelPanel.Show();
                 //InvasionModel.Instance.GetComponentInChildren<SimDetailRegistry>().RefreshVisibility();
             }
-            Find.GuiModule<DialoguePanel>().SetVisible(!modelPanel.IsShowing());
+            Find.GuiModule<DialoguePanel>().SetVisible(!(modelPanel.IsShowing() || evidencePanel.IsShowing()));
             //InvasionModel.Instance.gameObject.SetActive(modelPanel.IsShowing());
         }
     }

@@ -64,7 +64,7 @@ namespace AIS.Narrative {
             base.Awake();
             Stats = GetComponentsInChildren<StatDisplayWidget>();
             ToModelButton.onClick.AddListener(PanelUtility.ToggleModel);
-            CloseButton.onClick.AddListener(Hide);
+            CloseButton.onClick.AddListener(PanelUtility.ToggleEvidence);
             Hide();
         }
 

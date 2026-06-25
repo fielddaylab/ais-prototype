@@ -22,6 +22,8 @@ namespace AIS.Narrative
         public List<ISimDetail> DetailsToShow; // keep track of all gameobjects that should be revealed
         public Queue<StringHash32> RevealQueue = new Queue<StringHash32>(); // evidence IDs pending animated reveal
 
+        private Dictionary<StringHash32, List<ISimDetail>> m_DetailMap; // built lazily; invalidated on HideAll
+
         private void Start()
         {
             HideAll();
@@ -44,50 +46,41 @@ namespace AIS.Narrative
             }
         }
 
-        public List<ISimDetail> MapEvidenceToDetail(StringHash32 evidenceId)
+        // Single source of truth for evidence → model detail mappings.
+        // Add new entries here when a new mappable evidence card is introduced.
+        private void BuildDetailMap()
         {
-            List<ISimDetail> targets = new List<ISimDetail>();
+            m_DetailMap = new Dictionary<StringHash32, List<ISimDetail>>();
             List<Ecosystem> ecosystems = InvasionModel.Instance.m_ModelContainer.m_Ecosystems;
             List<Pathway> pathways = InvasionModel.Instance.m_ModelContainer.m_Pathways;
 
-            //TODO: map the atcual evidence cards to details in InvasionModel components
+            StringHash32 invasiveId = InvasionModel.Instance.m_InitModelSetupData.DefaultInvasive.SpeciesId;
+            var invasiveClusters = new List<ISimDetail>();
+            foreach (Ecosystem ecosystem in ecosystems)
+            {
+                if (ecosystem == null) continue;
+                Cluster c = ecosystem.GetCluster(invasiveId);
+                if (c != null) invasiveClusters.Add(c);
+            }
+            m_DetailMap["Evidence-Lamprey-Discovered"] = invasiveClusters;
 
-            if (evidenceId.Equals("Evidence-Lamprey-Discovered"))
+            var downstreamPathways = new List<ISimDetail>();
+            var upstreamPathways = new List<ISimDetail>();
+            foreach (Pathway pathway in pathways)
             {
-                StringHash32 invasiveId = InvasionModel.Instance.m_InitModelSetupData.DefaultInvasive.SpeciesId;
-                foreach(Ecosystem ecosystem in ecosystems)
-                {
-                    if (ecosystem == null) { continue; }
-                    Cluster invasiveCluster = ecosystem.GetCluster(invasiveId);
-                    if (invasiveCluster == null) { continue; }
-                    targets.Add(invasiveCluster);
-                }
+                if (pathway == null) continue;
+                if (pathway.PathwayType == PathwayType.Downstream) downstreamPathways.Add(pathway);
+                if (pathway.PathwayType == PathwayType.Upstream) upstreamPathways.Add(pathway);
             }
-            else if (evidenceId.Equals("Evidence-Feed-Downstream")) // Temp: Add all downstream pathway ids
-            {
-                
-                foreach(Pathway pathway in pathways)
-                {
-                    if (pathway == null) { continue; }
-                    if (pathway.PathwayType == PathwayType.Downstream)
-                    {
-                        targets.Add(pathway);
-                    }
-                }
-            }
-            else if (evidenceId.Equals("Evidence-Spawn-Upstream"))
-            {
-                foreach(Pathway pathway in pathways)
-                {
-                    if (pathway == null) { continue; }
-                    if (pathway.PathwayType == PathwayType.Upstream)
-                    {
-                        targets.Add(pathway);
-                    }
-                }
-            }
+            m_DetailMap["Evidence-Feed-Downstream"] = downstreamPathways;
+            m_DetailMap["Evidence-Spawn-Upstream"] = upstreamPathways;
+        }
 
-            return targets;
+        public List<ISimDetail> MapEvidenceToDetail(StringHash32 evidenceId)
+        {
+            if (m_DetailMap == null) BuildDetailMap();
+            m_DetailMap.TryGetValue(evidenceId, out List<ISimDetail> targets);
+            return targets ?? new List<ISimDetail>();
         }
 
         // Returns true if evidenceId maps to at least one not-yet-shown SimDetail and was enqueued.
@@ -110,6 +103,24 @@ namespace AIS.Narrative
         {
             DetailsToShow = new List<ISimDetail>();
             RevealQueue.Clear();
+            m_DetailMap = null; // invalidate so stale model references aren't held
+        }
+
+        // Call when the model panel opens: shows details already in DetailsToShow, hides all others.
+        // Corrects the default-active prefab state so unearned details aren't visible.
+        public void ApplyInitialVisibility()
+        {
+            if (m_DetailMap == null) BuildDetailMap();
+            foreach (var kvp in m_DetailMap)
+            {
+                foreach (ISimDetail target in kvp.Value)
+                {
+                    if (DetailsToShow.Contains(target))
+                        target.Show();
+                    else
+                        target.Hide();
+                }
+            }
         }
 
         public void RevealNewDetails(StringHash32 evidenceId)
