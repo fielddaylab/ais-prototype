@@ -3,12 +3,12 @@
 :: Start
 @trigger    OnLocationChanged
 // "NONE" ensures no other threads are in-progress
-@when       global:threadId == "NONE", location == "[Location]"
+@when       global:currentThread == "NONE", location == "[Location]"
 @cutscene
 // Lock all location on map
 $call SetInThreadLocks()
 // Mark start of thread
-$set global:threadId = "P1_Lamprey"
+$set global:currentThread = "P1_Lamprey"
 
 {@}   
        This is the very first thread in Phase 1.

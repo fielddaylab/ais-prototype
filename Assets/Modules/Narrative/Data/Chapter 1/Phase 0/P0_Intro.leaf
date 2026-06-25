@@ -12,7 +12,7 @@ $call SetBackground("bg/Room.png")
 $call SetInThreadLocks()
 
 // Mark start of thread
-$set global:threadId = "P0_Intro"
+$set global:currentThread = "P0_Intro"
 
 {@}   
        This is the introductory thread in Phase 0.
