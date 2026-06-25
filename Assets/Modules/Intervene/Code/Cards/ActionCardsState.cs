@@ -1,4 +1,5 @@
-﻿using BeauUtil;
+﻿using AIS.Narrative;
+using BeauUtil;
 using BeauUtil.Debugger;
 using FieldDay;
 using FieldDay.Debugging;
@@ -15,7 +16,9 @@ namespace AIS.Intervene
         public SerializedHash32 CardID;
         public string Title;
         public string Description;
+        public string FocusDescription; // extra player-facing text shown in the field notes focus area
         public string ImgPath;
+        public PlayerStatId Suit;
 
         public int Cost;
         public ActionEffectBundle[] DiscoverResults;
@@ -23,12 +26,14 @@ namespace AIS.Intervene
 
         public bool IsValid;
 
-        public ActionCardData(SerializedHash32 cardID, string title, string desc, string imgPath, int cost, ActionEffectBundle[] discoverResults, ActionEffectBundle[] effects)
+        public ActionCardData(SerializedHash32 cardID, string title, string desc, string focusDesc, string imgPath, PlayerStatId suit, int cost, ActionEffectBundle[] discoverResults, ActionEffectBundle[] effects)
         {
             CardID = cardID;
             Title = title;
             Description = desc;
+            FocusDescription = focusDesc;
             ImgPath = imgPath;
+            Suit = suit;
 
             Cost = cost;
             DiscoverResults = discoverResults;
@@ -63,7 +68,9 @@ namespace AIS.Intervene
         #region Card Definition Parsing
 
         private static readonly string TITLE_TAG = "@title";
+        private static readonly string SUIT_TAG = "@suit";
         private static readonly string DESC_TAG = "@desc";
+        private static readonly string FOCUS_DESC_TAG = "@focusdescription";
         private static readonly string IMAGE_PATH_TAG = "@path";
         private static readonly string COST_TAG = "@cost";
         private static readonly string DISCOVER_RESULT_TAG = "@discoverresult";
@@ -75,6 +82,7 @@ namespace AIS.Intervene
         private static readonly string VERB_LINE = "verb:";
         private static readonly string SPEC_LINE = "specificity:";
         private static readonly string MAX_TARGETS_LINE = "maxtargets:";
+        private static readonly string OVERRIDE_DESC_LINE = "desc:";
         private static readonly string IF_KEYWORD = "if";
         private static readonly string ODDS_KEYWORD = "odds";
         private static readonly string RELATIVE_KEYWORD = "relative";
@@ -127,7 +135,9 @@ namespace AIS.Intervene
             string cardIdStr = "";
             string title = "";
             string desc = "";
+            string focusDesc = "";
             string imgPath = "";
+            PlayerStatId suit = PlayerStatId.Invalid;
 
             // Parse into data
 
@@ -152,8 +162,20 @@ namespace AIS.Intervene
                 throw new Exception("Title");
             }
 
-            // Description comes after @desc
-            int descIndex = cardDef.ToLower().IndexOf(DESC_TAG);
+            // Suit comes after @suit (optional)
+            int suitIndex = cardDef.ToLower().IndexOf(SUIT_TAG);
+            if (suitIndex != -1)
+            {
+                string afterSuit = cardDef.Substring(suitIndex);
+                int offset = SUIT_TAG.Length;
+                string suitStr = cardDef.Substring(suitIndex + offset, afterSuit.IndexOfAny(END_DELIMS) - offset).Trim();
+                suit = ParsePlayerStat(suitStr);
+            }
+
+            // Description comes after @desc.
+            // Use IndexOfTag (line-anchored) so we don't accidentally match the "@desc" substring
+            // inside "@focusdescription".
+            int descIndex = IndexOfTag(cardDef, DESC_TAG);
 
             if (descIndex != -1)
             {
@@ -167,6 +189,15 @@ namespace AIS.Intervene
                 Debug.Log("[CardUtility] description syntax error!");
 
                 throw new Exception("Description");
+            }
+
+            // Focus Description comes after @focusdescription (optional, defaults to empty)
+            int focusDescIndex = cardDef.ToLower().IndexOf(FOCUS_DESC_TAG);
+            if (focusDescIndex != -1)
+            {
+                string afterFocusDesc = cardDef.Substring(focusDescIndex);
+                int offset = FOCUS_DESC_TAG.Length;
+                focusDesc = cardDef.Substring(focusDescIndex + offset, afterFocusDesc.IndexOfAny(END_DELIMS) - offset).Trim();
             }
 
 
@@ -211,7 +242,28 @@ namespace AIS.Intervene
             // Action Effects parsing
             ActionEffectBundle[] effects = ParseEffects(cardDef, cardIdStr);
 
-            return new ActionCardData(cardID, title, desc, imgPath, cost, discoverResults, effects);
+            return new ActionCardData(cardID, title, desc, focusDesc, imgPath, suit, cost, discoverResults, effects);
+        }
+
+        // Finds a "@tag" occurrence that begins a line (or the string), so a shorter tag like "@desc"
+        // is not matched inside a longer tag like "@focusdescription". Search is case-insensitive.
+        static private int IndexOfTag(string cardDef, string tag)
+        {
+            string lower = cardDef.ToLower();
+            int searchStart = 0;
+            while (true)
+            {
+                int index = lower.IndexOf(tag, searchStart);
+                if (index == -1) { return -1; }
+
+                char before = index == 0 ? '\n' : lower[index - 1];
+                if (before == '\n' || before == '\r')
+                {
+                    return index;
+                }
+
+                searchStart = index + tag.Length;
+            }
         }
 
         #region Effect Parsing Helpers
@@ -297,6 +349,7 @@ namespace AIS.Intervene
             string overrideEffectBlock = null;
             ActionTargetCondition overrideTargetCondition = new ActionTargetCondition();
             overrideTargetCondition.Condition = ActionCondition.None;
+            string overrideDesc = String.Empty;
 
             if (overrideIndex != -1)
             {
@@ -313,6 +366,10 @@ namespace AIS.Intervene
                 {
                     overrideTargetCondition = ParseCondition(conditionPart);
                 }
+
+                // Parse the optional player-facing description line within the block
+                // Format: "desc: Additional +1 Awareness"
+                overrideDesc = ParseOverrideDesc(overrideEffectBlock);
             }
             else
             {
@@ -335,13 +392,32 @@ namespace AIS.Intervene
                 ActionEffectOverride effectOverride = new ActionEffectOverride
                 {
                     Condition = overrideTargetCondition,
-                    Override = overrideEffect
+                    Override = overrideEffect,
+                    Description = overrideDesc
                 };
 
                 effectBundle.EffectOverride = effectOverride;
             }
 
             return effectBundle;
+        }
+
+        // Extracts the optional "desc:" line from an @overrideEffect block.
+        // Returns String.Empty if no desc line is present.
+        static private string ParseOverrideDesc(string overrideEffectBlock)
+        {
+            string[] lines = overrideEffectBlock.Split(END_DELIMS, StringSplitOptions.RemoveEmptyEntries);
+
+            foreach (string line in lines)
+            {
+                string trimmedLine = line.Trim();
+                if (trimmedLine.ToLower().StartsWith(OVERRIDE_DESC_LINE))
+                {
+                    return trimmedLine.Substring(OVERRIDE_DESC_LINE.Length).Trim();
+                }
+            }
+
+            return String.Empty;
         }
 
         static private ActionEffect ParseEffect(string effectBlock, string cardIdStr)
@@ -755,6 +831,35 @@ namespace AIS.Intervene
                     condition.NumericalCheck = numValue;
                 }
             }
+            // Innovate conditions
+            else if (variableName.Contains("innovate"))
+            {
+                if (operatorChar == LE_CHAR || operatorChar == '≤')
+                {
+                    condition.Condition = ActionCondition.InnovateLessThan;
+                }
+                else if (operatorChar == GR_CHAR || operatorChar == '≥')
+                {
+                    condition.Condition = ActionCondition.InnovateGreaterThan;
+                }
+                else if (operatorChar == EQ_CHAR)
+                {
+                    condition.Condition = ActionCondition.InnovateEqualTo;
+                }
+
+                if (float.TryParse(valueStr, out float numValue))
+                {
+                    if (operatorChar == '≤')
+                    {
+                        numValue++;
+                    }
+                    else if (operatorChar == '≥')
+                    {
+                        numValue--;
+                    }
+                    condition.NumericalCheck = numValue;
+                }
+            }
             // Pathway Type conditions (only with = operator)
             else if ((variableName.Contains("type") || variableName.Contains("pathway")) && operatorChar == EQ_CHAR)
             {
@@ -883,6 +988,29 @@ namespace AIS.Intervene
                 default:
                     Debug.LogWarning("[CardUtility] Unknown verb: " + verbStr);
                     return ActionVerb.Reduce; // default fallback
+            }
+        }
+
+        static private PlayerStatId ParsePlayerStat(string suitStr)
+        {
+            suitStr = suitStr.ToLower().Trim();
+
+            switch (suitStr)
+            {
+                case "tech":
+                    return PlayerStatId.Tech;
+                case "research":
+                    return PlayerStatId.Research;
+                case "innovate":
+                    return PlayerStatId.Innovate;
+                case "ranger":
+                    return PlayerStatId.Ranger;
+                case "communicate":
+                case "social":
+                    return PlayerStatId.Communicate;
+                default:
+                    Debug.LogWarning("[CardUtility] Unknown suit: " + suitStr);
+                    return PlayerStatId.Invalid; // default fallback
             }
         }
 

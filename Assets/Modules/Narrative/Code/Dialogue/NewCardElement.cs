@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using AIS.Intervene;
 using BeauPools;
 using BeauRoutine;
 using BeauUtil.Debugger;
@@ -29,7 +30,7 @@ namespace AIS.Narrative {
 
         [Header("Content")]
         public EvidenceDisplayWidget DependencyWidget;
-        public EvidenceDisplayWidget Widget;
+        public UICard Card;
         public Button Button;
 
         [NonSerialized] public Routine GiveAnim; // stored so the fly anim can be adjusted/stopped

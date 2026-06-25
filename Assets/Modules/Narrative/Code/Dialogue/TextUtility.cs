@@ -1,7 +1,9 @@
 using AIS.Intervene;
+using AIS.Shared;
 using BeauPools;
 using BeauRoutine;
 using BeauUtil;
+using BeauUtil.Debugger;
 using BeauUtil.Tags;
 using FieldDay;
 using FieldDay.Audio;
@@ -22,17 +24,27 @@ namespace AIS.Narrative {
             EvidenceCard data = Find.NamedAsset<EvidenceCard>(evidenceId);
             NewCardElement newElem = column.NewEvidencePool.Alloc();
             column.Layout.ActiveLines.PushBack(newElem.Positioner);
-            newElem.Widget.gameObject.SetActive(true);
-            newElem.Widget.Content.SetText(data.Label);
+            newElem.DependencyWidget.gameObject.SetActive(true);
+            newElem.DependencyWidget.Content.SetText(data.Label);
+            newElem.DependencyWidget.Suit.sprite = CardVisualLookupUtility.LookupSuitIcon(data.Suit);
             newElem.SetVisible(true);
             column.Layout.RecomputePositioning();
             return newElem;
         }
 
         static public NewCardElement SpawnActionCard(DialogueColumn column, StringHash32 actionId) {
-            EvidenceCard data = Find.NamedAsset<EvidenceCard>(actionId);
+            // Action cards are not NamedAssets; they're parsed at runtime into ActionCardsState.
+            ActionCardData data = default;
+            bool hasData = false;
+            if (Game.SharedState.TryGet(out ActionCardsState cardsState)) {
+                hasData = cardsState.AllActionCards.TryGetValue(actionId, out data);
+            }
+            if (!hasData) {
+                Log.Warn("[TextUtility] No ActionCardData found for action '{0}'.", actionId);
+            }
 
             // Find the evidence this action depends on (first source that maps to it).
+            // The dependency IS an EvidenceCard NamedAsset, unlike the action itself.
             EvidenceCard dependencyData = null;
             if (Game.SharedState.Has<EvidenceToActionConverterState>()) {
                 EvidenceToActionConverterState convState = Find.State<EvidenceToActionConverterState>();
@@ -44,11 +56,14 @@ namespace AIS.Narrative {
 
             NewCardElement newElem = column.NewActionCardPool.Alloc();
             column.Layout.ActiveLines.PushBack(newElem.Positioner);
-            newElem.Widget.gameObject.SetActive(true);
+            newElem.Card.gameObject.SetActive(true);
             if (dependencyData != null) {
                 newElem.DependencyWidget.Content.SetText(dependencyData.Label);
+                newElem.DependencyWidget.Suit.sprite = CardVisualLookupUtility.LookupSuitIcon(dependencyData.Suit);
             }
-            newElem.Widget.Content.SetText(data.Label);
+            if (hasData) {
+                ActionCardUtility.PopulateCardUI(newElem.Card, data);
+            }
             newElem.SetVisible(true);
             column.Layout.RecomputePositioning();
             return newElem;
@@ -64,16 +79,29 @@ namespace AIS.Narrative {
             card.Button.gameObject.SetActive(false);
         }
 
-        // Flies the card's widget toward a toolbar button, then hides just the widget.
+        // Flies an action card's UICard widget toward a toolbar button, then hides just the widget.
         // The panel stays in the dialogue column as history; only the given card disappears.
         static public IEnumerator FlyCardToToolbar(NewCardElement card, ToolbarButton target) {
-            // Only the widget itself flies/shrinks; the rest of the panel stays put.
-            RectTransform widgetRect = card.Widget.Rect;
+            return FlyWidgetToToolbar(card, (RectTransform) card.Card.transform, target);
+        }
+
+        // Flies an evidence chip's display widget toward a toolbar button, then hides just the widget.
+        // GiveEvidenceChip populates DependencyWidget (an EvidenceDisplayWidget) rather than Card,
+        // so the chip's visible element is the widget, not the UICard.
+        static public IEnumerator FlyChipToToolbar(NewCardElement card, ToolbarButton target) {
+            return FlyWidgetToToolbar(card, (RectTransform) card.DependencyWidget.transform, target);
+        }
+
+        // Shared "fly a single widget to a toolbar button" mechanic used by both card and chip gives.
+        // Only the given widget flies/shrinks; the rest of the panel stays put in the dialogue column
+        // as history. The widget is reparented onto the sidebar canvas during the flight, then hidden
+        // and restored to its original parent/transform so the pooled NewCardElement stays clean.
+        static private IEnumerator FlyWidgetToToolbar(NewCardElement card, RectTransform widgetRect, ToolbarButton target) {
             Transform origParent = widgetRect.parent;
             int origSiblingIndex = widgetRect.GetSiblingIndex();
             Vector3 origLocalPos = widgetRect.localPosition;
             Vector3 origLocalScale = widgetRect.localScale;
-            LayoutOffset widgetOffset = card.Widget.LayoutOffset;
+            LayoutOffset widgetOffset = widgetRect.GetComponent<LayoutOffset>();
             if (widgetOffset) {
                 widgetOffset.enabled = false;
             }
@@ -95,7 +123,7 @@ namespace AIS.Narrative {
 
             // Hide the given widget but leave its panel in the column, and restore the widget
             // back under its panel so the pooled instance is clean if this card is reused.
-            card.Widget.gameObject.SetActive(false);
+            widgetRect.gameObject.SetActive(false);
             widgetRect.SetParent(origParent, false);
             widgetRect.SetSiblingIndex(origSiblingIndex);
             widgetRect.localPosition = origLocalPos;
@@ -172,6 +200,7 @@ namespace AIS.Narrative {
             while(layout.ActiveLines.TryPopFront(out var line)) {
                 Pool.TryFree(line);
             }
+            layout.ResetAlignment();
         }
     }
 }

@@ -15,12 +15,18 @@ namespace AIS.Intervene {
         [Header("Front")]
         public CanvasGroup FrontGroup;
         public Image Suit;
-        public GameObject SuitRequirement;
         public TMP_Text Title;
         public TMP_Text CostText;
         public TMP_Text Description;
-        public TMP_Text AdditionalDesc;
         public Image Img;
+
+        [Header("Override Ability")]
+        // Holds the requirement suit, the requirement number, and the override description.
+        // Shown only when the card has an override ability; hidden otherwise.
+        public CanvasGroup OverrideGroup;
+        public Image RequirementSuit;
+        public TMP_Text RequirementNumber;
+        public TMP_Text AdditionalDesc;
         public Image Highlight;
         public Button ClickBtn;
         public Canvas CanvasOverride;
