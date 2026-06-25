@@ -61,13 +61,14 @@ namespace AIS.Narrative
                 {
                     locations[i].MainImg.color = Color.magenta;
                     locations[i].GetComponent<Button>().interactable = true;
-                    locations[i].Time.gameObject.SetActive(true);
                 }
                 else
                 {
                     locations[i].MainImg.color = Color.grey;
                     locations[i].GetComponent<Button>().interactable = false;
+                    locations[i].NextCardToFind.SetActive(false);
                 }
+                locations[i].Time.SetActive(false);
             }
             
             // Deselect selected location and path
@@ -101,6 +102,8 @@ namespace AIS.Narrative
                 travelButton.interactable = false;
                 return;
             }
+
+            locations[index].Time.SetActive(true);
 
             // Deselect current selected location
             if (selectedLocationIdx != index)
@@ -142,11 +145,6 @@ namespace AIS.Narrative
             travelButton.interactable = true;
         }
 
-        public void SetTravelTime(TravelPoint destination)
-        {
-            // TODO: decide the exact amount of time needed
-            destination.Time.gameObject.SetActive(true);
-        }
 
         public void EnableReturnTo(int originIdx)
         {

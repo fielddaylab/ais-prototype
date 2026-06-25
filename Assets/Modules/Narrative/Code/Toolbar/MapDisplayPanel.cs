@@ -128,5 +128,18 @@ namespace AIS.Narrative
             TravelPointsDisplay currentHub = travelPointsDisplays[currentHubIdx];
             currentHub.EnableReturnTo(locationIdx);
         }
+
+        public void SetNextCardAtLocation(int locationIdx, PlayerStatId suit, bool isActionable)
+        {
+            TravelPointsDisplay currentHub = travelPointsDisplays[currentHubIdx];
+            TravelPoint location = currentHub.locations[locationIdx];
+            TravelPointUtility.SetNextCardToFind(location, suit, isActionable);
+        }
+
+        public void ClearNextCardAtLocation(int locationIdx)
+        {
+            TravelPointsDisplay currentHub = travelPointsDisplays[currentHubIdx];
+            currentHub.locations[locationIdx].NextCardToFind.SetActive(false);
+        }
     }
 }
