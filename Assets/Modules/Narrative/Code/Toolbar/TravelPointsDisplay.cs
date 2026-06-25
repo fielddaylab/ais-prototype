@@ -36,10 +36,10 @@ namespace AIS.Narrative
 
         private int currentLocationIdx;
         private int selectedLocationIdx;
-        private Path selectedPath;
 
         public Button travelButton;
         public Button returnButton;
+        public Image LocPointer;
 
         private void Awake()
         {
@@ -47,6 +47,14 @@ namespace AIS.Narrative
             UnlockedLocations.Add(locations[0].MainImg);
             SetCurrentLocation(0);
             locations[currentLocationIdx].MainImg.color = Color.cyan;
+            travelButton.interactable = false;
+        }
+
+        private void Start()
+        {
+            RectTransform pointerTransform = LocPointer.GetComponent<RectTransform>();
+            RectTransform currentLocTransform = locations[currentLocationIdx].MainImg.GetComponent<RectTransform>();
+            pointerTransform.position = currentLocTransform.position;
         }
 
         public void SetCurrentLocation(int index)
@@ -70,33 +78,29 @@ namespace AIS.Narrative
                 }
                 locations[i].Time.SetActive(false);
             }
-            
-            // Deselect selected location and path
-            //locations[selectedLocationIdx].color = Color.yellow;
-            selectedPath = null;
-            
+
             currentLocationIdx = index;
             selectedLocationIdx = index;
+            RectTransform pointerTransform = LocPointer.GetComponent<RectTransform>();
+            RectTransform currentLocTransform = locations[currentLocationIdx].MainImg.GetComponent<RectTransform>();
+            if (pointerTransform != null)
+            {
+                pointerTransform.position = currentLocTransform.position;
+            }
 
-            //foreach (Image location in locations)
-            //{
-            //    location.GetComponent<Button>().interactable = true;
-            //}
-
-            //foreach (Path path in paths)
-            //{
-            //    bool isConnected = path.connectedLocations.Contains(locations[currentLocationIdx].MainImg);
-            //    path.line.color = Color.white;
-            //    path.connectedLocations[0].GetComponent<Button>().interactable = true;
-            //    path.connectedLocations[1].GetComponent<Button>().interactable = true;
-            //}
-
-            //locations[currentLocationIdx].color = Color.magenta;
             travelButton.interactable = false;
+            //ScriptHooks.DisableMapButton();
         }
 
         public void SelectLocation(int index)
         {
+            if (index == currentLocationIdx)
+            {
+                locations[currentLocationIdx].MainImg.color = (locations[currentLocationIdx].MainImg.color == Color.yellow) ? Color.cyan : Color.yellow;
+                selectedLocationIdx = currentLocationIdx;
+                return;
+            }
+
             if (!UnlockedLocations.Contains(locations[index].MainImg))
             {
                 travelButton.interactable = false;
@@ -110,37 +114,38 @@ namespace AIS.Narrative
             {
                 locations[selectedLocationIdx].MainImg.color = Color.magenta;
                 locations[currentLocationIdx].MainImg.color = Color.cyan;
-                //selectedPath.line.color = Color.white;
-                //selectedPath.time.SetActive(false);
             }
-
-            // Return to hub selection if player is currently at hub and selected hub
-            /*
-            if (currentLocationIdx == 0 && index == 0)
+            else
             {
-                mapDisplayPanel.ShowHubSelectionPanel();
+                locations[selectedLocationIdx].MainImg.color = Color.magenta;
+                selectedLocationIdx = 0;
                 return;
             }
-            */
 
-            // Highlight new selected location and path
+                // Return to hub selection if player is currently at hub and selected hub
+                /*
+                if (currentLocationIdx == 0 && index == 0)
+                {
+                    mapDisplayPanel.ShowHubSelectionPanel();
+                    return;
+                }
+                */
 
-            // TODO: Set up paths between every pair of locations that can be traveled one to another
+                // Highlight new selected location and path
+
+                // TODO: Set up paths between every pair of locations that can be traveled one to another
             selectedLocationIdx = index;
             foreach (Path path in paths)
             {
                 if (path.connectedLocations.Contains(locations[currentLocationIdx].MainImg) &&
                     path.connectedLocations.Contains(locations[index].MainImg))
                 {
-                    selectedPath = path;
                     path.line.gameObject.SetActive(true);
                 }
                 else
                     path.line.gameObject.SetActive(false);
             }
             locations[index].MainImg.color = Color.yellow;
-            //selectedPath.line.color = Color.yellow;
-            //selectedPath.time.SetActive(true);
 
             travelButton.interactable = true;
         }

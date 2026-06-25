@@ -13,7 +13,7 @@ namespace AIS.Narrative
 {
     public sealed class MapDisplayPanel : SharedPanel
     {
-        public Button travelButton, modelButton;
+        public Button travelButton;
 
         public GameObject travelPointsContainer;
         public GameObject mapImage;

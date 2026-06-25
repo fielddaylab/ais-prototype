@@ -2815,6 +2815,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: MapPanel
       objectReference: {fileID: 0}
+    - target: {fileID: 2611806736191935496, guid: 1035e6bbdf8f3418584f107a9ced40b6, type: 3}
+      propertyPath: m_Pivot.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2611806736191935496, guid: 1035e6bbdf8f3418584f107a9ced40b6, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 135
+      objectReference: {fileID: 0}
     - target: {fileID: 4732058599422222415, guid: 1035e6bbdf8f3418584f107a9ced40b6, type: 3}
       propertyPath: m_Color.b
       value: 1
