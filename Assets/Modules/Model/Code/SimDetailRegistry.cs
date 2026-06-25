@@ -20,6 +20,7 @@ namespace AIS.Narrative
     {
         [SerializeField] public SimDetail[] Details = new SimDetail[6]; // length should be number of evidence cards (model info)
         public List<ISimDetail> DetailsToShow; // keep track of all gameobjects that should be revealed
+        public Queue<StringHash32> RevealQueue = new Queue<StringHash32>(); // evidence IDs pending animated reveal
 
         private void Start()
         {
@@ -56,7 +57,9 @@ namespace AIS.Narrative
                 StringHash32 invasiveId = InvasionModel.Instance.m_InitModelSetupData.DefaultInvasive.SpeciesId;
                 foreach(Ecosystem ecosystem in ecosystems)
                 {
+                    if (ecosystem == null) { continue; }
                     Cluster invasiveCluster = ecosystem.GetCluster(invasiveId);
+                    if (invasiveCluster == null) { continue; }
                     targets.Add(invasiveCluster);
                 }
             }
@@ -65,6 +68,7 @@ namespace AIS.Narrative
                 
                 foreach(Pathway pathway in pathways)
                 {
+                    if (pathway == null) { continue; }
                     if (pathway.PathwayType == PathwayType.Downstream)
                     {
                         targets.Add(pathway);
@@ -75,6 +79,7 @@ namespace AIS.Narrative
             {
                 foreach(Pathway pathway in pathways)
                 {
+                    if (pathway == null) { continue; }
                     if (pathway.PathwayType == PathwayType.Upstream)
                     {
                         targets.Add(pathway);
@@ -85,9 +90,26 @@ namespace AIS.Narrative
             return targets;
         }
 
+        // Returns true if evidenceId maps to at least one not-yet-shown SimDetail and was enqueued.
+        public bool TryEnqueueReveal(StringHash32 evidenceId)
+        {
+            List<ISimDetail> targets = MapEvidenceToDetail(evidenceId);
+            if (targets.Count == 0) return false;
+            foreach (var t in targets)
+            {
+                if (!DetailsToShow.Contains(t))
+                {
+                    RevealQueue.Enqueue(evidenceId);
+                    return true;
+                }
+            }
+            return false;
+        }
+
         public void HideAll()
         {
             DetailsToShow = new List<ISimDetail>();
+            RevealQueue.Clear();
         }
 
         public void RevealNewDetails(StringHash32 evidenceId)

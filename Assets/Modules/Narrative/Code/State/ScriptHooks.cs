@@ -1,3 +1,4 @@
+using AIS.Model;
 using BeauUtil;
 using FieldDay;
 using FieldDay.Scripting;
@@ -83,6 +84,8 @@ namespace AIS.Narrative {
             PlayerInventory inv = Find.State<PlayerInventory>();
             if (inv.EvidenceChips.Add(id))
             {
+                InvasionModel.Instance?.SimDetailRegistry?.TryEnqueueReveal(id);
+
                 if (thread.IsSkipping())
                 {
                     yield break;
