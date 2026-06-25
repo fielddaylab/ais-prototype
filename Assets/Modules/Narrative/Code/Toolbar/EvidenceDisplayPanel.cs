@@ -133,7 +133,10 @@ namespace AIS.Narrative {
         public void PopulateStats(in PlayerStatBlock parms) {
             for (int i = 0; i < Stats.Length; i++) {
                 StatDisplayWidget widget = Stats[i];
-                widget.StatValueCounter.SetValue(parms[widget.StatId], GuiWidgetUpdateFlags.Force | GuiWidgetUpdateFlags.NoAnimation);
+                // widget.StatValueCounter.SetValue(parms[widget.StatId], GuiWidgetUpdateFlags.Force | GuiWidgetUpdateFlags.NoAnimation);
+
+                widget.CountText.SetText(parms[widget.StatId].ToStringLookup());
+                widget.Label.SetText(widget.StatId.ToString());
             }
         }
 
