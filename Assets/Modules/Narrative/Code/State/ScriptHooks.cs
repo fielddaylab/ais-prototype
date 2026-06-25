@@ -1,3 +1,4 @@
+using AIS.Model;
 using BeauUtil;
 using FieldDay;
 using FieldDay.Scripting;
@@ -83,6 +84,8 @@ namespace AIS.Narrative {
             PlayerInventory inv = Find.State<PlayerInventory>();
             if (inv.EvidenceChips.Add(id))
             {
+                InvasionModel.Instance?.SimDetailRegistry?.TryEnqueueReveal(id);
+
                 if (thread.IsSkipping())
                 {
                     yield break;
@@ -151,7 +154,7 @@ namespace AIS.Narrative {
             toolbar.MapButton.Fader.alpha = 0;
         }
 
-        // [LeafMember("EnableModelButton")]
+        //[LeafMember("EnableModelButton")]
         //static public IEnumerator EnableModelButton()
         //{
         //    PlayerInventory inv = Find.State<PlayerInventory>();
@@ -257,7 +260,52 @@ namespace AIS.Narrative {
             var mapPanel = Find.Panel<MapDisplayPanel>();
             mapPanel.UnlockLocation(index);
         }
-        
+
+        [LeafMember("SetNextCardToFind")]
+        static public void SetNextCardToFind(int locationIdx, string suit, bool isActionable = false)
+        {
+            var mapPanel = Find.Panel<MapDisplayPanel>();
+            PlayerStatId statSuit = PlayerStatId.Tech;
+
+            switch (suit)
+            {
+                case "Tech":
+                case "tech":
+                    break;
+
+                case "Research":
+                case "research":
+                    statSuit = PlayerStatId.Research;
+                    break;
+
+                case "Innovate":
+                case "innovate":
+                case "Innovation":
+                case "innovation":
+                    statSuit = PlayerStatId.Innovate;
+                    break;
+
+                case "Ranger":
+                case "ranger":
+                    statSuit = PlayerStatId.Ranger;
+                    break;
+
+                case "Communicate":
+                case "communicate":
+                    statSuit = PlayerStatId.Communicate;
+                    break;
+            }
+
+            mapPanel.SetNextCardAtLocation(locationIdx, statSuit, isActionable);
+        }
+
+        [LeafMember("ClearNextCardToFind")]
+        static public void ClearNextCardToFind(int index)
+        {
+            var mapPanel = Find.Panel<MapDisplayPanel>();
+            mapPanel.ClearNextCardAtLocation(index);
+        }
+
         [LeafMember("DecreaseTime")]
         static public void DecreaseTime(int chunks) {
             PlayerUtility.DecreaseTime(chunks);

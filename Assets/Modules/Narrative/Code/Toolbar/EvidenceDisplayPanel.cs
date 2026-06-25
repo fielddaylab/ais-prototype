@@ -20,6 +20,10 @@ namespace AIS.Narrative {
         public Button ToModelButton;
         public Button CloseButton;
 
+        [Header("Sim Reveal Queue")]
+        public CanvasGroup RevealQueueGroup;
+        public TMP_Text RevealQueueCountText;
+
         [Header("Data")]
         public ScenarioData CurrScenario;
 
@@ -60,7 +64,7 @@ namespace AIS.Narrative {
             base.Awake();
             Stats = GetComponentsInChildren<StatDisplayWidget>();
             ToModelButton.onClick.AddListener(PanelUtility.ToggleModel);
-            CloseButton.onClick.AddListener(Hide);
+            CloseButton.onClick.AddListener(PanelUtility.ToggleEvidence);
             Hide();
         }
 
@@ -70,6 +74,13 @@ namespace AIS.Narrative {
             RecomputeStats(parms);
             PopulateStats(Find.State<PlayerStats>().StatBlock);
             PopulateActionCards(parms);
+            UpdateRevealQueueDisplay();
+        }
+
+        private void UpdateRevealQueueDisplay() {
+            int count = InvasionModel.Instance?.SimDetailRegistry?.RevealQueue.Count ?? 0;
+            RevealQueueGroup.alpha = count > 0 ? 1 : 0;
+            RevealQueueCountText.SetText(count.ToString());
         }
 
         #region Evidence
@@ -301,6 +312,7 @@ namespace AIS.Narrative {
         public override void Show() {
             base.Show();
             Game.Gui.PushPriority(m_InputLayer);
+            UpdateRevealQueueDisplay();
             ScriptHooks.HideToolbar();
         }
 

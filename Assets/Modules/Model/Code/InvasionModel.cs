@@ -26,6 +26,7 @@ namespace AIS.Model
         [SerializeField] private InvasionModelPrefabs m_Prefabs;
         [SerializeField] public InvasionModelContainer m_ModelContainer;
         [SerializeField] private SimDetailRegistry simDetailRegistry;
+        public SimDetailRegistry SimDetailRegistry => simDetailRegistry;
 
         public Camera RenderCam;
 

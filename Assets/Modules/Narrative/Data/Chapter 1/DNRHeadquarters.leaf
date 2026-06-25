@@ -11,6 +11,8 @@ $call SetBackground("bg/Room.png")
 @trigger    ChapterStart
 @cutscene
 
+$call SetNextCardToFind(0, "Tech")
+
 $call EnableFieldNotesButton()
 $call EnableMapButton()
 
