@@ -1,0 +1,39 @@
+#basePath P1_Hub
+
+:: Entry
+@exposed
+// Mark start of phase
+$set global:currentPhase = 1
+
+{@}   
+       [This is the entry hub for Phase 1.]
+$call EnableMapButton()
+// TODO: Rest of entry hub here
+
+
+:: Continue
+@exposed
+
+{@}   
+       [This is the continue hub for Phase 1.]
+$call EnableMapButton()
+
+// TODO: Rest of continue hub here
+
+// if all Phase 1 threads have been visited, mark end of phase
+$if HasSeen(P1_NativeLamprey.End), HasSeen(P1_Lamprey.End)
+        $set global:currentPhase = 2
+        $goto .Exit
+$endif
+
+
+:: Exit
+@exposed
+
+{@}   
+      [This is the exit hub for Phase 1.]
+
+// TODO: Rest of exit hub here
+
+// Go to Phase 2 Hub
+$goto   P2_Hub.Entry

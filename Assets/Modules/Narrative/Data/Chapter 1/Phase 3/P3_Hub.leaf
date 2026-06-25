@@ -1,0 +1,34 @@
+#basePath P3_Hub
+
+:: Entry
+@exposed
+// Mark start of phase
+$set global:currentPhase = 3
+
+{@}   
+       [This is the entry hub for Phase 3.]
+$call EnableMapButton()
+// TODO: Rest of entry hub here
+
+
+:: Continue
+@exposed
+
+{@}   
+       [This is the continue hub for Phase 3.]
+$call EnableMapButton()
+// TODO: Rest of continue hub here
+
+// TODO: if all Phase 3 threads have been visited, mark end of phase
+// $goto .Exit
+
+
+:: Exit
+@exposed
+
+{@}   
+      [This is the exit hub for Phase 3.]
+
+// TODO: Rest of exit hub here
+
+// TODO: end of dialogue threads

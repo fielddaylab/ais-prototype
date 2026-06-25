@@ -3,25 +3,34 @@
 :: Start
 @trigger    OnLocationChanged
 // "NONE" ensures no other threads are in-progress
-@when       global:currentThread == "NONE", location == "[Location]"
+// global:currentPhase == 1 ensures player is in phase 1
+@when       global:currentThread == "NONE", global:currentPhase == 1, location == "[Location]"
 @cutscene
 // Lock all location on map
 $call SetInThreadLocks()
+
 // Mark start of thread
 $set global:currentThread = "P1_Lamprey"
 
 {@}   
-       This is the very first thread in Phase 1.
+       [This is the very first thread in Phase 1.]
 
 // TODO: Rest of thread here
 
 // TODO: Give evidence chip
 // $call GiveEvidenceChip([Evidence])
 
+// TEMPORARY: skip to end
+$goto .End
 
+
+:: End
 // TODO: Unlock next locations
 // $call UnlockLocation([Location 1])
 // $call UnlockLocation([Location 2])
 
 // Mark end of thread
 $set global:currentThread = "NONE"
+
+// Go to Phase 1 Continue Hub
+$goto P1_Hub.Continue

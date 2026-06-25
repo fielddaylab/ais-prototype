@@ -11,17 +11,26 @@ $call SetBackground("bg/Room.png")
 // Lock all location on map
 $call SetInThreadLocks()
 
+// Mark start of phase
+$set global:currentPhase = 0
 // Mark start of thread
 $set global:currentThread = "P0_Intro"
 
+
 {@}   
-       This is the introductory thread in Phase 0.
+       [This is the introductory thread in Phase 0.]
 
 // TODO: Rest of thread here
 
+// TEMPORARY: skip to end
+$goto .End
+
+:: End
 // TODO: Unlock next locations
 // $call UnlockLocation([Location 1])
 // $call UnlockLocation([Location 2])
 
 // Mark end of thread
 $set global:currentThread = "NONE"
+// Go to Phase 1 Hub
+$goto P1_Hub.Entry

@@ -3,7 +3,8 @@
 :: Start
 @trigger    OnLocationChanged
 // "NONE" ensures no other threads are in-progress
-@when       global:currentThread == "NONE", location == "[Location]"
+// global:currentPhase == 2 ensures player is in phase 2
+@when       global:currentThread == "NONE", global:currentPhase == 2, location == "[Location]"
 @cutscene
 // Lock all location on map
 $call SetInThreadLocks()
@@ -12,7 +13,7 @@ $call SetInThreadLocks()
 $set global:currentThread = "P2_Outreach"
 
 {@}   
-       This is one of two threads in Phase 2.
+       [This is one of two threads in Phase 2.]
 
 // TODO: Rest of thread here
 
@@ -22,9 +23,17 @@ $set global:currentThread = "P2_Outreach"
 // TODO: Give action card
 // $call GiveActionCard([Action])
 
+// TEMPORARY: skip to end
+$goto .End
+
+
+:: End
 // TODO: Unlock next locations
 // $call UnlockLocation([Location 1])
 // $call UnlockLocation([Location 2])
 
 // Mark end of thread
 $set global:currentThread = "NONE"
+
+// Go to Phase 2 Continue Hub
+$goto P2_Hub.Continue
