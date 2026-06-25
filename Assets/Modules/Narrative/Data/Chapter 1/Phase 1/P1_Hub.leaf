@@ -22,7 +22,6 @@ $call EnableMapButton()
 
 // if all Phase 1 threads have been visited, mark end of phase
 $if HasSeen(P1_NativeLamprey.End), HasSeen(P1_Lamprey.End)
-        $set global:currentPhase = 2
         $goto .Exit
 $endif
 
