@@ -8,6 +8,9 @@ $set global:currentPhase = 3
 {@}   
        [This is the entry hub for Phase 3.]
 $call EnableMapButton()
+$call UnlockLocation(FishingDocks)        // P3_CiscoTroutDecision
+$call UnlockLocation(FieldStationTraps)   // P3_DownstreamUpstreamDecision
+
 // TODO: Rest of entry hub here
 
 
@@ -18,18 +21,32 @@ $call EnableMapButton()
        [This is the continue hub for Phase 3.]
 $call EnableMapButton()
 
+// If the player has not completed both CiscoPop AND TroutPop, allow access to the other one
+$if !HasSeen(P3_CiscoPop.End)
+       $call UnlockLocation(FishingDocks)        // P3_CiscoTroutDecision
+$elseif !HasSeen(P3_TroutPop.End)
+       $call UnlockLocation(FishingDocks)        // P3_CiscoTroutDecision
+$endif
+
+// If the player has not completed both LampreyDownstream AND LampreyUpstream, allow access to the other one
+$if !HasSeen(P3_LampreyDownstream.End)
+       $call UnlockLocation(FieldStationTraps)        // P3_DownstreamUpstreamDecision
+$elseif !HasSeen(P3_LampreyUpstream.End)
+       $call UnlockLocation(FieldStationTraps)        // P3_DownstreamUpstreamDecision
+$endif
+
 // if player has high Tech stat AND completed CiscoPop or TroutPop, unlock P3_Sterile thread
 $if HasSeen(P3_CiscoPop.End), StatCheck(Tech, 3)
-       // $call UnlockLocation([sterile location])
+       $call UnlockLocation(FieldStationSterile)
 $elseif HasSeen(P3_TroutPop.End), StatCheck(Tech, 3)
-       // $call UnlockLocation([sterile location])
+       $call UnlockLocation(FieldStationSterile)
 $endif
 
 // if player has high Outdoors stat AND completed LampreyDownstream or LampreyUpstream (traps branch), unlock P3_Pheromones thread
-$if HasSeen(P3_LampreyDownstream.End), StatCheck(Tech, 3)
-       // $call UnlockLocation([pheromones location])
-$elseif HasSeen(P3_LampreyUpstream.ReceiveTrapAction), StatCheck(Tech, 3)
-       // $call UnlockLocation([pheromones location])
+$if HasSeen(P3_LampreyDownstream.End), StatCheck(Outdoors, 3)
+       $call UnlockLocation(ResearchLab)
+$elseif HasSeen(P3_LampreyUpstream.ReceiveTrapAction), StatCheck(Outdoors, 3)
+       $call UnlockLocation(ResearchLab)
 $endif
 
 // TODO: Rest of continue hub here

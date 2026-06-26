@@ -4,7 +4,7 @@
 @trigger    OnLocationChanged
 // "NONE" ensures no other threads are in-progress
 // global:currentPhase == 3 ensures player is in phase 3
-@when       global:currentThread == "NONE", global:currentPhase == 3, location == "[Location]"
+@when       global:currentThread == "NONE", global:currentPhase == 3, location == "FishingDocks"
 @cutscene
 // Lock all location on map
 $call SetInThreadLocks()
