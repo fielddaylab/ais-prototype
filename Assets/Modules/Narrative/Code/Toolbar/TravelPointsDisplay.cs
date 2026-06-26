@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using BeauUtil.UI;
 using System.Collections.Generic;
+using System;
 using System.Linq;
 using TMPro;
 
@@ -24,7 +25,7 @@ namespace AIS.Narrative
             // origin & dest
             //public float travelTime;
             //public GameObject time;
-            public Image line;
+            //public Image line;
         }
 
         public Vector3 cameraTransform;
@@ -32,7 +33,8 @@ namespace AIS.Narrative
 
         public TravelPoint[] locations;
         [HideInInspector] public List<Image> UnlockedLocations = new List<Image>();
-        public Path[] paths;
+        //public Path[] paths;
+        public Image PathLine;
 
         private int currentLocationIdx;
         private int selectedLocationIdx;
@@ -89,6 +91,7 @@ namespace AIS.Narrative
             }
 
             travelButton.interactable = false;
+            PathLine.gameObject.SetActive(false);
             //ScriptHooks.DisableMapButton();
         }
 
@@ -122,34 +125,54 @@ namespace AIS.Narrative
                 return;
             }
 
-                // Return to hub selection if player is currently at hub and selected hub
-                /*
-                if (currentLocationIdx == 0 && index == 0)
-                {
-                    mapDisplayPanel.ShowHubSelectionPanel();
-                    return;
-                }
-                */
-
-                // Highlight new selected location and path
-
-                // TODO: Set up paths between every pair of locations that can be traveled one to another
-            selectedLocationIdx = index;
-            foreach (Path path in paths)
+            // Return to hub selection if player is currently at hub and selected hub
+            /*
+            if (currentLocationIdx == 0 && index == 0)
             {
-                if (path.connectedLocations.Contains(locations[currentLocationIdx].MainImg) &&
-                    path.connectedLocations.Contains(locations[index].MainImg))
-                {
-                    path.line.gameObject.SetActive(true);
-                }
-                else
-                    path.line.gameObject.SetActive(false);
+                mapDisplayPanel.ShowHubSelectionPanel();
+                return;
             }
+            */
+
+            // Highlight new selected location and path
+
+            // TODO: Set up paths between every pair of locations that can be traveled one to another
+
+            selectedLocationIdx = index;
+            Path route = new Path()
+            {
+                Origin = locations[currentLocationIdx].MainImg,
+                Destination = locations[index].MainImg
+            };
+            DrawPath(route);
+
             locations[index].MainImg.color = Color.yellow;
 
             travelButton.interactable = true;
         }
 
+        private void DrawPath(Path path)
+        {
+            Vector2 originPos = path.Origin.GetComponent<RectTransform>().anchoredPosition;
+            Vector2 destPos = path.Destination.GetComponent<RectTransform>().anchoredPosition;
+
+            // set path length to be sqrt((originX - destX)^2 + (originY - destY)^2)
+            float length = (float) Math.Sqrt(Math.Pow((originPos.x - destPos.x), 2) + Math.Pow((originPos.y - destPos.y), 2));
+            RectTransform rt = PathLine.GetComponent<RectTransform>();
+            rt.sizeDelta = new Vector2(length, rt.sizeDelta.y);
+
+            // set path position to be 0.5((originX + destX), (originY + destY))
+            rt.anchoredPosition = new Vector2((float) 0.5 * (originPos.x + destPos.x), (float) 0.5 * (originPos.y + destPos.y));
+
+            // calculate z rotation value: sin^-1(diffY / length) * Mathf.Rad2Deg
+            // positive z: CCW; negative z: CW
+            if (originPos.x >= destPos.x)
+                rt.localRotation = Quaternion.Euler(0, 0, (float) Math.Asin((originPos.y - destPos.y) / length) * Mathf.Rad2Deg);
+            else
+                rt.localRotation = Quaternion.Euler(0, 0, (float) Math.Asin((destPos.y - originPos.y) / length) * Mathf.Rad2Deg);
+
+            PathLine.gameObject.SetActive(true);
+        }
 
         public void EnableReturnTo(int originIdx)
         {
