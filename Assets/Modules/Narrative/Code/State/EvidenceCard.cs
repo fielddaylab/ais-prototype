@@ -4,17 +4,20 @@ using UnityEngine;
 using UnityEngine.UI;
 
 namespace AIS.Narrative {
-    public enum MapLocation: byte
+    public enum MapLocation
     {
         FishingDocks,
         TownHall,
         FishHatchery,
         DNROffice,
         BarrierSite,
-        FieldStation,
+        FieldStationLampricide,
         ResearchLab,
         ArmyCorps,
-        None = 255
+        None,
+        FieldStationSterile,
+        FishAndWildlife,
+        FieldStationTraps,
     }
 
 

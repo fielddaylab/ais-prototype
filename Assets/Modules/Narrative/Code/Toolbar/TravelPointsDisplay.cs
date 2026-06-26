@@ -50,6 +50,22 @@ namespace AIS.Narrative
             locations[currentLocationIdx].MainImg.color = Color.cyan;
         }
 
+        /// <summary>
+        /// Returns the index within <see cref="locations"/> whose <see cref="TravelPoint.LocationName"/>
+        /// matches the given <paramref name="location"/>, or -1 if none match.
+        /// </summary>
+        public int IndexOfLocation(MapLocation location)
+        {
+            for (int i = 0; i < locations.Length; i++)
+            {
+                if (locations[i].LocationName == location)
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
         public void SetCurrentLocation(int index)
         {
             // Deselect current location
@@ -156,16 +172,16 @@ namespace AIS.Narrative
             returnButton.interactable = true;
         }
 
-        public void TravelToSelectedLocation()
+        public void TravelToSelectedLocation(bool userTriggered)
         {
             Debug.Log($"[TravelPointsDisplay] Travel to {locations[selectedLocationIdx]}");
 
-            bool locationChanged = currentLocationIdx != selectedLocationIdx;
+            // bool locationChanged = currentLocationIdx != selectedLocationIdx;
             MapLocation location = locations[selectedLocationIdx].LocationName;
 
             SetCurrentLocation(selectedLocationIdx);
 
-            if (locationChanged)
+            if (userTriggered)
             {
                 using (TempVarTable table = TempVarTable.Alloc())
                 {

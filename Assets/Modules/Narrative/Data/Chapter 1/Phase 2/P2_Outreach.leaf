@@ -4,7 +4,7 @@
 @trigger    OnLocationChanged
 // "NONE" ensures no other threads are in-progress
 // global:currentPhase == 2 ensures player is in phase 2
-@when       global:currentThread == "NONE", global:currentPhase == 2, location == "[Location]"
+@when       global:currentThread == "NONE", global:currentPhase == 2, location == "ArmyCorps"
 @cutscene
 // Lock all location on map
 $call SetInThreadLocks()
@@ -13,7 +13,7 @@ $call SetInThreadLocks()
 $set global:currentThread = "P2_Outreach"
 
 {@}   
-       [This is one of two threads in Phase 2.]
+       [This is the Outreach thread in Phase 2.]
 
 // TODO: Rest of thread here
 
@@ -28,9 +28,9 @@ $goto .End
 
 
 :: End
-// TODO: Unlock next locations
-// $call UnlockLocation([Location 1])
-// $call UnlockLocation([Location 2])
+@tracked
+// Unlock next locations
+$call UnlockLocation(FieldStationLampricide)     // P2_Lampricide
 
 // Mark end of thread
 $set global:currentThread = "NONE"

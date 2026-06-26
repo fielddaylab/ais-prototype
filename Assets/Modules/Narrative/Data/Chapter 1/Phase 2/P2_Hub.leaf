@@ -8,6 +8,9 @@ $set global:currentPhase = 2
 {@}   
        [This is the entry hub for Phase 2.]
 $call EnableMapButton()
+$call UnlockLocation(FieldStationLampricide)     // P2_Lampricide
+$call UnlockLocation(ArmyCorps)                  // P2_Outreach
+
 // TODO: Rest of entry hub here
 
 
@@ -19,7 +22,7 @@ $call EnableMapButton()
 $call EnableMapButton()
 // TODO: Rest of continue hub here
 
-// if all Phase 2 threads have been visited, mark end of phase
+// if all Phase 2 threads have been visited, exit
 $if HasSeen(P2_Lampricide.End), HasSeen(P2_Outreach.End)
         $goto .Exit
 $endif

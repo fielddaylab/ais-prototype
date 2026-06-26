@@ -17,9 +17,24 @@ $call EnableMapButton()
 {@}   
        [This is the continue hub for Phase 3.]
 $call EnableMapButton()
+
+// if player has high Tech stat AND completed CiscoPop or TroutPop, unlock P3_Sterile thread
+$if HasSeen(P3_CiscoPop.End), StatCheck(Tech, 3)
+       // $call UnlockLocation([sterile location])
+$elseif HasSeen(P3_TroutPop.End), StatCheck(Tech, 3)
+       // $call UnlockLocation([sterile location])
+$endif
+
+// if player has high Outdoors stat AND completed LampreyDownstream or LampreyUpstream (traps branch), unlock P3_Pheromones thread
+$if HasSeen(P3_LampreyDownstream.End), StatCheck(Tech, 3)
+       // $call UnlockLocation([pheromones location])
+$elseif HasSeen(P3_LampreyUpstream.ReceiveTrapAction), StatCheck(Tech, 3)
+       // $call UnlockLocation([pheromones location])
+$endif
+
 // TODO: Rest of continue hub here
 
-// TODO: if all Phase 3 threads have been visited, mark end of phase
+// TODO: if all Phase 3 threads have been visited, exit
 // $goto .Exit
 
 

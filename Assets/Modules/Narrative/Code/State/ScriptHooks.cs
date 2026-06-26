@@ -255,10 +255,10 @@ namespace AIS.Narrative {
          */
 
         [LeafMember("UnlockLocation")]
-        static public void UnlockLocation(int index)
+        static public void UnlockLocation(MapLocation location)
         {
             var mapPanel = Find.Panel<MapDisplayPanel>();
-            mapPanel.UnlockLocation(index);
+            mapPanel.UnlockLocation(location);
         }
 
         [LeafMember("SetNextCardToFind")]

@@ -26,7 +26,7 @@ namespace AIS.Narrative
         {
             base.Awake();
             Hide();
-            //travelButton.onClick.AddListener(() => SwitchMapMode(MapMode.Travel));
+            travelButton.onClick.AddListener(OnTravelButtonClicked);
             ShowMap(); // default to travel mode
 
             currentHubIdx = 0;
@@ -62,10 +62,10 @@ namespace AIS.Narrative
 
             travelPointsContainer.SetActive(true);
             selectedHubIdx = currentHubIdx;
-            travelPointsDisplays[selectedHubIdx].TravelToSelectedLocation();
+            travelPointsDisplays[selectedHubIdx].TravelToSelectedLocation(false);
 
             selectedHubIdx = currentHubIdx;
-            TravelToSelectedHub();
+            TravelToSelectedHub(false);
             
             // Zoom out
             //Camera.main.transform.position = hubSelectionDisplay.cameraTransform;
@@ -74,6 +74,19 @@ namespace AIS.Narrative
             // TODO: current code is temporary -- implement proper animation later
             //travelButton.GetComponent<RoundedRectGraphic>().color = Color.white;
             //modelButton.GetComponent<RoundedRectGraphic>().color = isTravelMode ? Color.gray : Color.white;
+        }
+
+        /// <summary>
+        /// Travels to the location currently selected on the active hub, then closes the map
+        /// and restores the dialogue panel.
+        /// </summary>
+        private void OnTravelButtonClicked()
+        {
+            // userTriggered: true so the travel fires the OnLocationChanged script event and advances the narrative.
+            travelPointsDisplays[currentHubIdx].TravelToSelectedLocation(true);
+
+            Hide();
+            Find.GuiModule<DialoguePanel>().SetVisible(true);
         }
 
         public void ShowHubSelectionPanel()
@@ -93,12 +106,12 @@ namespace AIS.Narrative
             selectedHubIdx = index;
 
             if (currentHubIdx == index)
-                TravelToSelectedHub();
+                TravelToSelectedHub(true);
             else
                 hubSelectionDisplay.SelectLocation(index);
         }
 
-        public void TravelToSelectedHub()
+        public void TravelToSelectedHub(bool userTriggered)
         {
             // Zoom in
             Camera.main.transform.position = travelPointsDisplays[selectedHubIdx].cameraTransform;
@@ -106,15 +119,15 @@ namespace AIS.Narrative
 
             currentHubIdx = selectedHubIdx;
             hubSelectionDisplay.gameObject.SetActive(false);
-            hubSelectionDisplay.TravelToSelectedLocation();
+            hubSelectionDisplay.TravelToSelectedLocation(userTriggered);
             travelPointsDisplays[currentHubIdx].gameObject.SetActive(true);
         }
 
         //TODO: control location accessibility via script hooks
-        public void UnlockLocation(int index)
+        public void UnlockLocation(MapLocation location)
         {
             TravelPointsDisplay currentHub = travelPointsDisplays[currentHubIdx];
-            currentHub.UnlockedLocations.Add(currentHub.locations[index].MainImg);
+            currentHub.UnlockedLocations.Add(currentHub.locations[currentHub.IndexOfLocation(location)].MainImg);
         }
 
         public void SetInThreadLocks()

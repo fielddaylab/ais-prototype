@@ -1,0 +1,56 @@
+#basePath P3_LampreyUpstream
+
+:: Start
+@trigger    OnLocationChanged
+// "NONE" ensures no other threads are in-progress
+// global:currentPhase == 3 ensures player is in phase 3
+@when       global:currentThread == "NONE", global:currentPhase == 3, location == "[Location]"
+@cutscene
+// Lock all location on map
+$call SetInThreadLocks()
+
+// Mark start of thread
+$set global:currentThread = "P3_LampreyUpstream"
+
+{@}   
+       [This is the start of the Phase 3 thread LampreyUpstream.]
+
+// TODO: Rest of thread here
+
+
+// TODO: Traps Branch
+
+// TODO: Give evidence chip
+// $call GiveEvidenceChip([Evidence])
+
+// TODO: Give action card (also handle if already given during P3_LampreyDownstream)
+// $call GiveActionCard([Action])
+
+
+
+// TODO: Barrier Branch
+
+// TODO: Give evidence chip
+// $call GiveEvidenceChip([Evidence])
+
+// TODO: Give action card
+// $call GiveActionCard([Action])
+
+// TODO: Give action card IF High research
+// $call GiveActionCard([Action])
+
+// TEMPORARY: skip to end
+$goto .End
+
+
+:: End
+@tracked
+// TODO: Unlock next locations
+// $call UnlockLocation([Location 1])
+// $call UnlockLocation([Location 2])
+
+// Mark end of thread
+$set global:currentThread = "NONE"
+
+// Go to Phase 2 Continue Hub
+$goto P3_Hub.Continue

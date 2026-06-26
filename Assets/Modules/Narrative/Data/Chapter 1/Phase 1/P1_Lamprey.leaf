@@ -4,7 +4,7 @@
 @trigger    OnLocationChanged
 // "NONE" ensures no other threads are in-progress
 // global:currentPhase == 1 ensures player is in phase 1
-@when       global:currentThread == "NONE", global:currentPhase == 1, location == "[Location]"
+@when       global:currentThread == "NONE", global:currentPhase == 1, location == "ResearchLab"
 @cutscene
 // Lock all location on map
 $call SetInThreadLocks()
@@ -13,7 +13,7 @@ $call SetInThreadLocks()
 $set global:currentThread = "P1_Lamprey"
 
 {@}   
-       [This is the very first thread in Phase 1.]
+       [This is the Lamprey thread in Phase 1.]
 
 // TODO: Rest of thread here
 
@@ -25,9 +25,9 @@ $goto .End
 
 
 :: End
-// TODO: Unlock next locations
-// $call UnlockLocation([Location 1])
-// $call UnlockLocation([Location 2])
+@tracked
+// Unlock next locations
+$call UnlockLocation(DNROffice)  // P1_NativeLamprey
 
 // Mark end of thread
 $set global:currentThread = "NONE"
