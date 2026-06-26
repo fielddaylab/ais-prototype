@@ -1,4 +1,5 @@
 #basePath P1_NativeLamprey
+#include "Header.leaf"
 
 :: Start
 @trigger    OnLocationChanged

@@ -1,4 +1,5 @@
 #basePath P2_Outreach
+#include "Header.leaf"
 
 :: Start
 @trigger    OnLocationChanged
@@ -15,13 +16,29 @@ $set global:currentThread = "P2_Outreach"
 {@}   
        [This is the Outreach thread in Phase 2.]
 
-// TODO: Rest of thread here
+// TODO: Rest of Army Corps section here
 
 // TODO: Give evidence chip
 // $call GiveEvidenceChip([Evidence])
 
+$call UnlockLocation(FishingDocks)
+$call EnableMapButton()
+
+
+:: AtFishingDocks
+@trigger    OnLocationChanged
+// global:currentThread ensures the correct thread
+// global:currentPhase == 2 ensures player is in phase 2
+@when       global:currentThread == "P2_Outreach", global:currentPhase == 2, location == "FishingDocks"
+
+{@}   
+       [This is the Fishing Docks section.]
+
+// TODO: Rest of Town Hall section here
+
 // TODO: Give action card
 // $call GiveActionCard([Action])
+
 
 // TEMPORARY: skip to end
 $goto .End

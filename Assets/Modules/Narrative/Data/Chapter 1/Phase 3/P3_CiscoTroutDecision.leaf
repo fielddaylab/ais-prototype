@@ -1,4 +1,5 @@
 #basePath P3_CiscoTroutDecision
+#include "Header.leaf"
 
 :: Decide
 @trigger    OnLocationChanged
@@ -13,5 +14,5 @@ $call SetInThreadLocks()
 {@}   
        [This is where the player decides whether to pursue P3_CiscoPop or P3_TroutPop]
 
-$OnceChoice(P3_CiscoPop.Start, "Enter CiscoPop Thread")
-$OnceChoice(P3_TroutPop.Start, "Enter TroutPop Thread")
+$OnceChoice(P3_CiscoPop.Start, Enter CiscoPop Thread)
+$OnceChoice(P3_TroutPop.Start, Enter TroutPop Thread)

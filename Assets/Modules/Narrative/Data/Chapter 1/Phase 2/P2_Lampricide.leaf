@@ -1,4 +1,5 @@
 #basePath P2_Lampricide
+#include "Header.leaf"
 
 :: Start
 @trigger    OnLocationChanged
@@ -13,15 +14,31 @@ $call SetInThreadLocks()
 $set global:currentThread = "P2_Lampricide"
 
 {@}   
-       [This is the Lampricide thread in Phase 2.]
+       [This is the Lampricide thread in Phase 2 at the Field Station (lampricide).]
 
-// TODO: Rest of thread here
+// TODO: Rest of Field Station section here
 
 // TODO: Give evidence chip
 // $call GiveEvidenceChip([Evidence])
 
+$call UnlockLocation(TownHall)
+$call EnableMapButton()
+
+
+:: AtTownHall
+@trigger    OnLocationChanged
+// global:currentThread ensures the correct thread
+// global:currentPhase == 2 ensures player is in phase 2
+@when       global:currentThread == "P2_Lampricide", global:currentPhase == 2, location == "TownHall"
+
+{@}   
+       [This is the Town Hall section.]
+
+// TODO: Rest of Town Hall section here
+
 // TODO: Give action card
 // $call GiveActionCard([Action])
+
 
 // TEMPORARY: skip to end
 $goto .End
