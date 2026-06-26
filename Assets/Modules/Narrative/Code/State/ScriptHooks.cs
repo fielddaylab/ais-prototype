@@ -17,6 +17,9 @@ namespace AIS.Narrative {
 
         [LeafMember("StatCheck")]
         static public bool StatCheck(PlayerStatId statId, int value) {
+            var evidencePanel = Find.Panel<EvidenceDisplayPanel>();
+            var inv = Find.State<PlayerInventory>();
+            evidencePanel.RecomputeStats(inv);
             return Find.State<PlayerStats>().StatBlock[statId] >= value;
         }
 

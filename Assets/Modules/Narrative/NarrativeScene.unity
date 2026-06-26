@@ -2064,6 +2064,8 @@ MonoBehaviour:
   - {fileID: -1942890987711236906, guid: 818598d753a35ef4ab7c74aa13d98a4f, type: 3}
   - {fileID: -1942890987711236906, guid: a06bd85baedefa540a5b4192bdcfcc49, type: 3}
   - {fileID: -1942890987711236906, guid: 456f95549226bb141ad00bb35811ec38, type: 3}
+  - {fileID: -1942890987711236906, guid: 36f1b4cfae579a046846b48b8ed92bcb, type: 3}
+  - {fileID: -1942890987711236906, guid: 7d811dbe2ffc94b49996ff29d6aa18ab, type: 3}
   - {fileID: -1942890987711236906, guid: e17a327fad1517e4a879fc0738a93972, type: 3}
 --- !u!1001 &1926876358730560538
 PrefabInstance:
