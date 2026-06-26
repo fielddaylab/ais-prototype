@@ -1,13 +1,8 @@
 #basePath P3_LampreyUpstream
 
 :: Start
-@trigger    OnLocationChanged
-// "NONE" ensures no other threads are in-progress
-// global:currentPhase == 3 ensures player is in phase 3
-@when       global:currentThread == "NONE", global:currentPhase == 3, location == "[Location]"
+@exposed
 @cutscene
-// Lock all location on map
-$call SetInThreadLocks()
 
 // Mark start of thread
 $set global:currentThread = "P3_LampreyUpstream"

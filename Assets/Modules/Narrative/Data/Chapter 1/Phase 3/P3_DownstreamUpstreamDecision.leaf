@@ -4,7 +4,7 @@
 @trigger    OnLocationChanged
 // "NONE" ensures no other threads are in-progress
 // global:currentPhase == 3 ensures player is in phase 3
-@when       global:currentThread == "NONE", global:currentPhase == 3, location == "[Location]"
+@when       global:currentThread == "NONE", global:currentPhase == 3, location == "FieldStationTraps"
 @cutscene
 // Lock all location on map
 $call SetInThreadLocks()
@@ -13,5 +13,5 @@ $call SetInThreadLocks()
 {@}   
        [This is where the player decides whether to pursue P3_LampreyDownstream or P3_LampreyUpstream]
 
-$OnceChoice(P3_CiscoPop.Start, "Enter CiscoPop Thread")
-$OnceChoice(P3_TroutPop.Start, "Enter TroutPop Thread")
+$OnceChoice(P3_LampreyDownstream.Start, "Enter LampreyDownstream Thread")
+$OnceChoice(P3_LampreyUpstream.Start, "Enter LampreyUpstream Thread")

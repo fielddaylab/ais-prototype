@@ -1,13 +1,8 @@
 #basePath P3_LampreyDownstream
 
 :: Start
-@trigger    OnLocationChanged
-// "NONE" ensures no other threads are in-progress
-// global:currentPhase == 3 ensures player is in phase 3
-@when       global:currentThread == "NONE", global:currentPhase == 3, location == "[Location]"
+@exposed
 @cutscene
-// Lock all location on map
-$call SetInThreadLocks()
 
 // Mark start of thread
 $set global:currentThread = "P3_LampreyDownstream"
@@ -25,6 +20,15 @@ $set global:currentThread = "P3_LampreyDownstream"
 
 // TODO: Give action card IF High research
 // $call GiveActionCard([Action])
+
+// TEMPORARY: skip to end
+$goto .ReceiveTrapAction
+
+
+:: ReceiveTrapAction
+@tracked
+{@}   
+       [This is where the player receives the traps action.]
 
 // TEMPORARY: skip to end
 $goto .End
