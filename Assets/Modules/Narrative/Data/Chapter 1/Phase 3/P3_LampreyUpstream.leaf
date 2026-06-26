@@ -32,8 +32,22 @@ $set global:currentThread = "P3_LampreyUpstream"
 // TODO: Give action card
 // $call GiveActionCard([Action])
 
-// TODO: Give action card IF High research
-// $call GiveActionCard([Action])
+
+// TEMPORARY: skip to end
+$goto .ReceiveTrapAction
+
+
+:: ReceiveTrapAction
+@tracked
+{@}   
+       [This is where the player receives the upstream traps action.]
+
+// TODO: Give action card (traps on upstream)
+$if HasActionCard()
+       // handle player already has action card from LampreyDownstream thread
+$else
+       // $call GiveActionCard([Action])
+$endif
 
 // TEMPORARY: skip to end
 $goto .End

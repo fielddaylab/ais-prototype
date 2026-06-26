@@ -219,6 +219,20 @@ namespace AIS.Narrative {
             return inv.EvidenceChips.Contains(id);
         }
 
+        [LeafMember("HasEvidence")]
+        static public bool HasEvidence(StringHash32 id)
+        {
+            PlayerInventory inv = Find.State<PlayerInventory>();
+            return inv.EvidenceChips.Contains(id);
+        }
+
+        [LeafMember("HasActionCard")]
+        static public bool HasActionCard(StringHash32 id)
+        {
+            PlayerInventory inv = Find.State<PlayerInventory>();
+            return inv.ActionCards.Contains(id);
+        }
+
         [LeafMember("HideToolbar")]
         static public void HideToolbar()
         {
