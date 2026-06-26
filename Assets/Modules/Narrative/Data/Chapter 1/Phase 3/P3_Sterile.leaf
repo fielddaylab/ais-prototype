@@ -1,4 +1,5 @@
 #basePath P3_Sterile
+#include "Header.leaf"
 
 :: Start
 @trigger    OnLocationChanged
@@ -29,9 +30,6 @@ $goto .End
 
 :: End
 @tracked
-// TODO: Unlock next locations
-// $call UnlockLocation([Location 1])
-// $call UnlockLocation([Location 2])
 
 // Mark end of thread
 $set global:currentThread = "NONE"

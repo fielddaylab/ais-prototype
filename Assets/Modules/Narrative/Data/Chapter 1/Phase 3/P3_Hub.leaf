@@ -1,4 +1,5 @@
 #basePath P3_Hub
+#include "Header.leaf"
 
 :: Entry
 @exposed
@@ -43,9 +44,9 @@ $elseif HasSeen(P3_TroutPop.End), StatCheck(Tech, 3)
 $endif
 
 // if player has high Outdoors stat AND completed LampreyDownstream or LampreyUpstream (traps branch), unlock P3_Pheromones thread
-$if HasSeen(P3_LampreyDownstream.End), StatCheck(Outdoors, 3)
+$if HasSeen(P3_LampreyDownstream.End), StatCheck(Ranger, 3)
        $call UnlockLocation(ResearchLab)
-$elseif HasSeen(P3_LampreyUpstream.ReceiveTrapAction), StatCheck(Outdoors, 3)
+$elseif HasSeen(P3_LampreyUpstream.ReceiveTrapAction), StatCheck(Ranger, 3)
        $call UnlockLocation(ResearchLab)
 $endif
 
