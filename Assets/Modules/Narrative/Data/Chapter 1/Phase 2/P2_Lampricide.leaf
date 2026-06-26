@@ -9,6 +9,7 @@
 @cutscene
 // Lock all location on map
 $call SetInThreadLocks()
+$call DisableMapButton()
 
 // Mark start of thread
 $set global:currentThread = "P2_Lampricide"
@@ -30,6 +31,9 @@ $call EnableMapButton()
 // global:currentThread ensures the correct thread
 // global:currentPhase == 2 ensures player is in phase 2
 @when       global:currentThread == "P2_Lampricide", global:currentPhase == 2, location == "TownHall"
+// Lock all location on map
+$call SetInThreadLocks()
+$call DisableMapButton()
 
 {@}   
        [This is the Town Hall section.]

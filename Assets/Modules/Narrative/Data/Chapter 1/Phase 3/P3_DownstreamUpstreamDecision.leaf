@@ -9,6 +9,7 @@
 @cutscene
 // Lock all location on map
 $call SetInThreadLocks()
+$call DisableMapButton()
 
 
 {@}   

@@ -11,6 +11,7 @@ $call SetBackground("bg/Room.png")
 @cutscene
 // Lock all location on map
 $call SetInThreadLocks()
+$call DisableMapButton()
 
 // Mark start of phase
 $set global:currentPhase = 0
@@ -34,4 +35,7 @@ $goto .End
 // Mark end of thread
 $set global:currentThread = "NONE"
 // Go to Phase 1 Hub
-$goto P1_Hub.Entry
+//$goto P1_Hub.Entry
+
+// TEMP DEBUG go to ____
+$goto P3_Hub.Entry

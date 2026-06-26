@@ -174,10 +174,15 @@ namespace AIS.Narrative {
 
         static private IEnumerator EnsureMapVisible(PlayerInventory inv)
         {
+            ToolbarPanel toolbar = Find.GuiModule<ToolbarPanel>();
+
             if ((inv.ToolbarItems & PlayerToolbarMask.Map) == 0)
             {
                 inv.ToolbarItems |= PlayerToolbarMask.Map;
-                ToolbarPanel toolbar = Find.GuiModule<ToolbarPanel>();
+                return ToolbarPanel.UnlockToolbarButtonAnimation(toolbar.MapMissing, toolbar.MapButton);
+            }
+            else if (toolbar.MapButton.Fader.alpha == 0)
+            {
                 return ToolbarPanel.UnlockToolbarButtonAnimation(toolbar.MapMissing, toolbar.MapButton);
             }
             return null;

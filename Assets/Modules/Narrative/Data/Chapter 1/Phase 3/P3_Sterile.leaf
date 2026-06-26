@@ -9,6 +9,7 @@
 @cutscene
 // Lock all location on map
 $call SetInThreadLocks()
+$call DisableMapButton()
 
 // Mark start of thread
 $set global:currentThread = "P3_Sterile"
@@ -20,6 +21,24 @@ $set global:currentThread = "P3_Sterile"
 
 // TODO: Give evidence chip
 // $call GiveEvidenceChip([Evidence])
+
+$call UnlockLocation(FieldStationLampricide)
+$call EnableMapButton()
+
+
+:: AtFieldStationLampricide
+@trigger    OnLocationChanged
+// global:currentThread ensures the correct thread
+// global:currentPhase == 3 ensures player is in phase 3
+@when       global:currentThread == "P3_Sterile", global:currentPhase == 3, location == "FieldStationLampricide"
+// Lock all location on map
+$call SetInThreadLocks()
+$call DisableMapButton()
+
+{@}   
+       [This is the Field Station (Lampricide) section.]
+
+// TODO: Rest of Field Station (Lampricide) section here
 
 // TODO: Give action card
 // $call GiveActionCard([Action])

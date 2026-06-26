@@ -9,7 +9,7 @@
 @cutscene
 // Lock all location on map
 $call SetInThreadLocks()
-
+$call DisableMapButton()
 
 {@}   
        [This is where the player decides whether to pursue P3_CiscoPop or P3_TroutPop]

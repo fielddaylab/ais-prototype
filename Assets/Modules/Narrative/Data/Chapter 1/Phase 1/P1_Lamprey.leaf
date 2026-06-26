@@ -9,6 +9,7 @@
 @cutscene
 // Lock all location on map
 $call SetInThreadLocks()
+$call DisableMapButton()
 
 // Mark start of thread
 $set global:currentThread = "P1_Lamprey"
