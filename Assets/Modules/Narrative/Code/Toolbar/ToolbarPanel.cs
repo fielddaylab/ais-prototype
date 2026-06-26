@@ -113,7 +113,7 @@ namespace AIS.Narrative {
             else
             {
                 modelPanel.Hide();
-                InvasionModel.Instance.gameObject.SetActive(false);
+                //InvasionModel.Instance.gameObject.SetActive(false);
                 evidencePanel.Hide();
                 //if (InvasionModel.Instance != null) {
                 //    InvasionModel.Instance.gameObject.SetActive(false);
