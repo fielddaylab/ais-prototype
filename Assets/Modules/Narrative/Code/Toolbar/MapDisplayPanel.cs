@@ -127,7 +127,11 @@ namespace AIS.Narrative
         public void UnlockLocation(MapLocation location)
         {
             TravelPointsDisplay currentHub = travelPointsDisplays[currentHubIdx];
-            currentHub.UnlockedLocations.Add(currentHub.locations[currentHub.IndexOfLocation(location)].MainImg);
+            int locationIdx = currentHub.IndexOfLocation(location);
+
+            currentHub.UnlockedLocations.Add(currentHub.locations[locationIdx].MainImg);
+            currentHub.locations[locationIdx].Time.SetActive(true);
+            currentHub.locations[locationIdx].NextCardToFind.SetActive(true);
         }
 
         public void SetInThreadLocks()
