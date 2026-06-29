@@ -16,6 +16,6 @@ MonoBehaviour:
     m_HashValue: 0
   Suit: 0
   Illustration: {fileID: 0}
-  Label: 
-  isActionable: 0
-  ActivateLocation: 0
+  Label: Traps can be used to catch lampreys going to spawn in tributaries
+  isActionable: 1
+  ActivateLocation: 7

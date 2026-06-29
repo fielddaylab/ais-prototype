@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Id:
     m_HashValue: 0
-  Suit: 0
+  Suit: 4
   Illustration: {fileID: 0}
-  Label: 
-  isActionable: 0
-  ActivateLocation: 0
+  Label: Decrease in Lake Trout population.
+  isActionable: 1
+  ActivateLocation: 2
