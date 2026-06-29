@@ -1,0 +1,38 @@
+#basePath P1_Lamprey
+#include "Header.leaf"
+
+:: Start
+@trigger    OnLocationChanged
+// "NONE" ensures no other threads are in-progress
+// global:currentPhase == 1 ensures player is in phase 1
+@when       global:currentThread == "NONE", global:currentPhase == 1, location == "ResearchLab"
+@cutscene
+// Lock all location on map
+$call SetInThreadLocks()
+$call DisableMapButton()
+
+// Mark start of thread
+$set global:currentThread = "P1_Lamprey"
+
+{@}   
+       [This is the Lamprey thread in Phase 1.]
+
+// TODO: Rest of thread here
+
+// TODO: Give evidence chip
+// $call GiveEvidenceChip([Evidence])
+
+// TEMPORARY: skip to end
+$goto .End
+
+
+:: End
+@tracked
+// Unlock next locations
+$call UnlockLocation(DNROffice)  // P1_NativeLamprey
+
+// Mark end of thread
+$set global:currentThread = "NONE"
+
+// Go to Phase 1 Continue Hub
+$goto P1_Hub.Continue

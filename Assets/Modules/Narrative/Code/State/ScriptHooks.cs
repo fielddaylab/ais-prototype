@@ -17,6 +17,9 @@ namespace AIS.Narrative {
 
         [LeafMember("StatCheck")]
         static public bool StatCheck(PlayerStatId statId, int value) {
+            var evidencePanel = Find.Panel<EvidenceDisplayPanel>();
+            var inv = Find.State<PlayerInventory>();
+            evidencePanel.RecomputeStats(inv);
             return Find.State<PlayerStats>().StatBlock[statId] >= value;
         }
 
@@ -174,10 +177,15 @@ namespace AIS.Narrative {
 
         static private IEnumerator EnsureMapVisible(PlayerInventory inv)
         {
+            ToolbarPanel toolbar = Find.GuiModule<ToolbarPanel>();
+
             if ((inv.ToolbarItems & PlayerToolbarMask.Map) == 0)
             {
                 inv.ToolbarItems |= PlayerToolbarMask.Map;
-                ToolbarPanel toolbar = Find.GuiModule<ToolbarPanel>();
+                return ToolbarPanel.UnlockToolbarButtonAnimation(toolbar.MapMissing, toolbar.MapButton);
+            }
+            else if (toolbar.MapButton.Fader.alpha == 0)
+            {
                 return ToolbarPanel.UnlockToolbarButtonAnimation(toolbar.MapMissing, toolbar.MapButton);
             }
             return null;
@@ -212,6 +220,20 @@ namespace AIS.Narrative {
         {
             PlayerInventory inv = Find.State<PlayerInventory>();
             return inv.EvidenceChips.Contains(id);
+        }
+
+        [LeafMember("HasEvidence")]
+        static public bool HasEvidence(StringHash32 id)
+        {
+            PlayerInventory inv = Find.State<PlayerInventory>();
+            return inv.EvidenceChips.Contains(id);
+        }
+
+        [LeafMember("HasActionCard")]
+        static public bool HasActionCard(StringHash32 id)
+        {
+            PlayerInventory inv = Find.State<PlayerInventory>();
+            return inv.ActionCards.Contains(id);
         }
 
         [LeafMember("HideToolbar")]
@@ -255,10 +277,10 @@ namespace AIS.Narrative {
          */
 
         [LeafMember("UnlockLocation")]
-        static public void UnlockLocation(int index)
+        static public void UnlockLocation(MapLocation location)
         {
             var mapPanel = Find.Panel<MapDisplayPanel>();
-            mapPanel.UnlockLocation(index);
+            mapPanel.UnlockLocation(location);
         }
 
         [LeafMember("SetNextCardToFind")]

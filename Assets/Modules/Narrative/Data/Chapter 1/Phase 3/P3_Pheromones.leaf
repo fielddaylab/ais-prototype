@@ -1,0 +1,86 @@
+#basePath P3_Pheromones
+#include "Header.leaf"
+
+:: Start
+@trigger    OnLocationChanged
+// "NONE" ensures no other threads are in-progress
+// global:currentPhase == 3 ensures player is in phase 3
+@when       global:currentThread == "NONE", global:currentPhase == 3, location == "ResearchLab"
+@cutscene
+// Lock all location on map
+$call SetInThreadLocks()
+$call DisableMapButton()
+
+// Mark start of thread
+$set global:currentThread = "P3_Pheromones"
+
+{@}   
+       [This is the start of the Phase 3 thread Pheromones.]
+
+// TODO: Rest of Research Lab thread here
+
+// TODO: Give evidence chip
+// $call GiveEvidenceChip([Evidence])
+
+$call UnlockLocation(TownHall)
+// IF high Community/Communicate stat, optional skip townsfolk wary section
+$if StatCheck(Communicate, 3)
+       $call UnlockLocation(DNROffice) // Place Pheromones
+$endif
+$call EnableMapButton()
+
+
+:: AtTownHall
+@trigger    OnLocationChanged
+// global:currentThread ensures the correct thread
+// global:currentPhase == 3 ensures player is in phase 3
+@when       global:currentThread == "P3_Pheromones", global:currentPhase == 3, location == "TownHall"
+// Lock all location on map
+$call SetInThreadLocks()
+$call DisableMapButton()
+
+{@}   
+       [This is the Town Hall section.]
+
+// TODO: Rest of Town Hall section here
+
+// TODO: Give evidence chip
+// $call GiveEvidenceChip([Evidence])
+
+$call UnlockLocation(DNROffice) // Place Pheromones
+$call EnableMapButton()
+
+
+
+:: AtDNROffice
+@trigger    OnLocationChanged
+// global:currentThread ensures the correct thread
+// global:currentPhase == 3 ensures player is in phase 3
+@when       global:currentThread == "P3_Pheromones", global:currentPhase == 3, location == "DNROffice"
+// Lock all location on map
+$call SetInThreadLocks()
+$call DisableMapButton()
+
+{@}   
+       [This is the DNROffice section.]
+
+// TODO: Rest of DNR Office section here
+
+// TODO: Give action card
+// $call GiveActionCard([Action])
+
+$call UnlockLocation(DNROffice) // Place Pheromones
+$call EnableMapButton()
+
+// TEMPORARY: skip to end
+$goto .End
+
+
+:: End
+@tracked
+
+// Mark end of thread
+$set global:currentThread = "NONE"
+
+// Go to Phase 2 Continue Hub
+$goto P3_Hub.Continue

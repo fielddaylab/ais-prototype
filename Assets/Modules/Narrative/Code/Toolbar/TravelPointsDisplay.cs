@@ -1,15 +1,16 @@
 using AIS.Model;
 using AIS.Narrative;
+using BeauUtil.UI;
 using FieldDay;
+using FieldDay.Scripting;
 using FieldDay.UI;
 using FieldDay.UI.Widgets;
-using UnityEngine;
-using UnityEngine.UI;
-using BeauUtil.UI;
 using System.Collections.Generic;
 using System;
 using System.Linq;
 using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
 
 namespace AIS.Narrative
 {
@@ -59,6 +60,22 @@ namespace AIS.Narrative
             pointerTransform.position = currentLocTransform.position;
         }
 
+        /// <summary>
+        /// Returns the index within <see cref="locations"/> whose <see cref="TravelPoint.LocationName"/>
+        /// matches the given <paramref name="location"/>, or -1 if none match.
+        /// </summary>
+        public int IndexOfLocation(MapLocation location)
+        {
+            for (int i = 0; i < locations.Length; i++)
+            {
+                if (locations[i].LocationName == location)
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
         public void SetCurrentLocation(int index)
         {
             // Deselect current location
@@ -71,14 +88,24 @@ namespace AIS.Narrative
                 {
                     locations[i].MainImg.color = Color.magenta;
                     locations[i].GetComponent<Button>().interactable = true;
+
+                    // TODO: refine logics for checking if there are any cards waiting to be found at a locations.
+                    // If not, disable NextCardToFind.
+                    Transform BG = locations[i].NextCardToFind.gameObject.transform.GetChild(0);
+                    Transform SuitIcon = locations[i].NextCardToFind.gameObject.transform.GetChild(1);
+                    if (BG.GetComponent<Image>().color == Color.white || SuitIcon.GetComponent<Image>().sprite == null)
+                        locations[i].NextCardToFind.SetActive(false);
+                    else
+                        locations[i].NextCardToFind.SetActive(true);
+
                 }
                 else
                 {
                     locations[i].MainImg.color = Color.grey;
                     locations[i].GetComponent<Button>().interactable = false;
+                    locations[i].Time.SetActive(false);
                     locations[i].NextCardToFind.SetActive(false);
                 }
-                locations[i].Time.SetActive(false);
             }
 
             currentLocationIdx = index;
@@ -110,7 +137,7 @@ namespace AIS.Narrative
                 return;
             }
 
-            locations[index].Time.SetActive(true);
+            //locations[index].Time.SetActive(true);
 
             // Deselect current selected location
             if (selectedLocationIdx != index)
@@ -183,10 +210,23 @@ namespace AIS.Narrative
             returnButton.interactable = true;
         }
 
-        public void TravelToSelectedLocation()
-        {   
+        public void TravelToSelectedLocation(bool userTriggered)
+        {
             Debug.Log($"[TravelPointsDisplay] Travel to {locations[selectedLocationIdx]}");
+
+            // bool locationChanged = currentLocationIdx != selectedLocationIdx;
+            MapLocation location = locations[selectedLocationIdx].LocationName;
+
             SetCurrentLocation(selectedLocationIdx);
+
+            if (userTriggered)
+            {
+                using (TempVarTable table = TempVarTable.Alloc())
+                {
+                    table.Set("location", location.ToString());
+                    ScriptUtility.Trigger("OnLocationChanged", table);
+                }
+            }
         }
     }
 }

@@ -1,0 +1,55 @@
+#basePath P3_UpstreamBarriers
+#include "Header.leaf"
+
+:: AtBarrierSite
+@exposed
+@cutscene
+@trigger    OnLocationChanged
+// global:currentThread ensures the correct thread
+// global:currentPhase == 3 ensures player is in phase 3
+@when       global:currentThread == "NONE", global:currentPhase == 3, location == "BarrierSite"
+// Mark start of thread
+$set global:currentThread = "P3_UpstreamBarriers"
+
+// Lock all location on map
+$call SetInThreadLocks()
+$call DisableMapButton()
+
+{@}   
+       [This is the Barrier Site section.]
+
+// TODO: Give evidence chip
+// $call GiveEvidenceChip([Evidence])
+
+$call UnlockLocation(FishAndWildlife)
+$call EnableMapButton()
+
+
+
+:: AtFishAndWildlife
+@trigger    OnLocationChanged
+// global:currentThread ensures the correct thread
+// global:currentPhase == 3 ensures player is in phase 3
+@when       global:currentThread == "P3_UpstreamBarriers", global:currentPhase == 3, location == "FishAndWildlife"
+// Lock all location on map
+$call SetInThreadLocks()
+$call DisableMapButton()
+
+{@}   
+       [This is the Fish and Wildlife section.]
+
+// TODO: Give action card
+// $call GiveActionCard([Action])
+
+// TEMPORARY: skip to end
+$goto .End
+
+
+:: End
+@tracked
+
+// Mark end of thread
+$set global:currentThread = "NONE"
+
+// Go to Phase 2 Continue Hub
+$goto P3_Hub.Continue

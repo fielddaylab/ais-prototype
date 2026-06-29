@@ -1,0 +1,18 @@
+#basePath P3_CiscoTroutDecision
+#include "Header.leaf"
+
+:: Decide
+@trigger    OnLocationChanged
+// "NONE" ensures no other threads are in-progress
+// global:currentPhase == 3 ensures player is in phase 3
+@when       global:currentThread == "NONE", global:currentPhase == 3, location == "FishingDocks"
+@cutscene
+// Lock all location on map
+$call SetInThreadLocks()
+$call DisableMapButton()
+
+{@}   
+       [This is where the player decides whether to pursue P3_CiscoPop or P3_TroutPop]
+
+$OnceChoice(P3_CiscoPop.Start, Enter CiscoPop Thread)
+$OnceChoice(P3_TroutPop.Start, Enter TroutPop Thread)

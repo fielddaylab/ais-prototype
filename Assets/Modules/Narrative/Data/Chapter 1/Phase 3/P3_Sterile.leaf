@@ -1,0 +1,57 @@
+#basePath P3_Sterile
+#include "Header.leaf"
+
+:: Start
+@trigger    OnLocationChanged
+// "NONE" ensures no other threads are in-progress
+// global:currentPhase == 3 ensures player is in phase 3
+@when       global:currentThread == "NONE", global:currentPhase == 3, location == "FieldStationSterile"
+@cutscene
+// Lock all location on map
+$call SetInThreadLocks()
+$call DisableMapButton()
+
+// Mark start of thread
+$set global:currentThread = "P3_Sterile"
+
+{@}   
+       [This is the start of the Phase 3 thread Sterile.]
+
+// TODO: Rest of thread here
+
+// TODO: Give evidence chip
+// $call GiveEvidenceChip([Evidence])
+
+$call UnlockLocation(FieldStationLampricide)
+$call EnableMapButton()
+
+
+:: AtFieldStationLampricide
+@trigger    OnLocationChanged
+// global:currentThread ensures the correct thread
+// global:currentPhase == 3 ensures player is in phase 3
+@when       global:currentThread == "P3_Sterile", global:currentPhase == 3, location == "FieldStationLampricide"
+// Lock all location on map
+$call SetInThreadLocks()
+$call DisableMapButton()
+
+{@}   
+       [This is the Field Station (Lampricide) section.]
+
+// TODO: Rest of Field Station (Lampricide) section here
+
+// TODO: Give action card
+// $call GiveActionCard([Action])
+
+// TEMPORARY: skip to end
+$goto .End
+
+
+:: End
+@tracked
+
+// Mark end of thread
+$set global:currentThread = "NONE"
+
+// Go to Phase 2 Continue Hub
+$goto P3_Hub.Continue
