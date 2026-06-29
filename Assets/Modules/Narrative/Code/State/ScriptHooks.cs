@@ -135,6 +135,32 @@ namespace AIS.Narrative {
             }
         }
 
+        [LeafMember("SetScenarioData")]
+        static public IEnumerator ScriptSetScenarioData([BindThread] ScriptThread thread, StringHash32 id)
+        {
+            ScenarioData scenario = Find.NamedAsset<ScenarioData>(id);
+            if (scenario == null)
+            {
+                yield break;
+            }
+
+            var evidencePanel = Find.Panel<EvidenceDisplayPanel>();
+            evidencePanel.CurrScenario = scenario;
+
+            if (thread.IsSkipping())
+            {
+                yield break;
+            }
+
+            DialogueColumn column = (DialogueColumn)thread.GetPrinter();
+            if (column)
+            {
+                NewCardElement card = TextUtility.SpawnScenarioCard(column, scenario);
+                yield return TextUtility.WaitForConfirm(card);
+                yield return column.CompleteLine();
+            }
+        }
+
         [LeafMember("EnableFieldNotesButton")]
         static public IEnumerator EnableNotesButton()
         {

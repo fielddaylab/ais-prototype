@@ -69,6 +69,19 @@ namespace AIS.Narrative {
             return newElem;
         }
 
+        static public NewCardElement SpawnScenarioCard(DialogueColumn column, ScenarioData scenario)
+        {
+            NewCardElement newElem = column.NewEvidencePool.Alloc();
+            column.Layout.ActiveLines.PushBack(newElem.Positioner);
+            newElem.DependencyWidget.gameObject.SetActive(true);
+            newElem.DependencyWidget.Illustration.sprite = scenario.Illustration;
+            newElem.DependencyWidget.Content.SetText(scenario.OverviewText);
+            newElem.DependencyWidget.Suit.sprite = null;   // no suit for scenario cards
+            newElem.SetVisible(true);
+            column.Layout.RecomputePositioning();
+            return newElem;
+        }
+
         // Waits for the player to click the card's confirm button (Add Evidence / Create), then hides it.
         static public IEnumerator WaitForConfirm(NewCardElement card) {
             while (!card.ConsumeClick()) {
