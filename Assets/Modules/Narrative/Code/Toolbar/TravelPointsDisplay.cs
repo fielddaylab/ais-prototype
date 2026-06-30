@@ -5,8 +5,9 @@ using FieldDay;
 using FieldDay.Scripting;
 using FieldDay.UI;
 using FieldDay.UI.Widgets;
-using System.Collections.Generic;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -53,13 +54,6 @@ namespace AIS.Narrative
             travelButton.interactable = false;
         }
 
-        private void Start()
-        {
-            RectTransform pointerTransform = LocPointer.GetComponent<RectTransform>();
-            RectTransform currentLocTransform = locations[currentLocationIdx].MainImg.GetComponent<RectTransform>();
-            pointerTransform.position = currentLocTransform.position;
-        }
-
         /// <summary>
         /// Returns the index within <see cref="locations"/> whose <see cref="TravelPoint.LocationName"/>
         /// matches the given <paramref name="location"/>, or -1 if none match.
@@ -74,6 +68,16 @@ namespace AIS.Narrative
                 }
             }
             return -1;
+        }
+        private IEnumerator UpdatePointerPositionNextFrame(int index)
+        {
+            yield return null; // wait one frame for layout/LayoutOffset to settle
+            RectTransform pointerTransform = LocPointer.GetComponent<RectTransform>();
+            RectTransform currentLocTransform = locations[index].MainImg.GetComponent<RectTransform>();
+            if (pointerTransform != null && currentLocTransform != null)
+            {
+                pointerTransform.position = currentLocTransform.position;
+            }
         }
 
         public void SetCurrentLocation(int index)
@@ -110,12 +114,8 @@ namespace AIS.Narrative
 
             currentLocationIdx = index;
             selectedLocationIdx = index;
-            RectTransform pointerTransform = LocPointer.GetComponent<RectTransform>();
-            RectTransform currentLocTransform = locations[currentLocationIdx].MainImg.GetComponent<RectTransform>();
-            if (pointerTransform != null)
-            {
-                pointerTransform.position = currentLocTransform.position;
-            }
+
+            StartCoroutine(UpdatePointerPositionNextFrame(index));
 
             travelButton.interactable = false;
             if (PathLine != null)
@@ -147,11 +147,18 @@ namespace AIS.Narrative
             {
                 locations[selectedLocationIdx].MainImg.color = Color.magenta;
                 locations[currentLocationIdx].MainImg.color = Color.cyan;
+                Path route = new Path()
+                {
+                    Origin = locations[currentLocationIdx].MainImg,
+                    Destination = locations[index].MainImg
+                };
+                DrawPath(route);
             }
             else
             {
                 locations[selectedLocationIdx].MainImg.color = Color.magenta;
                 selectedLocationIdx = 0;
+                PathLine.gameObject.SetActive(false);
                 return;
             }
 
@@ -169,12 +176,12 @@ namespace AIS.Narrative
             // TODO: Set up paths between every pair of locations that can be traveled one to another
 
             selectedLocationIdx = index;
-            Path route = new Path()
-            {
-                Origin = locations[currentLocationIdx].MainImg,
-                Destination = locations[index].MainImg
-            };
-            DrawPath(route);
+            //Path route = new Path()
+            //{
+            //    Origin = locations[currentLocationIdx].MainImg,
+            //    Destination = locations[index].MainImg
+            //};
+            //DrawPath(route);
 
             locations[index].MainImg.color = Color.yellow;
 
