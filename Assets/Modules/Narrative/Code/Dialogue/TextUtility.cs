@@ -11,6 +11,7 @@ using FieldDay.Scripting;
 using FieldDay.UI;
 using System.Collections;
 using System.Threading;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -69,14 +70,13 @@ namespace AIS.Narrative {
             return newElem;
         }
 
-        static public NewCardElement SpawnScenarioCard(DialogueColumn column, ScenarioData scenario)
+        static public NewCardElement SpawnScenarioCard(DialogueColumn column, StringHash32 scenarioId)
         {
-            NewCardElement newElem = column.NewEvidencePool.Alloc();
+            ScenarioData scenario = Find.NamedAsset<ScenarioData>(scenarioId);
+            NewCardElement newElem = column.NewScenarioPool.Alloc();
             column.Layout.ActiveLines.PushBack(newElem.Positioner);
-            newElem.DependencyWidget.gameObject.SetActive(true);
-            newElem.DependencyWidget.Illustration.sprite = scenario.Illustration;
-            newElem.DependencyWidget.Content.SetText(scenario.OverviewText);
-            newElem.DependencyWidget.Suit.sprite = null;   // no suit for scenario cards
+            newElem.GetComponentInChildren<Image>().sprite = scenario.Illustration;
+            newElem.GetComponentInChildren<TMP_Text>().SetText(scenario.OverviewText);
             newElem.SetVisible(true);
             column.Layout.RecomputePositioning();
             return newElem;
@@ -103,6 +103,11 @@ namespace AIS.Narrative {
         // so the chip's visible element is the widget, not the UICard.
         static public IEnumerator FlyChipToToolbar(NewCardElement card, ToolbarButton target) {
             return FlyWidgetToToolbar(card, (RectTransform) card.DependencyWidget.transform, target);
+        }
+
+        static public IEnumerator FlyScenarioToToolbar(NewCardElement card, ToolbarButton target)
+        {
+            return FlyWidgetToToolbar(card, (RectTransform) card.ScenarioDetails.transform, target);
         }
 
         // Shared "fly a single widget to a toolbar button" mechanic used by both card and chip gives.

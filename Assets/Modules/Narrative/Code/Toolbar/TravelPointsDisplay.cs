@@ -171,20 +171,10 @@ namespace AIS.Narrative
             }
             */
 
-            // Highlight new selected location and path
-
             // TODO: Set up paths between every pair of locations that can be traveled one to another
 
             selectedLocationIdx = index;
-            //Path route = new Path()
-            //{
-            //    Origin = locations[currentLocationIdx].MainImg,
-            //    Destination = locations[index].MainImg
-            //};
-            //DrawPath(route);
-
             locations[index].MainImg.color = Color.yellow;
-
             travelButton.interactable = true;
         }
 
