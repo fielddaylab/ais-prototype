@@ -118,7 +118,10 @@ namespace AIS.Narrative
             }
 
             travelButton.interactable = false;
-            PathLine.gameObject.SetActive(false);
+            if (PathLine != null)
+            {
+                PathLine.gameObject.SetActive(false);
+            }
             //ScriptHooks.DisableMapButton();
         }
 
