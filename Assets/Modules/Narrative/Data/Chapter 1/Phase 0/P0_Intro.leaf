@@ -19,11 +19,126 @@ $set global:currentPhase = 0
 $set global:currentThread = "P0_Intro"
 
 
-{@}   
-       [This is the introductory thread in Phase 0.]
+//{@}   
+       //[This is the introductory thread in Phase 0.]
 
 // TODO: Rest of thread here
+{@Ana} //I want these next few lines to be thinking, but I'm not sure of how to make the distinction
+       I had this recurring dream, when I was a kid, about sea lamprey.
+       I think it was something about their teeth that really got to me. 
+       Maybe sleeping in my childhood bed again is what brought the dream back. 
 
+{@}
+       You stand in front of the mirror you dented at 15, brushing your hair.
+
+{@Ana} //still thinking
+       After all this time, it's hard to tell. 
+
+{@}
+       A knock at the door. Your mom sticks her head inside. 
+
+{@Mom}
+       Você tá pronta? </i>Are you ready?</i>
+
+{@Ana}
+       Tou sim. </i>Yeah, I am.</i>
+
+{@Mom}
+       Ok. Tenha um bom dia hoje. Te amo. </i>Have a good day today. I love you.</i>
+
+{@Ana}
+       Te amo também. </i>I love you, too.</i>
+
+{@}
+       She steps out. 
+       You put down the brush. 
+
+{@Ana} //thinking
+       No time like the present. 
+       Right?
+
+//at this point we go to the sea grant building
+
+{@}
+       An older woman waits for you by the front door. Her badge says "Program Director". //title subject to change
+
+{@Renée}
+       Ana, right?
+
+{@}
+       That's me. You must be Renée. 
+
+{@Renée}
+       It's nice to finally meet you. I hope the move wasn't too difficult. 
+
+{@Ana}
+       My dorm room was pretty much empty, so it wasn't too bad. 
+
+{@Renée}
+       Well, I hope working with us will be a good first experience post-college. 
+       Speaking of working, you'll have to get started right away. Sorry about that. 
+
+{@Ana}
+       Don't worry - I get it. Let's hear the details. 
+
+{@Renée}
+       Local fishermen have been reporting bites on their fish. The fish they </i>can</i> catch, that is. 
+
+{@}
+       She hands you a photo. //insert photo of sea lamprey bite
+
+{@Ana}
+       Sea lamprey.
+
+{@Renée}
+       Yeah. This is what I need you to work on. I need a plan on how to manage the sea lamprey population. 
+       The interventions we can take to maintain balance in the lakes. 
+       Once you're ready to use a few possible interventions, then we'll go on to the intervention phase and use them. 
+
+{@Ana}
+       I mean, I know about conservation in general, but I don't know anything specific about sea lamprey. 
+       Besides the teeth. 
+
+{@Renée}
+       You're in luck. There are plenty of people around here who have all the information you'll need. 
+       Here, take this map. //map icon appears here maybe?
+       In the intervention phase, you'll need to use action certificates implement different interventions. 
+       To gain those action certificates, you need to first collect evidence chips. These chips describe the science behind possible interventions. 
+       Then, you'll need to make sure you have the resources to actually implement the intervention. Once you've done that, you'll get an action certificate.
+       This map will show you the locations where you can find evidence chips and action certificates. 
+
+{@Ana}
+       That's... a lot of info.
+
+{@Renée}
+       It is. If it helps, I like to use a journal to write down field notes. //note icon appears?
+       You can have this one. We'll call it a first day gift. I've already left some notes in there for you.
+
+{@Ana}
+       Thanks. I appreciate it. 
+
+{@Renée}
+       Of course.
+
+{@}
+       She puts a hand on your shoulder.
+
+{@Renée}
+       I want you to be successful. I know you'll be. 
+
+{@Ana}
+       I hope so. 
+
+{@}
+       You open the map. You think about concentric circles of tiny teeth. 
+
+{@Ana}
+       No time like the present, huh. //thinking
+
+{@}
+       You begin. 
+
+// go to map, end phase 0
 // TEMPORARY: skip to end
 $goto .End
 
