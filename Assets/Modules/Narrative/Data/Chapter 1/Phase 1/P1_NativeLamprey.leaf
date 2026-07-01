@@ -14,13 +14,17 @@ $call DisableMapButton()
 // Mark start of thread
 $set global:currentThread = "P1_NativeLamprey"
 
+$call  ClearVisibleLines()
 {@}     
-       [This is the Native Lamprey thread in Phase 1.]
+       You talk to people here and gain an action card.
+       // [This is the Native Lamprey thread in Phase 1.]
 
 // TODO: Rest of thread here
 
-// TODO: Give evidence chip
-// $call GiveEvidenceChip([Evidence])
+$call GiveActionCard("example-action-card-1")
+
+       [Open your map to continue]
+
 
 // TEMPORARY: skip to end
 $goto .End

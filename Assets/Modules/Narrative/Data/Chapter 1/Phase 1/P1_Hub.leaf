@@ -7,10 +7,10 @@
 $set global:currentPhase = 1
 
 {@}   
-       [This is the entry hub for Phase 1.]
+       // [This is the entry hub for Phase 1.]
+$call DisableMapButton()
 $call EnableMapButton()
 $call UnlockLocation(ResearchLab)  // P1_Lamprey
-$call UnlockLocation(DNROffice)    // P1_NativeLamprey
 
 // TODO: Rest of entry hub here
 
@@ -19,7 +19,7 @@ $call UnlockLocation(DNROffice)    // P1_NativeLamprey
 @exposed
 
 {@}   
-       [This is the continue hub for Phase 1.]
+       // [This is the continue hub for Phase 1.]
 $call EnableMapButton()
 
 // TODO: Rest of continue hub here
@@ -33,10 +33,13 @@ $endif
 :: Exit
 @exposed
 
+$call  ClearVisibleLines()
 {@}   
-      [This is the exit hub for Phase 1.]
+       You have now gotten an evidence card and an action card. Well done!
+       [End of Demo]
+      // [This is the exit hub for Phase 1.]
 
 // TODO: Rest of exit hub here
 
 // Go to Phase 2 Hub
-$goto   P2_Hub.Entry
+// $goto   P2_Hub.Entry

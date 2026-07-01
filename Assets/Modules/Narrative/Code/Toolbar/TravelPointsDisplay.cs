@@ -115,7 +115,10 @@ namespace AIS.Narrative
             currentLocationIdx = index;
             selectedLocationIdx = index;
 
-            StartCoroutine(UpdatePointerPositionNextFrame(index));
+            if (this.isActiveAndEnabled)
+            {
+                StartCoroutine(UpdatePointerPositionNextFrame(index));
+            }
 
             travelButton.interactable = false;
             if (PathLine != null)

@@ -236,7 +236,11 @@ namespace AIS.Narrative {
             DialogueColumn column = (DialogueColumn)thread.GetPrinter();
             if (!column)
             {
-                return;
+                column = DialogueColumn.Instance;
+                if (!column)
+                {
+                    return;
+                }
             }
 
             TextUtility.ClearAllLines(column.Layout);
