@@ -14,26 +14,24 @@ namespace AIS.Narrative
         public MapLocation LocationName;
         public Image MainImg;
         public Image EmphasisImg;
-        public GameObject Time;
+        public int Chunks;
+        public GameObject TimeDisplay;
         public GameObject NextCardToFind;
-    }
 
-    public static class TravelPointUtility
-    {
-        public static void SetTravelTime(TravelPoint destination)
+        public void SetTravelTime(int chunks)
         {
             // TODO: decide the exact amount of time needed
-            destination.Time.gameObject.SetActive(true);
+            this.Chunks = chunks;
         }
 
-        public static void SetNextCardToFind(TravelPoint location, PlayerStatId suit, bool isActionable)
+        public void SetNextCardToFind(PlayerStatId suit, bool isActionable)
         {
             //location.NextCardToFind.GetChild(0).GetComponent<Image>().color = isActionable ? new Color(255, 165, 0, 255) : Color.blue;
             //location.NextCardToFind.GetComponent<Image>()[1].sprite = CardVisualLookupUtility.LookupSuitIcon(suit);
 
-            location.NextCardToFind.SetActive(true);
-            Transform BG = location.NextCardToFind.gameObject.transform.GetChild(0);
-            Transform SuitIcon = location.NextCardToFind.gameObject.transform.GetChild(1);
+            this.NextCardToFind.SetActive(true);
+            Transform BG = this.NextCardToFind.gameObject.transform.GetChild(0);
+            Transform SuitIcon = this.NextCardToFind.gameObject.transform.GetChild(1);
 
             Image BGImage = BG.GetComponent<Image>();
             BGImage.color = isActionable ? new Color(1.0f, 0.647f, 0.0f, 1.0f) : new Color(0.2956123f, 0.6010253f, 0.8584906f, 1f);

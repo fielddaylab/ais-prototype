@@ -130,7 +130,7 @@ namespace AIS.Narrative
             int locationIdx = currentHub.IndexOfLocation(location);
 
             currentHub.UnlockedLocations.Add(currentHub.locations[locationIdx].MainImg);
-            currentHub.locations[locationIdx].Time.SetActive(true);
+            currentHub.locations[locationIdx].TimeDisplay.SetActive(true);
             currentHub.locations[locationIdx].NextCardToFind.SetActive(true);
         }
 
@@ -146,11 +146,27 @@ namespace AIS.Narrative
             currentHub.EnableReturnTo(locationIdx);
         }
 
+        public void SetTravelTimeFromCurrentTo(MapLocation location, int chunks, bool isRevealed)
+        {
+            int destinationIdx = travelPointsDisplays[currentHubIdx].IndexOfLocation(location);
+            travelPointsDisplays[currentHubIdx].locations[destinationIdx].SetTravelTime(chunks);
+            travelPointsDisplays[currentHubIdx].locations[destinationIdx].TimeDisplay.SetActive(isRevealed);
+        }
+
+        // TODO: Delete this in later development
         public void SetNextCardAtLocation(int locationIdx, PlayerStatId suit, bool isActionable)
         {
             TravelPointsDisplay currentHub = travelPointsDisplays[currentHubIdx];
             TravelPoint location = currentHub.locations[locationIdx];
-            TravelPointUtility.SetNextCardToFind(location, suit, isActionable);
+            location.SetNextCardToFind(suit, isActionable);
+        }
+
+        public void SetNextCardAtLocation(MapLocation location, PlayerStatId suit, bool isActionable)
+        {
+            TravelPointsDisplay currentHub = travelPointsDisplays[currentHubIdx];
+            int locationIdx = currentHub.IndexOfLocation(location);
+            TravelPoint travelPoint = currentHub.locations[locationIdx];
+            travelPoint.SetNextCardToFind(suit, isActionable);
         }
 
         public void ClearNextCardAtLocation(int locationIdx)

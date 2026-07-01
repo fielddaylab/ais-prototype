@@ -107,7 +107,7 @@ namespace AIS.Narrative
                 {
                     locations[i].MainImg.color = Color.grey;
                     locations[i].GetComponent<Button>().interactable = false;
-                    locations[i].Time.SetActive(false);
+                    locations[i].TimeDisplay.SetActive(false);
                     locations[i].NextCardToFind.SetActive(false);
                 }
             }
@@ -115,14 +115,19 @@ namespace AIS.Narrative
             currentLocationIdx = index;
             selectedLocationIdx = index;
 
-            StartCoroutine(UpdatePointerPositionNextFrame(index));
+            if (this.gameObject.activeSelf)
+            {
+                StartCoroutine(UpdatePointerPositionNextFrame(index));
+            }
 
             travelButton.interactable = false;
             if (PathLine != null)
             {
                 PathLine.gameObject.SetActive(false);
             }
-            //ScriptHooks.DisableMapButton();
+
+            if (Find.State<PlayerInventory>() != null)
+                PlayerUtility.DecreaseTime(locations[currentLocationIdx].Chunks);
         }
 
         public void SelectLocation(int index)
@@ -170,8 +175,6 @@ namespace AIS.Narrative
                 return;
             }
             */
-
-            // TODO: Set up paths between every pair of locations that can be traveled one to another
 
             selectedLocationIdx = index;
             locations[index].MainImg.color = Color.yellow;

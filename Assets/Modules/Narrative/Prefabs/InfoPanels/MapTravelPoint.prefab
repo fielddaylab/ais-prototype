@@ -173,7 +173,8 @@ MonoBehaviour:
   LocationName: 0
   MainImg: {fileID: 4836181604061081335}
   EmphasisImg: {fileID: 4658651901813257593}
-  Time: {fileID: 2289333985238924863}
+  Chunks: 0
+  TimeDisplay: {fileID: 2289333985238924863}
   NextCardToFind: {fileID: 808009166803390953}
 --- !u!1 &1978338367740302590
 GameObject:
