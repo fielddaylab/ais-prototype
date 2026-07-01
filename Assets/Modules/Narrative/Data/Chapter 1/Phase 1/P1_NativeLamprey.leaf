@@ -36,8 +36,8 @@ $call  ClearVisibleLines()
 
 $call GiveActionCard("example-action-card-1")
 
-       [Open your map to continue]
-
+{@}
+       This will be useful.
 
 // TEMPORARY: skip to end
 $goto .End
