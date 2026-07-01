@@ -1116,6 +1116,15 @@ MonoBehaviour:
     m_DefaultPoolRoot: {fileID: 787332428}
     m_DefaultSpawnRoot: {fileID: 1426750215}
     m_ResetTransformOnAlloc: 1
+  NewScenarioPool:
+    m_Prefab: {fileID: 128472405990716463, guid: e33cf50457f99f14ab7b7cda6ad16d7f, type: 3}
+    m_Name: 
+    m_InitialCapacity: 32
+    m_PrewarmOnInitialize: 1
+    m_InitialPrewarm: 16
+    m_DefaultPoolRoot: {fileID: 787332428}
+    m_DefaultSpawnRoot: {fileID: 1426750215}
+    m_ResetTransformOnAlloc: 1
   StatChangePool:
     m_Prefab: {fileID: 6304736712798160740, guid: f25de0b2b4c2ed8409298fdc040d801f, type: 3}
     m_Name: 
@@ -2035,6 +2044,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a62954ce67bd9454e90547db13fdae63, type: 2}
   - {fileID: 11400000, guid: 1c27fabf413a9634896cbc964fe6f6dd, type: 2}
   - {fileID: 11400000, guid: 7a752077b9310574db9b34bf7fe6ef6c, type: 2}
+  - {fileID: 11400000, guid: 42bdb567117ccab4289b7be6936d2086, type: 2}
 --- !u!114 &1930087513
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2863,7 +2873,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2611806736191935496, guid: 1035e6bbdf8f3418584f107a9ced40b6, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 135
+      value: -29.165009
       objectReference: {fileID: 0}
     - target: {fileID: 4732058599422222415, guid: 1035e6bbdf8f3418584f107a9ced40b6, type: 3}
       propertyPath: m_Color.b

@@ -17,6 +17,7 @@ namespace AIS.Narrative {
         public DialogueLine.Pool LinePool;
         public NewCardElement.Pool NewEvidencePool;
         public NewCardElement.Pool NewActionCardPool;
+        public NewCardElement.Pool NewScenarioPool;
         public StatChangeElement.Pool StatChangePool;
 
         public DialogueColumnLayout Layout;
