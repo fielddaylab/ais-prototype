@@ -138,6 +138,7 @@ $set global:currentThread = "P0_Intro"
 {@}
        You begin. 
 
+hello world
 // go to map, end phase 0
 // TEMPORARY: skip to end
 $goto .End
