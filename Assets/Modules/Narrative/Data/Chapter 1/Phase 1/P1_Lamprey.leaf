@@ -17,13 +17,24 @@ $set global:currentThread = "P1_Lamprey"
 $call  ClearVisibleLines()
 {@}   
        // [This is the Lamprey thread in Phase 1.]
-       You talk to people here and gain an evidence card.
+       You see a group of scientists working in the lab.
+       Might be worth asking them a few questions.
 
-// TODO: Rest of thread here
+{@Player}
+       Hello. What can you tell me about the Lamprey situation?
+
+{@Researcher}
+       The Lamprey are a species of fish that have been causing problems in the local ecosystem.
 
 // TODO: Give evidence chip
 $call GiveEvidenceChip("evidence-lamprey")
 
+{@Player}
+       I see. Thank you!
+
+// TODO: Rest of thread here
+
+{@}
        [Open your map to continue]
 
 // TEMPORARY: skip to end

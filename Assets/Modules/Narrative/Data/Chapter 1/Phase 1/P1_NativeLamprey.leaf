@@ -16,8 +16,21 @@ $set global:currentThread = "P1_NativeLamprey"
 
 $call  ClearVisibleLines()
 {@}     
-       You talk to people here and gain an action card.
+       A few people are working in the DNR office.
+       You notice a biologist at a nearby desk and approach.
+
+{@Player}
+       Hello! I just learned about Lamprey and it sounds like a large problem.
+       What are people working on to address it?
        // [This is the Native Lamprey thread in Phase 1.]
+
+{@Biologist}
+       It's not an easy issue to deal with. Especially if it's just us working on it.
+       One thing that will always be helpful is getting the word out.
+       Want to run an outreach campaign to spread awareness?
+
+{@Player}
+       Let's do it.
 
 // TODO: Rest of thread here
 

@@ -35,7 +35,10 @@ $endif
 
 $call  ClearVisibleLines()
 {@}   
-       You have now gotten an evidence card and an action card. Well done!
+       You've learned a little bit about Lamprey.
+       You've also obtained one strategy that will help address the issue.
+       Well done!
+       Take some time to prepare yourself for whatever will come your way next.
        [End of Demo]
       // [This is the exit hub for Phase 1.]
 
