@@ -5,7 +5,7 @@
 @to		angler-outreach
 
 ::
-@from	example-evidence-card-1
+@from	evidence-lamprey
 @to		example-action-card-1
 
 

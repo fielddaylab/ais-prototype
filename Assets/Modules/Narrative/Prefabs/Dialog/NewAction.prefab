@@ -545,6 +545,7 @@ MonoBehaviour:
   Offset: {fileID: 7372205226503040868}
   DependencyWidget: {fileID: 3402922372875901677}
   Card: {fileID: 3774933467877395394}
+  ScenarioDetails: {fileID: 0}
   Button: {fileID: 4431237604340725315}
 --- !u!1 &3520520521600492604
 GameObject:

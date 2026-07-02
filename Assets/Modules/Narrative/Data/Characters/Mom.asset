@@ -9,13 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6374628d737c9d24486747a92e860022, type: 3}
-  m_Name: Evidence-Lake-Trout
+  m_Script: {fileID: 11500000, guid: 02e7d789d0f14614aa645180b1a71e33, type: 3}
+  m_Name: Mom
   m_EditorClassIdentifier: 
-  Id:
-    m_HashValue: 0
-  Suit: 4
-  Illustration: {fileID: 0}
-  Label: Decrease in Lake Trout population.
-  isActionable: 1
-  ActivateLocation: 2
+  DisplayName: Mom
+  TextStyle:
+    m_HashValue: 2517740986

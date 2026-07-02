@@ -16,6 +16,6 @@ MonoBehaviour:
     m_HashValue: 0
   Suit: 3
   Illustration: {fileID: 0}
-  Label: What is lamprey.
+  Label: Lamprey is a species causing problems.
   isActionable: 0
   ActivateLocation: 0
