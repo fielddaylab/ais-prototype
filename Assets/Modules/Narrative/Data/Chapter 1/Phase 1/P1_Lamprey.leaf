@@ -10,6 +10,7 @@
 // Lock all location on map
 $call SetInThreadLocks()
 $call DisableMapButton()
+$call SetBackground("bg/bg-research-lab.png")
 
 // Mark start of thread
 $set global:currentThread = "P1_Lamprey"
