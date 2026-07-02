@@ -2642,6 +2642,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: 464.27014
       objectReference: {fileID: 0}
+    - target: {fileID: 1593049606835906536, guid: 463e001eb30341745ae355d4dc1a6132, type: 3}
+      propertyPath: m_StartingValue
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 2180604505072783586, guid: 463e001eb30341745ae355d4dc1a6132, type: 3}
       propertyPath: m_Name
       value: ModelSlot

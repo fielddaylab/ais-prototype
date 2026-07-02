@@ -27,9 +27,8 @@ namespace AIS.Narrative
             base.Awake();
             Hide();
             travelButton.onClick.AddListener(OnTravelButtonClicked);
-            ShowMap(); // default to travel mode
-
             currentHubIdx = 0;
+            ShowMap(); // default to travel mode
         }
 
         public override void Show()
@@ -66,7 +65,7 @@ namespace AIS.Narrative
 
             selectedHubIdx = currentHubIdx;
             TravelToSelectedHub(false);
-            
+
             // Zoom out
             //Camera.main.transform.position = hubSelectionDisplay.cameraTransform;
             //Camera.main.orthographicSize = 5f;
@@ -128,10 +127,11 @@ namespace AIS.Narrative
         {
             TravelPointsDisplay currentHub = travelPointsDisplays[currentHubIdx];
             int locationIdx = currentHub.IndexOfLocation(location);
+            TravelPoint target = currentHub.locations[locationIdx];
 
-            currentHub.UnlockedLocations.Add(currentHub.locations[locationIdx].MainImg);
-            currentHub.locations[locationIdx].TimeDisplay.SetActive(true);
-            currentHub.locations[locationIdx].NextCardToFind.SetActive(true);
+            currentHub.UnlockedLocations.Add(target.MainImg);
+            target.UpdateTimeBlockVisual(target.Chunks);
+            target.NextCardToFind.SetActive(true);
         }
 
         public void SetInThreadLocks()
@@ -149,8 +149,10 @@ namespace AIS.Narrative
         public void SetTravelTimeFromCurrentTo(MapLocation location, int chunks, bool isRevealed)
         {
             int destinationIdx = travelPointsDisplays[currentHubIdx].IndexOfLocation(location);
-            travelPointsDisplays[currentHubIdx].locations[destinationIdx].SetTravelTime(chunks);
-            travelPointsDisplays[currentHubIdx].locations[destinationIdx].TimeDisplay.SetActive(isRevealed);
+            TravelPoint target = travelPointsDisplays[currentHubIdx].locations[destinationIdx];
+
+            target.SetTravelTime(chunks);
+            target.UpdateTimeBlockVisual(chunks, isRevealed);
         }
 
         // TODO: Delete this in later development

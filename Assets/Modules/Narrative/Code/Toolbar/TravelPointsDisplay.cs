@@ -107,7 +107,7 @@ namespace AIS.Narrative
                 {
                     locations[i].MainImg.color = Color.grey;
                     locations[i].GetComponent<Button>().interactable = false;
-                    locations[i].TimeDisplay.SetActive(false);
+                    locations[i].UpdateTimeBlockVisual(0);
                     locations[i].NextCardToFind.SetActive(false);
                 }
             }
@@ -115,19 +115,12 @@ namespace AIS.Narrative
             currentLocationIdx = index;
             selectedLocationIdx = index;
 
-            if (this.gameObject.activeSelf)
+            if (isActiveAndEnabled)
             {
                 StartCoroutine(UpdatePointerPositionNextFrame(index));
             }
 
             travelButton.interactable = false;
-            if (PathLine != null)
-            {
-                PathLine.gameObject.SetActive(false);
-            }
-
-            if (Find.State<PlayerInventory>() != null)
-                PlayerUtility.DecreaseTime(locations[currentLocationIdx].Chunks);
         }
 
         public void SelectLocation(int index)
@@ -219,6 +212,13 @@ namespace AIS.Narrative
 
             // bool locationChanged = currentLocationIdx != selectedLocationIdx;
             MapLocation location = locations[selectedLocationIdx].LocationName;
+            if (PathLine != null)
+            {
+                PathLine.gameObject.SetActive(false);
+            }
+
+            if (currentLocationIdx != selectedLocationIdx && Game.SharedState.TryGet(out PlayerInventory _))
+                PlayerUtility.DecreaseTime(locations[selectedLocationIdx].Chunks);
 
             SetCurrentLocation(selectedLocationIdx);
 

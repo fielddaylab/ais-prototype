@@ -11,6 +11,8 @@ $set global:currentPhase = 3
 $call EnableMapButton()
 $call UnlockLocation(FishingDocks)        // P3_CiscoTroutDecision
 $call UnlockLocation(FieldStationTraps)   // P3_DownstreamUpstreamDecision
+$call SetTravelTime(FieldStationTraps, 2)
+$call SetNextCardToFind(10, "Communicate", false)
 
 // TODO: Rest of entry hub here
 
