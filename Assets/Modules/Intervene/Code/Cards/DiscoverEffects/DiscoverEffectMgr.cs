@@ -18,7 +18,7 @@ namespace AIS.Intervene
         /// </summary>
         private void ApplyDiscoverEffects()
         {
-            var cards = CardInteractionMgr.Instance.ActionDeck.Cards;
+            var cards = CardInteractionMgr.Instance.Hand.Cards;
             foreach (var card in cards)
             {
                 var actionCard = (ActionCard)card;

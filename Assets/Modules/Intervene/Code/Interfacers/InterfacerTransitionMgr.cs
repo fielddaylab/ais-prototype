@@ -64,7 +64,7 @@ namespace AIS.Intervene
 
             // Load data
             Budget.LoadPlayerBudget(inBudget);
-            Awareness.LoadPlayerAwareness(inAwareness);
+            //Awareness.LoadPlayerAwareness(inAwareness);
             Stats.LoadPlayerStats(inStats[0], inStats[1], inStats[2], inStats[3], inStats[4]);
             CurveInterfacer.LoadCurve(inInvasionCurve);
             InvasionModel.Load(CurveInterfacer.CurrVal);

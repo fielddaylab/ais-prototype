@@ -29,9 +29,9 @@ namespace AIS.Intervene
         {
             Instance = this;
 
-            AisGame.Events.Register(InterveneEvents.OnShuffleActionDeck, HandleOnShuffleActionDeck);
-            AisGame.Events.Register(InterveneEvents.OnDrawFromActionDeck, HandleOnDrawFromActionDeck);
-            AisGame.Events.Register(InterveneEvents.OnRecycleDiscard, HandleOnRecycleDiscard);
+            //AisGame.Events.Register(InterveneEvents.OnShuffleActionDeck, HandleOnShuffleActionDeck);
+            //AisGame.Events.Register(InterveneEvents.OnDrawFromActionDeck, HandleOnDrawFromActionDeck);
+            //AisGame.Events.Register(InterveneEvents.OnRecycleDiscard, HandleOnRecycleDiscard);
 
             AisGame.Events.Register(InterveneEvents.OnEffectSpecifyBegin, HandleOnEffectSpecifyBegin);
             AisGame.Events.Register(InterveneEvents.OnEffectSpecifyCancel, HandleOnEffectSpecifyCancel);
@@ -48,8 +48,8 @@ namespace AIS.Intervene
         {
             if (AisGame.IsShuttingDown) { return; }
 
-            AisGame.Events.Deregister(InterveneEvents.OnShuffleActionDeck, HandleOnShuffleActionDeck);
-            AisGame.Events.Deregister(InterveneEvents.OnDrawFromActionDeck, HandleOnDrawFromActionDeck);
+            //AisGame.Events.Deregister(InterveneEvents.OnShuffleActionDeck, HandleOnShuffleActionDeck);
+            //AisGame.Events.Deregister(InterveneEvents.OnDrawFromActionDeck, HandleOnDrawFromActionDeck);
             AisGame.Events.Deregister(InterveneEvents.OnRecycleDiscard, HandleOnRecycleDiscard);
 
             AisGame.Events.Deregister(InterveneEvents.OnEffectSpecifyBegin, HandleOnEffectSpecifyBegin);
@@ -67,28 +67,28 @@ namespace AIS.Intervene
 
         #region Core Card Mechanics
 
-        public void ShuffleActionDeck()
-        {
-            ActionDeck.Shuffle();
-        }
+        //public void ShuffleActionDeck()
+        //{
+        //    ActionDeck.Shuffle();
+        //}
 
-        public void DrawCard()
-        {
-            CardBase drawnCard;
-            if (CardStackUtility.TryDrawFromTop(ActionDeck, out drawnCard))
-            {
-                CardStackUtility.AddToTop(Hand, drawnCard);
-            }
-            else
-            {
-                RecycleDiscard();
+        //public void DrawCard()
+        //{
+        //    CardBase drawnCard;
+        //    if (CardStackUtility.TryDrawFromTop(ActionDeck, out drawnCard))
+        //    {
+        //        CardStackUtility.AddToTop(Hand, drawnCard);
+        //    }
+        //    else
+        //    {
+        //        RecycleDiscard();
 
-                if (CardStackUtility.TryDrawFromTop(ActionDeck, out drawnCard))
-                {
-                    CardStackUtility.AddToTop(Hand, drawnCard);
-                }
-            }
-        }
+        //        if (CardStackUtility.TryDrawFromTop(ActionDeck, out drawnCard))
+        //        {
+        //            CardStackUtility.AddToTop(Hand, drawnCard);
+        //        }
+        //    }
+        //}
 
         public void DiscardSelectedCards()
         {
@@ -104,11 +104,11 @@ namespace AIS.Intervene
             }
         }
 
-        public void RecycleDiscard()
-        {
-            CardStackUtility.MergeStacks(Discard, ActionDeck);
-            ActionDeck.Shuffle();
-        }
+        //public void RecycleDiscard()
+        //{
+        //    CardStackUtility.MergeStacks(Discard, ActionDeck);
+        //    ActionDeck.Shuffle();
+        //}
 
         #endregion // Core Card Mechanics
 
@@ -121,11 +121,11 @@ namespace AIS.Intervene
             var actionCards = ActionCardsUtility.GetAllCards(actionCardsState);
 
             CardStackUtility.Clear(Hand);
-            CardStackUtility.Clear(ActionDeck);
+            //CardStackUtility.Clear(ActionDeck);
             CardStackUtility.Clear(Discard);
 
-            ActionDeck.PopulateDeck(actionCards);
-            ShuffleActionDeck();
+            //ActionDeck.PopulateDeck(actionCards);
+            //ShuffleActionDeck();
 
             Hand.ClickCall = (index) => { ToggleSelectHandAtIndex(index); };
         }
@@ -133,7 +133,7 @@ namespace AIS.Intervene
         private void SetupVisuals()
         {
             CardStackVisualsUtility.RefreshVisuals(Hand.Visuals, Hand);
-            CardStackVisualsUtility.RefreshVisuals(ActionDeck.Visuals, ActionDeck);
+            //CardStackVisualsUtility.RefreshVisuals(ActionDeck.Visuals, ActionDeck);
             CardStackVisualsUtility.RefreshVisuals(Discard.Visuals, Discard);
         }
 
@@ -141,19 +141,19 @@ namespace AIS.Intervene
 
         #region Handlers
 
-        private void HandleOnShuffleActionDeck()
-        {
-            ShuffleActionDeck();
-        }
+        //private void HandleOnShuffleActionDeck()
+        //{
+        //    ShuffleActionDeck();
+        //}
 
-        private void HandleOnDrawFromActionDeck()
-        {
-            DrawCard();
-        }
+        //private void HandleOnDrawFromActionDeck()
+        //{
+        //    DrawCard();
+        //}
 
         private void HandleOnRecycleDiscard()
         {
-            RecycleDiscard();
+            //RecycleDiscard();
         }
 
         private void HandleOnEffectSpecifyBegin()

@@ -8,14 +8,14 @@ namespace AIS.Intervene
     public class CardInteractionUI : MonoBehaviour
     {
         public Button ShuffleActionDeckBtn;
-        public Button DrawFromDeckBtn;
+        //public Button DrawFromDeckBtn;
         public Button UseSelectedBtn;
         public Button RecycleDiscardBtn;
 
         public void Awake()
         {
             ShuffleActionDeckBtn.onClick.AddListener(HandleShuffleActionDeckClicked);
-            DrawFromDeckBtn.onClick.AddListener(HandleDrawClicked);
+            //DrawFromDeckBtn.onClick.AddListener(HandleDrawClicked);
             UseSelectedBtn.onClick.AddListener(HandleUseClicked);
             RecycleDiscardBtn.onClick.AddListener(HandleRecycleClicked);
         }
@@ -25,7 +25,7 @@ namespace AIS.Intervene
             if (AisGame.IsShuttingDown) { return; }
 
             ShuffleActionDeckBtn.onClick.RemoveAllListeners();
-            DrawFromDeckBtn.onClick.RemoveAllListeners();
+            //DrawFromDeckBtn.onClick.RemoveAllListeners();
             UseSelectedBtn.onClick.RemoveAllListeners();
             RecycleDiscardBtn.onClick.RemoveAllListeners();
         }
