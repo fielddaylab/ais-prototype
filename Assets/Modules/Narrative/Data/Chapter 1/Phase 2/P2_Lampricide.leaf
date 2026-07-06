@@ -1,0 +1,60 @@
+#basePath P2_Lampricide
+#include "Header.leaf"
+
+:: Start
+@trigger    OnLocationChanged
+// "NONE" ensures no other threads are in-progress
+// global:currentPhase == 2 ensures player is in phase 2
+@when       global:currentThread == "NONE", global:currentPhase == 2, location == "FieldStationLampricide"
+@cutscene
+// Lock all location on map
+$call SetInThreadLocks()
+$call DisableMapButton()
+
+// Mark start of thread
+$set global:currentThread = "P2_Lampricide"
+
+{@}   
+       [This is the Lampricide thread in Phase 2 at the Field Station (lampricide).]
+
+// TODO: Rest of Field Station section here
+
+// TODO: Give evidence chip
+// $call GiveEvidenceChip([Evidence])
+
+$call UnlockLocation(TownHall)
+$call EnableMapButton()
+
+
+:: AtTownHall
+@trigger    OnLocationChanged
+// global:currentThread ensures the correct thread
+// global:currentPhase == 2 ensures player is in phase 2
+@when       global:currentThread == "P2_Lampricide", global:currentPhase == 2, location == "TownHall"
+// Lock all location on map
+$call SetInThreadLocks()
+$call DisableMapButton()
+
+{@}   
+       [This is the Town Hall section.]
+
+// TODO: Rest of Town Hall section here
+
+// TODO: Give action card
+// $call GiveActionCard([Action])
+
+
+// TEMPORARY: skip to end
+$goto .End
+
+
+:: End
+@tracked
+// Unlock next locations
+$call UnlockLocation(ArmyCorps)    // P2_Outreach
+
+// Mark end of thread
+$set global:currentThread = "NONE"
+
+// Go to Phase 2 Continue Hub
+$goto P2_Hub.Continue

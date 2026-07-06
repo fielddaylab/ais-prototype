@@ -9,15 +9,16 @@ namespace AIS.Model
     {
         public static InvasionModelContainer Instance;
 
+
         #region Inspector
 
         public SpriteRenderer BGRenderer;
 
         #endregion // Inspector
 
-        private List<Ecosystem> m_Ecosystems = new List<Ecosystem>();
-        private List<Pathway> m_Pathways = new List<Pathway>();
-        private List<Cluster> m_SpeciesClusters = new List<Cluster>();
+        public List<Ecosystem> m_Ecosystems = new List<Ecosystem>();
+        public List<Pathway> m_Pathways = new List<Pathway>();
+        public List<Cluster> m_SpeciesClusters = new List<Cluster>();
 
         public void InitInstance()
         {

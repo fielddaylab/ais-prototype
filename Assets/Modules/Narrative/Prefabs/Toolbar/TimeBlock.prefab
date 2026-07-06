@@ -106,14 +106,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddb989607aed79f4ba2b9567be5ce4d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Display: {fileID: 1803168111946638883}
+  Display: {fileID: 8419606319641461700}
   Flash: {fileID: 1803168111946638883}
-  Sprites:
-  - {fileID: -7352664550879960363, guid: 67ad1be2da52d50409d2d278fe8cc877, type: 3}
-  - {fileID: 6293501518269557312, guid: 67ad1be2da52d50409d2d278fe8cc877, type: 3}
-  - {fileID: -6815810491483390975, guid: 67ad1be2da52d50409d2d278fe8cc877, type: 3}
-  - {fileID: 4613115529637828903, guid: 67ad1be2da52d50409d2d278fe8cc877, type: 3}
-  - {fileID: -3460734942905223259, guid: 67ad1be2da52d50409d2d278fe8cc877, type: 3}
 --- !u!1 &6803498735444870073
 GameObject:
   m_ObjectHideFlags: 0

@@ -44,15 +44,16 @@ namespace AIS.Intervene
             int inAwareness = 3; // TODO
 
             var stats = Find.State<PlayerStats>().StatBlock;
-            int[] inStats = new int[4];
+            int[] inStats = new int[5];
             inStats[0] = stats.Communicate;
             inStats[1] = stats.Ranger;
             inStats[2] = stats.Tech;
             inStats[3] = stats.Research;
+            inStats[4] = stats.Innovate;
 
             var inventory = Find.State<PlayerInventory>();
-            StringHash32[] evidenceIds = new StringHash32[inventory.EvidenceCards.Count];
-            inventory.EvidenceCards.CopyTo(evidenceIds);
+            StringHash32[] evidenceIds = new StringHash32[inventory.EvidenceChips.Count];
+            inventory.EvidenceChips.CopyTo(evidenceIds);
             List<SerializedHash32> inEvidenceIds = new List<SerializedHash32>();
             foreach (var evidenceId in evidenceIds)
             {
@@ -64,7 +65,7 @@ namespace AIS.Intervene
             // Load data
             Budget.LoadPlayerBudget(inBudget);
             Awareness.LoadPlayerAwareness(inAwareness);
-            Stats.LoadPlayerStats(inStats[0], inStats[1], inStats[2], inStats[3]);
+            Stats.LoadPlayerStats(inStats[0], inStats[1], inStats[2], inStats[3], inStats[4]);
             CurveInterfacer.LoadCurve(inInvasionCurve);
             InvasionModel.Load(CurveInterfacer.CurrVal);
 

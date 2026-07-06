@@ -52,6 +52,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Root: {fileID: 8955924805368344364}
   Mode: 2
+  SyncDimensions: 3
+  UpdateRootDimensions: 3
   Padding: {x: 24, y: 16}
   MinSize: {x: 24, y: 34}
   Children:
@@ -337,6 +339,7 @@ MonoBehaviour:
   m_pageToDisplay: 1
   m_maxLineWidth: 300
   m_margin: {x: 0, y: 0, z: 0, w: 4}
+  m_roundUpCalculatedPreferredValues: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -461,7 +464,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8880998018712746302, guid: ffbb30178c6e70b4d9616b06af86c963, type: 3}
       propertyPath: MinSize.x
-      value: 317
+      value: 320
       objectReference: {fileID: 0}
     - target: {fileID: 8880998018712746302, guid: ffbb30178c6e70b4d9616b06af86c963, type: 3}
       propertyPath: Padding.x
@@ -490,6 +493,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6422463037750317989, guid: ffbb30178c6e70b4d9616b06af86c963, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7372205226503040868}
+    - targetCorrespondingSourceObject: {fileID: 6422463037750317989, guid: ffbb30178c6e70b4d9616b06af86c963, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2478593858480635927}
+    - targetCorrespondingSourceObject: {fileID: 6422463037750317989, guid: ffbb30178c6e70b4d9616b06af86c963, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7744198750544927613}
   m_SourcePrefab: {fileID: 100100000, guid: ffbb30178c6e70b4d9616b06af86c963, type: 3}
 --- !u!114 &346806614066988506 stripped
 MonoBehaviour:
@@ -524,7 +533,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0ee9ada8f4708449bf28c853a7a697c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Positioner: {fileID: 2478593858480635927}
   Layout: {fileID: 346806614066988506}
+  Padding: {fileID: 7744198750544927613}
   RootPivot: {fileID: 1593249569663048262}
   Visibility: {fileID: 8767833143502191583}
   Offset: {fileID: 7372205226503040868}
@@ -532,6 +543,7 @@ MonoBehaviour:
   CharacterName: {fileID: 6002357686512341577}
   CharacterLayout: {fileID: 8783009594861381729}
   Tail: {fileID: 7401037625113379502}
+  AdjustPivots: 1
   BackgroundColor:
   - {fileID: 6848114496992748278}
   - {fileID: 3447726798470415462}
@@ -569,6 +581,35 @@ MonoBehaviour:
   m_Offset1: {x: 0, y: 0}
   m_Offset2: {x: 0, y: 0}
   m_Offset3: {x: 0, y: 0}
+--- !u!114 &2478593858480635927
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2796333468060299073}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d7f2d84bd0a7cf41b051794cc6d2dd3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7744198750544927613
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2796333468060299073}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bbb768d2eb2b12469fa658b6efadbb6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Style:
+    MarginLower: {x: 0, y: 0, z: 0}
+    MarginUpper: {x: 0, y: 0, z: 0}
+    PaddingLower: {x: 0, y: 0, z: 0}
+    PaddingUpper: {x: 0, y: 0, z: 0}
 --- !u!114 &3786592432372020327 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5432207164625995907, guid: ffbb30178c6e70b4d9616b06af86c963, type: 3}

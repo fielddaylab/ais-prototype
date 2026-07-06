@@ -1,36 +1,38 @@
 using BeauPools;
-using BeauRoutine;
 using BeauUtil;
 using BeauUtil.Debugger;
 using BeauUtil.Tags;
-using BeauUtil.UI;
 using FieldDay;
-using FieldDay.Components;
 using FieldDay.Scripting;
 using FieldDay.UI;
 using Leaf;
 using Leaf.Runtime;
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Threading;
-using TMPro;
 using UnityEngine;
-using UnityEngine.TextCore.Text;
-using UnityEngine.UI;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace AIS.Narrative {
     [DisallowMultipleComponent]
-    public sealed class DialogueColumn : BaseDialoguePrinter, IDialogueChoicePresenter {
+    public sealed class DialogueColumn : BaseDialoguePrinter, IDialogueChoicePresenter, IDialogueLayoutPrinter {
+        public DialogueLine.Pool LinePool;
+        public NewCardElement.Pool NewEvidencePool;
+        public NewCardElement.Pool NewActionCardPool;
+        public NewCardElement.Pool NewScenarioPool;
+        public StatChangeElement.Pool StatChangePool;
+
         public DialogueColumnLayout Layout;
+
+        [NonSerialized] private bool m_AutoContinue;
 
         [NonSerialized] private IInputLayer m_InputLayer;
         [NonSerialized] private DialogueLine m_CurrentLine;
 
+        public static DialogueColumn Instance;
+
         public override void OnRegister() {
             base.OnRegister();
             m_InputLayer = IInputLayer.Find(this);
+            Instance = this;
         }
 
         public override IEnumerator TypeLine(TagString text, TagTextData textData, DialogueCharacterState character) {
@@ -57,11 +59,25 @@ namespace AIS.Narrative {
 
         protected override void ConfigureEventHandler(TagStringEventHandler handler) {
             base.ConfigureEventHandler(handler);
+
+            handler.Register("auto-continue", () => m_AutoContinue = true);
+        }
+
+        public IEnumerator ShiftLayout(StringSlice alignmentArg) {
+            return Layout.ShiftTo(ParseAlignment(alignmentArg));
+        }
+
+        public void SnapLayout(StringSlice alignmentArg) {
+            Layout.SnapTo(ParseAlignment(alignmentArg));
+        }
+
+        static private DialogueColumnAlignment ParseAlignment(StringSlice alignmentArg) {
+            return StringParser.ConvertTo(alignmentArg, DialogueColumnAlignment.Center);
         }
 
         protected override void PrepareTextDisplay(TagString text, DialogueCharacterState character) {
-            m_CurrentLine = Layout.LinePool.Alloc();
-            Layout.ActiveLines.PushBack(m_CurrentLine);
+            m_CurrentLine = LinePool.Alloc();
+            Layout.ActiveLines.PushBack(m_CurrentLine.Positioner);
             m_CurrentLine.SetCharacterInfo(character, null);
             m_CurrentLine.Populate(text);
 
@@ -69,14 +85,20 @@ namespace AIS.Narrative {
                 m_CurrentLine.CharacterLayout.Sync();
             }
             m_CurrentLine.Layout.Sync();
-            Positioning.SetAnchor((RectTransform) m_CurrentLine.transform, TextAnchor.LowerCenter);
             m_CurrentLine.SetVisible(false);
+
+            m_AutoContinue = false;
         }
 
         public override void FastForwardLine(int visibleCount, int richCount) { }
 
         public override IEnumerator CompleteLine() {
             m_CurrentLine = null;
+
+            if (m_AutoContinue) {
+                yield return 0.1f;
+                yield break;
+            }
 
             if (LeafRuntime.PredictChoice(CurrentThread)) {
                 yield break;
@@ -94,20 +116,45 @@ namespace AIS.Narrative {
         }
 
         public IEnumerator ShowOptions(LeafChoice choice, LeafNode node, ScriptThread thread, DialogueCharacterState character) {
-            int choiceCount = choice.Count;
-            if (choiceCount > Layout.Choices.Length) {
-                choiceCount = Layout.Choices.Length;
-                Log.Warn("[DialogueColumn] Too many choices");
-            }
-
             PlayerStatBlock currentStats = Find.State<PlayerStats>().StatBlock;
             PlayerInventory inv = Find.State<PlayerInventory>();
             GameIcons icons = Find.GlobalAsset<GameIcons>();
 
+            int[] visibleOptions = new int[Layout.Choices.Length];
+            int choiceCount = 0;
+            bool anySelectable = false;
+
+            for (int i = 0; i < choice.Count; i++) {
+                if (!DialogueChoiceUtility.IsVisible(choice, choice[i])) {
+                    continue;
+                }
+                if (choiceCount >= Layout.Choices.Length) {
+                    Log.Warn("[DialogueColumn] Too many choices");
+                    break;
+                }
+                visibleOptions[choiceCount++] = i;
+                anySelectable |= DialogueChoiceUtility.IsSelectable(choice, choice[i]);
+            }
+
+            if (!anySelectable) {
+                StringHash32 fallbackId = DialogueChoiceUtility.ResolveFallbackNode((ScriptNode) node, inv.TimeRemaining <= 0);
+                if (!fallbackId.IsEmpty) {
+                    DialogueChoiceUtility.Redirect(choice, fallbackId);
+                    yield break;
+                }
+
+                Log.Error("[DialogueColumn] No selectable choices on node '{0}' and no fallback node found", node.Id());
+                if (choiceCount == 0) {
+                    choice.Choose(0);
+                    yield break;
+                }
+            }
+
             using (PooledStringBuilder psb = PooledStringBuilder.Create()) {
 
                 for (int i = 0; i < choiceCount; i++) {
-                    var data = choice[i];
+                    int optionIndex = visibleOptions[i];
+                    var data = choice[optionIndex];
                     DialogueChoiceButton btn = Layout.Choices[i];
                     btn.gameObject.SetActive(true);
 
@@ -115,7 +162,7 @@ namespace AIS.Narrative {
                     btn.Content.Populate(thread.TagString);
                     bool choiceAvailable = data.IsAvailable;
 
-                    DialogueChoiceRequirements req = DialogueChoiceRequirements.Read(choice, i);
+                    DialogueChoiceRequirements req = DialogueChoiceRequirements.Read(choice, optionIndex);
                     if (req.TimeConsumed > 0) {
                         btn.TimeGroup.SetActive(true);
                         btn.TimeRequirement.sprite = icons.TimeIcons[req.TimeConsumed];
@@ -161,7 +208,7 @@ namespace AIS.Narrative {
                     btn.Listener.enabled = choiceAvailable;
 
                     if (choiceAvailable) {
-                        btn.Content.SetCharacterInfo(ScriptUtility.GetCharacterState(thread.TagString, default), null);
+                        btn.Content.SetCharacterInfo(ScriptUtility.GetCharacterState(thread.TagString, new DialogueCharacterState() { CharacterId = "_PlayerAction" }), null);
                     } else {
                         btn.Content.SetTextStyle(Find.NamedAsset<TextStyle>("DisabledChoice"), null);
                     }
@@ -176,11 +223,15 @@ namespace AIS.Narrative {
                 btn.gameObject.SetActive(false);
             }
 
+            using (var query = Layout.ChoiceGroup.QueryLayoutChildren()) {
+                Positioning.HorizontalLayout(query, Layout.ChoiceLayout);
+            }
+
             bool chosen = false;
             while(!chosen) {
                 for(int i = 0; i < choiceCount; i++) {
                     if (Layout.Choices[i].ConsumeClick()) {
-                        choice.Choose(i);
+                        choice.Choose(visibleOptions[i]);
                         chosen = true;
                         break;
                     }
@@ -191,6 +242,11 @@ namespace AIS.Narrative {
             for(int i = 0; i < choiceCount; i++) {
                 Layout.Choices[i].Content.SetVisible(false);
                 Layout.Choices[i].gameObject.SetActive(false);
+            }
+
+            var chosenRequirements = DialogueChoiceRequirements.Read(choice, choice.ChosenIndex());
+            if (chosenRequirements.TimeConsumed > 0) {
+                PlayerUtility.DecreaseTime(chosenRequirements.TimeConsumed);
             }
         }
     }

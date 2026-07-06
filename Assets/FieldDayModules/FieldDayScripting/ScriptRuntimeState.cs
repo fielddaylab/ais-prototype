@@ -219,9 +219,38 @@ namespace FieldDay.Scripting {
         static private void Initialize() {
             Game.SharedState.Register(new ScriptDatabase());
             Game.SharedState.Register(new ScriptRuntimeState());
-            Game.Systems.Register(new ScriptLoadingSystem());
-            Game.Systems.Register(new ScriptRuntimeTickSystem());
+            ScriptLoadingSystem.RegisterModule();
+            ScriptRuntimeTickSystem.RegisterModule();
         }
+
+        #region Replace
+
+        /// <summary>
+        /// Registers a text replacement rule.
+        /// </summary>
+        static public CustomTagParserConfig.ReplaceRule.Builder RegisterReplaceRule(string format) {
+            return Runtime.TagParserConfig.AddReplace(format);
+        }
+
+        /// <summary>
+        /// Registers a text replacement rule.
+        /// </summary>
+        static public void RegisterReplaceRule(char character, string replacement) {
+            Runtime.TagParserConfig.AddReplace(character, replacement);
+        }
+
+        #endregion // Replace
+
+        #region Tag Events
+
+        /// <summary>
+        /// Registers a custom tag event parser.
+        /// </summary>
+        static public CustomTagParserConfig.EventRule.Builder RegisterEventRule(string format, StringHash32 eventId) {
+            return Runtime.TagParserConfig.AddEvent(format, eventId);
+        }
+
+        #endregion // Tag Events
 
         #region Tables
 

@@ -117,7 +117,7 @@ namespace AIS.Intervene
         private void SetupData(List<SerializedHash32> evidenceIds)
         {
             var actionCardsState = Find.State<ActionCardsState>();
-            //var actionCards = ActionCardsUtility.GetCardsFromEvidence(actionCardsState, evidenceIds);
+            // var actionCards = ActionCardsUtility.GetCardsFromEvidence(actionCardsState, evidenceIds);
             var actionCards = ActionCardsUtility.GetAllCards(actionCardsState);
 
             CardStackUtility.Clear(Hand);

@@ -1,25 +1,22 @@
 using AIS.Model;
 using AIS.Narrative;
+using BeauUtil;
+using BeauUtil.UI;
 using FieldDay;
 using FieldDay.UI;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
-using BeauUtil.UI;
+using System.Collections.Generic;
 
 namespace AIS.Narrative
 {
     public sealed class MapDisplayPanel : SharedPanel
     {
-        private enum MapMode
-        {
-            Travel, // move between locations
-            Model // view the invasion model
-        }
-        private MapMode? currMode = null;
-        public Button travelButton, modelButton;
-
+        public Button travelButton;
 
         public GameObject travelPointsContainer;
+        public GameObject mapImage;
         public TravelPointsDisplay hubSelectionDisplay;
         public TravelPointsDisplay[] travelPointsDisplays;
         private int currentHubIdx;
@@ -29,9 +26,9 @@ namespace AIS.Narrative
         {
             base.Awake();
             Hide();
+            travelButton.onClick.AddListener(OnTravelButtonClicked);
+            ShowMap(); // default to travel mode
 
-            travelButton.onClick.AddListener(() => SwitchMapMode(MapMode.Travel));
-            modelButton.onClick.AddListener(() => SwitchMapMode(MapMode.Model));
             currentHubIdx = 0;
         }
 
@@ -40,7 +37,7 @@ namespace AIS.Narrative
             base.Show();
             Game.Gui.PushPriority(m_InputLayer);
 
-            SwitchMapMode(MapMode.Travel); // default
+            ShowMap();
         }
 
         public override void Hide()
@@ -48,52 +45,48 @@ namespace AIS.Narrative
             Game.Gui.PopPriority(m_InputLayer);
             base.Hide();
 
-            if (InvasionModel.Instance != null)
-                SwitchMapMode(MapMode.Model); // enable all icons in InvasionModel before closing
+            if (mapImage != null)
+            {
+                mapImage.SetActive(false);
+            }
+
+            //currMode = null;
         }
 
-        private void SwitchMapMode(MapMode newMode)
+        private void ShowMap()
         {
-            if (currMode == newMode) return;
-
-            currMode = newMode;
-            Debug.Log($"[MapDisplayPanel] Switch map to {newMode}");
-
-            Transform container = InvasionModel.Instance.gameObject.transform.GetChild(1);
-            bool isTravelMode = newMode == MapMode.Travel;
-
-            for (int i = 0; i < container.childCount; i++)
+            if (mapImage != null)
             {
-                GameObject child = container.GetChild(i).gameObject;
-                // Travel mode: Hide icons
-                // Model mode: Show icons
-                if (child.name.StartsWith("Pathway"))
-                {
-                    child.transform.GetChild(1).gameObject.SetActive(!isTravelMode);
-                    child.transform.GetChild(2).gameObject.SetActive(!isTravelMode);
-                }
-                else if (child.name.StartsWith("Species"))
-                {
-                    child.SetActive(!isTravelMode);
-                }
+                mapImage.SetActive(true);
             }
 
-            travelPointsContainer.SetActive(isTravelMode);
-            if (isTravelMode)
-            {
-                selectedHubIdx = currentHubIdx;
-                TravelToSelectedHub();
-            }
-            else
-            {
-                // Zoom out
-                Camera.main.transform.position = hubSelectionDisplay.cameraTransform;
-                Camera.main.orthographicSize = 5f;
-            }
+            travelPointsContainer.SetActive(true);
+            selectedHubIdx = currentHubIdx;
+            travelPointsDisplays[selectedHubIdx].TravelToSelectedLocation(false);
+
+            selectedHubIdx = currentHubIdx;
+            TravelToSelectedHub(false);
+            
+            // Zoom out
+            //Camera.main.transform.position = hubSelectionDisplay.cameraTransform;
+            //Camera.main.orthographicSize = 5f;
 
             // TODO: current code is temporary -- implement proper animation later
-            travelButton.GetComponent<RoundedRectGraphic>().color = isTravelMode ? Color.white : Color.gray;
-            modelButton.GetComponent<RoundedRectGraphic>().color = isTravelMode ? Color.gray : Color.white;
+            //travelButton.GetComponent<RoundedRectGraphic>().color = Color.white;
+            //modelButton.GetComponent<RoundedRectGraphic>().color = isTravelMode ? Color.gray : Color.white;
+        }
+
+        /// <summary>
+        /// Travels to the location currently selected on the active hub, then closes the map
+        /// and restores the dialogue panel.
+        /// </summary>
+        private void OnTravelButtonClicked()
+        {
+            // userTriggered: true so the travel fires the OnLocationChanged script event and advances the narrative.
+            travelPointsDisplays[currentHubIdx].TravelToSelectedLocation(true);
+
+            Hide();
+            Find.GuiModule<DialoguePanel>().SetVisible(true);
         }
 
         public void ShowHubSelectionPanel()
@@ -113,12 +106,12 @@ namespace AIS.Narrative
             selectedHubIdx = index;
 
             if (currentHubIdx == index)
-                TravelToSelectedHub();
+                TravelToSelectedHub(true);
             else
                 hubSelectionDisplay.SelectLocation(index);
         }
 
-        public void TravelToSelectedHub()
+        public void TravelToSelectedHub(bool userTriggered)
         {
             // Zoom in
             Camera.main.transform.position = travelPointsDisplays[selectedHubIdx].cameraTransform;
@@ -126,8 +119,44 @@ namespace AIS.Narrative
 
             currentHubIdx = selectedHubIdx;
             hubSelectionDisplay.gameObject.SetActive(false);
-            hubSelectionDisplay.TravelToSelectedLocation();
+            hubSelectionDisplay.TravelToSelectedLocation(userTriggered);
             travelPointsDisplays[currentHubIdx].gameObject.SetActive(true);
+        }
+
+        //TODO: control location accessibility via script hooks
+        public void UnlockLocation(MapLocation location)
+        {
+            TravelPointsDisplay currentHub = travelPointsDisplays[currentHubIdx];
+            int locationIdx = currentHub.IndexOfLocation(location);
+
+            currentHub.UnlockedLocations.Add(currentHub.locations[locationIdx].MainImg);
+            currentHub.locations[locationIdx].Time.SetActive(true);
+            currentHub.locations[locationIdx].NextCardToFind.SetActive(true);
+        }
+
+        public void SetInThreadLocks()
+        {
+            TravelPointsDisplay currentHub = travelPointsDisplays[currentHubIdx];
+            currentHub.UnlockedLocations = new List<Image>();
+        }
+
+        public void ReturnTo(int locationIdx)
+        {
+            TravelPointsDisplay currentHub = travelPointsDisplays[currentHubIdx];
+            currentHub.EnableReturnTo(locationIdx);
+        }
+
+        public void SetNextCardAtLocation(int locationIdx, PlayerStatId suit, bool isActionable)
+        {
+            TravelPointsDisplay currentHub = travelPointsDisplays[currentHubIdx];
+            TravelPoint location = currentHub.locations[locationIdx];
+            TravelPointUtility.SetNextCardToFind(location, suit, isActionable);
+        }
+
+        public void ClearNextCardAtLocation(int locationIdx)
+        {
+            TravelPointsDisplay currentHub = travelPointsDisplays[currentHubIdx];
+            currentHub.locations[locationIdx].NextCardToFind.SetActive(false);
         }
     }
 }

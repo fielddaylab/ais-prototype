@@ -1,0 +1,21 @@
+#include "Header.leaf"
+
+// #region Fallbacks
+
+// The game jumps here automatically (instead of showing choices) when the player
+// has run out of time. Define a node with this name in each chapter file to customize.
+:: Fallback.OutOfTime
+@exposed
+
+{@}
+        You're out of time.
+
+// The game jumps here automatically when the player still has time, but every
+// remaining choice has already been exhausted.
+:: Fallback.OutOfOptions
+@exposed
+
+{@}
+        There's nothing more you can do here.
+
+// #endregion

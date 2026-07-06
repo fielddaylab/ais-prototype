@@ -1,0 +1,48 @@
+#basePath P1_Hub
+#include "Header.leaf"
+
+:: Entry
+@exposed
+// Mark start of phase
+$set global:currentPhase = 1
+
+{@}   
+       // [This is the entry hub for Phase 1.]
+$call DisableMapButton()
+$call EnableMapButton()
+$call UnlockLocation(ResearchLab)  // P1_Lamprey
+
+// TODO: Rest of entry hub here
+
+
+:: Continue
+@exposed
+
+{@}   
+       // [This is the continue hub for Phase 1.]
+$call EnableMapButton()
+
+// TODO: Rest of continue hub here
+
+// if all Phase 1 threads have been visited, exit
+$if HasSeen(P1_NativeLamprey.End), HasSeen(P1_Lamprey.End)
+        $goto .Exit
+$endif
+
+
+:: Exit
+@exposed
+
+$call  ClearVisibleLines()
+{@}   
+       You've learned a little bit about Lamprey.
+       You've also obtained one strategy that will help address the issue.
+       Well done!
+       Take some time to prepare yourself for whatever will come your way next.
+       [End of Demo]
+      // [This is the exit hub for Phase 1.]
+
+// TODO: Rest of exit hub here
+
+// Go to Phase 2 Hub
+// $goto   P2_Hub.Entry

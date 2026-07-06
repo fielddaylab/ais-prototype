@@ -1,5 +1,8 @@
+using AIS.Intervene;
+using AIS.Narrative;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace AIS.Model
@@ -21,7 +24,11 @@ namespace AIS.Model
         #region Inspector
 
         [SerializeField] private InvasionModelPrefabs m_Prefabs;
-        [SerializeField] private InvasionModelContainer m_ModelContainer;
+        [SerializeField] public InvasionModelContainer m_ModelContainer;
+        [SerializeField] private SimDetailRegistry simDetailRegistry;
+        public SimDetailRegistry SimDetailRegistry => simDetailRegistry;
+
+        public Camera RenderCam;
 
         public InvasionModelSetupData m_InitModelSetupData; // TEMP
 
@@ -49,6 +56,21 @@ namespace AIS.Model
             gameObject.SetActive(true);
             SetModelSetupData(m_InitModelSetupData);
             RefreshSetup(invasionCurve);
+
+            simDetailRegistry?.InitDetails();
+            if (simDetailRegistry != null)
+            {
+                foreach (SimDetail simDetail in simDetailRegistry.Details)
+                {
+                    foreach (ISimDetail detail in simDetail.Targets)
+                    {
+                        if (simDetailRegistry.DetailsToShow.Contains(detail))
+                            detail.Show();
+                        else
+                            detail.Hide();
+                    }
+                }
+            }
         }
 
         /// <summary>

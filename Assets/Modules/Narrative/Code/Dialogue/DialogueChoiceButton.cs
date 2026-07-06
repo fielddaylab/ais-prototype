@@ -31,6 +31,7 @@ namespace AIS.Narrative {
         public GameObject TimeGroup;
 
         [NonSerialized] public bool Clicked;
+
         private void Awake() {
             Listener.onClick.Register(() => Clicked = true);
         }
@@ -51,6 +52,7 @@ namespace AIS.Narrative {
         public PlayerStatId StatId;
         public int StatThreshold;
         public int TimeConsumed;
+        public bool Once;
 
         static public DialogueChoiceRequirements Read(LeafChoice choice, int choiceIndex) {
             DialogueChoiceRequirements requirements = default;
@@ -66,7 +68,7 @@ namespace AIS.Narrative {
                     requirements.StatId = PlayerStatId.Ranger;
                 } else if (statIdHash == "Research") {
                     requirements.StatId = PlayerStatId.Research;
-                } else if (statIdHash == "Innovator") {
+                } else if (statIdHash == "Innovate" || statIdHash == "Innovator") {
                     requirements.StatId = PlayerStatId.Innovate;
                 }
             }
@@ -75,7 +77,9 @@ namespace AIS.Narrative {
             requirements.StatThreshold = checkStatValue.AsInt();
 
             choice.TryGetCustomData(choiceIndex, "Time", out var timeValue);
-            requirements.TimeConsumed = Math.Min(timeValue.AsInt(), MaxTimeConsumed);
+            requirements.TimeConsumed = (int) Math.Min(timeValue.AsUInt(), MaxTimeConsumed);
+
+            requirements.Once = choice.HasCustomData(choiceIndex, "Once");
 
             return requirements;
         }

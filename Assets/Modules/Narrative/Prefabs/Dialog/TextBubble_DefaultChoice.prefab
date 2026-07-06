@@ -73,7 +73,7 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
-  m_UseSpriteMesh: 1
+  m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
 --- !u!1001 &9218796298175134948
 PrefabInstance:
@@ -105,7 +105,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3775999569407377305, guid: ffbb30178c6e70b4d9616b06af86c963, type: 3}
       propertyPath: m_maxLineWidth
-      value: 200
+      value: 400
       objectReference: {fileID: 0}
     - target: {fileID: 3775999569407377305, guid: ffbb30178c6e70b4d9616b06af86c963, type: 3}
       propertyPath: m_VerticalAlignment
@@ -238,6 +238,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6422463037750317989, guid: ffbb30178c6e70b4d9616b06af86c963, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2463905484463831699}
+    - targetCorrespondingSourceObject: {fileID: 6422463037750317989, guid: ffbb30178c6e70b4d9616b06af86c963, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3799624443006632802}
     - targetCorrespondingSourceObject: {fileID: 7185750788577296261, guid: ffbb30178c6e70b4d9616b06af86c963, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8488326295741825644}
@@ -282,6 +285,7 @@ MonoBehaviour:
   Flags: 0
   TooltipHeader: 
   Tooltip: 
+  TooltipFooter: 
 --- !u!1 &2796333468060299073 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6422463037750317989, guid: ffbb30178c6e70b4d9616b06af86c963, type: 3}
@@ -299,7 +303,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0ee9ada8f4708449bf28c853a7a697c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Positioner: {fileID: 3799624443006632802}
   Layout: {fileID: 346806614066988506}
+  Padding: {fileID: 0}
   RootPivot: {fileID: 1593249569663048262}
   Visibility: {fileID: 4396757449713183671}
   Offset: {fileID: 2463905484463831699}
@@ -307,6 +313,7 @@ MonoBehaviour:
   CharacterName: {fileID: 0}
   CharacterLayout: {fileID: 0}
   Tail: {fileID: 757794079819226211}
+  AdjustPivots: 0
   BackgroundColor:
   - {fileID: 6848114496992748278}
   - {fileID: 2608534636320442191}
@@ -341,6 +348,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Content: {fileID: 4724098201803321799}
   Listener: {fileID: 8488326295741825644}
+  StatRequirement: {fileID: 0}
+  StatGroup: {fileID: 0}
+  TimeRequirement: {fileID: 0}
+  TimeGroup: {fileID: 0}
 --- !u!114 &2463905484463831699
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -357,6 +368,18 @@ MonoBehaviour:
   m_Offset1: {x: 0, y: 0}
   m_Offset2: {x: 0, y: 0}
   m_Offset3: {x: 0, y: 0}
+--- !u!114 &3799624443006632802
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2796333468060299073}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d7f2d84bd0a7cf41b051794cc6d2dd3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &3786592432372020327 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5432207164625995907, guid: ffbb30178c6e70b4d9616b06af86c963, type: 3}

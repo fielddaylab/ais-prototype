@@ -20,6 +20,7 @@ namespace AIS.Intervene
                 newCard.Title = cardData.Title;
                 newCard.Description = cardData.Description;
                 newCard.ImgPath = cardData.ImgPath;
+                newCard.Suit = cardData.Suit;
                 newCard.SetBaseCost(cardData.Cost);
 
                 newCard.DiscoverResults = cardData.DiscoverResults;

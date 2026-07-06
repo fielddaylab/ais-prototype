@@ -1,0 +1,56 @@
+#basePath P1_NativeLamprey
+#include "Header.leaf"
+
+:: Start
+@trigger    OnLocationChanged
+// "NONE" ensures no other threads are in-progress
+// global:currentPhase == 1 ensures player is in phase 1
+@when       global:currentThread == "NONE", global:currentPhase == 1, location == "DNROffice"
+@cutscene
+// Lock all location on map
+$call SetInThreadLocks()
+$call DisableMapButton()
+$call SetBackground("bg/bg-dnr-office.png")
+
+// Mark start of thread
+$set global:currentThread = "P1_NativeLamprey"
+
+$call  ClearVisibleLines()
+{@}     
+       A few people are working in the DNR office.
+       You notice a biologist at a nearby desk and approach.
+
+{@Player}
+       Hello! I just learned about Lamprey and it sounds like a large problem.
+       What are people working on to address it?
+       // [This is the Native Lamprey thread in Phase 1.]
+
+{@Biologist}
+       It's not an easy issue to deal with. Especially if it's just us working on it.
+       One thing that will always be helpful is getting the word out.
+       Want to run an outreach campaign to spread awareness?
+
+{@Player}
+       Let's do it.
+
+// TODO: Rest of thread here
+
+$call GiveActionCard("example-action-card-1")
+
+{@}
+       This will be useful.
+
+// TEMPORARY: skip to end
+$goto .End
+
+
+:: End
+@tracked
+// Unlock next locations
+$call UnlockLocation(ResearchLab)  // P1_Lamprey
+
+// Mark end of thread
+$set global:currentThread = "NONE"
+
+// Go to Phase 1 Continue Hub
+$goto P1_Hub.Continue

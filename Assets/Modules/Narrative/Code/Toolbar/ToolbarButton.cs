@@ -1,6 +1,7 @@
 using BeauUtil.UI;
 using FieldDay;
 using FieldDay.Components;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace AIS.Narrative {
@@ -8,5 +9,6 @@ namespace AIS.Narrative {
         public PointerListener Listener;
         public Graphic Display;
         public Graphic Flash;
+        public CanvasGroup Fader;
     }
 }

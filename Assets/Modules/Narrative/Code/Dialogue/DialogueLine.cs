@@ -22,7 +22,9 @@ namespace AIS.Narrative {
         [Serializable] public sealed class Pool : SerializablePool<DialogueLine> { }
 
         [Header("Layout")]
+        public DialogueColumnLayoutElement Positioner;
         public LayoutSizeGroup Layout;
+        public LayoutStyleInfo Padding;
         public RectTransform RootPivot;
         public CanvasGroup Visibility;
         public LayoutOffset Offset;
@@ -36,6 +38,7 @@ namespace AIS.Narrative {
 
         [Header("Tail")]
         public RectTransform Tail;
+        public bool AdjustPivots;
 
         [Header("Styling")]
         public Graphic[] BackgroundColor;
@@ -69,6 +72,10 @@ namespace AIS.Narrative {
                 } else {
                     CharacterLayout.gameObject.SetActive(false);
                 }
+
+                if (Padding) {
+                    Padding.Style.MarginUpper.y = CharacterLayout.gameObject.activeSelf ? CharacterName.preferredHeight + CharacterLayout.Padding.y : 0;
+                }
             }
 
             SetTextStyle(Find.NamedAsset<TextStyle>(data.TextStyle), tailOverride);
@@ -90,7 +97,7 @@ namespace AIS.Narrative {
             SetContentColor(style.Colors.Content);
             SetBackgroundColor(style.Colors.Background);
             SetRoundingMultiplier(style.RoundingMultiplier);
-            SetTailMode(tailOverride.GetValueOrDefault(style.TailMode));
+            SetTailMode(tailOverride.GetValueOrDefault(style.TailMode), AdjustPivots);
         }
 
         public void SetBackgroundColor(Color color) {
@@ -118,7 +125,7 @@ namespace AIS.Narrative {
             }
         }
 
-        public void SetTailMode(TextStyleTailMode tailMode) {
+        public void SetTailMode(TextStyleTailMode tailMode, bool adjustPivots) {
             if (!Tail) {
                 return;
             }
@@ -127,16 +134,38 @@ namespace AIS.Narrative {
             switch (tailMode) {
                 case TextStyleTailMode.Center: {
                     Positioning.SetAnchorOffsetX(Tail, 0.5f, 0);
+                    if (adjustPivots) {
+                        Positioning.SetAnchor(RootPivot, TextAnchor.LowerCenter);
+                        Positioning.SetPivot(RootPivot, TextAnchor.MiddleCenter);
+                    }
                     break;
                 }
                 case TextStyleTailMode.Left: {
                     Positioning.SetAnchorOffsetX(Tail, 0, 32f);
+                    if (adjustPivots) {
+                        Positioning.SetAnchor(RootPivot, TextAnchor.LowerLeft);
+                        Positioning.SetPivot(RootPivot, TextAnchor.MiddleLeft);
+                    }
                     break;
                 }
                 case TextStyleTailMode.Right: {
                     Positioning.SetAnchorOffsetX(Tail, 1, -32f);
+                    if (adjustPivots) {
+                        Positioning.SetAnchor(RootPivot, TextAnchor.LowerRight);
+                        Positioning.SetPivot(RootPivot, TextAnchor.MiddleRight);
+                    }
                     break;
                 }
+                case TextStyleTailMode.Hidden: {
+                    if (adjustPivots) {
+                        Positioning.SetAnchor(RootPivot, TextAnchor.LowerCenter);
+                        Positioning.SetPivot(RootPivot, TextAnchor.MiddleCenter);
+                    }
+                    break;
+                }
+            }
+            if (Padding) {
+                Padding.Style.MarginLower.y = tailMode != TextStyleTailMode.Hidden ? 32 : 0;
             }
         }
 

@@ -1,0 +1,83 @@
+#basePath P3_Hub
+#include "Header.leaf"
+
+:: Entry
+@exposed
+// Mark start of phase
+$set global:currentPhase = 3
+
+{@}   
+       [This is the entry hub for Phase 3.]
+$call EnableMapButton()
+$call UnlockLocation(FishingDocks)        // P3_CiscoTroutDecision
+$call UnlockLocation(FieldStationTraps)   // P3_DownstreamUpstreamDecision
+
+// TODO: Rest of entry hub here
+
+
+:: Continue
+@exposed
+
+{@}   
+       [This is the continue hub for Phase 3.]
+$call EnableMapButton()
+
+// If the player has not completed both CiscoPop AND TroutPop, allow access to the other one
+$if !HasSeen(P3_CiscoPop.End)
+       $call UnlockLocation(FishingDocks)        // P3_CiscoTroutDecision
+$elseif !HasSeen(P3_TroutPop.End)
+       $call UnlockLocation(FishingDocks)        // P3_CiscoTroutDecision
+$endif
+
+// If the player has not completed both LampreyDownstream AND LampreyUpstream, allow access to the other one
+$if !HasSeen(P3_LampreyDownstream.End)
+       $call UnlockLocation(FieldStationTraps)        // P3_DownstreamUpstreamDecision
+$elseif !HasSeen(P3_LampreyUpstream.End)
+       $call UnlockLocation(FieldStationTraps)        // P3_DownstreamUpstreamDecision
+$endif
+
+// If the player has completed LampreyUpstream, and they have not completed UpstreamTraps and/or UpstreamBarriers, allow access
+$if HasSeen(P3_LampreyUpstream)
+       $if !HasSeen(P3_UpstreamTraps.End)
+              $call UnlockLocation(DNROffice)    // UpstreamTraps
+       $endif
+       $if !HasSeen(P3_UpstreamBarriers.End)
+              $call UnlockLocation(BarrierSite)  // UpstreamBarriers
+       $endif
+$endif
+
+// if player has high Tech stat AND completed CiscoPop or TroutPop, unlock P3_Sterile thread
+$if !HasSeen(P3_Sterile.End)
+       $if HasSeen(P3_CiscoPop.End), StatCheck(Tech, 3)
+              $call UnlockLocation(FieldStationSterile)
+       $elseif HasSeen(P3_TroutPop.End), StatCheck(Tech, 3)
+              $call UnlockLocation(FieldStationSterile)
+       $endif
+$endif
+
+
+// if player has high Outdoors stat AND completed LampreyDownstream or LampreyUpstream (traps branch), unlock P3_Pheromones thread
+$if !HasSeen(P3_Pheromones.End)
+       $if HasSeen(P3_LampreyDownstream.End), StatCheck(Ranger, 3)
+              $call UnlockLocation(ResearchLab)
+       $elseif HasSeen(P3_LampreyUpstream.ReceiveTrapAction), StatCheck(Ranger, 3)
+              $call UnlockLocation(ResearchLab)
+       $endif
+$endif
+
+
+// TODO: Rest of continue hub here
+
+// TODO: if all Phase 3 threads have been visited, exit
+// $goto .Exit
+
+
+:: Exit
+@exposed
+
+{@}   
+      [This is the exit hub for Phase 3.]
+
+// TODO: Rest of exit hub here
+
+// TODO: end of dialogue threads

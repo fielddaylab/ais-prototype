@@ -1,8 +1,30 @@
 // Action Cards With Effects
 
+<<<<<<< HEAD
 ::outreach-campaign
+=======
+::aquaculturist-outreach
+@title		Aquaculturist Outreach
+@suit		ranger
+@desc		Roll 1d6. If below Awareness, decrease all known Aquarium pathways.
+@path		temp.png
+@cost		1
+
+@discoverResult
+    target: path, if type = Aquarium
+    verb: reveal, 0, fixed
+    specificity: random
+    maxtargets: 2
+
+@effect
+    hardcoded
+
+
+::example-action-card-1
+>>>>>>> proto/intro-demo
 @title		Outreach Campaign
-@desc		+1 Awareness || SOCIAL Additional +1 Awareness
+@suit		ranger
+@desc		+1 Awareness
 @path		temp.png
 @cost		2
 
@@ -11,16 +33,36 @@
     verb: increase, 1, fixed
     specificity: all
 
+<<<<<<< HEAD
 @overrideEffect if Social > 1
+=======
+@overrideEffect if social > 0
+    desc: Additional +1 Awareness
+>>>>>>> proto/intro-demo
     target: aware
     verb: increase, 2, fixed
     specificity: all
 
+<<<<<<< HEAD
 ::lampricide
 @title      Lampricide
 @desc       Choose one Ecosystem: Remove 2 Lamprey || RESEARCH Remove 1 additional Lamprey
 @path       temp.png
 @cost       2
+=======
+::example-action-card-2
+@title		Boat Washing Stations
+@suit		ranger
+@desc		Decrease all "Boat Hulls" pathways by 1.
+@path		temp.png
+@cost		3
+
+@discoverResult
+    target: path, if type = BoatHulls
+    verb: reveal, 0, fixed
+    specificity: random
+    maxtargets: 2
+>>>>>>> proto/intro-demo
 
 @effect
     target: ecosystem
@@ -28,6 +70,7 @@
     specificity: specific
     maxTargets: 1
 
+<<<<<<< HEAD
 @overrideEffect if Research > 3
     target: ecosystem
     verb: modify, (-3; 0; 0), fixed
@@ -42,10 +85,16 @@
 
 @effect
     target: pathway, if type = Upstream
+=======
+@overrideEffect if social > 1
+    desc: Remove 1 affected pathway.
+    target: pathway, if type = BoatHulls
+>>>>>>> proto/intro-demo
     verb: remove, 0, fixed
     specificity: specific
     maxTargets: 1
 
+<<<<<<< HEAD
 ::lamprey-trap
 @title      Lamprey Trap
 @desc       Choose one Pathway: Add trap to pathway. When Lamprey move through it, remove 1 Lamprey
@@ -54,6 +103,79 @@
 
 @effect
     target: pathway
+=======
+::angler-outreach
+@title		Angler Outreach
+@suit		ranger
+@desc		Roll 1d6. If below Awareness, decrease all Bait Bucket pathways by 1.
+@path		temp.png
+@cost		1
+
+@discoverResult
+    target: path, if type = BaitBuckets
+    verb: reveal, 0, fixed
+    specificity: random
+    maxtargets: 2
+
+@effect
+    hardcoded
+
+::example-action-card-4
+@title		Manual Removal
+@suit		ranger
+@desc		-1 Invasive OR -1 Nest.
+@path		temp.png
+@cost		2
+
+@effect
+    target: invasive
+    target: nest
+    verb: reduce, 1, fixed
+    specificity: specific
+    maxtargets: 1
+
+@effect
+    target: invasive
+    verb: reduce, 1, fixed
+    specificity: specific
+    maxtargets: 0
+@overrideEffect if outdoor > 0
+    desc: -1 Invasive in same lake
+    target: invasive
+    verb: reduce, 1, fixed
+    specificity: specific
+    maxtargets: 1
+
+::eat-the-invasive
+@title		Eat the Invasive
+@suit		ranger
+@desc		For every 2 Awareness, remove 1 Invasive from a different ecosystem.
+@path		temp.png
+@cost		3
+
+@discoverResult
+    target: awareness
+    verb: increase, 1, fixed
+    specificity: all
+    maxtargets: 1
+
+@effect
+    target: invasive
+    verb: reduce, 1, fixed
+    specificity: specific
+    maxtargets: 1
+
+
+::example-action-card-6
+@title		Place Trap
+@suit		ranger
+@desc		Place a trap in an Ecosystem. It has a 1/6 chance of triggering per round.
+@path		temp.png
+@cost		1
+
+@effect
+    target: ecosystem
+>>>>>>> proto/intro-demo
     verb: addtrap, 1, fixed
     specificity: specific
     maxTargets: 1
@@ -71,10 +193,145 @@
     target: pathway, if effectType = Trapped
     verb: increase, 0.1, fixed
     specificity: specific
+<<<<<<< HEAD
     maxTargets: 1
 
 // TODO: overrideEffect if Innovation >= 2
 
 
+=======
+    maxtargets: 0
+@overrideEffect if tech > 0
+    desc: Place another trap in another lake
+    target: ecosystem
+    verb: addtrap, 1, fixed
+    specificity: specific
+    maxtargets: 1
+
+::example-action-card-7
+@title		Electric Barrier
+@suit		ranger
+@desc		Remove one "Currents" pathway.
+@path		temp.png
+@cost		2
+
+@discoverResult
+    target: path, if type = Currents
+    verb: reveal, 0, fixed
+    specificity: random
+    maxtargets: 2
+
+@effect
+    target: pathway, if type = Currents
+    verb: remove, 1, fixed
+    specificity: specific
+    maxtargets: 1
+
+::ballast-treatment
+@title		Ballast Treatment
+@suit		ranger
+@desc		When a "Ballast" pathway activates, -1 Invasive from source instead of moving.
+@path		temp.png
+@cost		3
+
+@discoverResult
+    target: path, if type = BallastWater
+    verb: reveal, 0, fixed
+    specificity: random
+    maxtargets: 2
+
+@effect
+    hardcoded
+
+::example-action-card-9
+@title		Field Research
+@suit		ranger
+@desc		Flip one unknown Pathway.
+@path		temp.png
+@cost		1
+
+@discoverResult
+    target: path, if dir = input
+    verb: reveal, 0, fixed
+    specificity: random
+    maxtargets: 1
+
+@effect
+    target: pathway, if type = unknown
+    verb: reveal, 0, fixed
+    specificity: specific
+    maxtargets: 1
+@overrideEffect if research > 0
+    desc: Decrease the revealed pathway by 1
+    target: pathway, if type = unknown
+    verb: reveal, 0, fixed
+    verb: reduce, 1, fixed
+    specificity: specific
+    maxtargets: 1
+
+::example-action-card-10
+@title		Chemical Removal
+@suit		ranger
+@desc		In one Ecosystem: -2 Invasive, -1 Predator, -1 Prey
+@path		temp.png
+@cost		2
+
+@discoverResult
+    target: awareness
+    verb: increase, 1, fixed
+    specificity: all
+    maxtargets: 1
+
+@effect
+    target: ecosystem
+    verb: modify, (-2; -1; -1), fixed
+    specificity: specific
+    maxtargets: 1
+@overrideEffect if research > 0
+    desc: Skip -1 Prey
+    target: ecosystem
+    verb: modify, (-2; -1; 0), fixed
+    specificity: specific
+    maxtargets: 1
+
+
+::example-action-card-11
+@title		Reproduction Supressor
+@suit		ranger
+@desc		Decrease all Nests by 1.
+@path		temp.png
+@cost		3
+
+@effect
+    target: nest
+    verb: reduce, 1, fixed
+    specificity: all
+    maxtargets: -1
+@overrideEffect if research > 0
+    desc: Decrease all Nests by an additional 1.
+    target: nest
+    verb: reduce, 2, fixed
+    specificity: all
+    maxtargets: -1
+
+::example-action-card-12
+@title		Fundraising
+@suit		ranger
+@desc		Set Budget equal to Awareness.
+@path		temp.png
+@cost		1
+
+@discoverResult
+    target: awareness
+    verb: increase, 1, fixed
+    specificity: all
+    maxtargets: 1
+
+@effect
+    target: budget
+    verb: match, 0, fixed, relative awareness
+    specificity: all
+    maxtargets: -1
+>>>>>>> proto/intro-demo
 
 // END

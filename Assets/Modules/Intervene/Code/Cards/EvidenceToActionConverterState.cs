@@ -103,6 +103,28 @@ namespace AIS.Intervene
             return actionIds;
         }
 
+        // Returns the FIRST evidence source whose conversion lists this action; default if none.
+        public static SerializedHash32 GetEvidenceSourceForAction(EvidenceToActionConverterState state, SerializedHash32 actionCardId)
+        {
+            if (state == null || state.ConversionEntriesMap == null)
+            {
+                return default;
+            }
+
+            foreach (var entry in state.ConversionEntriesMap.Values)
+            {
+                foreach (var actionResultCheck in entry.ActionResultChecks)
+                {
+                    if (actionResultCheck.ActionCardId.Equals(actionCardId))
+                    {
+                        return entry.EvidenceSource;
+                    }
+                }
+            }
+
+            return default;
+        }
+
         public static bool DoesActionResultCheckPass(ActionResultCheck toCheck)
         {
             switch (toCheck.Condition)

@@ -1,11 +1,11 @@
 // Evidence To Action Conversions
 
 ::
-@from	Evidence-Angler
+@from	Evidence-Canals
 @to		angler-outreach
 
 ::
-@from	example-evidence-card-1
+@from	evidence-lamprey
 @to		example-action-card-1
 
 
