@@ -1,8 +1,10 @@
+using BeauRoutine;
 using BeauUtil;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace AIS.Intervene
 {
@@ -23,9 +25,12 @@ namespace AIS.Intervene
 
         #region Inspector
 
-        public TMP_Text LevelValueText;
-        public TMP_Text ValueText;
+        //public TMP_Text LevelValueText;
+        //public TMP_Text ValueText;
+
         public int StartingBudget;
+        public GameObject BudgetUnit;
+        public Transform BudgetGroupTransform;
 
         #endregion // Inspector
 
@@ -57,7 +62,11 @@ namespace AIS.Intervene
         {
             WorkingBudget.BudgetLevel += amt;
 
-            LevelValueText.SetText("$" + WorkingBudget.BudgetLevel.ToStringLookup() + " per turn");
+            for (int i = 0; i < amt; i++)
+            {
+                Instantiate(BudgetUnit, BudgetGroupTransform);
+            }
+            //LevelValueText.SetText("$" + WorkingBudget.BudgetLevel.ToStringLookup() + " per turn");
         }
 
         public void ClearBudget()
@@ -68,9 +77,24 @@ namespace AIS.Intervene
 
         public void AdjustBudgetValue(int amt)
         {
+            if (amt < 0) // spend amt units of budget 
+            {
+                for (int i = WorkingBudget.Budget - 1; i > WorkingBudget.Budget - 1 - amt; i--)
+                {
+                    BudgetGroupTransform.GetChild(i).GetComponent<Image>().color = Color.grey;
+                }
+            }
+
             WorkingBudget.Budget += amt;
 
-            ValueText.SetText("$" + WorkingBudget.Budget.ToStringLookup());
+            if (amt >= 0)
+            {
+                for (int i = WorkingBudget.Budget - 1; i > WorkingBudget.Budget - 1 - amt; i--)
+                {
+                    BudgetGroupTransform.GetChild(i).GetComponent<Image>().color = Color.yellow;
+                }
+            }
+            //ValueText.SetText("$" + WorkingBudget.Budget.ToStringLookup());
         }
 
         public void BestowBudget()

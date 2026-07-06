@@ -13,7 +13,7 @@ namespace AIS.Intervene
     public class InterfacerTransitionMgr : SharedStateComponent
     {
         public InterveneBudgetInterfacer Budget;
-        public InterveneAwarenessInterfacer Awareness;
+        //public InterveneAwarenessInterfacer Awareness;
         public StatsInterfacer Stats;
         public CardInteractionMgr CardMgr;
         public InvasionCurveInterfacer CurveInterfacer;

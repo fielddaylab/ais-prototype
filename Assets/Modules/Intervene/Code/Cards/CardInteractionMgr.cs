@@ -13,7 +13,7 @@ namespace AIS.Intervene
         #region Inspector
 
         public PlayerHand Hand;
-        public PlayerActionDeck ActionDeck;
+        //public PlayerActionDeck ActionDeck;
         public PlayerDiscard Discard;
 
         [Header("Visuals DB")]

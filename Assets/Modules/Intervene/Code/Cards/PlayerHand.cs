@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace AIS.Intervene
 {
@@ -72,6 +73,21 @@ namespace AIS.Intervene
             foreach(var index in SelectedCardIndices)
             {
                 selected.Add(Cards[index]);
+
+                if (BudgetUtility.CanAfford(InterveneBudgetInterfacer.Instance, selected))
+                {
+                    for (int i = InterveneBudgetInterfacer.Instance.WorkingBudget.Budget - 1; i >= 0 ; i--)
+                    {
+                        InterveneBudgetInterfacer.Instance.BudgetGroupTransform.GetChild(i).GetComponent<Image>().color = Color.white;
+                    }
+                }
+                else
+                {
+                    for (int i = InterveneBudgetInterfacer.Instance.WorkingBudget.Budget - 1; i >= 0 ; i--)
+                    {
+                        InterveneBudgetInterfacer.Instance.BudgetGroupTransform.GetChild(i).GetComponent<Image>().color = Color.red;
+                    }
+                }
             }
 
             return selected;
