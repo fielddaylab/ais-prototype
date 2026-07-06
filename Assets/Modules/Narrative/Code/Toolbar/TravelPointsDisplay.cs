@@ -86,11 +86,18 @@ namespace AIS.Narrative
             locations[currentLocationIdx].MainImg.color = Color.cyan;
             for (int i = 0; i < locations.Length; i++)
             {
-                if (i == currentLocationIdx) { continue; }
+                if (i == currentLocationIdx)
+                {
+                    locations[i].MainImg.color = Color.yellow;
+                    locations[i].UpdateTimeBlockVisual(locations[i].Chunks);
+                    locations[i].GetComponent<Button>().interactable = true;
+                    continue;
+                }
 
                 if (UnlockedLocations.Contains(locations[i].MainImg))
                 {
                     locations[i].MainImg.color = Color.magenta;
+                    locations[i].UpdateTimeBlockVisual(locations[i].Chunks);
                     locations[i].GetComponent<Button>().interactable = true;
 
                     // TODO: refine logics for checking if there are any cards waiting to be found at a locations.
@@ -107,7 +114,7 @@ namespace AIS.Narrative
                 {
                     locations[i].MainImg.color = Color.grey;
                     locations[i].GetComponent<Button>().interactable = false;
-                    locations[i].Time.SetActive(false);
+                    locations[i].UpdateTimeBlockVisual(0);
                     locations[i].NextCardToFind.SetActive(false);
                 }
             }
@@ -115,17 +122,12 @@ namespace AIS.Narrative
             currentLocationIdx = index;
             selectedLocationIdx = index;
 
-            if (this.isActiveAndEnabled)
+            if (isActiveAndEnabled)
             {
                 StartCoroutine(UpdatePointerPositionNextFrame(index));
             }
 
             travelButton.interactable = false;
-            if (PathLine != null)
-            {
-                PathLine.gameObject.SetActive(false);
-            }
-            //ScriptHooks.DisableMapButton();
         }
 
         public void SelectLocation(int index)
@@ -174,8 +176,6 @@ namespace AIS.Narrative
             }
             */
 
-            // TODO: Set up paths between every pair of locations that can be traveled one to another
-
             selectedLocationIdx = index;
             locations[index].MainImg.color = Color.yellow;
             travelButton.interactable = true;
@@ -219,6 +219,13 @@ namespace AIS.Narrative
 
             // bool locationChanged = currentLocationIdx != selectedLocationIdx;
             MapLocation location = locations[selectedLocationIdx].LocationName;
+            if (PathLine != null)
+            {
+                PathLine.gameObject.SetActive(false);
+            }
+
+            if (currentLocationIdx != selectedLocationIdx && Game.SharedState.TryGet(out PlayerInventory _))
+                PlayerUtility.DecreaseTime(locations[selectedLocationIdx].Chunks);
 
             SetCurrentLocation(selectedLocationIdx);
 

@@ -294,19 +294,6 @@ namespace AIS.Narrative {
             mapPanel.SetInThreadLocks();
         }
 
-
-        /*
-         * For now, location indices are:
-         * 0: Fishing Docks
-         * 1: Town Hall
-         * 2: Fish Hatchery
-         * 3: DNR Office
-         * 4: Barrier Site
-         * 5: Field Station
-         * 6: University Research Lab
-         * 7: Army Corps
-         */
-
         [LeafMember("UnlockLocation")]
         static public void UnlockLocation(MapLocation location)
         {
@@ -314,6 +301,24 @@ namespace AIS.Narrative {
             mapPanel.UnlockLocation(location);
         }
 
+        [LeafMember("SetTravelTime")]
+        static public void SetTravelTimeFromCurrentTo(MapLocation location, int chunks, bool isRevealed = true)
+        {
+            var mapPanel = Find.Panel<MapDisplayPanel>();
+            mapPanel.SetTravelTimeFromCurrentTo(location, chunks, isRevealed);
+        }
+
+        /*
+        [LeafMember("SetNextCardToFind")]
+        static public void SetNextCardToFind(MapLocation location, StringHash32 evidenceId)
+        {
+            var mapPanel = Find.Panel<MapDisplayPanel>();
+            EvidenceCard evidence = Find.NamedAsset<EvidenceCard>(evidenceId);
+            mapPanel.SetNextCardAtLocation(location, evidence.Suit, evidence.isActionable);
+        }
+        */
+
+        // TODO: Delete this in later development, only use the above one
         [LeafMember("SetNextCardToFind")]
         static public void SetNextCardToFind(int locationIdx, string suit, bool isActionable = false)
         {
