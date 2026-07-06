@@ -23,39 +23,43 @@ $set global:currentThread = "P0_Intro"
        //[This is the introductory thread in Phase 0.]
 
 // TODO: Rest of thread here
-{@Ana} //I want these next few lines to be thinking, but I'm not sure of how to make the distinction
-       I had this recurring dream, when I was a kid, about sea lamprey.
-       I think it was something about their teeth that really got to me. 
-       Maybe sleeping in my childhood bed again is what brought the dream back. 
+{@Ana} 
+       </i>I had this recurring dream, when I was a kid, about sea lamprey.</i>
+       </i>I think it was something about their teeth that really got to me.</i> 
+       </i>Maybe sleeping in my childhood bed again is what brought the dream back.</i> 
 
 {@}
        You stand in front of the mirror you dented at 15, brushing your hair.
 
-{@Ana} //still thinking
-       After all this time, it's hard to tell. 
+{@Ana} 
+       </i>After all this time, it's hard to tell.</i> 
 
 {@}
        A knock at the door. Your mom sticks her head inside. 
 
 {@Mom}
-       Você tá pronta? </i>Are you ready?</i>
+       Você tá pronta? 
+       </b>[Are you ready?]</b>
 
 {@Ana}
-       Tou sim. </i>Yeah, I am.</i>
+       Tou sim. 
+       </b>[Yeah, I am.]</b>
 
 {@Mom}
-       Ok. Tenha um bom dia hoje. Te amo. </i>Have a good day today. I love you.</i>
+       Ok. Tenha um bom dia hoje. Te amo. 
+       </b>[Have a good day today. I love you.]</b>
 
 {@Ana}
-       Te amo também. </i>I love you, too.</i>
+       Te amo também. 
+       </b>[I love you, too.]</b>
 
 {@}
        She steps out. 
        You put down the brush. 
 
-{@Ana} //thinking
-       No time like the present. 
-       Right?
+{@Ana} 
+       </i>No time like the present.</i> 
+       </i>Right?</i>
 
 //at this point we go to the sea grant building
 
@@ -65,9 +69,9 @@ $set global:currentThread = "P0_Intro"
 {@Renée}
        Ana, right?
 
-{@}
+{@Ana}
        That's me. You must be Renée. 
-
+       
 {@Renée}
        It's nice to finally meet you. I hope the move wasn't too difficult. 
 
@@ -133,7 +137,7 @@ $set global:currentThread = "P0_Intro"
        You open the map. You think about concentric circles of tiny teeth. 
 
 {@Ana}
-       No time like the present, huh. //thinking
+       </i>No time like the present, huh.</i>
 
 {@}
        You begin. 

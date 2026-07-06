@@ -15,7 +15,15 @@ $call DisableMapButton()
 $set global:currentThread = "P1_Lamprey"
 
 {@}   
-       [This is the Lamprey thread in Phase 1.]
+       The university. What better place to learn about sea lamprey than at the very place researching them?
+       You knock on the door to lab. 
+       After a moment, a young woman in a fashionably tailored lab coat opens it.
+
+{@Priya}
+       Hello? Oh, yeah. Come in. I've been waiting for you. 
+
+{@}
+       You follow her in. 
 
 // TODO: Rest of thread here
 
