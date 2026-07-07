@@ -10,6 +10,7 @@ namespace AIS.Narrative {
     public sealed class PlayerInventory : ISharedState, IRegistrationCallbacks {
         public readonly HashSet<StringHash32> EvidenceChips;
         public readonly HashSet<StringHash32> ActionCards;
+        public readonly HashSet<StringHash32> Scenarios;
         public readonly VariantTable GlobalVars;
         public readonly VariantTable LevelVars;
         public int TimeRemaining;
@@ -18,6 +19,7 @@ namespace AIS.Narrative {
         public PlayerInventory() {
             EvidenceChips = SetUtils.Create<StringHash32>(24);
             ActionCards = SetUtils.Create<StringHash32>(24);
+            Scenarios = SetUtils.Create<StringHash32>(24);
             GlobalVars = new VariantTable("global", 32);
             LevelVars = new VariantTable("level", 32);
             TimeRemaining = 20;

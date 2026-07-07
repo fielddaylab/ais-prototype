@@ -173,8 +173,16 @@ MonoBehaviour:
   LocationName: 0
   MainImg: {fileID: 4836181604061081335}
   EmphasisImg: {fileID: 4658651901813257593}
-  Time: {fileID: 2289333985238924863}
+  Chunks: 0
+  TimeDisplay: {fileID: 2289333985238924863}
   NextCardToFind: {fileID: 808009166803390953}
+  m_UnitSprites:
+  - {fileID: -7352664550879960363, guid: 67ad1be2da52d50409d2d278fe8cc877, type: 3}
+  - {fileID: 6293501518269557312, guid: 67ad1be2da52d50409d2d278fe8cc877, type: 3}
+  - {fileID: -6815810491483390975, guid: 67ad1be2da52d50409d2d278fe8cc877, type: 3}
+  - {fileID: 4613115529637828903, guid: 67ad1be2da52d50409d2d278fe8cc877, type: 3}
+  - {fileID: -3460734942905223259, guid: 67ad1be2da52d50409d2d278fe8cc877, type: 3}
+  m_FlashDuration: 0.35
 --- !u!1 &1978338367740302590
 GameObject:
   m_ObjectHideFlags: 0

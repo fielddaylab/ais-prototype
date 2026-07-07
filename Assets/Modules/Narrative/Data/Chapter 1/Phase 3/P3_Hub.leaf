@@ -36,19 +36,35 @@ $elseif !HasSeen(P3_LampreyUpstream.End)
        $call UnlockLocation(FieldStationTraps)        // P3_DownstreamUpstreamDecision
 $endif
 
-// if player has high Tech stat AND completed CiscoPop or TroutPop, unlock P3_Sterile thread
-$if HasSeen(P3_CiscoPop.End), StatCheck(Tech, 3)
-       $call UnlockLocation(FieldStationSterile)
-$elseif HasSeen(P3_TroutPop.End), StatCheck(Tech, 3)
-       $call UnlockLocation(FieldStationSterile)
+// If the player has completed LampreyUpstream, and they have not completed UpstreamTraps and/or UpstreamBarriers, allow access
+$if HasSeen(P3_LampreyUpstream)
+       $if !HasSeen(P3_UpstreamTraps.End)
+              $call UnlockLocation(DNROffice)    // UpstreamTraps
+       $endif
+       $if !HasSeen(P3_UpstreamBarriers.End)
+              $call UnlockLocation(BarrierSite)  // UpstreamBarriers
+       $endif
 $endif
 
-// if player has high Outdoors stat AND completed LampreyDownstream or LampreyUpstream (traps branch), unlock P3_Pheromones thread
-$if HasSeen(P3_LampreyDownstream.End), StatCheck(Ranger, 3)
-       $call UnlockLocation(ResearchLab)
-$elseif HasSeen(P3_LampreyUpstream.ReceiveTrapAction), StatCheck(Ranger, 3)
-       $call UnlockLocation(ResearchLab)
+// if player has high Tech stat AND completed CiscoPop or TroutPop, unlock P3_Sterile thread
+$if !HasSeen(P3_Sterile.End)
+       $if HasSeen(P3_CiscoPop.End), StatCheck(Tech, 3)
+              $call UnlockLocation(FieldStationSterile)
+       $elseif HasSeen(P3_TroutPop.End), StatCheck(Tech, 3)
+              $call UnlockLocation(FieldStationSterile)
+       $endif
 $endif
+
+
+// if player has high Outdoors stat AND completed LampreyDownstream or LampreyUpstream (traps branch), unlock P3_Pheromones thread
+$if !HasSeen(P3_Pheromones.End)
+       $if HasSeen(P3_LampreyDownstream.End), StatCheck(Ranger, 3)
+              $call UnlockLocation(ResearchLab)
+       $elseif HasSeen(P3_LampreyUpstream.ReceiveTrapAction), StatCheck(Ranger, 3)
+              $call UnlockLocation(ResearchLab)
+       $endif
+$endif
+
 
 // TODO: Rest of continue hub here
 

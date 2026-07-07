@@ -118,7 +118,7 @@ namespace AIS.Narrative {
         // Recomputes the single source-of-truth PlayerStats.StatBlock from the suits of every
         // card the player currently holds (evidence chips + action cards), then writes it back.
         // Runs on panel open so the displayed stats always match current inventory.
-        private void RecomputeStats(in PlayerInventory inv) {
+        public void RecomputeStats(in PlayerInventory inv) {
             PlayerStatBlock block = default;
 
             foreach (var id in inv.EvidenceChips) {

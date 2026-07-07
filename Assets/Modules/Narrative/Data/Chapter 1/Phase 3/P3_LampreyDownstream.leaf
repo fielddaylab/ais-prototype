@@ -16,20 +16,57 @@ $set global:currentThread = "P3_LampreyDownstream"
 // TODO: Give evidence chip
 // $call GiveEvidenceChip([Evidence])
 
-// TODO: Give action card
-// $call GiveActionCard([Action])
-
-// TODO: Give action card IF High research
-// $call GiveActionCard([Action])
-
-// TEMPORARY: skip to end
-$goto .ReceiveTrapAction
+$call UnlockLocation(DNROffice)
+$call EnableMapButton()
 
 
-:: ReceiveTrapAction
-@tracked
+
+:: AtDNROffice
+@trigger    OnLocationChanged
+// global:currentThread ensures the correct thread
+// global:currentPhase == 3 ensures player is in phase 3
+@when       global:currentThread == "P3_LampreyDownstream", global:currentPhase == 3, location == "DNROffice"
+// Lock all location on map
+$call SetInThreadLocks()
+$call DisableMapButton()
+
 {@}   
-       [This is where the player receives the traps action.]
+       [This is the DNR Office section.]
+
+// TODO: Rest of DNR Office section here
+
+// TODO: Give evidence chip
+// $call GiveEvidenceChip([Evidence])
+
+$call UnlockLocation(ArmyCorps)
+$call EnableMapButton()
+
+
+:: AtArmyCorps
+@trigger    OnLocationChanged
+// global:currentThread ensures the correct thread
+// global:currentPhase == 3 ensures player is in phase 3
+@when       global:currentThread == "P3_LampreyDownstream", global:currentPhase == 3, location == "ArmyCorps"
+// Lock all location on map
+$call SetInThreadLocks()
+$call DisableMapButton()
+
+{@}   
+       [This is the Army Corps section.]
+
+// TODO: Rest of Army Corps section here
+
+// TODO: Give action card (traps on downstream)
+// $call GiveActionCard([Action])
+
+// TODO: Give action card IF High research (traps on upstream)
+$if StatCheck(Research, 3)
+       $if HasActionCard()
+              // handle player already has action card from LampreyUpstream thread
+       $else
+              // $call GiveActionCard([Action])
+       $endif
+$endif
 
 // TEMPORARY: skip to end
 $goto .End

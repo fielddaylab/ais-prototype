@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6374628d737c9d24486747a92e860022, type: 3}
-  m_Name: Evidence-Decreasing-Fish-Populations
+  m_Name: evidence-cisco
   m_EditorClassIdentifier: 
   Id:
     m_HashValue: 0
-  Suit: 0
+  Suit: 4
   Illustration: {fileID: 0}
-  Label: 
-  isActionable: 0
-  ActivateLocation: 0
+  Label: Decrease in Cisco population.
+  isActionable: 1
+  ActivateLocation: 2

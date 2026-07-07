@@ -17,6 +17,9 @@ namespace AIS.Narrative {
 
         [LeafMember("StatCheck")]
         static public bool StatCheck(PlayerStatId statId, int value) {
+            var evidencePanel = Find.Panel<EvidenceDisplayPanel>();
+            var inv = Find.State<PlayerInventory>();
+            evidencePanel.RecomputeStats(inv);
             return Find.State<PlayerStats>().StatBlock[statId] >= value;
         }
 
@@ -132,6 +135,33 @@ namespace AIS.Narrative {
             }
         }
 
+        [LeafMember("SetScenarioData")]
+        static public IEnumerator ScriptSetScenarioData([BindThread] ScriptThread thread, StringHash32 id)
+        {
+            PlayerInventory inv = Find.State<PlayerInventory>();
+            if (inv.ActionCards.Add(id))
+            {
+                if (thread.IsSkipping())
+                {
+                    yield break;
+                }
+
+                DialogueColumn column = (DialogueColumn)thread.GetPrinter();
+                if (column)
+                {
+                    NewCardElement card = TextUtility.SpawnScenarioCard(column, id);
+                    yield return TextUtility.WaitForConfirm(card);
+                    yield return EnsureNotesVisible(inv);
+                    yield return TextUtility.FlyScenarioToToolbar(card, Find.GuiModule<ToolbarPanel>().EvidenceButton);
+                }
+                else
+                {
+                    yield return EnsureNotesVisible(inv);
+                }
+            }
+
+        }
+
         [LeafMember("EnableFieldNotesButton")]
         static public IEnumerator EnableNotesButton()
         {
@@ -219,6 +249,20 @@ namespace AIS.Narrative {
             return inv.EvidenceChips.Contains(id);
         }
 
+        [LeafMember("HasEvidence")]
+        static public bool HasEvidence(StringHash32 id)
+        {
+            PlayerInventory inv = Find.State<PlayerInventory>();
+            return inv.EvidenceChips.Contains(id);
+        }
+
+        [LeafMember("HasActionCard")]
+        static public bool HasActionCard(StringHash32 id)
+        {
+            PlayerInventory inv = Find.State<PlayerInventory>();
+            return inv.ActionCards.Contains(id);
+        }
+
         [LeafMember("HideToolbar")]
         static public void HideToolbar()
         {
@@ -246,19 +290,6 @@ namespace AIS.Narrative {
             mapPanel.SetInThreadLocks();
         }
 
-
-        /*
-         * For now, location indices are:
-         * 0: Fishing Docks
-         * 1: Town Hall
-         * 2: Fish Hatchery
-         * 3: DNR Office
-         * 4: Barrier Site
-         * 5: Field Station
-         * 6: University Research Lab
-         * 7: Army Corps
-         */
-
         [LeafMember("UnlockLocation")]
         static public void UnlockLocation(MapLocation location)
         {
@@ -266,6 +297,24 @@ namespace AIS.Narrative {
             mapPanel.UnlockLocation(location);
         }
 
+        [LeafMember("SetTravelTime")]
+        static public void SetTravelTimeFromCurrentTo(MapLocation location, int chunks, bool isRevealed = true)
+        {
+            var mapPanel = Find.Panel<MapDisplayPanel>();
+            mapPanel.SetTravelTimeFromCurrentTo(location, chunks, isRevealed);
+        }
+
+        /*
+        [LeafMember("SetNextCardToFind")]
+        static public void SetNextCardToFind(MapLocation location, StringHash32 evidenceId)
+        {
+            var mapPanel = Find.Panel<MapDisplayPanel>();
+            EvidenceCard evidence = Find.NamedAsset<EvidenceCard>(evidenceId);
+            mapPanel.SetNextCardAtLocation(location, evidence.Suit, evidence.isActionable);
+        }
+        */
+
+        // TODO: Delete this in later development, only use the above one
         [LeafMember("SetNextCardToFind")]
         static public void SetNextCardToFind(int locationIdx, string suit, bool isActionable = false)
         {

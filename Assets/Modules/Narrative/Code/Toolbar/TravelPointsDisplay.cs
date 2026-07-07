@@ -5,6 +5,8 @@ using FieldDay;
 using FieldDay.Scripting;
 using FieldDay.UI;
 using FieldDay.UI.Widgets;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -25,7 +27,7 @@ namespace AIS.Narrative
             // origin & dest
             //public float travelTime;
             //public GameObject time;
-            public Image line;
+            //public Image line;
         }
 
         public Vector3 cameraTransform;
@@ -33,7 +35,8 @@ namespace AIS.Narrative
 
         public TravelPoint[] locations;
         [HideInInspector] public List<Image> UnlockedLocations = new List<Image>();
-        public Path[] paths;
+        //public Path[] paths;
+        public Image PathLine;
 
         private int currentLocationIdx;
         private int selectedLocationIdx;
@@ -51,13 +54,6 @@ namespace AIS.Narrative
             travelButton.interactable = false;
         }
 
-        private void Start()
-        {
-            RectTransform pointerTransform = LocPointer.GetComponent<RectTransform>();
-            RectTransform currentLocTransform = locations[currentLocationIdx].MainImg.GetComponent<RectTransform>();
-            pointerTransform.position = currentLocTransform.position;
-        }
-
         /// <summary>
         /// Returns the index within <see cref="locations"/> whose <see cref="TravelPoint.LocationName"/>
         /// matches the given <paramref name="location"/>, or -1 if none match.
@@ -72,6 +68,16 @@ namespace AIS.Narrative
                 }
             }
             return -1;
+        }
+        private IEnumerator UpdatePointerPositionNextFrame(int index)
+        {
+            yield return null; // wait one frame for layout/LayoutOffset to settle
+            RectTransform pointerTransform = LocPointer.GetComponent<RectTransform>();
+            RectTransform currentLocTransform = locations[index].MainImg.GetComponent<RectTransform>();
+            if (pointerTransform != null && currentLocTransform != null)
+            {
+                pointerTransform.position = currentLocTransform.position;
+            }
         }
 
         public void SetCurrentLocation(int index)
@@ -101,22 +107,20 @@ namespace AIS.Narrative
                 {
                     locations[i].MainImg.color = Color.grey;
                     locations[i].GetComponent<Button>().interactable = false;
-                    locations[i].Time.SetActive(false);
+                    locations[i].UpdateTimeBlockVisual(0);
                     locations[i].NextCardToFind.SetActive(false);
                 }
             }
 
             currentLocationIdx = index;
             selectedLocationIdx = index;
-            RectTransform pointerTransform = LocPointer.GetComponent<RectTransform>();
-            RectTransform currentLocTransform = locations[currentLocationIdx].MainImg.GetComponent<RectTransform>();
-            if (pointerTransform != null)
+
+            if (isActiveAndEnabled)
             {
-                pointerTransform.position = currentLocTransform.position;
+                StartCoroutine(UpdatePointerPositionNextFrame(index));
             }
 
             travelButton.interactable = false;
-            //ScriptHooks.DisableMapButton();
         }
 
         public void SelectLocation(int index)
@@ -141,42 +145,57 @@ namespace AIS.Narrative
             {
                 locations[selectedLocationIdx].MainImg.color = Color.magenta;
                 locations[currentLocationIdx].MainImg.color = Color.cyan;
+                Path route = new Path()
+                {
+                    Origin = locations[currentLocationIdx].MainImg,
+                    Destination = locations[index].MainImg
+                };
+                DrawPath(route);
             }
             else
             {
                 locations[selectedLocationIdx].MainImg.color = Color.magenta;
                 selectedLocationIdx = 0;
+                PathLine.gameObject.SetActive(false);
                 return;
             }
 
-                // Return to hub selection if player is currently at hub and selected hub
-                /*
-                if (currentLocationIdx == 0 && index == 0)
-                {
-                    mapDisplayPanel.ShowHubSelectionPanel();
-                    return;
-                }
-                */
-
-                // Highlight new selected location and path
-
-                // TODO: Set up paths between every pair of locations that can be traveled one to another
-            selectedLocationIdx = index;
-            foreach (Path path in paths)
+            // Return to hub selection if player is currently at hub and selected hub
+            /*
+            if (currentLocationIdx == 0 && index == 0)
             {
-                if (path.connectedLocations.Contains(locations[currentLocationIdx].MainImg) &&
-                    path.connectedLocations.Contains(locations[index].MainImg))
-                {
-                    path.line.gameObject.SetActive(true);
-                }
-                else
-                    path.line.gameObject.SetActive(false);
+                mapDisplayPanel.ShowHubSelectionPanel();
+                return;
             }
-            locations[index].MainImg.color = Color.yellow;
+            */
 
+            selectedLocationIdx = index;
+            locations[index].MainImg.color = Color.yellow;
             travelButton.interactable = true;
         }
 
+        private void DrawPath(Path path)
+        {
+            Vector2 originPos = path.Origin.GetComponent<RectTransform>().anchoredPosition;
+            Vector2 destPos = path.Destination.GetComponent<RectTransform>().anchoredPosition;
+
+            // set path length to be sqrt((originX - destX)^2 + (originY - destY)^2)
+            float length = (float) Math.Sqrt(Math.Pow((originPos.x - destPos.x), 2) + Math.Pow((originPos.y - destPos.y), 2));
+            RectTransform rt = PathLine.GetComponent<RectTransform>();
+            rt.sizeDelta = new Vector2(length, rt.sizeDelta.y);
+
+            // set path position to be 0.5((originX + destX), (originY + destY))
+            rt.anchoredPosition = new Vector2((float) 0.5 * (originPos.x + destPos.x), (float) 0.5 * (originPos.y + destPos.y));
+
+            // calculate z rotation value: sin^-1(diffY / length) * Mathf.Rad2Deg
+            // positive z: CCW; negative z: CW
+            if (originPos.x >= destPos.x)
+                rt.localRotation = Quaternion.Euler(0, 0, (float) Math.Asin((originPos.y - destPos.y) / length) * Mathf.Rad2Deg);
+            else
+                rt.localRotation = Quaternion.Euler(0, 0, (float) Math.Asin((destPos.y - originPos.y) / length) * Mathf.Rad2Deg);
+
+            PathLine.gameObject.SetActive(true);
+        }
 
         public void EnableReturnTo(int originIdx)
         {
@@ -193,6 +212,13 @@ namespace AIS.Narrative
 
             // bool locationChanged = currentLocationIdx != selectedLocationIdx;
             MapLocation location = locations[selectedLocationIdx].LocationName;
+            if (PathLine != null)
+            {
+                PathLine.gameObject.SetActive(false);
+            }
+
+            if (currentLocationIdx != selectedLocationIdx && Game.SharedState.TryGet(out PlayerInventory _))
+                PlayerUtility.DecreaseTime(locations[selectedLocationIdx].Chunks);
 
             SetCurrentLocation(selectedLocationIdx);
 
