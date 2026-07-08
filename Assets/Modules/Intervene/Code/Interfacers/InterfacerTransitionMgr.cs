@@ -17,6 +17,8 @@ namespace AIS.Intervene
         public StatsInterfacer Stats;
         public CardInteractionMgr CardMgr;
         public InvasionCurveInterfacer CurveInterfacer;
+
+        public InterveneSwapDeckInterfacer SwapDeck;
         [HideInInspector] public InvasionModel InvasionModel;
 
         private Routine m_LoadRoutine;

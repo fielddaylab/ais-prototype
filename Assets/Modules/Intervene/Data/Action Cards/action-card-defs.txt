@@ -1,8 +1,5 @@
 // Action Cards With Effects
 
-<<<<<<< HEAD
-::outreach-campaign
-=======
 ::aquaculturist-outreach
 @title		Aquaculturist Outreach
 @suit		ranger
@@ -21,7 +18,6 @@
 
 
 ::example-action-card-1
->>>>>>> proto/intro-demo
 @title		Outreach Campaign
 @suit		ranger
 @desc		+1 Awareness
@@ -33,23 +29,12 @@
     verb: increase, 1, fixed
     specificity: all
 
-<<<<<<< HEAD
-@overrideEffect if Social > 1
-=======
 @overrideEffect if social > 0
     desc: Additional +1 Awareness
->>>>>>> proto/intro-demo
     target: aware
     verb: increase, 2, fixed
     specificity: all
 
-<<<<<<< HEAD
-::lampricide
-@title      Lampricide
-@desc       Choose one Ecosystem: Remove 2 Lamprey || RESEARCH Remove 1 additional Lamprey
-@path       temp.png
-@cost       2
-=======
 ::example-action-card-2
 @title		Boat Washing Stations
 @suit		ranger
@@ -62,7 +47,6 @@
     verb: reveal, 0, fixed
     specificity: random
     maxtargets: 2
->>>>>>> proto/intro-demo
 
 @effect
     target: ecosystem
@@ -70,40 +54,13 @@
     specificity: specific
     maxTargets: 1
 
-<<<<<<< HEAD
-@overrideEffect if Research > 3
-    target: ecosystem
-    verb: modify, (-3; 0; 0), fixed
-    specificity: specific
-    maxTargets: 1
-
-::lamprey-barrier
-@title      Lamprey Barrier
-@desc       Choose one “Upstream” Pathway: Remove pathway
-@path       temp.png
-@cost       2
-
-@effect
-    target: pathway, if type = Upstream
-=======
 @overrideEffect if social > 1
     desc: Remove 1 affected pathway.
     target: pathway, if type = BoatHulls
->>>>>>> proto/intro-demo
     verb: remove, 0, fixed
     specificity: specific
     maxTargets: 1
 
-<<<<<<< HEAD
-::lamprey-trap
-@title      Lamprey Trap
-@desc       Choose one Pathway: Add trap to pathway. When Lamprey move through it, remove 1 Lamprey
-@path       temp.png
-@cost       1
-
-@effect
-    target: pathway
-=======
 ::angler-outreach
 @title		Angler Outreach
 @suit		ranger
@@ -175,7 +132,6 @@
 
 @effect
     target: ecosystem
->>>>>>> proto/intro-demo
     verb: addtrap, 1, fixed
     specificity: specific
     maxTargets: 1
@@ -193,13 +149,6 @@
     target: pathway, if effectType = Trapped
     verb: increase, 0.1, fixed
     specificity: specific
-<<<<<<< HEAD
-    maxTargets: 1
-
-// TODO: overrideEffect if Innovation >= 2
-
-
-=======
     maxtargets: 0
 @overrideEffect if tech > 0
     desc: Place another trap in another lake
@@ -332,6 +281,5 @@
     verb: match, 0, fixed, relative awareness
     specificity: all
     maxtargets: -1
->>>>>>> proto/intro-demo
-
+    
 // END
