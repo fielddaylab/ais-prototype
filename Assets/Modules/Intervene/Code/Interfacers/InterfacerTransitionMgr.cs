@@ -71,6 +71,9 @@ namespace AIS.Intervene
             CurveInterfacer.LoadCurve(inInvasionCurve);
             InvasionModel.Load(CurveInterfacer.CurrVal);
 
+            SwapDeck.AddActionCards();
+            SwapDeck.LoadSwapDeck(inventory.ActionCards);
+
             // allow 1 frame for model tags to register themselves
             yield return null;
 

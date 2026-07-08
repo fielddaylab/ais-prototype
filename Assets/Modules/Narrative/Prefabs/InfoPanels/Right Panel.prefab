@@ -215,6 +215,37 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &4836755428400561891
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6261952111940038881}
+  m_Layer: 0
+  m_Name: Pools
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &6261952111940038881
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4836755428400561891}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -490, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4798204324129352601}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5501653002678027423
 GameObject:
   m_ObjectHideFlags: 0
@@ -573,6 +604,7 @@ RectTransform:
   - {fileID: 2428338255603210014}
   - {fileID: 1472884186757238553}
   - {fileID: 5444643922269963773}
+  - {fileID: 6261952111940038881}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
@@ -595,11 +627,11 @@ MonoBehaviour:
   ActionCardPool:
     m_Prefab: {fileID: 4069671146206970419}
     m_Name: 
-    m_InitialCapacity: 32
+    m_InitialCapacity: 4
     m_PrewarmOnInitialize: 1
-    m_InitialPrewarm: 16
-    m_DefaultPoolRoot: {fileID: 0}
-    m_DefaultSpawnRoot: {fileID: 0}
+    m_InitialPrewarm: 4
+    m_DefaultPoolRoot: {fileID: 6261952111940038881}
+    m_DefaultSpawnRoot: {fileID: 8162499034957891199}
     m_ResetTransformOnAlloc: 1
   FocusSlot: {fileID: 4069671146206970419}
   NoActionCardsDefault: {fileID: 660262169942650906}

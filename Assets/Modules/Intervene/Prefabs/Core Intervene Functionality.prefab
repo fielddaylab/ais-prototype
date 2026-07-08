@@ -3997,6 +3997,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SwapDeckWidget: {fileID: 5508815069887161542}
+  TestCardIds:
+  - example-action-card-1
+  - example-action-card-2
+  - example-action-card-6
 --- !u!1 &6346307577152114912
 GameObject:
   m_ObjectHideFlags: 0
@@ -5462,7 +5466,7 @@ MonoBehaviour:
   Stats: {fileID: 5104196998567571047}
   CardMgr: {fileID: 6828545506619963183}
   CurveInterfacer: {fileID: 8371057105511762094}
-  SwapDeck: {fileID: 0}
+  SwapDeck: {fileID: 8707766025391840247}
   InvasionModel: {fileID: 0}
 --- !u!1 &8310686462056475743
 GameObject:

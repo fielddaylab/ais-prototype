@@ -55,6 +55,7 @@ namespace AIS.Narrative
                 }
 
                 UICard card = ActionCardPool.Alloc();
+                card.gameObject.SetActive(true);
                 ActionCardUtility.PopulateCardUI(card, data);
                 m_SpawnedCardData.Add(data);
 

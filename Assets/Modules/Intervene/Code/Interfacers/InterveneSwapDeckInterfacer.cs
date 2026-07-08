@@ -30,11 +30,17 @@ namespace AIS.Intervene
             Instance = this;
         }
 
-        private void Start()
+        // Only for playtesting
+        public void AddActionCards()
         {
-            var ids = new List<StringHash32>(TestCardIds.Count);
-            foreach (var s in TestCardIds) ids.Add(s);
-            SwapDeckWidget.Populate(ids);
+            var inv = Find.State<PlayerInventory>();
+            inv.ActionCards.Add("example-action-card-1");
+            inv.ActionCards.Add("example-action-card-2");
+        }
+
+        public void LoadSwapDeck(IEnumerable<StringHash32> cardIds)
+        {
+            SwapDeckWidget.Populate(cardIds);
         }
     }
 }
