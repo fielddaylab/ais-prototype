@@ -16,15 +16,37 @@ $set global:currentThread = "P1_Lamprey"
 
 {@}   
        The university. What better place to learn about sea lamprey than at the very place researching them?
-       You knock on the door to lab. 
-       After a moment, a young woman in a fashionably tailored lab coat opens it.
+       You knock on the door to the lab. 
+       After a moment, a young man in a fashionably tailored lab coat opens it.
 
-{@Priya}
-       Hello? Oh, yeah. Come in. I've been waiting for you. 
+{@Arjan}
+       Hello? Oh, yeah. I've been waiting for you. 
+       Like a psychic. 
+       Haha.
+       No, Renée called me to say you'd stop by. Come in. 
 
 {@}
-       You follow her in. 
+       You follow him. 
+       A phonograph plays old-timey jazz, jumping every few beats like rocks skidding on a lake. 
 
+{@Arjan}
+       Oh. Sorry about that. It was, like, 75% off. 
+       So, what can I interest you in? Chemicals? Coffee? Student loans?
+
+{@Ana}
+       I think I'll pass on those, but I do need your help. 
+
+{@}
+       You hand him the photo of the bite on the fish. //photo pops up again?
+
+{@Arjan}
+       Sea lamprey. Huh.
+       They're an interesting specimen. Some might call them... 
+       Fishy. Yeah, that's a good one. 
+
+{@Ana}
+       Look, I don't know a lot about sea lamprey. 
+       Any information you can share with me
 // TODO: Rest of thread here
 
 // TODO: Give evidence chip
