@@ -1,3 +1,4 @@
+using AIS.Shared;
 using BeauUtil;
 using FieldDay;
 using System.Collections;
@@ -14,7 +15,7 @@ namespace AIS.Intervene
 
         public PlayerHand Hand;
         //public PlayerActionDeck ActionDeck;
-        public PlayerDiscard Discard;
+        //public PlayerDiscard Discard;
 
         [Header("Visuals DB")]
         public GameObject UICardPrefab;
@@ -61,6 +62,10 @@ namespace AIS.Intervene
 
         public void LoadSetupData(List<SerializedHash32> evidenceIds)
         {
+            Hand.AddActionCard("example-action-card-1");
+            Hand.AddActionCard("example-action-card-2");
+            Hand.AddActionCard("example-action-card-6");
+            Hand.AddActionCard("example-action-card-4");
             SetupData(evidenceIds);
             SetupVisuals();
         }
@@ -100,7 +105,7 @@ namespace AIS.Intervene
 
             foreach(var discarded in selectedCards)
             {
-                CardStackUtility.AddToTop(Discard, discarded);
+                //CardStackUtility.AddToTop(Discard, discarded);
             }
         }
 
@@ -122,7 +127,7 @@ namespace AIS.Intervene
 
             CardStackUtility.Clear(Hand);
             //CardStackUtility.Clear(ActionDeck);
-            CardStackUtility.Clear(Discard);
+            //CardStackUtility.Clear(Discard);
 
             //ActionDeck.PopulateDeck(actionCards);
             //ShuffleActionDeck();
@@ -134,7 +139,7 @@ namespace AIS.Intervene
         {
             CardStackVisualsUtility.RefreshVisuals(Hand.Visuals, Hand);
             //CardStackVisualsUtility.RefreshVisuals(ActionDeck.Visuals, ActionDeck);
-            CardStackVisualsUtility.RefreshVisuals(Discard.Visuals, Discard);
+            //CardStackVisualsUtility.RefreshVisuals(Discard.Visuals, Discard);
         }
 
         #endregion // Setup
@@ -168,7 +173,7 @@ namespace AIS.Intervene
 
         private void HandleOnEffectSpecifyConfirm()
         {
-            DiscardSelectedCards();
+            //DiscardSelectedCards();
         }
 
         #endregion // Handlers

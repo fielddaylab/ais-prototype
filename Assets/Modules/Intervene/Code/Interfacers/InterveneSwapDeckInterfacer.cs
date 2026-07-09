@@ -28,6 +28,7 @@ namespace AIS.Intervene
         private void Awake()
         {
             Instance = this;
+
         }
 
         // Only for playtesting

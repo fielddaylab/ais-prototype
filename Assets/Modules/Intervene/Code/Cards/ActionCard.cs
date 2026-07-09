@@ -182,6 +182,18 @@ namespace AIS.Intervene {
             // toPopulate.Img.SetText(Title);
         }
 
+        public void PopulateFromData(in ActionCardData data)
+        {
+            CardID = data.CardID;      // adjust to CardBase's actual field names
+            Title = data.Title;
+            Description = data.Description;
+            FocusDescription = data.FocusDescription;
+            ImgPath = data.ImgPath;
+            Suit = data.Suit;
+            Effects = data.Effects;
+            DiscoverResults = data.DiscoverResults;
+        }
+
         private void PopulateOverrideUI(UICard toPopulate)
         {
             if (toPopulate.OverrideGroup == null) { return; }

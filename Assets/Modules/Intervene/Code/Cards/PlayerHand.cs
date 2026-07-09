@@ -1,3 +1,6 @@
+using AIS.Narrative;
+using BeauUtil;
+using FieldDay;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,8 +10,33 @@ namespace AIS.Intervene
 {
     public class PlayerHand : CardStack
     {
+        public List<ActionCard> PlayerCards = new List<ActionCard>();
         public List<int> SelectedCardIndices = new List<int>();
         public bool AllowMultiSelect = false;
+
+        public void AddActionCard(StringHash32 actionId)
+        {
+            if (Game.SharedState.TryGet(out ActionCardsState cardsState))
+            {
+                if (cardsState.AllActionCards.TryGetValue(actionId, out ActionCardData data))
+                {
+                    GameObject cardObj = Instantiate(CardInteractionMgr.Instance.UICardPrefab, Visuals.CardContainer);
+                    UICard card = cardObj.GetComponent<UICard>();
+                    ActionCardUtility.PopulateCardUI(card, data);
+
+                    ActionCard newCard = new ActionCard();
+                    newCard.PopulateFromData(data);
+                    card.CardData = newCard;
+
+                    PlayerCards.Add(newCard);
+
+                    card.ClickBtn.onClick.AddListener(() => {
+                        int index = PlayerCards.IndexOf(newCard); // resolve at click time
+                        if (index >= 0) { ToggleSelectAtIndex(index); }
+                    });
+                }
+            }
+        }
 
         public void ToggleSelectAtIndex(int index)
         {
@@ -58,9 +86,13 @@ namespace AIS.Intervene
 
         private void UpdateSelectVisuals()
         {
-            for (int i = 0; i < Visuals.CardVisuals.Count; i++)
+            for (int i = 0; i < PlayerCards.Count; i++)
             {
-                Visuals.CardVisuals[i].Highlight.enabled = SelectedCardIndices.Contains(i);
+                if (Visuals.CardContainer.transform.GetChild(i) != null)
+                {
+                    UICard cardVisual = Visuals.CardContainer.transform.GetChild(i).GetComponent<UICard>();
+                    cardVisual.Highlight.GetComponent<Image>().enabled = SelectedCardIndices.Contains(i);
+                }
             }
         }
 
@@ -72,7 +104,7 @@ namespace AIS.Intervene
 
             foreach(var index in SelectedCardIndices)
             {
-                selected.Add(Cards[index]);
+                selected.Add(PlayerCards[index]);
 
                 if (BudgetUtility.CanAfford(InterveneBudgetInterfacer.Instance, selected))
                 {
