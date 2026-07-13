@@ -9,6 +9,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace AIS.Narrative
 {
@@ -24,7 +25,7 @@ namespace AIS.Narrative
 
         [Header("Focus Behavior")]
         [Tooltip("false = hover a deck card to preview it in the focus slot; true = click to focus/return/swap.")]
-        public bool ClickToFocus = false;
+        public bool ClickToFocus = true;
         public TweenSettings FocusSlideAnim = new TweenSettings(0.2f, Curve.Smooth);
         public float FocusHiddenX = 600f;
 
@@ -103,6 +104,14 @@ namespace AIS.Narrative
                 pointer.OnEnter = null;
                 pointer.OnExit = null;
                 pointer.OnClick = HandleCardClicked;
+
+                Button clickBtn = card.GetComponentInChildren<Button>(true);
+                if (clickBtn != null)
+                {
+                    int capturedIndex = index; 
+                    clickBtn.onClick.RemoveAllListeners();
+                    clickBtn.onClick.AddListener(() => HandleCardClicked(capturedIndex));
+                }
             }
             else
             {

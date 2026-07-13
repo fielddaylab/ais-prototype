@@ -14,6 +14,7 @@ namespace AIS.Intervene
     public class InterveneSwapDeckInterfacer : MonoBehaviour
     {
         public static InterveneSwapDeckInterfacer Instance;
+        public Button SwapBtn;
 
         [Header("Visuals")]
         public ActionCardDeckWidget SwapDeckWidget;
@@ -28,7 +29,17 @@ namespace AIS.Intervene
         private void Awake()
         {
             Instance = this;
+            SwapDeckWidget.gameObject.SetActive(false);
+            SwapBtn.GetComponent<Button>().onClick.AddListener(SwapBtnOnclick);
 
+        }
+
+        private void SwapBtnOnclick()
+        {
+            if (SwapDeckWidget.gameObject.activeSelf)
+                SwapDeckWidget.gameObject.SetActive(false);
+            else
+                SwapDeckWidget.gameObject.SetActive(true);
         }
 
         // Only for playtesting
