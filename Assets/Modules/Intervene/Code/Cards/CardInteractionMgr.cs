@@ -62,7 +62,7 @@ namespace AIS.Intervene
 
         public void LoadSetupData(List<SerializedHash32> evidenceIds)
         {
-            Hand.AddActionCard("example-action-card-1");
+            Hand.AddActionCard("example-action-card-7");
             Hand.AddActionCard("example-action-card-2");
             Hand.AddActionCard("example-action-card-6");
             Hand.AddActionCard("example-action-card-4");

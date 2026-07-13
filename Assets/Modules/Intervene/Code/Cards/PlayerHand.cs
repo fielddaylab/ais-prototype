@@ -14,7 +14,7 @@ namespace AIS.Intervene
         public List<int> SelectedCardIndices = new List<int>();
         public bool AllowMultiSelect = false;
 
-        public void AddActionCard(StringHash32 actionId)
+        public void AddActionCard(SerializedHash32 actionId)
         {
             if (Game.SharedState.TryGet(out ActionCardsState cardsState))
             {

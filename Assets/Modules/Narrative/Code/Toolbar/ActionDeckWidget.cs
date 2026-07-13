@@ -33,6 +33,10 @@ namespace AIS.Narrative
         private Routine m_FocusOutRoutine;
         [NonSerialized] private int m_FocusedCardIndex = -1;
         private readonly List<ActionCardData> m_SpawnedCardData = new List<ActionCardData>(24);
+        public bool HasFocusedCard
+        {
+            get { return m_FocusedCardIndex != -1; }
+        }
 
         public void Populate(IEnumerable<StringHash32> cardIds)
         {

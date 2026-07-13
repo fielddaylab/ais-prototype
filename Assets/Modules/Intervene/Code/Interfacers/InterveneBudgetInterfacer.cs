@@ -79,7 +79,7 @@ namespace AIS.Intervene
         {
             if (amt < 0) // spend amt units of budget 
             {
-                for (int i = WorkingBudget.Budget - 1; i > WorkingBudget.Budget - 1 - amt; i--)
+                for (int i = WorkingBudget.Budget - 1; i > WorkingBudget.Budget - 1 + amt; i--)
                 {
                     BudgetGroupTransform.GetChild(i).GetComponent<Image>().color = Color.grey;
                 }
@@ -193,6 +193,11 @@ namespace AIS.Intervene
             }
 
             return totalCost <= budget.WorkingBudget.Budget;
+        }
+
+        public static bool CanAfford(InterveneBudgetInterfacer budget, int cost)
+        {
+            return budget.WorkingBudget.Budget >= cost;
         }
 
         public static void Spend(InterveneBudgetInterfacer budget, int amt)
