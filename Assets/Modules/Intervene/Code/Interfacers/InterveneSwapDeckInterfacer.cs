@@ -87,7 +87,13 @@ namespace AIS.Intervene
         public void AddActionCards()
         {
             var inv = Find.State<PlayerInventory>();
+
+            // For playtesting
             inv.ActionCards.Add("example-action-card-1");
+            inv.ActionCards.Add("example-action-card-2");
+            inv.ActionCards.Add("example-action-card-4");
+            inv.ActionCards.Add("example-action-card-6");
+            inv.ActionCards.Add("example-action-card-7");
             inv.ActionCards.Add("example-action-card-9");
         }
 

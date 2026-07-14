@@ -19,6 +19,7 @@ namespace AIS.Intervene
         public InvasionCurveInterfacer CurveInterfacer;
 
         public InterveneSwapDeckInterfacer SwapDeck;
+        public InterveneCardSelectionInterfacer CardSelection;
         [HideInInspector] public InvasionModel InvasionModel;
 
         private Routine m_LoadRoutine;
@@ -73,6 +74,7 @@ namespace AIS.Intervene
 
             SwapDeck.AddActionCards();
             SwapDeck.LoadSwapDeck(inventory.ActionCards);
+            CardSelection.Load(inventory.ActionCards);
 
             // allow 1 frame for model tags to register themselves
             yield return null;

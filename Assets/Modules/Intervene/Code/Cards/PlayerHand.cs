@@ -38,6 +38,41 @@ namespace AIS.Intervene
             }
         }
 
+        public void RemoveActionCard(SerializedHash32 actionId)
+        {
+            for (int i = 0; i < PlayerCards.Count; i++)
+            {
+                if (PlayerCards[i].CardID.Equals(actionId))
+                {
+                    RemoveActionCardAtIndex(i);
+                    return;
+                }
+            }
+        }
+
+        private void RemoveActionCardAtIndex(int index)
+        {
+            if (index < 0 || index >= PlayerCards.Count) { return; }
+            PlayerCards.RemoveAt(index);
+            
+            Destroy(Visuals.CardContainer.transform.GetChild(index).gameObject);
+            // Adjust selected indices
+            List<int> newSelectedIndices = new List<int>();
+            for (int i = SelectedCardIndices.Count - 1; i >= 0; i--)
+            {
+                if (SelectedCardIndices[i] == index)
+                {
+                    SelectedCardIndices.RemoveAt(i);
+                }
+                else if (SelectedCardIndices[i] > index)
+                {
+                    SelectedCardIndices[i]--;
+                }
+            }
+            SelectedCardIndices = newSelectedIndices;
+            UpdateSelectVisuals();
+        }
+
         public void ToggleSelectAtIndex(int index)
         {
             if (SelectedCardIndices.Contains(index))
