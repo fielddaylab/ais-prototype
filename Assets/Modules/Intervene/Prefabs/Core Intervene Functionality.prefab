@@ -5702,7 +5702,7 @@ GameObject:
   - component: {fileID: 5714149929528515496}
   - component: {fileID: 6387911341381587070}
   m_Layer: 5
-  m_Name: Card Initialize Interfacer
+  m_Name: Card Deck Initialize Interfacer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

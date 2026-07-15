@@ -62,11 +62,22 @@ namespace AIS.Intervene
         {
             WorkingBudget.BudgetLevel += amt;
 
-            for (int i = 0; i < amt; i++)
+            if (amt > 0)
             {
-                Instantiate(BudgetUnit, BudgetGroupTransform);
+                for (int i = 0; i < amt; i++)
+                {
+                    Instantiate(BudgetUnit, BudgetGroupTransform);
+                }
             }
-            //LevelValueText.SetText("$" + WorkingBudget.BudgetLevel.ToStringLookup() + " per turn");
+            else
+            {
+                for (int i = 0; i < -amt && BudgetGroupTransform.childCount > 0; i++)
+                {
+                    Transform child = BudgetGroupTransform.GetChild(BudgetGroupTransform.childCount - 1);
+                    child.SetParent(null);      // Destroy is deferred; detach so childCount is correct now
+                    Destroy(child.gameObject);
+                }
+            }
         }
 
         public void ClearBudget()
@@ -77,15 +88,18 @@ namespace AIS.Intervene
 
         public void AdjustBudgetValue(int amt)
         {
+            int newBudget = Mathf.Clamp(WorkingBudget.Budget + amt, 0, WorkingBudget.BudgetLevel);
+            amt = newBudget - WorkingBudget.Budget;
+
             if (amt < 0) // spend amt units of budget 
             {
-                for (int i = WorkingBudget.Budget - 1; i > WorkingBudget.Budget - 1 + amt; i--)
+                for (int i = WorkingBudget.Budget - 1; i >= WorkingBudget.Budget + amt; i--)
                 {
                     BudgetGroupTransform.GetChild(i).GetComponent<Image>().color = Color.grey;
                 }
             }
 
-            WorkingBudget.Budget += amt;
+            WorkingBudget.Budget = newBudget;
 
             if (amt >= 0)
             {
@@ -94,12 +108,11 @@ namespace AIS.Intervene
                     BudgetGroupTransform.GetChild(i).GetComponent<Image>().color = Color.yellow;
                 }
             }
-            //ValueText.SetText("$" + WorkingBudget.Budget.ToStringLookup());
         }
 
         public void BestowBudget()
         {
-            AdjustBudgetValue(WorkingBudget.BudgetLevel);
+            AdjustBudgetValue(WorkingBudget.BudgetLevel - WorkingBudget.Budget);
         }
 
         public void Spend(int amt)

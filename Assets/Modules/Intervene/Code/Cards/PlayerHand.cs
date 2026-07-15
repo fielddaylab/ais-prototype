@@ -14,6 +14,8 @@ namespace AIS.Intervene
         public List<int> SelectedCardIndices = new List<int>();
         public bool AllowMultiSelect = false;
 
+        public System.Action<StringHash32> OnCardClickedOverride;
+
         public void AddActionCard(SerializedHash32 actionId)
         {
             if (Game.SharedState.TryGet(out ActionCardsState cardsState))
@@ -31,7 +33,12 @@ namespace AIS.Intervene
                     PlayerCards.Add(newCard);
 
                     card.ClickBtn.onClick.AddListener(() => {
-                        int index = PlayerCards.IndexOf(newCard); // resolve at click time
+                        if (OnCardClickedOverride != null)
+                        {
+                            OnCardClickedOverride(newCard.CardID);   // selection-mode path
+                            return;
+                        }
+                        int index = PlayerCards.IndexOf(newCard);
                         if (index >= 0) { ToggleSelectAtIndex(index); }
                     });
                 }
@@ -53,11 +60,10 @@ namespace AIS.Intervene
         private void RemoveActionCardAtIndex(int index)
         {
             if (index < 0 || index >= PlayerCards.Count) { return; }
-            PlayerCards.RemoveAt(index);
             
+            PlayerCards.RemoveAt(index);
             Destroy(Visuals.CardContainer.transform.GetChild(index).gameObject);
-            // Adjust selected indices
-            List<int> newSelectedIndices = new List<int>();
+
             for (int i = SelectedCardIndices.Count - 1; i >= 0; i--)
             {
                 if (SelectedCardIndices[i] == index)
@@ -69,7 +75,7 @@ namespace AIS.Intervene
                     SelectedCardIndices[i]--;
                 }
             }
-            SelectedCardIndices = newSelectedIndices;
+
             UpdateSelectVisuals();
         }
 
