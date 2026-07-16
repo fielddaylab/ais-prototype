@@ -17,5 +17,5 @@ MonoBehaviour:
   Suit: 1
   Illustration: {fileID: 0}
   Label: Pheromones can be used to make traps more effective or repel lamprey.
-  isActionable: 0
-  ActivateLocation: 0
+  isActionable: 1
+  ActivateLocation: 3

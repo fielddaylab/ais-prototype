@@ -17,5 +17,5 @@ MonoBehaviour:
   Suit: 1
   Illustration: {fileID: 0}
   Label: Lampreys travel upstream to spawn.
-  isActionable: 0
-  ActivateLocation: 0
+  isActionable: 1
+  ActivateLocation: 7
