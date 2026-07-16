@@ -182,20 +182,6 @@ namespace AIS.Intervene
             }
         }
 
-        // Only for playtesting
-        public void AddActionCards()
-        {
-            var inv = Find.State<PlayerInventory>();
-
-            // For playtesting
-            inv.ActionCards.Add("example-action-card-1");
-            inv.ActionCards.Add("example-action-card-2");
-            inv.ActionCards.Add("example-action-card-4");
-            inv.ActionCards.Add("example-action-card-6");
-            inv.ActionCards.Add("example-action-card-7");
-            inv.ActionCards.Add("example-action-card-9");
-        }
-
         public void LoadSwapDeck(IEnumerable<StringHash32> cardIds)
         {
             m_DeckIds.Clear();

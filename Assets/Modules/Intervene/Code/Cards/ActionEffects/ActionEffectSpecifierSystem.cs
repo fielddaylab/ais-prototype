@@ -189,6 +189,9 @@ namespace AIS.Intervene
                 {
                     if (eco.IsExternal) { continue; }
 
+                    // no phantoms where the target cannot land anyway
+                    if (!ActionCardUtility.MatchesScope(target.Scope, ActionCardUtility.ScopeOf(eco))) { continue; }
+
                     if ((target.Target & ActionTarget.Invasive) != 0)
                     {
                         var defInvasive = InvasionModel.Instance.CurrModelSetupData.DefaultInvasive;

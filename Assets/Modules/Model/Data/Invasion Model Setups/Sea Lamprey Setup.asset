@@ -87,7 +87,7 @@ MonoBehaviour:
     Pos: {x: -2, y: 2.5}
     Sprite: {fileID: 21300000, guid: 5a68a777012496547a8949c6d128e8d5, type: 3}
     IsExternal: 0
-    IsTributary: 1
+    IsTributary: 0
     InvasiveHunts: 1
     InvasiveStarves: 1
     InvasiveReproduces: 0

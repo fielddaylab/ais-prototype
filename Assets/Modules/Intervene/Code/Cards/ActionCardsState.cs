@@ -480,8 +480,10 @@ namespace AIS.Intervene
 
         static private ActionTargetDetails ParseTarget(string targetContent)
         {
-            // Format: [type], [optional conditions]
-            // Example: "invasive, if population < 5"
+            // Format: [type], [optional ecosystem scope], [optional conditions]
+            // Examples: "invasive, if population < 5"
+            //           "invasive, tributary"
+            //           "ecosystem, non-tributary, if population < 5"
 
             string[] parts = targetContent.Split(COMMA_DELIM, StringSplitOptions.RemoveEmptyEntries);
 
@@ -493,20 +495,34 @@ namespace AIS.Intervene
                 targetDetails.Target = ParseActionTarget(parts[0].Trim());
             }
 
-            // Check if next part is a number (count) or a condition
-            int conditionStartIndex = 1;
+            // Everything past the target type is a scope keyword or an "if" condition
+            int detailStartIndex = 1;
 
-            // Parse conditions (everything after count that starts with "if")
+            EcosystemScope scope = EcosystemScope.None;
             List<ActionTargetCondition> conditions = new List<ActionTargetCondition>();
-            for (int i = conditionStartIndex; i < parts.Length; i++)
+            for (int i = detailStartIndex; i < parts.Length; i++)
             {
                 string conditionStr = parts[i].Trim();
                 if (conditionStr.ToLower().StartsWith(IF_KEYWORD))
                 {
                     ActionTargetCondition condition = ParseCondition(conditionStr);
                     conditions.Add(condition);
+                    continue;
+                }
+
+                EcosystemScope parsedScope = ParseEcosystemScope(conditionStr);
+                if (parsedScope != EcosystemScope.None)
+                {
+                    scope |= parsedScope;
+                }
+                else
+                {
+                    Debug.LogWarning("[CardUtility] Unknown target keyword: " + conditionStr + ". Ignoring.");
                 }
             }
+
+            // Targets reach every ecosystem unless the card narrows them
+            targetDetails.Scope = scope == EcosystemScope.None ? EcosystemScope.Any : scope;
             targetDetails.Conditions = conditions.ToArray();
 
             return targetDetails;
@@ -942,6 +958,30 @@ namespace AIS.Intervene
                 default:
                     Debug.LogWarning("[CardUtility] Unknown target type: " + targetStr);
                     return ActionTarget.Invasive; // default fallback
+            }
+        }
+
+        // Returns None when the string is not a scope keyword at all, so callers can tell
+        // "not a scope" apart from a real scope.
+        static private EcosystemScope ParseEcosystemScope(string scopeStr)
+        {
+            scopeStr = scopeStr.ToLower().Trim();
+
+            switch (scopeStr)
+            {
+                case "tributary":
+                case "trib":
+                    return EcosystemScope.Tributary;
+                case "non-tributary":
+                case "nontributary":
+                case "nontrib":
+                case "lake":
+                    return EcosystemScope.NonTributary;
+                case "any":
+                case "both":
+                    return EcosystemScope.Any;
+                default:
+                    return EcosystemScope.None;
             }
         }
 

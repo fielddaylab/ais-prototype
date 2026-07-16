@@ -72,7 +72,6 @@ namespace AIS.Intervene
             CurveInterfacer.LoadCurve(inInvasionCurve);
             InvasionModel.Load(CurveInterfacer.CurrVal);
 
-            SwapDeck.AddActionCards();
             SwapDeck.LoadSwapDeck(inventory.ActionCards);
             CardSelection.Load(inventory.ActionCards);
 

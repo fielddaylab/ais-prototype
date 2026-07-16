@@ -40,6 +40,19 @@ namespace AIS.Intervene {
         Trap = 0x100,
     }
 
+    /// <summary>
+    /// Which ecosystems an action target is allowed to land in.
+    /// None is treated as Any, so target details built without setting this field stay unrestricted.
+    /// </summary>
+    [Flags]
+    public enum EcosystemScope
+    {
+        None = 0x0,
+        Tributary = 0x01,
+        NonTributary = 0x02,
+        Any = Tributary | NonTributary,
+    }
+
     public enum ActionSpecificity
     {
         Specific,
@@ -94,6 +107,7 @@ namespace AIS.Intervene {
     public struct ActionTargetDetails
     {
         public ActionTarget Target;
+        public EcosystemScope Scope; // None is treated as Any
         public ActionTargetCondition[] Conditions;
     }
 
@@ -401,6 +415,43 @@ namespace AIS.Intervene {
                     // EqualTo (and any other) trigger exactly at the check value.
                     return check;
             }
+        }
+
+        public static EcosystemScope ScopeOf(Ecosystem eco)
+        {
+            return eco.IsTributary ? EcosystemScope.Tributary : EcosystemScope.NonTributary;
+        }
+
+        // The scope a tag sits in, via the ecosystem that owns it.
+        // Pathways span two ecosystems, and awareness/budget belong to none, so those report Any
+        // and scope never filters them.
+        public static EcosystemScope GetTagScope(ModelTag tag)
+        {
+            Ecosystem eco = null;
+
+            if ((tag.TargetType & ActionTarget.Ecosystem) != 0)
+            {
+                eco = tag.QueriableObj.GetComponent<Ecosystem>();
+            }
+            else
+            {
+                Cluster cluster = tag.QueriableObj.GetComponent<Cluster>();
+                if (cluster != null)
+                {
+                    eco = cluster.ParentEcosystem;
+                }
+            }
+
+            if (eco == null) { return EcosystemScope.Any; }
+
+            return ScopeOf(eco);
+        }
+
+        public static bool MatchesScope(EcosystemScope required, EcosystemScope actual)
+        {
+            if (required == EcosystemScope.None) { return true; }
+
+            return (required & actual) != 0;
         }
 
         public static bool Evaluate(ActionTargetCondition condition, ModelTag tag = null)

@@ -52,7 +52,7 @@ namespace AIS.Model
         {
             EcosystemId = setupData.EcosystemId;
             IsExternal = setupData.IsExternal;
-            IsTributary = setupData.IsTributary; // for now, external ecosystems are also tributary
+            IsTributary = setupData.IsTributary;
 
             InvasiveHunts = setupData.InvasiveHunts;
             InvasiveStarves = setupData.InvasiveStarves;
