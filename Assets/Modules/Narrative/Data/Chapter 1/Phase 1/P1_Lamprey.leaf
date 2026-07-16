@@ -17,23 +17,74 @@ $set global:currentThread = "P1_Lamprey"
 
 $call  ClearVisibleLines()
 {@}   
-       // [This is the Lamprey thread in Phase 1.]
-       You see a group of scientists working in the lab.
-       Might be worth asking them a few questions.
+       The university. What better place to learn about sea lamprey than at the very place researching them?
+       You knock on the door to the lab. 
+       After a moment, a young man in a fashionably tailored lab coat opens it.
 
-{@Player}
-       Hello. What can you tell me about the Lamprey situation?
+{@Arjan}
+       Hello? Oh, yeah. I've been waiting for you. 
+       Like a psychic. 
+       Haha.
+       No, Renée called me to say you'd stop by. Come in. 
 
-{@Researcher}
-       The Lamprey are a species of fish that have been causing problems in the local ecosystem.
+{@}
+       You follow him. 
+       A phonograph plays old-timey jazz, jumping every few beats like rocks skidding on a lake. 
 
-// TODO: Give evidence chip
-$call GiveEvidenceChip("evidence-lamprey")
+{@Arjan}
+       Oh. Sorry about that. It was, like, 75% off. 
+       So, what can I interest you in? Chemicals? Coffee? Student loans?
 
-{@Player}
-       I see. Thank you!
+{@You}
+       I think I'll pass on those, but I do need your help. 
 
+{@}
+       You hand him the photo of the bite on the fish. //photo pops up again?
+
+{@Arjan}
+       Sea lamprey. Huh.
+       They're an interesting specimen. Some might call them... 
+       Fishy. Yeah, that's a good one. 
+
+{@You}
+       Look, I don't know a lot about sea lamprey. 
+       Any information you can share with me will be really helpful.
+
+{@Arjan}
+       I can definitely help you with that. 
+
+{@}
+       Arjan walks over to his desk and rummages around for a moment before pulling out a thick, dust-covered book. 
+       He pulls a photo from between its pages and hands it to you. //photo added to field notes
+
+{@Arjan}
+       Sea lamprey are a kind of fish, but unlike most fish, they don't have bones or a jaw. 
+       Their mouth is a sucking disk filled with teeth and a rasping tongue.
+       Sea lampreys are parasites, which means that they get their nutrients from another host organism.
+       In this case, the sea lamprey stick onto other fish through their teeth and then feed off the fish's bodily fluids like a leech. 
+
+{@You}
+       Eugh. That's kinda gross. 
+
+{@Arjan}
+       They're definitely different from us, and they can look pretty scary, but parasites are an important part of the food chain.
+       The issue with sea lamprey is that in the Great Lakes, which is outside of their indigenous range, their prey don't have any protection against them. 
+       So the sea lamprey can really hurt the populations of fish like ciscoes and lake trout in the Great Lakes. // evidence chip here?
+
+{@You}
+       Which is what I've been tasked to do: to balance the population of sea lamprey with the other organisms living in the Great Lakes. 
+       Hm. Thanks for the information, Arjan. I appreciate it. 
+
+{@Arjan}
+       Of course. Come back if you want to talk more about new technologies that are being developed to manage sea lamprey populations. 
+
+{@}
+       You smile and head out of the lab. 
+       Taking the photo of the sea lamprey out of your pocket, you examine its strange, round smile. 
+       How come you return home and feel out of place, but it comes from far away and wins?
+       
 // TODO: Rest of thread here
+$call GiveEvidenceChip("evidence-lamprey")
 
 {@}
        [Open your map to continue]

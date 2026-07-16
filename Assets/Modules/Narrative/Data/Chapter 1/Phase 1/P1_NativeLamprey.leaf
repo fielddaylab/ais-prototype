@@ -17,21 +17,94 @@ $set global:currentThread = "P1_NativeLamprey"
 
 $call  ClearVisibleLines()
 {@}     
-       A few people are working in the DNR office.
-       You notice a biologist at a nearby desk and approach.
+       You figure the Department of Natural Resources must have something to start you with. This is their whole job, right?
+       The office is nicely furnished with natural memorabilia, a straight-laced office man sitting behind the desk.
 
-{@Player}
-       Hello! I just learned about Lamprey and it sounds like a large problem.
-       What are people working on to address it?
-       // [This is the Native Lamprey thread in Phase 1.]
+{@Paul}
+       Mm, hello and welcome to the Department of Natural Resources. My name is Paul. How can I help you?
 
-{@Biologist}
-       It's not an easy issue to deal with. Especially if it's just us working on it.
-       One thing that will always be helpful is getting the word out.
-       Want to run an outreach campaign to spread awareness?
+{@You}
+       Um, hi Paul. I'm from Sea Grant and was wondering if you had any information about sea lamprey for me. 
 
-{@Player}
-       Let's do it.
+{@}
+       You show him the photo of the bite mark. 
+       He stares at it for a moment, unblinking, like it's a tax return and not a fish with a hole in its side. 
+
+{@Paul}
+       Mm, yes, sea lamprey. They're not from around these parts. 
+
+{@You}
+       Really? Where'd they come from then?
+
+{@Paul}
+       Mm, the Atlantic Ocean. Hence the "sea" in sea lamprey. Mhm.
+       But in the 1800s, the new canals that had been built allowed the sea lamprey to reach the Great Lakes.
+       The Great Lakes are a perfect environment for sea lamprey: tributaries serve as great spawning locations and there's a variety of fish for them to eat. 
+       The sea lamprey, together with unsusutainable fishing practices of the time, caused the population of other fish species to sharply decline. 
+
+{@You}
+       How come?
+       
+{@Paul}
+       Mm. The fish in the Atlantic Ocean, which evolved alongside the sea lamprey, have defense mechanisms against sea lamprey.
+       But fish in the Great Lakes don't, so they are more likely to die from sea lamprey bites or infections. 
+       The issue isn't the sea lamprey as a species, but the fact that they were introduced into a new environment that was already struggling. //evidence chip here?
+       
+{@You}
+       So why is this becoming a new issue now? I mean, the sea lamprey were introduced two hundred years ago. 
+
+{@Paul}
+       Hm. There are many techniques that have successfully been used to control the sea lamprey population.
+       But climate change has put the ecosystem here under stress.
+       Plus, during the pandemic, people couldn't go out to place traps and lampricide, which are two techniques used to control the population. 
+
+{@You}
+       So it's an issue of restarting those techniques that were used in the past to manage the population?
+       Why not just try to, like, remove them all? Weren't things better in the past?
+
+{@}
+       He tilts his head at you, dark eyes set quizzicaly in a bored face. 
+
+{@Paul}
+       Are you from the area, Ms. Ana?
+
+{@You}
+       Uhhh. Yes? Though I've been away for a few years at college. 
+
+{@Paul}
+       Mhm. What's it been like being back?
+
+{@You}
+       I don't know. It's.. different. I guess. 
+       It's not really what I remember. 
+       I miss it. The way it was before, I mean. 
+
+{@Paul}
+       Mm. I've been here a long time. I've seen things come and go. 
+       The future is always a gift. It is worth striving for. 
+
+{@}
+       You blink at him. He might have smiled, but it's hard to tell. 
+
+{@Paul}
+       I hope you will understand in the future. 
+       But to answer your question, no, we are not trying to remove all the sea lamprey. 
+       Not only is that not possible, but it's not how the environment works. Species come and go. 
+       The point is to create ecological balance for all. 
+
+{@}
+       You think over his words. You think of the ice cream shop on your corner that closed your sophomore year. 
+       You think about cool lake water lapping at your toes as a child. Of summers on boats and piers. 
+       The photo of the bitten fish burns a hole in your pocket. 
+
+{@You}
+       I see. Thanks for your help, Paul. 
+
+{@Paul}
+       Mm. Of course. Come back any time. 
+
+{@}
+       Here's already back at his computer, professional-looking headphones over his ears. 
 
 // TODO: Rest of thread here
 

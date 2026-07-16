@@ -27,39 +27,43 @@ $call GiveActionCard("example-action-card-7")
        //[This is the introductory thread in Phase 0.]
 
 // TODO: Rest of thread here
-{@Player} //I want these next few lines to be thinking, but I'm not sure of how to make the distinction
-       I had this recurring dream, when I was a kid, about sea lamprey.
-       I think it was something about their teeth that really got to me. 
-       Maybe sleeping in my childhood bed again is what brought the dream back. 
+{@You} 
+       </i>I had this recurring dream, when I was a kid, about sea lamprey.</i>
+       </i>I think it was something about their teeth that really got to me.</i> 
+       </i>Maybe sleeping in my childhood bed again is what brought the dream back.</i> 
 
 {@}
        You stand in front of the mirror you dented at 15, brushing your hair.
 
-{@Player} //still thinking
-       After all this time, it's hard to tell. 
+{@You} 
+       </i>After all this time, it's hard to tell.</i> 
 
 {@}
        A knock at the door. Your mom sticks her head inside. 
 
 {@Mom}
-       Você tá pronta? <i>Are you ready?</i>
+       Ana, você tá pronta? 
+       </b>[Ana, are you ready?]</b>
 
-{@Player}
-       Tou sim. <i>Yeah, I am.</i>
+{@You}
+       Tou sim. 
+       </b>[Yeah, I am.]</b>
 
 {@Mom}
-       Ok. Tenha um bom dia hoje. Te amo. <i>Have a good day today. I love you.</i>
+       Ok. Tenha um bom dia hoje. Te amo. 
+       </b>[Have a good day today. I love you.]</b>
 
-{@Player}
-       Te amo também. <i>I love you, too.</i>
+{@You}
+       Te amo também. 
+       </b>[I love you, too.]</b>
 
 {@}
        She steps out. 
        You put down the brush. 
 
-{@Player} //thinking
-       No time like the present. 
-       Right?
+{@You} 
+       </i>No time like the present.</i> 
+       </i>Right?</i>
 
 //at this point we go to the sea grant building
 
@@ -69,20 +73,20 @@ $call GiveActionCard("example-action-card-7")
 {@Renée}
        Ana, right?
 
-{@}
+{@You}
        That's me. You must be Renée. 
-
+       
 {@Renée}
        It's nice to finally meet you. I hope the move wasn't too difficult. 
 
-{@Player}
+{@You}
        My dorm room was pretty much empty, so it wasn't too bad. 
 
 {@Renée}
        Well, I hope working with us will be a good first experience post-college. 
        Speaking of working, you'll have to get started right away. Sorry about that. 
 
-{@Player}
+{@You}
        Don't worry - I get it. Let's hear the details. 
 
 {@Renée}
@@ -92,7 +96,7 @@ $call GiveActionCard("example-action-card-7")
        She hands you a photo. //insert photo of sea lamprey bite
        $call SetScenarioData("Scenario1")
 
-{@Player}
+{@You}
        Sea lamprey.
 
 {@Renée}
@@ -100,7 +104,7 @@ $call GiveActionCard("example-action-card-7")
        The interventions we can take to maintain balance in the lakes. 
        Once you're ready to use a few possible interventions, then we'll go on to the intervention phase and use them. 
 
-{@Player}
+{@You}
        I mean, I know about conservation in general, but I don't know anything specific about sea lamprey. 
        Besides the teeth. 
 
@@ -113,14 +117,14 @@ $call GiveActionCard("example-action-card-7")
        Then, you'll need to make sure you have the resources to actually implement the intervention. Once you've done that, you'll get an action certificate.
        This map will show you the locations where you can find evidence chips and action certificates. 
 
-{@Player}
+{@You}
        That's... a lot of info.
 
 {@Renée}
        It is. If it helps, I like to use a journal to write down field notes. //note icon appears?
        You can have this one. We'll call it a first day gift. I've already left some notes in there for you.
 
-{@Player}
+{@You}
        Thanks. I appreciate it. 
 
 {@Renée}
@@ -132,14 +136,14 @@ $call GiveActionCard("example-action-card-7")
 {@Renée}
        I want you to be successful. I know you'll be. 
 
-{@Player}
+{@You}
        I hope so. 
 
 {@}
        You open the map. You think about concentric circles of tiny teeth. 
 
-{@Player}
-       No time like the present, huh. //thinking
+{@You}
+       </i>No time like the present, huh.</i>
 
 {@}
        You begin.
