@@ -46,6 +46,8 @@ namespace AIS.Intervene
             m_Selected.Clear();
             m_Cards.Clear();
 
+            InterveneSwapDeckInterfacer.Instance.SwapBtn.interactable = false;
+
             // Widget spawns and lays out the cards as usual
             DeckWidget.Populate(cardIds);
             DeckWidget.ClearFocus();
@@ -54,6 +56,13 @@ namespace AIS.Intervene
             foreach (UICard card in DeckWidget.ActionCardPool.ActiveObjects)
             {
                 m_Cards.Add(card.CardID);
+                FieldNoteCardPointer pointer = card.GetComponent<FieldNoteCardPointer>();
+                if (pointer != null)
+                {
+                    pointer.OnClick = null;
+                    pointer.OnEnter = null;
+                    pointer.OnExit = null;
+                }
 
                 Button clickBtn = card.GetComponentInChildren<Button>(true);
                 if (clickBtn != null)
@@ -107,6 +116,14 @@ namespace AIS.Intervene
             // rebind each card's button component with listener
             foreach (UICard card in DeckWidget.ActionCardPool.ActiveObjects)
             {
+                FieldNoteCardPointer pointer = card.GetComponent<FieldNoteCardPointer>();
+                if (pointer != null)
+                {
+                    pointer.OnClick = null;
+                    pointer.OnEnter = null;
+                    pointer.OnExit = null;
+                }
+
                 Button clickBtn = card.GetComponentInChildren<Button>(true);
                 if (clickBtn != null)
                 {
@@ -140,6 +157,7 @@ namespace AIS.Intervene
                 else { remainingIds.Add(cardId); }
             }
 
+            DeckWidget.Populate(remainingIds);
             DeckWidget.gameObject.SetActive(false);   // hidden until the swap button opens it
 
             CardSelectionPanel.SetActive(false);
@@ -149,6 +167,8 @@ namespace AIS.Intervene
                 handHoverZone.ToMove.MoveTo(handHoverZone.HiddenY, 0.1f, Axis.Y, Space.Self));
             handHoverZone.enabled = true;
             Hand.OnCardClickedOverride = null;
+
+            InterveneSwapDeckInterfacer.Instance.SwapBtn.interactable = true;
         }
     }
 }
