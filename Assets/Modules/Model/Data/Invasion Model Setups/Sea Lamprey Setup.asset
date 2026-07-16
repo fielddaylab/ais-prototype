@@ -16,54 +16,32 @@ MonoBehaviour:
   - EcosystemId:
       m_Source: big-lake
       m_HashValue: 320318183
-    Pos: {x: -4.2, y: 1}
-    Sprite: {fileID: 21300000, guid: 3e0f0686d08f80546b60b8a0c21a83aa, type: 3}
+    Pos: {x: 3.5, y: 1}
+    Sprite: {fileID: 21300000, guid: e985c5758b3d2ad408500f438e0af58b, type: 3}
     IsExternal: 0
     IsTributary: 0
+    InvasiveHunts: 1
+    InvasiveStarves: 1
+    InvasiveReproduces: 0
     MainSlotPoses:
-    - {x: 0, y: 1.5}
-    - {x: 0, y: 0}
-    - {x: 0, y: -1.5}
+    - {x: -1, y: 0}
+    - {x: 0.5, y: 1}
+    - {x: 2, y: 0}
     SecondarySlotPoses:
     - {x: 1, y: 1}
     - {x: 1, y: -1}
   - EcosystemId:
-      m_Source: little-lake
-      m_HashValue: 3686629487
-    Pos: {x: 0, y: 3.5}
-    Sprite: {fileID: 21300000, guid: dc79c412cb411b043b13f9100f990182, type: 3}
+      m_Source: big-lake-tributary
+      m_HashValue: 2279562092
+    Pos: {x: 4.7, y: -1.8}
+    Sprite: {fileID: 21300000, guid: fca9229a173b43a4ea7df525600bb825, type: 3}
     IsExternal: 0
     IsTributary: 1
+    InvasiveHunts: 0
+    InvasiveStarves: 0
+    InvasiveReproduces: 1
     MainSlotPoses:
-    - {x: -0.5, y: 0.5}
-    - {x: 0, y: 0}
-    - {x: -0.5, y: -0.5}
-    SecondarySlotPoses:
-    - {x: 0, y: 0}
-    - {x: 0, y: 0}
-  - EcosystemId:
-      m_Source: tiny-lake
-      m_HashValue: 1050156385
-    Pos: {x: 0, y: 1.2}
-    Sprite: {fileID: 21300000, guid: dc79c412cb411b043b13f9100f990182, type: 3}
-    IsExternal: 0
-    IsTributary: 1
-    MainSlotPoses:
-    - {x: -0.5, y: 0.5}
-    - {x: 0, y: 0}
-    - {x: -0.5, y: -0.5}
-    SecondarySlotPoses:
-    - {x: 0, y: 0}
-    - {x: 0, y: 0}
-  - EcosystemId:
-      m_Source: itsy-lake
-      m_HashValue: 905365084
-    Pos: {x: 0, y: -1.2}
-    Sprite: {fileID: 21300000, guid: dc79c412cb411b043b13f9100f990182, type: 3}
-    IsExternal: 0
-    IsTributary: 1
-    MainSlotPoses:
-    - {x: -0.5, y: 0.5}
+    - {x: -0.15, y: 0.06}
     - {x: 0, y: 0}
     - {x: -0.5, y: -0.5}
     SecondarySlotPoses:
@@ -72,26 +50,66 @@ MonoBehaviour:
   - EcosystemId:
       m_Source: med-lake
       m_HashValue: 1599097255
-    Pos: {x: 3.5, y: -2.5}
-    Sprite: {fileID: 21300000, guid: 0491d9f3c3337e74a8e2b4803d75d1e3, type: 3}
+    Pos: {x: -3, y: -2.5}
+    Sprite: {fileID: 21300000, guid: d05c91f4dd131e447b3e2186278581c3, type: 3}
     IsExternal: 0
     IsTributary: 0
+    InvasiveHunts: 1
+    InvasiveStarves: 1
+    InvasiveReproduces: 0
     MainSlotPoses:
-    - {x: 0, y: 1.2}
+    - {x: 1, y: 1.2}
     - {x: 0, y: 0}
-    - {x: 0, y: -1.2}
+    - {x: -1.5, y: -0.5}
     SecondarySlotPoses:
     - {x: 0, y: 0}
     - {x: 0, y: 0}
   - EcosystemId:
-      m_Source: bitsy-lake
-      m_HashValue: 2668107388
-    Pos: {x: 0, y: -3.6}
-    Sprite: {fileID: 21300000, guid: dc79c412cb411b043b13f9100f990182, type: 3}
+      m_Source: med-lake-tributary
+      m_HashValue: 194951596
+    Pos: {x: 0, y: -3}
+    Sprite: {fileID: 21300000, guid: a050155f03704774ea425273191a0feb, type: 3}
     IsExternal: 0
     IsTributary: 1
+    InvasiveHunts: 0
+    InvasiveStarves: 0
+    InvasiveReproduces: 1
     MainSlotPoses:
-    - {x: -0.5, y: 0.5}
+    - {x: 0.5, y: 0}
+    - {x: 0, y: 0}
+    - {x: -0.5, y: -0.5}
+    SecondarySlotPoses:
+    - {x: 0, y: 0}
+    - {x: 0, y: 0}
+  - EcosystemId:
+      m_Source: little-lake
+      m_HashValue: 3686629487
+    Pos: {x: -2, y: 2.5}
+    Sprite: {fileID: 21300000, guid: 5a68a777012496547a8949c6d128e8d5, type: 3}
+    IsExternal: 0
+    IsTributary: 1
+    InvasiveHunts: 1
+    InvasiveStarves: 1
+    InvasiveReproduces: 0
+    MainSlotPoses:
+    - {x: -0.5, y: 0.8}
+    - {x: 0.8, y: 0.87}
+    - {x: 0.22, y: -0.23}
+    SecondarySlotPoses:
+    - {x: 0, y: 0}
+    - {x: 0, y: 0}
+  - EcosystemId:
+      m_Source: little-lake-tributary
+      m_HashValue: 2386798660
+    Pos: {x: -2.8, y: 0.65}
+    Sprite: {fileID: 21300000, guid: 01ce4ac900cf37b488252bbe13cfbc53, type: 3}
+    IsExternal: 0
+    IsTributary: 1
+    InvasiveHunts: 0
+    InvasiveStarves: 0
+    InvasiveReproduces: 1
+    MainSlotPoses:
+    - {x: 0.05, y: -0.05}
     - {x: 0, y: 0}
     - {x: -0.5, y: -0.5}
     SecondarySlotPoses:
@@ -104,6 +122,9 @@ MonoBehaviour:
     Sprite: {fileID: 0}
     IsExternal: 1
     IsTributary: 0
+    InvasiveHunts: 1
+    InvasiveStarves: 1
+    InvasiveReproduces: 1
     MainSlotPoses:
     - {x: 0, y: 0}
     - {x: 0, y: 0}
@@ -118,6 +139,9 @@ MonoBehaviour:
     Sprite: {fileID: 0}
     IsExternal: 1
     IsTributary: 0
+    InvasiveHunts: 1
+    InvasiveStarves: 1
+    InvasiveReproduces: 1
     MainSlotPoses:
     - {x: 0, y: 0}
     - {x: 0, y: 0}
@@ -127,20 +151,111 @@ MonoBehaviour:
     - {x: 0, y: 0}
   Pathways:
   - PathwayId:
-      m_Source: path-big-to-little
-      m_HashValue: 3122685272
+      m_Source: path-little-to-little-trib
+      m_HashValue: 3448232086
+    OrigEcosystemId:
+      m_Source: little-lake
+      m_HashValue: 3686629487
+    DestEcosystemId:
+      m_Source: little-lake-tributary
+      m_HashValue: 2386798660
+    Pos: {x: -3.3, y: 1.3}
+    Rotation: 80
+    Sprite: {fileID: 21300000, guid: 41ff8598504ba504abb60c1a6637d439, type: 3}
+    TransferRateType: 0
+    StartingTransferRate: 0.5
+    StartingTriggerChance: 1
+    PathwayType: 64
+    IsNotHidden: 1
+    StartingDir: 0
+  - PathwayId:
+      m_Source: path-little-trib-to-little
+      m_HashValue: 3093583572
+    OrigEcosystemId:
+      m_Source: little-lake-tributary
+      m_HashValue: 2386798660
+    DestEcosystemId:
+      m_Source: little-lake
+      m_HashValue: 3686629487
+    Pos: {x: -1.8, y: 1.1}
+    Rotation: -100
+    Sprite: {fileID: 21300000, guid: 41ff8598504ba504abb60c1a6637d439, type: 3}
+    TransferRateType: 0
+    StartingTransferRate: 0.5
+    StartingTriggerChance: 1
+    PathwayType: 128
+    IsNotHidden: 1
+    StartingDir: 0
+  - PathwayId:
+      m_Source: path-big-to-big-trib
+      m_HashValue: 1517551340
     OrigEcosystemId:
       m_Source: big-lake
       m_HashValue: 320318183
     DestEcosystemId:
-      m_Source: little-lake
-      m_HashValue: 3686629487
-    Pos: {x: -2, y: 3.6}
+      m_Source: big-lake-tributary
+      m_HashValue: 2279562092
+    Pos: {x: 3.5, y: -1.2}
+    Rotation: 100
     Sprite: {fileID: 21300000, guid: 41ff8598504ba504abb60c1a6637d439, type: 3}
     TransferRateType: 0
-    StartingTransferRate: 0.1
+    StartingTransferRate: 0.5
     StartingTriggerChance: 1
     PathwayType: 64
+    IsNotHidden: 1
+    StartingDir: 0
+  - PathwayId:
+      m_Source: path-big-trib-to-big
+      m_HashValue: 181528470
+    OrigEcosystemId:
+      m_Source: big-lake-tributary
+      m_HashValue: 2279562092
+    DestEcosystemId:
+      m_Source: big-lake
+      m_HashValue: 320318183
+    Pos: {x: 5.28, y: -1.21}
+    Rotation: -80
+    Sprite: {fileID: 21300000, guid: 41ff8598504ba504abb60c1a6637d439, type: 3}
+    TransferRateType: 0
+    StartingTransferRate: 0.5
+    StartingTriggerChance: 1
+    PathwayType: 128
+    IsNotHidden: 1
+    StartingDir: 0
+  - PathwayId:
+      m_Source: path-med-to-med-trib
+      m_HashValue: 3811737748
+    OrigEcosystemId:
+      m_Source: med-lake
+      m_HashValue: 1599097255
+    DestEcosystemId:
+      m_Source: med-lake-tributary
+      m_HashValue: 194951596
+    Pos: {x: -0.53, y: -3.19}
+    Rotation: 130
+    Sprite: {fileID: 21300000, guid: 41ff8598504ba504abb60c1a6637d439, type: 3}
+    TransferRateType: 0
+    StartingTransferRate: 0.5
+    StartingTriggerChance: 1
+    PathwayType: 64
+    IsNotHidden: 1
+    StartingDir: 0
+  - PathwayId:
+      m_Source: path-med-trib-to-med
+      m_HashValue: 1887641982
+    OrigEcosystemId:
+      m_Source: med-lake-tributary
+      m_HashValue: 194951596
+    DestEcosystemId:
+      m_Source: med-lake
+      m_HashValue: 1599097255
+    Pos: {x: 0.68, y: -2.29}
+    Rotation: -50
+    Sprite: {fileID: 21300000, guid: 41ff8598504ba504abb60c1a6637d439, type: 3}
+    TransferRateType: 0
+    StartingTransferRate: 0.5
+    StartingTriggerChance: 1
+    PathwayType: 128
     IsNotHidden: 1
     StartingDir: 0
   - PathwayId:
@@ -152,187 +267,63 @@ MonoBehaviour:
     DestEcosystemId:
       m_Source: big-lake
       m_HashValue: 320318183
-    Pos: {x: -2, y: 2.85}
-    Sprite: {fileID: 21300000, guid: 984743ba33af33243b63fb9a48c8ff72, type: 3}
-    TransferRateType: 0
-    StartingTransferRate: 0.2
-    StartingTriggerChance: 1
-    PathwayType: 128
-    IsNotHidden: 1
-    StartingDir: 0
-  - PathwayId:
-      m_Source: path-big-to-tiny
-      m_HashValue: 3217934434
-    OrigEcosystemId:
-      m_Source: big-lake
-      m_HashValue: 320318183
-    DestEcosystemId:
-      m_Source: tiny-lake
-      m_HashValue: 1050156385
-    Pos: {x: -2, y: 1.4}
-    Sprite: {fileID: 21300000, guid: 41ff8598504ba504abb60c1a6637d439, type: 3}
-    TransferRateType: 0
-    StartingTransferRate: 0.1
-    StartingTriggerChance: 1
-    PathwayType: 64
-    IsNotHidden: 1
-    StartingDir: 0
-  - PathwayId:
-      m_Source: path-tiny-to-big
-      m_HashValue: 1532005436
-    OrigEcosystemId:
-      m_Source: tiny-lake
-      m_HashValue: 1050156385
-    DestEcosystemId:
-      m_Source: big-lake
-      m_HashValue: 320318183
-    Pos: {x: -2, y: 0.65}
-    Sprite: {fileID: 21300000, guid: 984743ba33af33243b63fb9a48c8ff72, type: 3}
-    TransferRateType: 0
-    StartingTransferRate: 0.2
-    StartingTriggerChance: 1
-    PathwayType: 128
-    IsNotHidden: 1
-    StartingDir: 0
-  - PathwayId:
-      m_Source: path-big-to-itsy
-      m_HashValue: 3340187013
-    OrigEcosystemId:
-      m_Source: big-lake
-      m_HashValue: 320318183
-    DestEcosystemId:
-      m_Source: itsy-lake
-      m_HashValue: 905365084
-    Pos: {x: -2, y: -0.8}
-    Sprite: {fileID: 21300000, guid: 41ff8598504ba504abb60c1a6637d439, type: 3}
-    TransferRateType: 0
-    StartingTransferRate: 0.1
-    StartingTriggerChance: 1
-    PathwayType: 64
-    IsNotHidden: 1
-    StartingDir: 0
-  - PathwayId:
-      m_Source: path-itsy-to-big
-      m_HashValue: 23226341
-    OrigEcosystemId:
-      m_Source: itsy-lake
-      m_HashValue: 905365084
-    DestEcosystemId:
-      m_Source: big-lake
-      m_HashValue: 320318183
-    Pos: {x: -2, y: -1.55}
-    Sprite: {fileID: 21300000, guid: 984743ba33af33243b63fb9a48c8ff72, type: 3}
-    TransferRateType: 0
-    StartingTransferRate: 0.2
-    StartingTriggerChance: 1
-    PathwayType: 128
-    IsNotHidden: 1
-    StartingDir: 0
-  - PathwayId:
-      m_Source: path-med-to-itsy
-      m_HashValue: 2381131813
-    OrigEcosystemId:
-      m_Source: med-lake
-      m_HashValue: 1599097255
-    DestEcosystemId:
-      m_Source: itsy-lake
-      m_HashValue: 905365084
-    Pos: {x: 1.8, y: -1.55}
-    Sprite: {fileID: 21300000, guid: 984743ba33af33243b63fb9a48c8ff72, type: 3}
-    TransferRateType: 0
-    StartingTransferRate: 0.2
-    StartingTriggerChance: 1
-    PathwayType: 128
-    IsNotHidden: 1
-    StartingDir: 0
-  - PathwayId:
-      m_Source: path-itsy-to-med
-      m_HashValue: 3622787525
-    OrigEcosystemId:
-      m_Source: itsy-lake
-      m_HashValue: 905365084
-    DestEcosystemId:
-      m_Source: med-lake
-      m_HashValue: 1599097255
-    Pos: {x: 1.8, y: -0.8}
-    Sprite: {fileID: 21300000, guid: 41ff8598504ba504abb60c1a6637d439, type: 3}
-    TransferRateType: 0
-    StartingTransferRate: 0.1
-    StartingTriggerChance: 1
-    PathwayType: 64
-    IsNotHidden: 1
-    StartingDir: 0
-  - PathwayId:
-      m_Source: path-med-to-bitsy
-      m_HashValue: 4213550839
-    OrigEcosystemId:
-      m_Source: med-lake
-      m_HashValue: 1599097255
-    DestEcosystemId:
-      m_Source: bitsy-lake
-      m_HashValue: 2668107388
-    Pos: {x: 1.8, y: -3.9}
-    Sprite: {fileID: 21300000, guid: 984743ba33af33243b63fb9a48c8ff72, type: 3}
-    TransferRateType: 0
-    StartingTransferRate: 0.2
-    StartingTriggerChance: 1
-    PathwayType: 128
-    IsNotHidden: 1
-    StartingDir: 0
-  - PathwayId:
-      m_Source: path-bitsy-to-med
-      m_HashValue: 1431222253
-    OrigEcosystemId:
-      m_Source: bitsy-lake
-      m_HashValue: 2668107388
-    DestEcosystemId:
-      m_Source: med-lake
-      m_HashValue: 1599097255
-    Pos: {x: 1.8, y: -3.2}
-    Sprite: {fileID: 21300000, guid: 41ff8598504ba504abb60c1a6637d439, type: 3}
-    TransferRateType: 0
-    StartingTransferRate: 0.1
-    StartingTriggerChance: 1
-    PathwayType: 64
-    IsNotHidden: 1
-    StartingDir: 0
-  - PathwayId:
-      m_Source: path-EXTERN-IN-to-big
-      m_HashValue: 953224162
-    OrigEcosystemId:
-      m_Source: eco-EXTERN-IN
-      m_HashValue: 848023977
-    DestEcosystemId:
-      m_Source: big-lake
-      m_HashValue: 320318183
-    Pos: {x: -6.5, y: 2.25}
-    Sprite: {fileID: 21300000, guid: 6334e095ddf62704ca31771cac3f0ad5, type: 3}
-    TransferRateType: 1
-    StartingTransferRate: 1
-    StartingTriggerChance: 0.5
-    PathwayType: 8
-    IsNotHidden: 0
-    StartingDir: 1
-  - PathwayId:
-      m_Source: path-med-to-EXTERN-OUT
-      m_HashValue: 1510772883
-    OrigEcosystemId:
-      m_Source: med-lake
-      m_HashValue: 1599097255
-    DestEcosystemId:
-      m_Source: eco-EXTERN-OUT
-      m_HashValue: 3287957386
-    Pos: {x: 6, y: -2}
-    Sprite: {fileID: 21300000, guid: 212473082a4b11c4f8bb20e89697f17e, type: 3}
+    Pos: {x: 1.14, y: 2.63}
+    Rotation: 0
+    Sprite: {fileID: 21300000, guid: 982d9117f01cacc4c82578bc731ff5c8, type: 3}
     TransferRateType: 0
     StartingTransferRate: 0.5
-    StartingTriggerChance: 0.5
-    PathwayType: 4
-    IsNotHidden: 0
-    StartingDir: 2
+    StartingTriggerChance: 1
+    PathwayType: 0
+    IsNotHidden: 1
+    StartingDir: 0
+  - PathwayId:
+      m_Source: path-big-to-med
+      m_HashValue: 506190826
+    OrigEcosystemId:
+      m_Source: big-lake
+      m_HashValue: 320318183
+    DestEcosystemId:
+      m_Source: med-lake
+      m_HashValue: 1599097255
+    Pos: {x: 1.3, y: -0.64}
+    Rotation: 47.43
+    Sprite: {fileID: 21300000, guid: 982d9117f01cacc4c82578bc731ff5c8, type: 3}
+    TransferRateType: 0
+    StartingTransferRate: 0.5
+    StartingTriggerChance: 1
+    PathwayType: 0
+    IsNotHidden: 1
+    StartingDir: 0
+  - PathwayId:
+      m_Source: path-med-to-little
+      m_HashValue: 3560535288
+    OrigEcosystemId:
+      m_Source: med-lake
+      m_HashValue: 1599097255
+    DestEcosystemId:
+      m_Source: little-lake
+      m_HashValue: 3686629487
+    Pos: {x: -0.72, y: 0.14}
+    Rotation: 87.54
+    Sprite: {fileID: 21300000, guid: 982d9117f01cacc4c82578bc731ff5c8, type: 3}
+    TransferRateType: 0
+    StartingTransferRate: 0.5
+    StartingTriggerChance: 1
+    PathwayType: 0
+    IsNotHidden: 1
+    StartingDir: 0
   InvasionCurveThresholds:
   - Threshold: 0
     SpeciesSetups:
+    - SpeciesId:
+        m_Source: sea-lamprey
+        m_HashValue: 1595256039
+      StartingEcosystemId:
+        m_Source: little-lake
+        m_HashValue: 3686629487
+      StartingPopulation: 1
+      StartingTravelType: -1
+      StartingTargetType: 1
     - SpeciesId:
         m_Source: sea-lamprey
         m_HashValue: 1595256039
@@ -346,11 +337,20 @@ MonoBehaviour:
         m_Source: sea-lamprey
         m_HashValue: 1595256039
       StartingEcosystemId:
+        m_Source: med-lake
+        m_HashValue: 1599097255
+      StartingPopulation: 2
+      StartingTravelType: -1
+      StartingTargetType: 1
+    - SpeciesId:
+        m_Source: lake-whitefish
+        m_HashValue: 3907387900
+      StartingEcosystemId:
         m_Source: little-lake
         m_HashValue: 3686629487
       StartingPopulation: 1
-      StartingTravelType: -1
-      StartingTargetType: 1
+      StartingTravelType: 0
+      StartingTargetType: 4
     - SpeciesId:
         m_Source: lake-whitefish
         m_HashValue: 3907387900
@@ -373,9 +373,18 @@ MonoBehaviour:
         m_Source: lake-trout
         m_HashValue: 435273505
       StartingEcosystemId:
+        m_Source: little-lake
+        m_HashValue: 3686629487
+      StartingPopulation: 2
+      StartingTravelType: 0
+      StartingTargetType: 2
+    - SpeciesId:
+        m_Source: lake-trout
+        m_HashValue: 435273505
+      StartingEcosystemId:
         m_Source: big-lake
         m_HashValue: 320318183
-      StartingPopulation: 2
+      StartingPopulation: 6
       StartingTravelType: 0
       StartingTargetType: 2
     - SpeciesId:
@@ -384,9 +393,36 @@ MonoBehaviour:
       StartingEcosystemId:
         m_Source: med-lake
         m_HashValue: 1599097255
-      StartingPopulation: 2
+      StartingPopulation: 4
       StartingTravelType: 0
       StartingTargetType: 2
+    - SpeciesId:
+        m_Source: sea-lamprey
+        m_HashValue: 1595256039
+      StartingEcosystemId:
+        m_Source: little-lake-tributary
+        m_HashValue: 2386798660
+      StartingPopulation: 1
+      StartingTravelType: 0
+      StartingTargetType: 1
+    - SpeciesId:
+        m_Source: sea-lamprey
+        m_HashValue: 1595256039
+      StartingEcosystemId:
+        m_Source: med-lake-tributary
+        m_HashValue: 194951596
+      StartingPopulation: 2
+      StartingTravelType: 0
+      StartingTargetType: 1
+    - SpeciesId:
+        m_Source: sea-lamprey
+        m_HashValue: 1595256039
+      StartingEcosystemId:
+        m_Source: big-lake-tributary
+        m_HashValue: 2279562092
+      StartingPopulation: 2
+      StartingTravelType: 0
+      StartingTargetType: 1
   SharedSpeciesSetups:
   - SpeciesId:
       m_Source: sea-lamprey

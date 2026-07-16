@@ -14,9 +14,10 @@ namespace AIS.Model
     public struct PathwaySetupData
     {
         public SerializedHash32 PathwayId;
-        public SerializedHash32 OrigEcosystemId;
-        public SerializedHash32 DestEcosystemId;
+        [EcosystemId] public SerializedHash32 OrigEcosystemId;
+        [EcosystemId] public SerializedHash32 DestEcosystemId;
         public Vector2 Pos;
+        public float Rotation;
         public Sprite Sprite;
 
         public RateType TransferRateType;
@@ -101,6 +102,9 @@ namespace AIS.Model
             Dir = setupData.StartingDir;
 
             this.transform.position = setupData.Pos;
+            var angles = MainRenderer.transform.localEulerAngles;
+            angles.z = setupData.Rotation;
+            MainRenderer.transform.localEulerAngles = angles;
             MainRenderer.sprite = setupData.Sprite;
             MainRenderer.sortingOrder = InvasionModelSorting.PATHWAY_SORTING;
             PathwayTypeBGRenderer.sortingOrder = InvasionModelSorting.PATHWAY_ICON_BG_SORTING;

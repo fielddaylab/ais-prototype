@@ -29,6 +29,9 @@ namespace AIS.Intervene {
         private const float SIM_PHASE_DELAY = 1.2f;
         private const float SIM_PHASE_SHORT_DELAY = 0.8f;
 
+        // Stands in for banked prey when an ecosystem's invasives do not hunt.
+        private const float DEFAULT_HUNT_RATIO = 0.5f;
+
         private List<SpeciesTransferAllocation> m_SpeciesTransfers = new List<SpeciesTransferAllocation>();
 
         public Routine SimRoutine;
@@ -163,91 +166,106 @@ namespace AIS.Intervene {
             SetEcosystemFocused(eco, true);
 
             // Hunt
-            InterveneUI.Instance.SetSimPhase("Invasive Turn: Hunt");
-            int totalPreyConsumed = 0;
-            for (int i = 0; i < totalInvasives; i++)
+            int totalPreyConsumed;
+            if (eco.InvasiveHunts)
             {
-                int rollResult = UnityEngine.Random.Range(1, 7);
-                if (rollResult <= totalPrey)
+                InterveneUI.Instance.SetSimPhase("Invasive Turn: Hunt");
+                totalPreyConsumed = 0;
+                for (int i = 0; i < totalInvasives; i++)
                 {
-                    totalPreyConsumed++;
-                }
-            }
-            totalPreyConsumed = Mathf.Min(totalPreyConsumed, totalPrey);
-            if (totalPreyConsumed > 0) 
-            {
-                // eco.ReleasePopulation(preyCounts[0].Item1, totalPreyConsumed);
-                List<Tuple<SerializedHash32, int, PathwayType, ActionTarget>> eachPreyConsumed = new List<Tuple<SerializedHash32, int, PathwayType, ActionTarget>>();
-                for (int i = 0; i < totalPreyConsumed; i++)
-                {
-                    for (int j = 0; j < preyCounts.Count; j++)
+                    int rollResult = UnityEngine.Random.Range(1, 7);
+                    if (rollResult <= totalPrey)
                     {
-                        if (preyCounts[j].Item2 > 0)
+                        totalPreyConsumed++;
+                    }
+                }
+                totalPreyConsumed = Mathf.Min(totalPreyConsumed, totalPrey);
+                if (totalPreyConsumed > 0)
+                {
+                    // eco.ReleasePopulation(preyCounts[0].Item1, totalPreyConsumed);
+                    List<Tuple<SerializedHash32, int, PathwayType, ActionTarget>> eachPreyConsumed = new List<Tuple<SerializedHash32, int, PathwayType, ActionTarget>>();
+                    for (int i = 0; i < totalPreyConsumed; i++)
+                    {
+                        for (int j = 0; j < preyCounts.Count; j++)
                         {
-                            if (UnityEngine.Random.Range(0, 1f) < preyCounts[j].Item2 / (float)totalPrey)
+                            if (preyCounts[j].Item2 > 0)
                             {
-                                eachPreyConsumed.Add(new Tuple<SerializedHash32, int, PathwayType, ActionTarget>(preyCounts[j].Item1, 1, preyCounts[j].Item3, preyCounts[j].Item4));
-                                break;
+                                if (UnityEngine.Random.Range(0, 1f) < preyCounts[j].Item2 / (float)totalPrey)
+                                {
+                                    eachPreyConsumed.Add(new Tuple<SerializedHash32, int, PathwayType, ActionTarget>(preyCounts[j].Item1, 1, preyCounts[j].Item3, preyCounts[j].Item4));
+                                    break;
+                                }
                             }
                         }
                     }
+
+                    foreach (var prey in eachPreyConsumed)
+                    {
+                        eco.ReleasePopulation(prey.Item1, prey.Item2);
+                    }
+
+                    Game.Events.Dispatch(InterveneEvents.OnHunt);
                 }
 
-                foreach (var prey in eachPreyConsumed)
-                {
-                    eco.ReleasePopulation(prey.Item1, prey.Item2);
-                }
-
-                Game.Events.Dispatch(InterveneEvents.OnHunt);
+                Debug.Log("[InterveneDriver] [InterspeciesDynamics] eco " + eco.EcosystemId + " invasives consumed " + totalPreyConsumed);
+                yield return SIM_PHASE_SHORT_DELAY;
+            }
+            else
+            {
+                // no prey are eaten; the banked total only feeds the starve and reproduce steps below
+                totalPreyConsumed = Mathf.FloorToInt(totalInvasives * DEFAULT_HUNT_RATIO);
+                Debug.Log("[InterveneDriver] [InterspeciesDynamics] eco " + eco.EcosystemId + " invasives skipped hunt, banked " + totalPreyConsumed);
             }
 
-            Debug.Log("[InterveneDriver] [InterspeciesDynamics] eco " + eco.EcosystemId + " invasives consumed " + totalPreyConsumed);
-            yield return SIM_PHASE_SHORT_DELAY;
-
-            InterveneUI.Instance.SetSimPhase("Invasive Turn: Starve");
             // Starve
-            if (totalPreyConsumed == 0)
+            if (eco.InvasiveStarves)
             {
-                int rollResult = UnityEngine.Random.Range(1, 13);
-                if (rollResult <= totalInvasives)
+                InterveneUI.Instance.SetSimPhase("Invasive Turn: Starve");
+                if (totalPreyConsumed == 0)
                 {
-                    eco.ReleasePopulation(invasiveCounts[0].Item1, 1);
-                    Debug.Log("[InterveneDriver] [InterspeciesDynamics] eco " + eco.EcosystemId + " invasives starved 1");
-                    AisGame.Events.Dispatch(InterveneEvents.OnStarve);
+                    int rollResult = UnityEngine.Random.Range(1, 13);
+                    if (rollResult <= totalInvasives)
+                    {
+                        eco.ReleasePopulation(invasiveCounts[0].Item1, 1);
+                        Debug.Log("[InterveneDriver] [InterspeciesDynamics] eco " + eco.EcosystemId + " invasives starved 1");
+                        AisGame.Events.Dispatch(InterveneEvents.OnStarve);
+                    }
                 }
+                yield return SIM_PHASE_SHORT_DELAY;
             }
-            yield return SIM_PHASE_SHORT_DELAY;
 
-            InterveneUI.Instance.SetSimPhase("Invasive Turn: Reproduce");
             // Reproduce
-            int reproduceNum = totalPreyConsumed;
-            if (totalInvasives > 1)
-            // check reproduce condition; For Sea Lamprey: “ecosystem must be Tributary”
-            // check if numEgg >= 1
+            if (eco.InvasiveReproduces)
             {
-                reproduceNum = Mathf.FloorToInt(totalPreyConsumed / 2); // population + 1, numEgg - 1
-            }
-
-            var cluster = eco.GetCluster(invasiveCounts[0].Item1);
-            if (cluster != null)
-            {
-                cluster.NumEgg += reproduceNum;
-
-                if (cluster.NumEgg > 0 && cluster.IsSpawnable)
+                InterveneUI.Instance.SetSimPhase("Invasive Turn: Reproduce");
+                int reproduceNum = totalPreyConsumed;
+                if (totalInvasives > 1)
+                // check if numEgg >= 1
                 {
-                    eco.AddPopulation(invasiveCounts[0].Item1, 1, invasiveCounts[0].Item3, invasiveCounts[0].Item4);
-                    cluster.NumEgg -= 1;
-                    AisGame.Events.Dispatch(InterveneEvents.OnReproduce);
+                    reproduceNum = Mathf.FloorToInt(totalPreyConsumed / 2); // population + 1, numEgg - 1
                 }
-            }
 
-            // for (int i = 0; i < reproduceNum; i++)
-            // {
-            //     eco.AddPopulation(invasiveCounts[0].Item1, 1, invasiveCounts[0].Item3, invasiveCounts[0].Item4);
-            //     AisGame.Events.Dispatch(InterveneEvents.OnReproduce);
-            // }
-            Debug.Log("[InterveneDriver] [InterspeciesDynamics] eco " + eco.EcosystemId + " invasives reproduced " + reproduceNum);
-            yield return SIM_PHASE_SHORT_DELAY;
+                var cluster = eco.GetCluster(invasiveCounts[0].Item1);
+                if (cluster != null)
+                {
+                    cluster.NumEgg += reproduceNum;
+
+                    if (cluster.NumEgg > 0 && cluster.IsSpawnable)
+                    {
+                        eco.AddPopulation(invasiveCounts[0].Item1, 1, invasiveCounts[0].Item3, invasiveCounts[0].Item4);
+                        cluster.NumEgg -= 1;
+                        AisGame.Events.Dispatch(InterveneEvents.OnReproduce);
+                    }
+                }
+
+                // for (int i = 0; i < reproduceNum; i++)
+                // {
+                //     eco.AddPopulation(invasiveCounts[0].Item1, 1, invasiveCounts[0].Item3, invasiveCounts[0].Item4);
+                //     AisGame.Events.Dispatch(InterveneEvents.OnReproduce);
+                // }
+                Debug.Log("[InterveneDriver] [InterspeciesDynamics] eco " + eco.EcosystemId + " invasives reproduced " + reproduceNum);
+                yield return SIM_PHASE_SHORT_DELAY;
+            }
 
             InterveneUI.Instance.SetSimPhase("Invasive Turn: Spawn Nests");
             // Spawn Nest

@@ -14,7 +14,7 @@ namespace AIS.Model
     public struct SpeciesSetupData
     {
         public SerializedHash32 SpeciesId;
-        public SerializedHash32 StartingEcosystemId;
+        [EcosystemId] public SerializedHash32 StartingEcosystemId;
         public int StartingPopulation;
         public PathwayType StartingTravelType;
         public ActionTarget StartingTargetType;
