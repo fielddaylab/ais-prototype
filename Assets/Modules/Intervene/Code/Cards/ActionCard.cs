@@ -550,7 +550,7 @@ namespace AIS.Intervene {
                 Pathway pathway = tag.QueriableObj.GetComponent<Pathway>();
                 if (pathway != null)
                 {
-                    foreach (var effect in pathway.OnTryMoveFromOrig)
+                    foreach (var effect in pathway.OnTryMove)
                     {
                         if ((effect.EffectType & PathwayEffectType.Trapped) != 0)
                         {

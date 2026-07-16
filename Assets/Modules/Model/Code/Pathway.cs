@@ -16,6 +16,7 @@ namespace AIS.Model
         public SerializedHash32 PathwayId;
         [EcosystemId] public SerializedHash32 OrigEcosystemId;
         [EcosystemId] public SerializedHash32 DestEcosystemId;
+        public bool IsBidirectional;
         public Vector2 Pos;
         public float Rotation;
         public Sprite Sprite;
@@ -79,10 +80,11 @@ namespace AIS.Model
         public SpriteRenderer PathwayTypeRenderer;
         public TMP_Text TransferRateText;
 
-        public List<PathwayEffect> OnTryMoveFromOrig = new List<PathwayEffect>();
+        public List<PathwayEffect> OnTryMove = new List<PathwayEffect>();
 
         public SerializedHash32 OrigEcosystemId;
         public SerializedHash32 DestEcosystemId;
+        public bool IsBidirectional { get; private set; }
         public PathwayType PathwayType { get; private set; }
         public RateType TransferRateType { get; private set; }
         public float TransferTriggerChance { get; private set; }
@@ -97,6 +99,7 @@ namespace AIS.Model
             PathwayId = setupData.PathwayId;
             OrigEcosystemId = setupData.OrigEcosystemId;
             DestEcosystemId = setupData.DestEcosystemId;
+            IsBidirectional = setupData.IsBidirectional;
             PathwayType = setupData.PathwayType;
             SetIsHidden(!setupData.IsNotHidden);
             Dir = setupData.StartingDir;
@@ -169,14 +172,14 @@ namespace AIS.Model
             UpdateVisuals();
         }
 
-        public void AddEffectOnTryMoveFromOrig(PathwayEffect toAdd)
+        public void AddEffectOnTryMove(PathwayEffect toAdd)
         {
-            OnTryMoveFromOrig.Add(toAdd);
+            OnTryMove.Add(toAdd);
         }
 
-        public bool OnTryMoveFromOrigContains(string effectId)
+        public bool OnTryMoveContains(string effectId)
         {
-            foreach (var effect in OnTryMoveFromOrig)
+            foreach (var effect in OnTryMove)
             {
                 if (effect.EffectId.Equals(effectId))
                 {
@@ -290,7 +293,7 @@ namespace AIS.Model
                     text = TransferRate * 100 + "% per turn";
                 }
                 // update trapped visuals
-                if (OnTryMoveFromOrigContains("trap"))
+                if (OnTryMoveContains("trap"))
                 {
                     text += "\n(Trapped)";
                     if (ColorUtility.TryParseHtmlString("#f3b7b7", out Color trapColor)) {

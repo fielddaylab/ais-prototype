@@ -3,7 +3,7 @@
 // TODO
 :: Action-use-lampricide
 @title		Use Lampricide
-@suit		tbd
+@suit		tech
 @desc		tbd
 @path		temp.png
 @cost		tbd
@@ -41,7 +41,7 @@
 // TODO
 :: Action-stock-cisco
 @title		Stock Cisco
-@suit		tbd
+@suit		ranger
 @desc		tbd
 @path		temp.png
 @cost		tbd
@@ -59,7 +59,7 @@
 // TODO
 :: Action-stock-lake-trout
 @title		Stock Lake Trout
-@suit		tbd
+@suit		ranger
 @desc		tbd
 @path		temp.png
 @cost		tbd
@@ -78,7 +78,7 @@
 // TODO
 :: Action-release-sterilized
 @title		Release Sterilized Lamprey
-@suit		tbd
+@suit		research
 @desc		tbd
 @path		temp.png
 @cost		tbd
@@ -97,7 +97,7 @@
 // TODO
 :: Action-downstream-tributary-traps
 @title		Use Downstream Tributary Traps
-@suit		tbd
+@suit		ranger
 @desc		tbd
 @path		temp.png
 @cost		tbd
@@ -116,7 +116,7 @@
 // TODO
 :: Action-upstream-tributary-traps
 @title		Use Upstream Tributary Traps
-@suit		tbd
+@suit		ranger
 @desc		tbd
 @path		temp.png
 @cost		tbd
@@ -135,7 +135,7 @@
 // TODO
 :: Action-barriers
 @title		Put Up Barriers
-@suit		tbd
+@suit		ranger
 @desc		tbd
 @path		temp.png
 @cost		tbd
@@ -154,7 +154,7 @@
 // TODO
 :: Action-pheromones
 @title		Place Pheromones
-@suit		tbd
+@suit		tech
 @desc		tbd
 @path		temp.png
 @cost		tbd

@@ -500,7 +500,7 @@ namespace AIS.Intervene
                 var pathway = tag.QueriableObj.GetComponent<Pathway>();
                 if (pathway != null)
                 {
-                    if (!pathway.OnTryMoveFromOrigContains(effectId))
+                    if (!pathway.OnTryMoveContains(effectId))
                     {
                         PathwayEffect ballastEffect = new PathwayEffect();
                         ballastEffect.EffectId = effectId;
@@ -509,7 +509,7 @@ namespace AIS.Intervene
                         ballastEffect.TargetType = ActionTarget.Invasive;
                         ballastEffect.Value = 1;
 
-                        pathway.AddEffectOnTryMoveFromOrig(ballastEffect);
+                        pathway.AddEffectOnTryMove(ballastEffect);
                     }
                 }
             }

@@ -159,6 +159,7 @@ MonoBehaviour:
     DestEcosystemId:
       m_Source: little-lake-tributary
       m_HashValue: 2386798660
+    IsBidirectional: 0
     Pos: {x: -3.3, y: 1.3}
     Rotation: 80
     Sprite: {fileID: 21300000, guid: 41ff8598504ba504abb60c1a6637d439, type: 3}
@@ -177,6 +178,7 @@ MonoBehaviour:
     DestEcosystemId:
       m_Source: little-lake
       m_HashValue: 3686629487
+    IsBidirectional: 0
     Pos: {x: -1.8, y: 1.1}
     Rotation: -100
     Sprite: {fileID: 21300000, guid: 41ff8598504ba504abb60c1a6637d439, type: 3}
@@ -195,6 +197,7 @@ MonoBehaviour:
     DestEcosystemId:
       m_Source: big-lake-tributary
       m_HashValue: 2279562092
+    IsBidirectional: 0
     Pos: {x: 3.5, y: -1.2}
     Rotation: 100
     Sprite: {fileID: 21300000, guid: 41ff8598504ba504abb60c1a6637d439, type: 3}
@@ -213,6 +216,7 @@ MonoBehaviour:
     DestEcosystemId:
       m_Source: big-lake
       m_HashValue: 320318183
+    IsBidirectional: 0
     Pos: {x: 5.28, y: -1.21}
     Rotation: -80
     Sprite: {fileID: 21300000, guid: 41ff8598504ba504abb60c1a6637d439, type: 3}
@@ -231,6 +235,7 @@ MonoBehaviour:
     DestEcosystemId:
       m_Source: med-lake-tributary
       m_HashValue: 194951596
+    IsBidirectional: 0
     Pos: {x: -0.53, y: -3.19}
     Rotation: 130
     Sprite: {fileID: 21300000, guid: 41ff8598504ba504abb60c1a6637d439, type: 3}
@@ -249,6 +254,7 @@ MonoBehaviour:
     DestEcosystemId:
       m_Source: med-lake
       m_HashValue: 1599097255
+    IsBidirectional: 0
     Pos: {x: 0.68, y: -2.29}
     Rotation: -50
     Sprite: {fileID: 21300000, guid: 41ff8598504ba504abb60c1a6637d439, type: 3}
@@ -267,6 +273,7 @@ MonoBehaviour:
     DestEcosystemId:
       m_Source: big-lake
       m_HashValue: 320318183
+    IsBidirectional: 1
     Pos: {x: 1.14, y: 2.63}
     Rotation: 0
     Sprite: {fileID: 21300000, guid: 982d9117f01cacc4c82578bc731ff5c8, type: 3}
@@ -285,6 +292,7 @@ MonoBehaviour:
     DestEcosystemId:
       m_Source: med-lake
       m_HashValue: 1599097255
+    IsBidirectional: 1
     Pos: {x: 1.3, y: -0.64}
     Rotation: 47.43
     Sprite: {fileID: 21300000, guid: 982d9117f01cacc4c82578bc731ff5c8, type: 3}
@@ -303,6 +311,7 @@ MonoBehaviour:
     DestEcosystemId:
       m_Source: little-lake
       m_HashValue: 3686629487
+    IsBidirectional: 1
     Pos: {x: -0.72, y: 0.14}
     Rotation: 87.54
     Sprite: {fileID: 21300000, guid: 982d9117f01cacc4c82578bc731ff5c8, type: 3}

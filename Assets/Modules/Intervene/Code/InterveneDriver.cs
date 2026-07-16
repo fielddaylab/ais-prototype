@@ -96,7 +96,16 @@ namespace AIS.Intervene {
             foreach (var pathway in InvasionModelContainer.Instance.GetAllPathways())
             {
                 SetPathwayFocused(pathway, true);
-                yield return StagePathwayTransfer(pathway);
+
+                StagePathwayTransfer(pathway, pathway.OrigEcosystemId, pathway.DestEcosystemId);
+                if (pathway.IsBidirectional)
+                {
+                    // acts as a second pathway running the other way: its own trigger roll,
+                    // its own rate off its own source, but sharing this pathway's effects
+                    StagePathwayTransfer(pathway, pathway.DestEcosystemId, pathway.OrigEcosystemId);
+                }
+
+                yield return SIM_PHASE_DELAY;
                 SetPathwayFocused(pathway, false);
             }
             yield return SIM_PHASE_DELAY;
@@ -429,10 +438,10 @@ namespace AIS.Intervene {
             SetEcosystemFocused(eco, false);
         }
 
-        private IEnumerator StagePathwayTransfer(Pathway pathway)
+        private void StagePathwayTransfer(Pathway pathway, SerializedHash32 origEcosystemId, SerializedHash32 destEcosystemId)
         {
             // for each species in origin which travels along pathway
-            var origEco = InvasionModelContainer.Instance.GetEcosystem(pathway.OrigEcosystemId);
+            var origEco = InvasionModelContainer.Instance.GetEcosystem(origEcosystemId);
             var relevantSpecies = origEco.FindSpeciesWhichTravelBy(pathway.PathwayType);
 
             foreach (var speciesPair in relevantSpecies)
@@ -458,19 +467,19 @@ namespace AIS.Intervene {
                 transferNum = Mathf.Max(1, transferNum); // rounded down, but at least 1
 
                 // Process pathway effects (i.e. ballast treatment: -1 invasive from source instead of move)
-                foreach (var onTryMoveFromOrigEffect in pathway.OnTryMoveFromOrig)
+                foreach (var onTryMoveEffect in pathway.OnTryMove)
                 {
-                    if ((onTryMoveFromOrigEffect.EffectType & PathwayEffectType.BlockAll) != 0)
+                    if ((onTryMoveEffect.EffectType & PathwayEffectType.BlockAll) != 0)
                     {
                         transferNum = 0;
                     }
-                    if ((onTryMoveFromOrigEffect.EffectType & PathwayEffectType.Trapped) != 0)
+                    if ((onTryMoveEffect.EffectType & PathwayEffectType.Trapped) != 0)
                     {
                         int origPop = origEco.GetPopulation(speciesPair.Item1);
                         if (origPop > 0)
                         {
-                            if ((onTryMoveFromOrigEffect.TargetType & ActionTarget.Invasive) != 0) {
-                                // origEco.ReleasePopulation(InvasionModel.Instance.CurrModelSetupData.DefaultInvasive.SpeciesId, (int)onTryMoveFromOrigEffect.Value);
+                            if ((onTryMoveEffect.TargetType & ActionTarget.Invasive) != 0) {
+                                // origEco.ReleasePopulation(InvasionModel.Instance.CurrModelSetupData.DefaultInvasive.SpeciesId, (int)onTryMoveEffect.Value);
                                 // For trapped pathway (defined as Remove pathwayEffectType), trap 1 species.
                                 origEco.ReleasePopulation(InvasionModel.Instance.CurrModelSetupData.DefaultInvasive.SpeciesId, 1);
                                 transferNum = Mathf.Max(0, transferNum - 1);
@@ -482,8 +491,8 @@ namespace AIS.Intervene {
                 // split species, between orig and dest clusters
                 var transferAlloc = new SpeciesTransferAllocation();
                 transferAlloc.SpeciesId = speciesPair.Item1;
-                transferAlloc.OrigEcosystemId = pathway.OrigEcosystemId;
-                transferAlloc.DestEcosystemId = pathway.DestEcosystemId;
+                transferAlloc.OrigEcosystemId = origEcosystemId;
+                transferAlloc.DestEcosystemId = destEcosystemId;
                 transferAlloc.TransferCount = transferNum;
                 transferAlloc.TravelType = speciesPair.Item2;
                 transferAlloc.TargetType = speciesPair.Item3;
@@ -492,8 +501,6 @@ namespace AIS.Intervene {
                 // Release species from original ecosystem
                 // origEco.ReleasePopulation(speciesPair.Item1, transferNum);
             }
-
-            yield return SIM_PHASE_DELAY;
         }
 
         private void FinalizePathwayTransfers()
