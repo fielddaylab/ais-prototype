@@ -23,15 +23,27 @@ namespace AIS.Narrative
         public GameObject NoActionCardsDefault;
         public TMP_Text FocusDescriptionText;
 
+        [Header("Deck Layout")]
+        [Tooltip("Vertical distance between the tops of consecutive cards when the deck is spread downward as an overlapping stack.")]
+        public float StackedCardSpacing = 48f;
+
         [Header("Focus Behavior")]
         [Tooltip("false = hover a deck card to preview it in the focus slot; true = click to focus/return/swap.")]
         public bool ClickToFocus = true;
         public TweenSettings FocusSlideAnim = new TweenSettings(0.2f, Curve.Smooth);
-        public float FocusHiddenX = 600f;
 
-        private Routine m_FocusInRoutine;
-        private Routine m_FocusOutRoutine;
+        private Routine m_FocusInRoutine;   // click mode: card traveling from the deck to the focus slot
+        private Routine m_FocusOutRoutine;  // click mode: card traveling from the focus slot back to the deck
         [NonSerialized] public int m_FocusedCardIndex = -1;
+
+        // Click mode: deck position the focused card returns to, captured when it was focused
+        // (the card is at rest in the deck at that moment, so this also works for decks
+        // positioned by a layout group rather than LayoutStackedCards).
+        private Vector2 m_FocusedCardHome;
+        // Click mode: card currently sliding back into the deck (-1 if none) and its target.
+        private int m_ReturningCardIndex = -1;
+        private Vector2 m_ReturningCardHome;
+
         private readonly List<ActionCardData> m_SpawnedCardData = new List<ActionCardData>(24);
         public bool HasFocusedCard
         {
@@ -74,13 +86,43 @@ namespace AIS.Narrative
             SetFocusDescription(string.Empty);
         }
 
-        // Immediately clears the focus slot (no animation) and resets focus state.
-        // Call from the owning panel's Hide().
+        // Spreads the spawned deck cards downward as an overlapping stack: each card sits
+        // StackedCardSpacing below the previous one and renders in front of it. Opt-in —
+        // call after Populate. Focus behavior is unaffected in both modes, since hover and
+        // click both drive the separate FocusSlot card rather than moving deck cards.
+        public void LayoutStackedCards()
+        {
+            int index = 0;
+            foreach (UICard card in ActionCardPool.ActiveObjects)
+            {
+                RectTransform rect = (RectTransform)card.transform;
+                rect.anchorMin = new Vector2(0.5f, 1f);
+                rect.anchorMax = new Vector2(0.5f, 1f);
+                rect.pivot = new Vector2(0.5f, 1f);
+                rect.anchoredPosition = new Vector2(0f, -index * StackedCardSpacing);
+                rect.SetSiblingIndex(index);
+                index++;
+            }
+        }
+
+        // Immediately clears focus (no animation): snaps any focused or returning card back
+        // to its deck position and resets focus state. Call from the owning panel's Hide().
         public void ClearFocus()
         {
             m_FocusInRoutine.Stop();
             m_FocusOutRoutine.Stop();
+
+            if (IsValidIndex(m_FocusedCardIndex))
+            {
+                SnapCardHome(m_FocusedCardIndex, m_FocusedCardHome);
+            }
+            if (IsValidIndex(m_ReturningCardIndex))
+            {
+                SnapCardHome(m_ReturningCardIndex, m_ReturningCardHome);
+            }
+
             m_FocusedCardIndex = -1;
+            m_ReturningCardIndex = -1;
             SetFocusSlotVisible(false);
             SetFocusDescription(string.Empty);
         }
@@ -146,44 +188,86 @@ namespace AIS.Narrative
         {
             if (!IsValidIndex(index)) { return; }
 
+            // Clicking the focused card sends it back to its place in the deck.
             if (m_FocusedCardIndex == index)
             {
                 m_FocusedCardIndex = -1;
                 m_FocusInRoutine.Stop();
-                m_FocusOutRoutine.Replace(this, SlideFocusOut());
+                StartReturn(index, m_FocusedCardHome);
+                SetFocusDescription(string.Empty);
                 return;
             }
 
-            bool swapping = m_FocusedCardIndex != -1;
-            m_FocusedCardIndex = index;
-            m_FocusInRoutine.Replace(this, FocusOn(index, swapping));
-        }
-
-        private IEnumerator FocusOn(int index, bool swapping)
-        {
-            RectTransform slot = FocusSlot.transform as RectTransform;
-
-            if (swapping)
+            // Swapping: the previously focused card slides home on its own routine while the
+            // newly clicked card slides into the focus slot, so both animate simultaneously.
+            if (m_FocusedCardIndex != -1)
             {
-                yield return slot.AnchorPosTo(FocusHiddenX, FocusSlideAnim, Axis.X);
+                StartReturn(m_FocusedCardIndex, m_FocusedCardHome);
+            }
+
+            m_FocusedCardIndex = index;
+
+            RectTransform rect = CardRect(index);
+            if (m_ReturningCardIndex == index)
+            {
+                // Re-focusing a card that is mid-slide back into the deck: keep its original
+                // home and let the focus tween take over from wherever it currently is.
+                m_FocusOutRoutine.Stop();
+                m_ReturningCardIndex = -1;
+                m_FocusedCardHome = m_ReturningCardHome;
+            }
+            else
+            {
+                m_FocusedCardHome = rect.anchoredPosition;
             }
 
             ActionCardData data = m_SpawnedCardData[index];
+            // The FocusSlot stays hidden in click mode — the deck card itself travels to it —
+            // but external readers (e.g. the swap deck's FocusSlot.CardID) still need its data.
             ActionCardUtility.PopulateCardUI(FocusSlot, data);
             SetFocusDescription(data.FocusDescription);
 
-            SetFocusSlotVisible(true);
-            slot.SetAnchorPos(FocusHiddenX, Axis.X);
-            yield return slot.AnchorPosTo(0f, FocusSlideAnim, Axis.X);
+            m_FocusInRoutine.Replace(this, rect.AnchorPosTo(FocusTargetPosition(rect), FocusSlideAnim));
         }
 
-        private IEnumerator SlideFocusOut()
+        // Starts sliding a card back to its deck position. Only one card can be mid-return;
+        // if another is still traveling home, it snaps there instantly first.
+        private void StartReturn(int index, Vector2 home)
         {
-            RectTransform slot = FocusSlot.transform as RectTransform;
-            yield return slot.AnchorPosTo(FocusHiddenX, FocusSlideAnim, Axis.X);
-            SetFocusSlotVisible(false);
-            SetFocusDescription(string.Empty);
-            slot.SetAnchorPos(0f, Axis.X);
+            if (m_ReturningCardIndex != -1 && m_ReturningCardIndex != index)
+            {
+                SnapCardHome(m_ReturningCardIndex, m_ReturningCardHome);
+            }
+
+            m_ReturningCardIndex = index;
+            m_ReturningCardHome = home;
+            m_FocusOutRoutine.Replace(this, SlideCardHome(index, home));
+        }
+
+        private IEnumerator SlideCardHome(int index, Vector2 home)
+        {
+            yield return CardRect(index).AnchorPosTo(home, FocusSlideAnim);
+            m_ReturningCardIndex = -1;
+        }
+
+        private void SnapCardHome(int index, Vector2 home)
+        {
+            CardRect(index).anchoredPosition = home;
+        }
+
+        private RectTransform CardRect(int index)
+        {
+            return (RectTransform)ActionCardPool.ActiveObjects[index].transform;
+        }
+
+        // Anchored position (in the card's parent space) that centers the card on the FocusSlot.
+        private Vector2 FocusTargetPosition(RectTransform cardRect)
+        {
+            RectTransform slot = (RectTransform)FocusSlot.transform;
+            Vector3 slotCenter = slot.TransformPoint(slot.rect.center);
+            Vector3 cardCenter = cardRect.TransformPoint(cardRect.rect.center);
+            Vector2 delta = ((RectTransform)cardRect.parent).InverseTransformVector(slotCenter - cardCenter);
+            return cardRect.anchoredPosition + delta;
         }
 
         private void SetFocusSlotVisible(bool visible)

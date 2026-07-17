@@ -76,6 +76,7 @@ namespace AIS.Narrative {
             RecomputeStats(parms);
             PopulateStats(Find.State<PlayerStats>().StatBlock);
             ActionDeck.Populate(parms.ActionCards);
+            ActionDeck.LayoutStackedCards();
             UpdateRevealQueueDisplay();
         }
 

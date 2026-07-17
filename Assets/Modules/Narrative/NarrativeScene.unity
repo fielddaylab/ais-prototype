@@ -1688,6 +1688,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6567866639126392834, guid: b8def919a8aaeca49b777375e84ea6ca, type: 3}
+      propertyPath: ClickToFocus
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6850983668823398104, guid: b8def919a8aaeca49b777375e84ea6ca, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0

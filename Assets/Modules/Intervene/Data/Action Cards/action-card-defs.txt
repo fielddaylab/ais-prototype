@@ -1,7 +1,7 @@
 // Action Cards With Effects
 
 // TODO
-:: Action-use-lampricide
+::Action-use-lampricide
 @title		Use Lampricide
 @suit		tech
 @desc		tbd
@@ -18,7 +18,7 @@
     tbd
 
 
-:: Action-awareness-campaign
+::Action-awareness-campaign
 @title		Outreach Campaign
 @suit		communicate
 @desc		+1 Awareness
@@ -39,7 +39,7 @@
 
 
 // TODO
-:: Action-stock-cisco
+::Action-stock-cisco
 @title		Stock Cisco
 @suit		ranger
 @desc		tbd
@@ -57,7 +57,7 @@
 
 
 // TODO
-:: Action-stock-lake-trout
+::Action-stock-lake-trout
 @title		Stock Lake Trout
 @suit		ranger
 @desc		tbd
@@ -76,7 +76,7 @@
 
 
 // TODO
-:: Action-release-sterilized
+::Action-release-sterilized
 @title		Release Sterilized Lamprey
 @suit		research
 @desc		tbd
@@ -95,7 +95,7 @@
 
 
 // TODO
-:: Action-downstream-tributary-traps
+::Action-downstream-tributary-traps
 @title		Use Downstream Tributary Traps
 @suit		ranger
 @desc		tbd
@@ -114,7 +114,7 @@
 
 
 // TODO
-:: Action-upstream-tributary-traps
+::Action-upstream-tributary-traps
 @title		Use Upstream Tributary Traps
 @suit		ranger
 @desc		tbd
@@ -133,7 +133,7 @@
 
 
 // TODO
-:: Action-barriers
+::Action-barriers
 @title		Put Up Barriers
 @suit		ranger
 @desc		tbd
@@ -152,7 +152,7 @@
 
 
 // TODO
-:: Action-pheromones
+::Action-pheromones
 @title		Place Pheromones
 @suit		tech
 @desc		tbd
@@ -168,3 +168,64 @@
 @effect
     tbd
 
+
+
+
+
+
+
+::Action-awareness-campaign-2
+@title		Outreach Campaign 2
+@suit		communicate
+@desc		+1 Awareness
+@path		temp.png
+@cost		2
+
+@effect
+    target: aware
+    verb: increase, 1, fixed
+    specificity: all
+
+@overrideEffect if social > 0
+    desc: Additional +1 Awareness
+    target: aware
+    verb: increase, 2, fixed
+    specificity: all
+
+
+::Action-awareness-campaign-3
+@title		Outreach Campaign 3
+@suit		communicate
+@desc		+1 Awareness
+@path		temp.png
+@cost		2
+
+@effect
+    target: aware
+    verb: increase, 1, fixed
+    specificity: all
+
+@overrideEffect if social > 0
+    desc: Additional +1 Awareness
+    target: aware
+    verb: increase, 2, fixed
+    specificity: all
+
+
+::Action-awareness-campaign-4
+@title		Outreach Campaign 4
+@suit		communicate
+@desc		+1 Awareness
+@path		temp.png
+@cost		2
+
+@effect
+    target: aware
+    verb: increase, 1, fixed
+    specificity: all
+
+@overrideEffect if social > 0
+    desc: Additional +1 Awareness
+    target: aware
+    verb: increase, 2, fixed
+    specificity: all
