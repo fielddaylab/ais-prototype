@@ -31,6 +31,7 @@ namespace AIS.Narrative {
         [Header("Content")]
         public EvidenceDisplayWidget DependencyWidget;
         public UICard Card;
+        public GameObject ScenarioDetails;
         public Button Button;
 
         [NonSerialized] public Routine GiveAnim; // stored so the fly anim can be adjusted/stopped

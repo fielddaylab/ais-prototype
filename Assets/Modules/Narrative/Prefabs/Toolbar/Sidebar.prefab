@@ -396,7 +396,7 @@ MonoBehaviour:
   m_Group:
     m_Source: 
     m_HashValue: 0
-  m_StartingValue: 17
+  m_StartingValue: 20
   m_MaxValue: 20
   m_Style: {fileID: 5376530044732090847}
 --- !u!114 &5376530044732090847

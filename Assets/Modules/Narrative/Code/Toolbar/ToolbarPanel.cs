@@ -106,6 +106,8 @@ namespace AIS.Narrative {
             var mapPanel = Find.Panel<MapDisplayPanel>();
             var modelPanel = Find.Panel<ModelDisplayPanel>();
             var evidencePanel = Find.Panel<EvidenceDisplayPanel>();
+
+            var toolbarPanel = Find.GuiModule<ToolbarPanel>();
             if (mapPanel.IsShowing())
             {
                 mapPanel.Hide();
@@ -113,12 +115,11 @@ namespace AIS.Narrative {
             else
             {
                 modelPanel.Hide();
-                //InvasionModel.Instance.gameObject.SetActive(false);
                 evidencePanel.Hide();
-                //if (InvasionModel.Instance != null) {
-                //    InvasionModel.Instance.gameObject.SetActive(false);
-                //}
                 mapPanel.Show();
+
+                // TODO: reveal time group at the appriopriate point
+                ToolbarPanel.ResetTimeGroup(toolbarPanel.TimeGroup, true);
             }
             Find.GuiModule<DialoguePanel>().SetVisible(!mapPanel.IsShowing());
         }
@@ -139,12 +140,9 @@ namespace AIS.Narrative {
             {
                 mapPanel.Hide();
                 evidencePanel.Hide();
-                //modelPanel.Populate(Find.State<PlayerStats>().StatBlock);
                 modelPanel.Show();
-                //InvasionModel.Instance.GetComponentInChildren<SimDetailRegistry>().RefreshVisibility();
             }
             Find.GuiModule<DialoguePanel>().SetVisible(!(modelPanel.IsShowing() || evidencePanel.IsShowing()));
-            //InvasionModel.Instance.gameObject.SetActive(modelPanel.IsShowing());
         }
     }
 }
