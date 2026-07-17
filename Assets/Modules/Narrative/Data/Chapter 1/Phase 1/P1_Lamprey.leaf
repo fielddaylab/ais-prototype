@@ -2,6 +2,7 @@
 #include "Header.leaf"
 
 :: Start
+@exposed
 @trigger    OnLocationChanged
 // "NONE" ensures no other threads are in-progress
 // global:currentPhase == 1 ensures player is in phase 1
@@ -91,6 +92,7 @@ $goto .End
 
 
 :: End
+@exposed
 @tracked
 // Unlock next locations
 $call UnlockLocation(DNROffice)  // P1_NativeLamprey

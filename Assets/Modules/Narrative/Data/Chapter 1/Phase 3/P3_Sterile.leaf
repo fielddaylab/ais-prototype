@@ -2,6 +2,7 @@
 #include "Header.leaf"
 
 :: Start
+@exposed
 @trigger    OnLocationChanged
 // "NONE" ensures no other threads are in-progress
 // global:currentPhase == 3 ensures player is in phase 3
@@ -48,6 +49,7 @@ $goto .End
 
 
 :: End
+@exposed
 @tracked
 
 // Mark end of thread

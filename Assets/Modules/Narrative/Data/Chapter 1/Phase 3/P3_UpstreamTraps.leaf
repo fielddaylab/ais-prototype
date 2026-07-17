@@ -2,6 +2,7 @@
 #include "Header.leaf"
 
 :: AtDNROffice
+@exposed
 @trigger    OnLocationChanged
 // global:currentThread ensures the correct thread
 // global:currentPhase == 3 ensures player is in phase 3
@@ -50,6 +51,7 @@ $goto .End
 
 
 :: End
+@exposed
 @tracked
 
 // Mark end of thread
