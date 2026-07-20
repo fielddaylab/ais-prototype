@@ -23,6 +23,9 @@ namespace AIS.Intervene
         public TMP_Text PromptText;
         public int RequiredCount = 4;
 
+        public TweenSettings CardTravelAnim = new TweenSettings(0.2f, Curve.Smooth);
+        public RectTransform HandTravelTarget;
+
         #endregion
 
         [NonSerialized] public bool IsComplete;
@@ -33,6 +36,9 @@ namespace AIS.Intervene
         private Routine m_MoveRoutine;
         private StackHoverZone handHoverZone;
 
+        private readonly Dictionary<UICard, Routine> m_Flying = new Dictionary<UICard, Routine>();
+        private Routine m_RestackRoutine;
+
         private void Awake()
         {
             Instance = this;
@@ -42,6 +48,8 @@ namespace AIS.Intervene
 
         public void Load(IEnumerable<StringHash32> cardIds)
         {
+            FinishPendingFlights();
+
             IsComplete = false;
             m_Selected.Clear();
             m_Cards.Clear();
@@ -57,22 +65,9 @@ namespace AIS.Intervene
             foreach (UICard card in DeckWidget.ActionCardPool.ActiveObjects)
             {
                 m_Cards.Add(card.CardID);
-                FieldNoteCardPointer pointer = card.GetComponent<FieldNoteCardPointer>();
-                if (pointer != null)
-                {
-                    pointer.OnClick = null;
-                    pointer.OnEnter = null;
-                    pointer.OnExit = null;
-                }
-
-                Button clickBtn = card.GetComponentInChildren<Button>(true);
-                if (clickBtn != null)
-                {
-                    UICard captured = card;
-                    clickBtn.onClick.RemoveAllListeners();
-                    clickBtn.onClick.AddListener(() => ToggleSelection(captured));
-                }
             }
+
+            RebindCardButtons();
 
             CardSelectionPanel.SetActive(true);
             RefreshUI();
@@ -89,20 +84,38 @@ namespace AIS.Intervene
         {
             if (m_Selected.Contains(card.CardID)) { return; }
             if (m_Selected.Count >= RequiredCount) { return; }
+            if (m_Flying.ContainsKey(card)) { return; }
 
             StringHash32 id = card.CardID;
             m_Selected.Add(id);
-            Hand.AddActionCard(id);
-
-            RectTransform container = (RectTransform)card.transform.parent;
-            DeckWidget.ActionCardPool.Free(card);
-            LayoutRebuilder.ForceRebuildLayoutImmediate(container);
-
             RefreshUI();
+
+            Button clickBtn = card.GetComponentInChildren<Button>(true);
+            if (clickBtn != null) { clickBtn.interactable = false; }
+
+            m_Flying[card] = Routine.Start(this, FlyCardToHand(card, id));
         }
-        
+
+        private IEnumerator FlyCardToHand(UICard card, StringHash32 cardId)
+        {
+            RectTransform rect = (RectTransform)card.transform;
+            yield return CardTravelUtility.TravelToRect(rect, HandTarget(), CardTravelAnim);
+
+            m_Flying.Remove(card);
+            DeckWidget.ActionCardPool.Free(card);
+            Hand.AddActionCard(cardId);
+            m_RestackRoutine.Replace(this, CardTravelUtility.AnimatedRestack(DeckWidget, CardTravelAnim));
+        }
+
+        private RectTransform HandTarget()
+        {
+            return HandTravelTarget != null ? HandTravelTarget : (RectTransform)Hand.transform;
+        }
+
         private void ReturnCardToDeck(StringHash32 id)
         {
+            FinishPendingFlights();
+            m_RestackRoutine.Stop();
             if (!m_Selected.Remove(id)) { return; }
 
             Hand.RemoveActionCard(id);
@@ -112,11 +125,33 @@ namespace AIS.Intervene
             {
                 if (!m_Selected.Contains(otherId)) { inDeckIds.Add(otherId); }
             }
+
             DeckWidget.Populate(inDeckIds);
             DeckWidget.LayoutStackedCards();
+            RebindCardButtons();
 
-            // rebind each card's button component with listener
-            foreach (UICard card in DeckWidget.ActionCardPool.ActiveObjects)
+            int index = 0;
+            foreach(UICard card in DeckWidget.ActionCardPool.ActiveObjects)
+            {
+                if (card.CardID == id)
+                {
+                    RectTransform rect = (RectTransform)card.transform;
+                    Vector2 slot = CardTravelUtility.StackedPosition(index, DeckWidget.StackedCardSpacing);
+                    int slotSibling = index;
+
+                    rect.anchoredPosition = CardTravelUtility.AnchoredPositionOver(rect, HandTarget());
+                    rect.SetAsLastSibling();
+                    m_Flying[card] = Routine.Start(this, SlideIntoSlot(card, rect, slot, slotSibling));
+                }
+                index++;
+            }
+
+            RefreshUI();
+        }
+
+        private void RebindCardButtons()
+        {
+            foreach(UICard card in DeckWidget.ActionCardPool.ActiveObjects)
             {
                 FieldNoteCardPointer pointer = card.GetComponent<FieldNoteCardPointer>();
                 if (pointer != null)
@@ -130,12 +165,11 @@ namespace AIS.Intervene
                 if (clickBtn != null)
                 {
                     UICard captured = card;
+                    clickBtn.interactable = true;
                     clickBtn.onClick.RemoveAllListeners();
                     clickBtn.onClick.AddListener(() => ToggleSelection(captured));
                 }
             }
-
-            RefreshUI();
         }
 
         private void RefreshUI()
@@ -148,8 +182,33 @@ namespace AIS.Intervene
             }
         }
 
+        private void FinishPendingFlights()
+        {
+            foreach(var kvp in m_Flying)
+            {
+                kvp.Value.Stop();
+                StringHash32 id = kvp.Key.CardID;
+                if (m_Selected.Contains(id))
+                {
+                    DeckWidget.ActionCardPool.Free(kvp.Key);
+                    Hand.AddActionCard(id);
+                }
+            }
+            m_Flying.Clear();
+        }
+
+        private IEnumerator SlideIntoSlot(UICard card, RectTransform rect, Vector2 slot, int sibling)
+        {
+            yield return rect.AnchorPosTo(slot, CardTravelAnim);
+            rect.SetSiblingIndex(sibling);
+            m_Flying.Remove(card);
+        }
+
         private void HandleConfirm()
         {
+            FinishPendingFlights();
+            m_RestackRoutine.Stop();
+
             List<StringHash32> selectedIds = new List<StringHash32>(RequiredCount);
             List<StringHash32> remainingIds = new List<StringHash32>(m_Cards.Count);
 
@@ -172,6 +231,50 @@ namespace AIS.Intervene
             Hand.OnCardClickedOverride = null;
 
             InterveneSwapDeckInterfacer.Instance.SwapBtn.interactable = true;
+        }
+    }
+
+    public sealed class CardTravelUtility
+    {
+        static public Vector2 StackedPosition(int index, float spacing)
+        {
+            return new Vector2(0f, -index * spacing);
+        }
+
+        static public Vector2 AnchoredPositionOver(RectTransform cardRect, RectTransform target)
+        {
+            Vector3 targetCenter = target.TransformPoint(target.rect.center);
+            Vector3 cardCenter = cardRect.TransformPoint(cardRect.rect.center);
+            Vector2 delta = ((RectTransform)cardRect.parent).InverseTransformVector(targetCenter - cardCenter);
+            return cardRect.anchoredPosition + delta;
+        }
+
+        static public void PrepareStackedRect(RectTransform rect, int index)
+        {
+            rect.anchorMin = new Vector2(0.5f, 1f);
+            rect.anchorMax = new Vector2(0.5f, 1f);
+            rect.pivot = new Vector2(0.5f, 1f);
+            rect.SetSiblingIndex(index);
+        }
+
+        static public IEnumerator AnimatedRestack(ActionCardDeckWidget deck, TweenSettings anim)
+        {
+            List<IEnumerator> tweens = new List<IEnumerator>();
+            int index = 0;
+            foreach (UICard card in deck.ActionCardPool.ActiveObjects)
+            {
+                RectTransform rect = (RectTransform)card.transform;
+                PrepareStackedRect(rect, index);
+                tweens.Add(rect.AnchorPosTo(StackedPosition(index, deck.StackedCardSpacing), anim));
+                index++;
+            }
+            return Routine.Combine(tweens);
+        }
+
+        static public IEnumerator TravelToRect(RectTransform cardRect, RectTransform target, TweenSettings anim)
+        {
+            cardRect.SetAsLastSibling();
+            return cardRect.AnchorPosTo(AnchoredPositionOver(cardRect, target), anim);
         }
     }
 }

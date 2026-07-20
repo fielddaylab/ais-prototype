@@ -17,8 +17,6 @@ $call DisableMapButton()
 $set global:currentPhase = 0
 // Mark start of thread
 $set global:currentThread = "P0_Intro"
-$call GiveActionCard("Action-use-lampricide")
-$call GiveActionCard("Action-awareness-campaign")
 
 //{@}   
        //[This is the introductory thread in Phase 0.]

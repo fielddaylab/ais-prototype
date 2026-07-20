@@ -72,8 +72,12 @@ namespace AIS.Intervene
             CurveInterfacer.LoadCurve(inInvasionCurve);
             InvasionModel.Load(CurveInterfacer.CurrVal);
 
+            // Playtest action card data
             inventory.ActionCards.Add("Action-use-lampricide");
             inventory.ActionCards.Add("Action-awareness-campaign");
+            inventory.ActionCards.Add("Action-stock-cisco");
+            inventory.ActionCards.Add("Action-stock-lake-trout");
+
             SwapDeck.LoadSwapDeck(inventory.ActionCards);
             CardSelection.Load(inventory.ActionCards);
 
