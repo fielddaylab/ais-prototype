@@ -7669,6 +7669,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3479410811402406464}
     m_Modifications:
+    - target: {fileID: 2428338255603210014, guid: 04c0110c818960a409f452afd99acdf8, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 338.9981
+      objectReference: {fileID: 0}
+    - target: {fileID: 2428338255603210014, guid: 04c0110c818960a409f452afd99acdf8, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2428338255603210014, guid: 04c0110c818960a409f452afd99acdf8, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -43
+      objectReference: {fileID: 0}
     - target: {fileID: 4368423287942582012, guid: 04c0110c818960a409f452afd99acdf8, type: 3}
       propertyPath: ClickToFocus
       value: 1
@@ -7715,7 +7727,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4798204324129352601, guid: 04c0110c818960a409f452afd99acdf8, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 504.6785
+      value: 543.6451
       objectReference: {fileID: 0}
     - target: {fileID: 4798204324129352601, guid: 04c0110c818960a409f452afd99acdf8, type: 3}
       propertyPath: m_LocalScale.x
@@ -7781,17 +7793,25 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6261952111940038881, guid: 04c0110c818960a409f452afd99acdf8, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -100
+      objectReference: {fileID: 0}
+    - target: {fileID: 6261952111940038881, guid: 04c0110c818960a409f452afd99acdf8, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -250
+      objectReference: {fileID: 0}
     - target: {fileID: 6375459363714149654, guid: 04c0110c818960a409f452afd99acdf8, type: 3}
       propertyPath: m_Name
       value: Action Card Deck
       objectReference: {fileID: 0}
     - target: {fileID: 8162499034957891199, guid: 04c0110c818960a409f452afd99acdf8, type: 3}
       propertyPath: m_SizeDelta.y
-      value: -46.135014
+      value: -73.13501
       objectReference: {fileID: 0}
     - target: {fileID: 8162499034957891199, guid: 04c0110c818960a409f452afd99acdf8, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -16.932495
+      value: -30.432495
       objectReference: {fileID: 0}
     - target: {fileID: 8875366013424996456, guid: 04c0110c818960a409f452afd99acdf8, type: 3}
       propertyPath: m_Spacing.y

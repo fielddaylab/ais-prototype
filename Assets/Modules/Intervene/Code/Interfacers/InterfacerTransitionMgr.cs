@@ -72,6 +72,8 @@ namespace AIS.Intervene
             CurveInterfacer.LoadCurve(inInvasionCurve);
             InvasionModel.Load(CurveInterfacer.CurrVal);
 
+            inventory.ActionCards.Add("Action-use-lampricide");
+            inventory.ActionCards.Add("Action-awareness-campaign");
             SwapDeck.LoadSwapDeck(inventory.ActionCards);
             CardSelection.Load(inventory.ActionCards);
 

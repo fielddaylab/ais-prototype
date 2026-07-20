@@ -50,6 +50,7 @@ namespace AIS.Intervene
 
             // Widget spawns and lays out the cards as usual
             DeckWidget.Populate(cardIds);
+            DeckWidget.LayoutStackedCards();
             DeckWidget.ClearFocus();
             DeckWidget.gameObject.SetActive(true);
 
@@ -112,6 +113,7 @@ namespace AIS.Intervene
                 if (!m_Selected.Contains(otherId)) { inDeckIds.Add(otherId); }
             }
             DeckWidget.Populate(inDeckIds);
+            DeckWidget.LayoutStackedCards();
 
             // rebind each card's button component with listener
             foreach (UICard card in DeckWidget.ActionCardPool.ActiveObjects)
@@ -158,6 +160,7 @@ namespace AIS.Intervene
             }
 
             DeckWidget.Populate(remainingIds);
+            DeckWidget.LayoutStackedCards();
             DeckWidget.gameObject.SetActive(false);   // hidden until the swap button opens it
 
             CardSelectionPanel.SetActive(false);

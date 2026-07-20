@@ -72,6 +72,12 @@ namespace AIS.Narrative
                 }
 
                 UICard card = ActionCardPool.Alloc();
+                RectTransform rect = (RectTransform)card.transform;
+                rect.anchorMin = new Vector2(0.5f, 1f);
+                rect.anchorMax = new Vector2(0.5f, 1f);
+                rect.pivot = new Vector2(0.5f, 1f);
+                rect.anchoredPosition = Vector2.zero;
+                rect.localScale = Vector3.one;
                 card.gameObject.SetActive(true);
                 ActionCardUtility.PopulateCardUI(card, data);
                 m_SpawnedCardData.Add(data);
