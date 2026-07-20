@@ -100,6 +100,12 @@ namespace AIS.Intervene
                         case ActionVerb.Match:
                             ActionEffectUtility.TryMatch(target.QueriableObj, verb);
                             break;
+                        case ActionVerb.ModifyReproduction:
+                            ActionEffectUtility.TryModifyReproduction(target.QueriableObj, verb);
+                            break;
+                        case ActionVerb.ModifyTrap:
+                            ActionEffectUtility.TryModifyTrap(target.QueriableObj, verb);
+                            break;
                         default:
                             continue;
                     }

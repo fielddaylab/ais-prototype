@@ -1,21 +1,16 @@
 // Action Cards With Effects
 
-// TODO
 ::Action-use-lampricide
 @title		Use Lampricide
 @suit		tech
-@desc		tbd
+@desc		-2M Invasive Lamprey
 @path		temp.png
-@cost		tbd
-
-@discoverResult
-    target: tbd
-    verb: 
-    specificity: 
-    maxtargets: 
+@cost		1
 
 @effect
-    tbd
+    target: invasive
+    verb: reduce, 2, fixed
+    specificity: specfic
 
 
 ::Action-awareness-campaign
@@ -38,194 +33,98 @@
 
 
 
-// TODO
 ::Action-stock-cisco
 @title		Stock Cisco
 @suit		ranger
-@desc		tbd
+@desc		+2M to a Cisco population within a target lake
 @path		temp.png
-@cost		tbd
-
-@discoverResult
-    target: tbd
-    verb: 
-    specificity: 
-    maxtargets: 
+@cost		1
 
 @effect
-    tbd
+    target: ecosystem, if scope == non-tributary
+    verb: modify, (0; 0; 2), fixed
+    specificity: specific
+    maxtargets: 1
 
 
-// TODO
 ::Action-stock-lake-trout
 @title		Stock Lake Trout
 @suit		ranger
-@desc		tbd
+@desc		+2M to a Lake Trout population within a target lake
 @path		temp.png
-@cost		tbd
-
-@discoverResult
-    target: tbd
-    verb: 
-    specificity: 
-    maxtargets: 
+@cost		1
 
 @effect
-    tbd
+    target: ecosystem, if scope == non-tributary
+    verb: modify, (0; 0; 2), fixed
+    specificity: specific
+    maxtargets: 1
 
 
-
-// TODO
 ::Action-release-sterilized
 @title		Release Sterilized Lamprey
 @suit		research
-@desc		tbd
+@desc		-2 Invasive reproduction in a target ecosystem
 @path		temp.png
-@cost		tbd
+@cost		1
 
-@discoverResult
-    target: tbd
-    verb: 
-    specificity: 
-    maxtargets: 
-
+// reproduce takes a signed rate: negative slows reproduction, positive speeds it up.
+// "fixed" shifts the offspring count each sim tick; "ratio" scales it (-0.5 = half as many).
 @effect
-    tbd
+    target: invasive
+    verb: reproduce, -2, fixed
+    specificity: specific
+    maxtargets: 1
 
 
-
-// TODO
 ::Action-downstream-tributary-traps
 @title		Use Downstream Tributary Traps
 @suit		ranger
-@desc		tbd
+@desc		When a Downstream pathway activates, -1 Invasive from source instead of moving.
 @path		temp.png
-@cost		tbd
-
-@discoverResult
-    target: tbd
-    verb: 
-    specificity: 
-    maxtargets: 
+@cost		1
 
 @effect
-    tbd
+    hardcoded
 
 
-
-// TODO
 ::Action-upstream-tributary-traps
 @title		Use Upstream Tributary Traps
 @suit		ranger
-@desc		tbd
+@desc		When an Upstream pathway activates, -1 Invasive from source instead of moving.
 @path		temp.png
-@cost		tbd
-
-@discoverResult
-    target: tbd
-    verb: 
-    specificity: 
-    maxtargets: 
+@cost		1
 
 @effect
-    tbd
+    hardcoded
 
 
-
-// TODO
 ::Action-barriers
 @title		Put Up Barriers
 @suit		ranger
-@desc		tbd
+@desc		Removes access to a pathway.
 @path		temp.png
-@cost		tbd
-
-@discoverResult
-    target: tbd
-    verb: 
-    specificity: 
-    maxtargets: 
+@cost		1
 
 @effect
-    tbd
+    target: pathway
+    verb: remove, 0, fixed
+    specificity: specific
+    maxtargets: 1
 
 
-
-// TODO
 ::Action-pheromones
 @title		Place Pheromones
 @suit		tech
-@desc		tbd
+@desc		Traps on a target pathway catch 2x as many Invasives.
 @path		temp.png
-@cost		tbd
+@cost		1
 
-@discoverResult
-    target: tbd
-    verb: 
-    specificity: 
-    maxtargets: 
-
+// trapboost takes a signed rate: positive catches more, negative catches fewer.
+// "fixed" shifts the catch; "ratio" scales the trap's own strength (1.0 = catches twice as many).
+// Applies to traps already on the pathway and to any placed there later.
 @effect
-    tbd
-
-
-
-
-
-
-
-::Action-awareness-campaign-2
-@title		Outreach Campaign 2
-@suit		communicate
-@desc		+1 Awareness
-@path		temp.png
-@cost		2
-
-@effect
-    target: aware
-    verb: increase, 1, fixed
-    specificity: all
-
-@overrideEffect if social > 0
-    desc: Additional +1 Awareness
-    target: aware
-    verb: increase, 2, fixed
-    specificity: all
-
-
-::Action-awareness-campaign-3
-@title		Outreach Campaign 3
-@suit		communicate
-@desc		+1 Awareness
-@path		temp.png
-@cost		2
-
-@effect
-    target: aware
-    verb: increase, 1, fixed
-    specificity: all
-
-@overrideEffect if social > 0
-    desc: Additional +1 Awareness
-    target: aware
-    verb: increase, 2, fixed
-    specificity: all
-
-
-::Action-awareness-campaign-4
-@title		Outreach Campaign 4
-@suit		communicate
-@desc		+1 Awareness
-@path		temp.png
-@cost		2
-
-@effect
-    target: aware
-    verb: increase, 1, fixed
-    specificity: all
-
-@overrideEffect if social > 0
-    desc: Additional +1 Awareness
-    target: aware
-    verb: increase, 2, fixed
-    specificity: all
+    target: pathway
+    verb: trapboost, 2, ratio
+    specificity: specific
+    maxtargets: 1

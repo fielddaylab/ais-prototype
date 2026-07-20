@@ -253,6 +253,7 @@ namespace AIS.Intervene {
                 {
                     reproduceNum = Mathf.FloorToInt(totalPreyConsumed / 2); // population + 1, numEgg - 1
                 }
+                reproduceNum = eco.ApplyReproductionModifiers(ActionTarget.Invasive, reproduceNum);
 
                 var cluster = eco.GetCluster(invasiveCounts[0].Item1);
                 if (cluster != null)
@@ -364,6 +365,7 @@ namespace AIS.Intervene {
                 reproduceNum = Mathf.FloorToInt(totalPreyConsumed / 2);
                 // population + 1, numEgg - 1
             }
+            reproduceNum = eco.ApplyReproductionModifiers(ActionTarget.Predator, reproduceNum);
 
             var predatorCluster = eco.GetCluster(predatorCounts[0].Item1);
             if (predatorCluster != null)
@@ -416,11 +418,14 @@ namespace AIS.Intervene {
             // check reproduce condition and if numEgg >= 1
             var preyCluster = eco.GetCluster(preyCounts[0].Item1);
 
-            if (rollResult <= totalPrey)
+            int reproduceNum = rollResult <= totalPrey ? 1 : 0;
+            reproduceNum = eco.ApplyReproductionModifiers(ActionTarget.Prey, reproduceNum);
+
+            if (reproduceNum > 0)
             {
                 if (preyCluster != null)
                 {
-                    preyCluster.NumEgg += 1;
+                    preyCluster.NumEgg += reproduceNum;
                 }
             }
 
@@ -479,10 +484,13 @@ namespace AIS.Intervene {
                         if (origPop > 0)
                         {
                             if ((onTryMoveEffect.TargetType & ActionTarget.Invasive) != 0) {
-                                // origEco.ReleasePopulation(InvasionModel.Instance.CurrModelSetupData.DefaultInvasive.SpeciesId, (int)onTryMoveEffect.Value);
-                                // For trapped pathway (defined as Remove pathwayEffectType), trap 1 species.
-                                origEco.ReleasePopulation(InvasionModel.Instance.CurrModelSetupData.DefaultInvasive.SpeciesId, 1);
-                                transferNum = Mathf.Max(0, transferNum - 1);
+                                // For a trapped pathway, the effect's own strength says how many are caught,
+                                // boosted by any trap modifiers the player has played onto this pathway.
+                                int trapAmt = pathway.ApplyTrapModifiers(Mathf.FloorToInt(onTryMoveEffect.Value));
+                                trapAmt = Mathf.Min(trapAmt, origPop); // cannot trap more than are there to catch
+
+                                origEco.ReleasePopulation(InvasionModel.Instance.CurrModelSetupData.DefaultInvasive.SpeciesId, trapAmt);
+                                transferNum = Mathf.Max(0, transferNum - trapAmt);
                             }
                         }
                     }

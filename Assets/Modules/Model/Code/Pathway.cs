@@ -63,6 +63,20 @@ namespace AIS.Model
         public float Value;
     }
 
+    /// <summary>
+    /// A standing boost to how many individuals the traps on a pathway catch.
+    /// Kept separate from the Trapped effects themselves so a boost can be played before any trap
+    /// is installed, and so it carries over to every trap that later lands on the pathway.
+    /// Value is signed: positive catches more, negative catches fewer.
+    /// Fixed shifts the catch; Ratio scales the trap's own strength (1.0 = catches twice as many).
+    /// </summary>
+    [Serializable]
+    public struct TrapModifier
+    {
+        public float Value;
+        public ModifierType ModType;
+    }
+
     public enum PathDir
     {
         None,
@@ -70,7 +84,7 @@ namespace AIS.Model
         Output
     }
 
-    public class Pathway : MonoBehaviour, IReducible, IIncreasable, IRemovable, IRevealable, ISimDetail
+    public class Pathway : MonoBehaviour, IReducible, IIncreasable, IRemovable, IRevealable, ITrapModifiable, ISimDetail
     {
         #region Inspector
 
@@ -81,6 +95,9 @@ namespace AIS.Model
         public TMP_Text TransferRateText;
 
         public List<PathwayEffect> OnTryMove = new List<PathwayEffect>();
+
+        // Standing trap boosts applied by action cards
+        public List<TrapModifier> TrapModifiers = new List<TrapModifier>();
 
         public SerializedHash32 OrigEcosystemId;
         public SerializedHash32 DestEcosystemId;
@@ -103,6 +120,8 @@ namespace AIS.Model
             PathwayType = setupData.PathwayType;
             SetIsHidden(!setupData.IsNotHidden);
             Dir = setupData.StartingDir;
+
+            TrapModifiers.Clear();
 
             this.transform.position = setupData.Pos;
             var angles = MainRenderer.transform.localEulerAngles;
@@ -175,6 +194,8 @@ namespace AIS.Model
         public void AddEffectOnTryMove(PathwayEffect toAdd)
         {
             OnTryMove.Add(toAdd);
+
+            UpdateVisuals();
         }
 
         public bool OnTryMoveContains(string effectId)
@@ -189,6 +210,82 @@ namespace AIS.Model
 
             return false;
         }
+
+        #region Traps
+
+        /// <summary>
+        /// True when any effect on this pathway traps individuals trying to move through it.
+        /// Keys off the effect type rather than a specific effect id, so every trap card counts.
+        /// </summary>
+        public bool IsTrapped()
+        {
+            foreach (var effect in OnTryMove)
+            {
+                if ((effect.EffectType & PathwayEffectType.Trapped) != 0)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// How many individuals this pathway's traps catch in total when it activates, boosts included.
+        /// </summary>
+        public int GetTotalTrapAmt()
+        {
+            int total = 0;
+
+            foreach (var effect in OnTryMove)
+            {
+                if ((effect.EffectType & PathwayEffectType.Trapped) != 0)
+                {
+                    total += ApplyTrapModifiers(Mathf.FloorToInt(effect.Value));
+                }
+            }
+
+            return total;
+        }
+
+        public void AddTrapModifier(float value, ModifierType modType)
+        {
+            TrapModifier modifier = new TrapModifier();
+            modifier.Value = value;
+            modifier.ModType = modType;
+
+            TrapModifiers.Add(modifier);
+
+            UpdateVisuals();
+        }
+
+        /// <summary>
+        /// Boosts how many individuals a single trap on this pathway catches when it fires.
+        /// Ratios all scale the trap's unmodified strength, so two +1.0 ratios triple the catch rather than quadrupling it.
+        /// </summary>
+        public int ApplyTrapModifiers(int baseAmt)
+        {
+            if (TrapModifiers.Count == 0) { return baseAmt; }
+
+            float modifiedAmt = baseAmt;
+
+            foreach (var modifier in TrapModifiers)
+            {
+                if (modifier.ModType == ModifierType.Ratio)
+                {
+                    modifiedAmt += baseAmt * modifier.Value;
+                }
+                else
+                {
+                    modifiedAmt += modifier.Value;
+                }
+            }
+
+            // rounded down, never negative
+            return Mathf.Max(0, Mathf.FloorToInt(modifiedAmt));
+        }
+
+        #endregion // Traps
 
         #region Interfaces
 
@@ -243,6 +340,19 @@ namespace AIS.Model
             return true;
         }
 
+        // ITrapModifiable
+
+        public bool TryModifyTrap(List<float> amts, ModifierType modType)
+        {
+            if (amts.Count == 0) { return false; }
+
+            // Stored on the pathway rather than on its Trapped effects, so a boost played before any
+            // trap exists still pays off once one is installed here.
+            AddTrapModifier(amts[0], modType);
+
+            return true;
+        }
+
         // IRevealable
 
         public bool TryReveal()
@@ -293,12 +403,17 @@ namespace AIS.Model
                     text = TransferRate * 100 + "% per turn";
                 }
                 // update trapped visuals
-                if (OnTryMoveContains("trap"))
+                if (IsTrapped())
                 {
-                    text += "\n(Trapped)";
+                    text += "\n(Traps " + GetTotalTrapAmt() + ")";
                     if (ColorUtility.TryParseHtmlString("#f3b7b7", out Color trapColor)) {
                         PathwayTypeBGRenderer.color = trapColor;
                     }
+                }
+                else if (TrapModifiers.Count > 0)
+                {
+                    // boosted before any trap landed here -- it pays off once one does
+                    text += "\n(Traps boosted)";
                 }
                 TransferRateText.SetText(text);
             }

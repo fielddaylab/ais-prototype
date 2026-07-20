@@ -23,6 +23,8 @@ namespace AIS.Intervene {
         AddNest,
         Modify,
         Match,
+        ModifyReproduction,
+        ModifyTrap,
     }
 
     [Flags]

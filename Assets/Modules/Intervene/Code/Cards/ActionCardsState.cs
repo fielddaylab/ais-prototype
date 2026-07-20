@@ -537,6 +537,10 @@ namespace AIS.Intervene
             //   "reveal, odds 0.5"
             //   "modify, (-2, -1, -1), fixed"
             //   "modify, (5, 10), fixed, odds 0.8"
+            //   "reproduce, -1, fixed"    (one fewer offspring per sim tick)
+            //   "reproduce, -0.5, ratio"  (half as many offspring per sim tick)
+            //   "trapboost, 1, fixed"     (traps on this pathway catch one more)
+            //   "trapboost, 1.0, ratio"   (traps on this pathway catch twice as many)
 
             string[] parts = verbContent.Split(COMMA_DELIM, StringSplitOptions.RemoveEmptyEntries);
 
@@ -1034,6 +1038,14 @@ namespace AIS.Intervene
                     return ActionVerb.Modify;
                 case "match":
                     return ActionVerb.Match;
+                case "modifyreproduction":
+                case "reproduce":
+                case "repro":
+                    return ActionVerb.ModifyReproduction;
+                case "modifytrap":
+                case "trapboost":
+                case "boosttrap":
+                    return ActionVerb.ModifyTrap;
                 default:
                     Debug.LogWarning("[CardUtility] Unknown verb: " + verbStr);
                     return ActionVerb.Reduce; // default fallback

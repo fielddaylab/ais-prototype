@@ -20,7 +20,7 @@ namespace AIS.Model
         public ActionTarget StartingTargetType;
     }
 
-    public class Cluster : MonoBehaviour, IReducible, IIncreasable, IRemovable, ISimDetail
+    public class Cluster : MonoBehaviour, IReducible, IIncreasable, IRemovable, IReproductionModifiable, ISimDetail
     {
         //public SpriteRenderer BGRenderer;
         public SpriteRenderer IconRenderer;
@@ -130,6 +130,19 @@ namespace AIS.Model
             }
 
             return false;
+        }
+
+        // IReproductionModifiable
+
+        public bool TryModifyReproduction(List<float> amts, ModifierType modType)
+        {
+            if (amts.Count == 0) { return false; }
+
+            // The sim reproduces a whole species type at once, so the modifier lives on the ecosystem
+            // and outlives this cluster (which is destroyed whenever its population empties out).
+            ParentEcosystem.AddReproductionModifier(TargetType, amts[0], modType);
+
+            return true;
         }
 
         // IRemovable

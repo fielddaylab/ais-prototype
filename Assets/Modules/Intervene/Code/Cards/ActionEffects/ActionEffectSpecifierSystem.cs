@@ -390,6 +390,12 @@ namespace AIS.Intervene
                             case ActionVerb.Match:
                                 ActionEffectUtility.TryMatch(target.QueriableObj, verb);
                                 break;
+                            case ActionVerb.ModifyReproduction:
+                                ActionEffectUtility.TryModifyReproduction(target.QueriableObj, verb);
+                                break;
+                            case ActionVerb.ModifyTrap:
+                                ActionEffectUtility.TryModifyTrap(target.QueriableObj, verb);
+                                break;
                             default:
                                 continue;
                         }
@@ -457,6 +463,12 @@ namespace AIS.Intervene
                 case "ballast-treatment":
                     ExecuteBallastTreatment();
                     break;
+                case "Action-downstream-tributary-traps":
+                    ExecuteDownstreamTributaryTraps();
+                    break;
+                case "Action-upstream-tributary-traps":
+                    ExecuteUpstreamTributaryTraps();
+                    break;
                 default:
                     Debug.LogWarning("[ActionEffectSpecifierSystem] Tried to execute hard code on " + toExecute.HardCodedId + ", but no handling is in place!");
                     break;
@@ -476,25 +488,45 @@ namespace AIS.Intervene
         private void ExecuteBallastTreatment()
         {
             // When a "Ballast" pathway activates, -1 Invasive from source instead of moving.
+            ExecuteTrapInvasiveOnPathwayType("ballastwater", "ballast-treatment");
+        }
 
-            // find all Ballast pathways
+        private void ExecuteDownstreamTributaryTraps()
+        {
+            // When a "Downstream" pathway activates, -1 Invasive from source instead of moving.
+            ExecuteTrapInvasiveOnPathwayType("downstream", "downstream-tributary-traps");
+        }
+
+        private void ExecuteUpstreamTributaryTraps()
+        {
+            // When an "Upstream" pathway activates, -1 Invasive from source instead of moving.
+            ExecuteTrapInvasiveOnPathwayType("upstream", "upstream-tributary-traps");
+        }
+
+        /// <summary>
+        /// For every pathway of the given type, block movement and trap -1 Invasive at the source instead.
+        /// </summary>
+        /// <param name="pathId">Pathway type to filter on (see PathwayType)</param>
+        /// <param name="effectId">Unique id for the applied pathway effect</param>
+        private void ExecuteTrapInvasiveOnPathwayType(string pathId, string effectId)
+        {
+            // find all pathways of the given type
             ActionTargetDetails[] targets = new ActionTargetDetails[1];
-            ActionTargetDetails ballastDetails = new ActionTargetDetails();
-            ballastDetails.Target = ActionTarget.Pathway;
-            ActionTargetCondition[] anglerConditions = new ActionTargetCondition[1];
+            ActionTargetDetails pathwayDetails = new ActionTargetDetails();
+            pathwayDetails.Target = ActionTarget.Pathway;
+            ActionTargetCondition[] conditions = new ActionTargetCondition[1];
             ActionTargetCondition mainCondition = new ActionTargetCondition();
             mainCondition.Condition = ActionCondition.PathwayType;
-            mainCondition.StrCheck = "ballastwater";
-            anglerConditions[0] = mainCondition;
-            ballastDetails.Conditions = anglerConditions;
-            targets[0] = ballastDetails;
+            mainCondition.StrCheck = pathId;
+            conditions[0] = mainCondition;
+            pathwayDetails.Conditions = conditions;
+            targets[0] = pathwayDetails;
 
             List<ActionVerb> verbs = new List<ActionVerb>();
 
             List<ModelTag> filteredTags = ModelTagMgr.Instance.FilterTagsByTargetDetails(targets, verbs, filterExternal: true);
 
             // apply -1 invasive from source instead of move
-            string effectId = "ballast-treatment";
             foreach (var tag in filteredTags)
             {
                 var pathway = tag.QueriableObj.GetComponent<Pathway>();
@@ -502,14 +534,14 @@ namespace AIS.Intervene
                 {
                     if (!pathway.OnTryMoveContains(effectId))
                     {
-                        PathwayEffect ballastEffect = new PathwayEffect();
-                        ballastEffect.EffectId = effectId;
-                        ballastEffect.EffectType |= PathwayEffectType.BlockAll;
-                        ballastEffect.EffectType |= PathwayEffectType.Trapped;
-                        ballastEffect.TargetType = ActionTarget.Invasive;
-                        ballastEffect.Value = 1;
+                        PathwayEffect trapEffect = new PathwayEffect();
+                        trapEffect.EffectId = effectId;
+                        // trapEffect.EffectType |= PathwayEffectType.BlockAll;
+                        trapEffect.EffectType |= PathwayEffectType.Trapped;
+                        trapEffect.TargetType = ActionTarget.Invasive;
+                        trapEffect.Value = 1;
 
-                        pathway.AddEffectOnTryMove(ballastEffect);
+                        pathway.AddEffectOnTryMove(trapEffect);
                     }
                 }
             }
@@ -665,6 +697,36 @@ namespace AIS.Intervene
             else
             {
                 Debug.LogWarning("[Increasable] Tried to modify on a tag (" + queriable.name + ") that does not support it!");
+                return false;
+            }
+        }
+
+        public static bool TryModifyReproduction(GameObject queriable, ActionVerbDetails verbDetails)
+        {
+            var toModify = queriable.GetComponent<IReproductionModifiable>();
+
+            if (toModify != null)
+            {
+                return toModify.TryModifyReproduction(verbDetails.Values, verbDetails.ModType);
+            }
+            else
+            {
+                Debug.LogWarning("[ReproductionModifiable] Tried to modify reproduction on a tag (" + queriable.name + ") that does not support it!");
+                return false;
+            }
+        }
+
+        public static bool TryModifyTrap(GameObject queriable, ActionVerbDetails verbDetails)
+        {
+            var toModify = queriable.GetComponent<ITrapModifiable>();
+
+            if (toModify != null)
+            {
+                return toModify.TryModifyTrap(verbDetails.Values, verbDetails.ModType);
+            }
+            else
+            {
+                Debug.LogWarning("[TrapModifiable] Tried to modify traps on a tag (" + queriable.name + ") that does not support it!");
                 return false;
             }
         }
