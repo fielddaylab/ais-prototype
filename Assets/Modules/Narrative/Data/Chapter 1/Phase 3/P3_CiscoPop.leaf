@@ -8,8 +8,42 @@
 // Mark start of thread
 $set global:currentThread = "P3_CiscoPop"
 
-{@}   
-       [This is the start of the Phase 3 thread CiscoPop.]
+//checks to see if the player has chosen to look at cisco population first
+$if global:troutFirst == False
+$set global:ciscoFirst = True
+$endif
+
+//varies dialogue depending on whether the player talked to João first
+$if global:ciscoFirst == True
+{João}   
+       Nice to see you've decided to stick with me. 
+$elseif global: ciscoFirst == False
+{@João}
+       Nice of you to come back. 
+$endif
+
+{@João}
+       So, you need the population numbers for cisco? 
+       Currently, there are x million cisco in the Great Lakes. //team i cannot find this number
+       But this number has been decreasing. 
+       I remember when this lake was teeming with cisco. 
+       //give evidence chip
+
+{@You}
+       That's really helpful. Thanks for the information. 
+
+$if global:ciscoFirst == True
+{@You}
+       I wonder if adding more fish to the lake could potentially help with the decrease.
+
+{@João}
+       It might be worth looking into. 
+       There's an aquaculture facility nearby that might be able to help.
+
+{@You}
+       That's a good idea. I should check it out. 
+       Or I could talk to Renato. Let's see...
+$endif
 
 // TODO: Rest of thread here
 
@@ -29,9 +63,138 @@ $call EnableMapButton()
 $call SetInThreadLocks()
 $call DisableMapButton()
 
-{@}   
-       [This is the Fish Hatchery section.]
+$if global:stockTrout == True
+{@}
+       Neveah is still looking over the pools. 
 
+{@Neveah}
+       Come back for more? A nice picnic with the fishies?
+{@You}
+       Sorry, no fish picnic at the moment, but I need your help with something else.
+
+{@Neveah}
+       What's up?
+
+{@You}
+       You know how you told me trout can be added back into the lake.
+       I was wondering if that would also be possible with cisco?
+
+{Neveah}
+       Ooo, yes, definitely. 
+       Here, come look at their tank.
+
+{@}
+       She guides you over to another tank. 
+
+{@Neveah}
+       Hi, babies. 
+       These are cisco. Six months old. 
+       We can definitely add them to the lake, if you'd like. 
+       //give action card
+
+{@You}
+       That would be amazing. 
+       Thanks for your help. 
+
+{@Neveah}
+       Of course, friend!
+       Oh, and about that free portrait that I told you about earlier...
+
+{@}
+       She hands you a small canvas, barely larger than your palm. 
+       It's a sea lamprey. 
+
+{@Neveah}
+       You said you didn't have any pets. 
+       So, I figured this was the next best thing. 
+
+{@}
+       You think about the torn photo in your pocket, but it's less heavy.
+
+{@You}
+       This is beautiful, Neveah. 
+       Thank you. Really.
+
+{@}
+       She pulls you into a tight hug. 
+       Back in your car, you put the photo on the dash, and the sea lamprey almost seems to smile at you. 
+$elseif global:stockTrout == False
+{@}
+       The hatchery is... different than what you imagined. 
+       Rows of deep pools remind you of your university's Olympic swimming pool.
+       But with the mass of athletes replaced with tighly-packed scales.
+       At the edge of one of the rows, an aquaculture specialist looks lovingly into the water.
+
+{@Specialist}
+       Hello, George. Hello, Henrietta. Hello, Cisco Systems Incorporated. 
+
+{@You}
+       Um, hello?
+
+{@Specialist}
+       Ooo, hi there. Wanna look at the fish?
+
+{@You}
+       You know what, yes, I do.
+
+{@}
+       You join her at the edge of the pool and peer into the water.
+
+{@Specialist}
+       These are cisco. Six months old. 
+       I'm Neveah, by the way!
+
+{@You}
+       Ana. I've actually come to talk to you about the cisco.
+
+{@Neveah}
+       I'd love to talk about my fish children. 
+       That's what I call them. The cisco.
+
+{@You}
+       Makes sense.
+       Have you ever released these fish into the wild?
+
+{@Neveah}
+       Ooo, yes, we've done that before! 
+       It's been helpful to the population in the lake in the past.
+
+{@You}   
+       Well, that's good news.
+       Do you think that would be possible to do now?
+       
+{@Neveah}
+       Oh, definitely. 
+       I'm sure you'll take excellent care of my fishies.
+       //give evidence card 
+
+{@You}
+       I'll definitely do my best. 
+
+{@Neveah}
+       Yay! That's a plan, then. 
+       Oooo, I'm very excited. Do you have any fish?
+
+{@You}
+       Uhhh, no. 
+
+{@Neveah}
+       Aw, man. I do fish portraiture. Very glamorous. 
+       I'd like to give you a portrait, but if you don't have a pet...
+       I'll figure something out!
+
+{@You}
+       Oh, no, no, you really don't have to.
+
+{@Neveah}
+       Nope, too late!
+       Okay, bye bye now. I've got cisco to look after!
+
+{@}
+       Before you have time to say anything, she's back to greeting the fish. 
+
+$set global:stockCisco = True
+$endif
 // TODO: Rest of Fish Hatchery section here
 
 // TODO: Give action card
@@ -41,6 +204,7 @@ $call DisableMapButton()
 $goto .End
 
 :: End
+@exposed
 @tracked
 
 // Mark end of thread

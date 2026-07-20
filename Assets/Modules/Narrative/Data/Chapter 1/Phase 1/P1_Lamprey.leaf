@@ -2,6 +2,7 @@
 #include "Header.leaf"
 
 :: Start
+@exposed
 @trigger    OnLocationChanged
 // "NONE" ensures no other threads are in-progress
 // global:currentPhase == 1 ensures player is in phase 1
@@ -25,7 +26,7 @@ $call  ClearVisibleLines()
        Hello? Oh, yeah. I've been waiting for you. 
        Like a psychic. 
        Haha.
-       No, Renée called me to say you'd stop by. Come in. 
+       No, Saoirse called me to say you'd stop by. Come in. 
 
 {@}
        You follow him. 
@@ -94,6 +95,7 @@ $goto .End
 
 
 :: End
+@exposed
 @tracked
 // Unlock next locations
 $call UnlockLocation(DNROffice)  // P1_NativeLamprey

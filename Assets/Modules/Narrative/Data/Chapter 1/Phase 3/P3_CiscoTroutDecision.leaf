@@ -2,6 +2,7 @@
 #include "Header.leaf"
 
 :: Decide
+@exposed
 @trigger    OnLocationChanged
 // "NONE" ensures no other threads are in-progress
 // global:currentPhase == 3 ensures player is in phase 3
@@ -11,8 +12,35 @@
 $call SetInThreadLocks()
 $call DisableMapButton()
 
+// Sets variables for which branch the player goes to first to false
+$set   global:ciscoFirst = False
+$set   global: troutFirst = False
+
+// Sets variable for whether player has already completed certain branches to false
+$set   global:stockCisco = False
+$set   global: stockTrout = False
+
 {@}   
-       [This is where the player decides whether to pursue P3_CiscoPop or P3_TroutPop]
+       You find your uncles hauling nets of fish from their boat onto the dock. 
+       They seem exhausted, but that seems to fade when they see you. 
+
+{@João}
+       Querida, que bom te ver. 
+       </b>It's good to see you, darling.</b>
+       What brings you back here?
+
+{@You} 
+       I need some numbers, and I figure you'd be the best to ask. 
+       Do you information on the populations of cisco and trout in the lake?
+
+{@João}
+       I've been keeping track of the population for cisco. 
+       Your uncle's been looking at trout. 
+       Two heads are better than one, you know. 
+       So ask whichever one of us you wanna know about first.
+
+{@You}
+       Hmm, let's see...
 
 $OnceChoice(P3_CiscoPop.Start, Enter CiscoPop Thread)
 $OnceChoice(P3_TroutPop.Start, Enter TroutPop Thread)

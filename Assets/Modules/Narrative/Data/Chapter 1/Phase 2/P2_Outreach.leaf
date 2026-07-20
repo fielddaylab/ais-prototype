@@ -2,6 +2,7 @@
 #include "Header.leaf"
 
 :: Start
+@exposed
 @trigger    OnLocationChanged
 // "NONE" ensures no other threads are in-progress
 // global:currentPhase == 2 ensures player is in phase 2
@@ -15,7 +16,102 @@ $call DisableMapButton()
 $set global:currentThread = "P2_Outreach"
 
 {@}   
-       [This is the Outreach thread in Phase 2.]
+       You park your car on the side of the road, the Army Corps of Engineers building up ahead.
+       In it's shade, you have a sudden memory of being here for a high school field trip. 
+       At the time, Janie had said she could see herself in the Corps. 
+       You find her number quickly on your phone and call her.
+
+{@You}
+       Hey Janie! How are things going in New York?
+
+{@Janie}
+       </i>Oh, you know how it is. My manager doesn't believe in personal time or on-call pay.</i> 
+
+{@You}
+       That sucks a lot. 
+       So, random question, but do you remember when we visited the Army Corps of Engineers in high school?
+
+{@Janie}
+       </i>Uhhh, maybe. Oh wait, yes I do.</i>
+
+{@You}
+       Think you'd ever wanna come back? Maybe join up?
+
+{@}
+       There's a pause from the other end of the line. 
+
+{@Janie}
+       </i>Probably not. I mean, I've got the whole world at my fingertips here.</i>
+       </i>Why would I want to go back to the middle of nowhere?</i>
+
+{@You}
+       I'm back in the middle of nowhere.
+
+{@Janie}
+       </i>Ana, come on, you know what I mean. </i>
+       </i>Look, I'm sorry. I gotta go. I'll call you later, okay?</i>
+
+{@}
+       The call disconnects. You sit for a moment in your car, gnawing at your lip. 
+       Then you throw your phone back into your pocket and step out. 
+       You notice an engineer working on a trap outside the building and flag them down. 
+
+{@You}
+       Hello. Sorry to interrupt, but could I ask you some questions? 
+
+{@}
+       The engineer stands up and nods warmly. 
+       You notice the surname "Robertson" embroidered on their high-visibility vest. 
+
+{@Robertson}
+       Yes, of course. Thanks for stopping by.
+       No one ever really comes to visit us. 
+
+{@You}
+       You're quite a ways away from everything. 
+
+{@Robertson}
+       What can I say? We love the brush. 
+       So, what can I help you with, ma'am?
+
+{@You}
+       I had some questions about sea lamprey management. 
+       You were pretty involved in previous management efforts, right?
+
+{@Robertson}
+       Yes, ma'am. We were very involved. 
+       We built traps, barriers, helped coordinate lampricide application. The whole works.
+       I also sterilized some adult sea lamprey. 
+{@You}
+       And these were successful?
+
+{@Robertson}
+       Yes, ma'am, they were. We helped reduce the population by 90%. 
+       Nothin' if not efficient. //receive evidence chip
+       Hasn't been so much work done lately, but we're always ready to restart. 
+
+{@You}
+       Well, I've been tasked with creating an intervention plan for managing sea lamprey populations. 
+       You wouldn't happen to have any advice for me?
+
+{@Robertson}
+       'Course I do, ma'am. 
+       All those things I mentioned earlier - barriers, traps, the like - restarting 'em will help. 
+       In the meantime, though, getting the locals onboard will help lots. 
+       If they can tell us where they are seeing bites, that can help us identify tributaries to target. 
+
+{@You}
+       That can be done. I know some people down at the docks. 
+
+{@Robertson}
+       Don't we all. 
+       Well, don't be a stranger, ma'am. Come back when you want yer traps. 
+
+{@You}
+       Don't worry. I will. 
+
+{@}
+       By the time you get back to your car, your previous phone call is almost forgotten. 
 
 // TODO: Rest of Army Corps section here
 
@@ -36,8 +132,90 @@ $call SetInThreadLocks()
 $call DisableMapButton()
 
 {@}   
-       [This is the Fishing Docks section.]
+       When you were a kid, you always found the sound of the water lapping at the dock soothing. 
+       You're pleased to see it's still soothing now, all these years later. 
 
+{@João}
+       Ana, querida. It's good to see you. 
+
+{@}
+       You look up to see your uncles heading your way, quickly enveloping you in a warm hug. 
+
+{@You}
+       It's good to see you, too, Tio João, Tio Renato. 
+       How've things been?
+
+{@Renato}
+       Well, you know how it is. Good tides, bad tides. 
+
+{@You}
+       Lakes don't have meaningful tides. 
+
+{@}
+       He waves at you as if to say, "You know what I mean."
+       You look around the dock and notice its newfound emptiness. 
+
+{@You}
+       Where's everyone else?
+
+{@João}
+       Ah. 
+       Johnny and Rick retired a few years, Lana moved away, the rental place closed...
+
+{@Renato}
+       The kids left for college and didn't come back. 
+       Except for you, of course. 
+
+{@}
+       He ruffles your hair. 
+       Up close you can see wrinkles on his face that you don't remember being there. 
+
+{@You}
+       Anyway, um, I've actually come to ask for your help. 
+
+{@João}
+       Claro, querida. Whatever you need. 
+
+{@You}
+       You've been seeing more lamprey bites on your fish, right?
+
+{@Renato}
+       We have, yes. 
+
+{@João}
+       Some of the others have seen bites too.
+
+{@You}
+       As part of my work, I'm trying to get more information on where fishers are seeing these bites. 
+       I'm starting a program where fishers can call in to a number at my work if they see sea lamprey bites.
+       Would you be willing to spread this information to the others?
+
+{@Renato}
+       Definitely. We'll ask them to spread the numbers around, too. 
+
+{@João}
+       This is our livelihood. It's in our best interest, too, to help, too. 
+
+{@You}
+       Obrigada! It really means a lot to me. 
+
+{@}
+       You hand them a stack of fliers with the number for your office. 
+
+{@Renato}
+       We'll make sure these go where they need to go. 
+       //action card
+       Want to join us on the boat for a bit? Have a Guaraná?
+
+{@You}
+       I'm sorry, I can't. I have so much to do. 
+       But what about after I'm done? 
+
+{@João}
+       That works. We'll celebrate out on the water like when you were a kid. 
+
+{@}
+       They ruffle your hair. It feels nice to feel little again. 
 // TODO: Rest of Town Hall section here
 
 // TODO: Give action card
@@ -49,6 +227,7 @@ $goto .End
 
 
 :: End
+@exposed
 @tracked
 // Unlock next locations
 $call UnlockLocation(FieldStationLampricide)     // P2_Lampricide
