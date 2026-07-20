@@ -73,11 +73,14 @@ namespace AIS.Intervene
             InvasionModel.Load(CurveInterfacer.CurrVal);
 
             // Playtest action card data
-            inventory.ActionCards.Add("Action-use-lampricide");
-            inventory.ActionCards.Add("Action-awareness-campaign");
-            inventory.ActionCards.Add("Action-stock-cisco");
-            inventory.ActionCards.Add("Action-stock-lake-trout");
-            inventory.ActionCards.Add("Action-release-sterilized");
+            if (inventory.ActionCards.Count == 0)
+            {
+                inventory.ActionCards.Add("Action-use-lampricide");
+                inventory.ActionCards.Add("Action-awareness-campaign");
+                inventory.ActionCards.Add("Action-stock-cisco");
+                inventory.ActionCards.Add("Action-stock-lake-trout");
+                inventory.ActionCards.Add("Action-release-sterilized");
+            }
 
             SwapDeck.LoadSwapDeck(inventory.ActionCards);
             CardSelection.Load(inventory.ActionCards);

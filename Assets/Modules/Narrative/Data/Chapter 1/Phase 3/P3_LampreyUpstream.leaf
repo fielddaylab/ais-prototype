@@ -20,6 +20,8 @@ $if global:upstreamFirst == true
 {@}   
        You're surpri
 
+$endif
+
 // TODO: Rest of thread here
 
 // TODO: Give evidence chip

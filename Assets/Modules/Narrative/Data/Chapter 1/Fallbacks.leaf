@@ -9,6 +9,7 @@
 
 {@}
         You're out of time.
+        $call BeginIntervention()
 
 // The game jumps here automatically when the player still has time, but every
 // remaining choice has already been exhausted.

@@ -566,7 +566,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &3062115913548183762
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1806,7 +1806,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 1190, y: -627}
+  m_AnchoredPosition: {x: 878, y: -513}
   m_SizeDelta: {x: 130, y: 40}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &8581184803077728187
@@ -2204,7 +2204,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &6245085488893375748
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2994,7 +2994,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 1190, y: -415}
+  m_AnchoredPosition: {x: 881, y: -248}
   m_SizeDelta: {x: 130, y: 65.06}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &9003559715678243180
@@ -4162,7 +4162,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 1190, y: -576}
+  m_AnchoredPosition: {x: 878, y: -462}
   m_SizeDelta: {x: 130, y: 40}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &27030847202110286
@@ -4857,6 +4857,10 @@ MonoBehaviour:
   ConfirmSwapBtn: {fileID: 7227959410958060075}
   SwapCost: 2
   SwapDeckWidget: {fileID: 5508815069887161542}
+  CardTravelAnim:
+    Time: 0.2
+    Curve: 1
+  AnimateHandCard: 1
   hasSwapped: 0
 --- !u!1 &6346307577152114912
 GameObject:
@@ -5467,7 +5471,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 1190, y: -492}
+  m_AnchoredPosition: {x: 881, y: -325}
   m_SizeDelta: {x: 130, y: 65.06}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &9078261927438613155
@@ -5747,6 +5751,10 @@ MonoBehaviour:
   ConfirmBtn: {fileID: 8611391940626743302}
   PromptText: {fileID: 5627726037772824641}
   RequiredCount: 4
+  CardTravelAnim:
+    Time: 0.2
+    Curve: 1
+  HandTravelTarget: {fileID: 0}
 --- !u!1 &7301700007859016963
 GameObject:
   m_ObjectHideFlags: 0
