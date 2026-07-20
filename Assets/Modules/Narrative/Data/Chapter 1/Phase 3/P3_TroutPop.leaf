@@ -201,7 +201,7 @@ $endif
 // TODO: Give action card
 // $call GiveActionCard([Action])
 
-// TEMPORARY: skip to end
+// skip to end
 $goto .End
 
 

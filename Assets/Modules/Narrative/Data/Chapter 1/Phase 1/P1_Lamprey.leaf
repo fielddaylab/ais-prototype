@@ -84,13 +84,12 @@ $call  ClearVisibleLines()
        Taking the photo of the sea lamprey out of your pocket, you examine its strange, round smile. 
        How come you return home and feel out of place, but it comes from far away and wins?
        
-// TODO: Rest of thread here
-$call GiveEvidenceChip("evidence-lamprey")
+$call GiveEvidenceChip("Evidence-Lamprey-Discovered")
 
 {@}
        [Open your map to continue]
 
-// TEMPORARY: skip to end
+// skip to end
 $goto .End
 
 

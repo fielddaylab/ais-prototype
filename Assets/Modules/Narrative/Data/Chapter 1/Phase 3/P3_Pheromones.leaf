@@ -73,7 +73,7 @@ $call DisableMapButton()
 $call UnlockLocation(DNROffice) // Place Pheromones
 $call EnableMapButton()
 
-// TEMPORARY: skip to end
+// skip to end
 $goto .End
 
 

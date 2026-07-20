@@ -45,7 +45,7 @@ $call DisableMapButton()
 // TODO: Give action card (traps on upstream)
 // $call GiveActionCard([Action])
 
-// TEMPORARY: skip to end
+// skip to end
 $goto .End
 
 

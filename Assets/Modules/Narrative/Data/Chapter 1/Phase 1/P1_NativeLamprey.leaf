@@ -107,14 +107,12 @@ $call  ClearVisibleLines()
 {@}
        Here's already back at his computer, professional-looking headphones over his ears. 
 
-// TODO: Rest of thread here
-
-$call GiveActionCard("example-action-card-1")
+$call GiveEvidenceChip("Evidence-native-lamprey")
 
 {@}
        This will be useful.
 
-// TEMPORARY: skip to end
+// skip to end
 $goto .End
 
 

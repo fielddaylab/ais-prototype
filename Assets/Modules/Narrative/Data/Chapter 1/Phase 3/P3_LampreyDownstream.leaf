@@ -68,7 +68,7 @@ $if StatCheck(Research, 3)
        $endif
 $endif
 
-// TEMPORARY: skip to end
+// skip to end
 $goto .End
 
 
