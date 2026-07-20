@@ -8,8 +8,17 @@
 // Mark start of thread
 $set global:currentThread = "P3_LampreyUpstream"
 
+// Sets upstreamFirst to true if the players decides to do this first
+$if global:downstreamFirst == false
+$set global:upstreamFirst = true
+$endif
+
+// Separates dialogue depending on if player chose upstream or downstream first
+$if global:upstreamFirst == true
+
+
 {@}   
-       [This is the start of the Phase 3 thread LampreyUpstream.]
+       You're surpri
 
 // TODO: Rest of thread here
 

@@ -9,15 +9,15 @@
 $set global:currentThread = "P3_CiscoPop"
 
 //checks to see if the player has chosen to look at cisco population first
-$if global:troutFirst == False
-$set global:ciscoFirst = True
+$if global:troutFirst == false
+$set global:ciscoFirst = true
 $endif
 
 //varies dialogue depending on whether the player talked to João first
-$if global:ciscoFirst == True
+$if global:ciscoFirst == true
 {João}   
        Nice to see you've decided to stick with me. 
-$elseif global: ciscoFirst == False
+$elseif global: ciscoFirst == false
 {@João}
        Nice of you to come back. 
 $endif
@@ -63,7 +63,7 @@ $call EnableMapButton()
 $call SetInThreadLocks()
 $call DisableMapButton()
 
-$if global:stockTrout == True
+$if global:stockTrout == true
 {@}
        Neveah is still looking over the pools. 
 
@@ -118,7 +118,7 @@ $if global:stockTrout == True
 {@}
        She pulls you into a tight hug. 
        Back in your car, you put the photo on the dash, and the sea lamprey almost seems to smile at you. 
-$elseif global:stockTrout == False
+$elseif global:stockTrout == false
 {@}
        The hatchery is... different than what you imagined. 
        Rows of deep pools remind you of your university's Olympic swimming pool.
@@ -193,7 +193,7 @@ $elseif global:stockTrout == False
 {@}
        Before you have time to say anything, she's back to greeting the fish. 
 
-$set global:stockCisco = True
+$set global:stockCisco = true
 $endif
 // TODO: Rest of Fish Hatchery section here
 

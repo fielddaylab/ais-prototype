@@ -12,9 +12,15 @@
 $call SetInThreadLocks()
 $call DisableMapButton()
 
+// Sets variables for which path the player decides to take first to false
+$set global:upstreamFirst = false
+$set global:downstreamFirst = false
 
 {@}   
-       [This is where the player decides whether to pursue P3_LampreyDownstream or P3_LampreyUpstream]
+       The road before you forks out. 
+       You jump out of your car to read a signpost:
+       "Tributary - Upstream" on one side, "Tributary - Downstream" on the other.
+       You get back in your car and...
 
 $OnceChoice(P3_LampreyDownstream.Start, Enter LampreyDownstream Thread)
 $OnceChoice(P3_LampreyUpstream.Start, Enter LampreyUpstream Thread)

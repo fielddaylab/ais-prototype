@@ -16,7 +16,7 @@ $call DisableMapButton()
 $set global:currentThread = "P2_Lampricide"
 
 {@}   
-       Paul had mentioned something called lampricide, and a quick call to Renée confirmed that the Field Station used to apply lampricide. 
+       Paul had mentioned something called lampricide, and a quick call to Renée confirmed that one of the Field Station used to apply lampricide. 
        So here you are, on the shore of one of the lake's many tributaries, being attacked by a horde of mosquitoes. 
 
 {@Claire}
@@ -45,7 +45,7 @@ $set global:currentThread = "P2_Lampricide"
        Yes! LAMPRICIDE! We used to apply it to the tributaries around the lake!
        
 {@You}
-       So, like, what </i>is</i> lampricide?
+       So, like, what </i>is</i> it?
 
 {@Claire}
        Lampricide is a pesticide that kills sea lamprey larvae but doesn't affect other fish! Hmm. Firstly, you must understand the life cycle of sea lamprey! 

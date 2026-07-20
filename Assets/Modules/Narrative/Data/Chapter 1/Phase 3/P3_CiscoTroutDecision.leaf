@@ -13,12 +13,12 @@ $call SetInThreadLocks()
 $call DisableMapButton()
 
 // Sets variables for which branch the player goes to first to false
-$set   global:ciscoFirst = False
-$set   global: troutFirst = False
+$set   global:ciscoFirst = false
+$set   global: troutFirst = false
 
 // Sets variable for whether player has already completed certain branches to false
-$set   global:stockCisco = False
-$set   global: stockTrout = False
+$set   global:stockCisco = false
+$set   global: stockTrout = false
 
 {@}   
        You find your uncles hauling nets of fish from their boat onto the dock. 

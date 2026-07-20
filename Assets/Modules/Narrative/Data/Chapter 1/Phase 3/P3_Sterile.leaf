@@ -91,6 +91,37 @@ $endif
        Not particularly. 
 
 {@Robertson}
+       It'll be fine. Here ya go...
+
+{@}
+       There's a sea lamprey in your hands, looking up at you. 
+       It's smaller than you thought it would be, given its reputation. 
+
+{@You}
+       He's... kinda cute.
+
+{@Robertson}
+       Yes, ma'am, they grow on ya. 
+       Ok, back into the tank, little guy. 
+
+{@}
+       You release the sea lamprey back with his brethren. 
+       He's gone in a undulating tide of smooth scales as soon as you let go. 
+
+{@Robertson}
+       There're only a few right now, and these'll get released soon at the lampricide tributary site.
+       But if you'd like to expand the program, that can always be done. 
+       //evidence chip
+
+{@You}
+       Thanks, Robertson. 
+       And thanks for letting me hold one. 
+
+{@Robertson}
+       What can I say? It's my favorite part of the job. 
+
+{@}
+       The two of you laugh together.
 // TODO: Rest of thread here
 
 // TODO: Give evidence chip
@@ -110,8 +141,67 @@ $call SetInThreadLocks()
 $call DisableMapButton()
 
 {@}   
-       [This is the Field Station (Lampricide) section.]
+       Claire is waiting for you at the edge of the river, tanks filled with sea lamprey by the building.
 
+{@Claire}
+       Young scientist! What a pleasure it is to see you!
+
+{@You}
+       It's good to see you, too, Claire. You seem ready to go.
+
+{@Claire}
+       I am always ready to go! And in this particular moment that statement is very true!
+       The sterilized sea lamprey are ready to be released, thanks to my beloved Robertson.
+
+{@You}
+       Your... beloved Robertson?
+
+{@Claire}
+       Why, yes! We are to be wed this fall!
+
+{@You}
+       That's pretty perfect. Congrats.
+
+{@Claire}
+       Thank you! Now, it is time for release!
+
+{@}
+       Together with Claire, you spend a few hours transferring the sea lamprey from the tank into the river.
+       Finally, the tanks are empty, and you collapse to the ground, spent.
+
+{@You}
+       Well, that's done.
+
+{@Claire}
+       Be free, Sir Sea Lampreys! Have fun!
+
+{@}
+       You chuckle. Claire sits next to you.
+
+{@Claire}
+       Come to my wedding, young scientist. 
+
+{@You}
+       Really?
+       I mean, I'm honored, but you just met me?
+
+{@Claire}
+       Yes. It will be fun. And your uncles will be there.
+
+{@You}
+       Ah, so you know my uncles.
+
+{@Claire}
+       Everyone knows your uncles, young scientist.
+       ...
+       It's good to have you back, Ana. It's always good to see people come home. 
+
+{@}
+       You look out onto the calm river, and you can almost see a younger version of you spending summers in the water.
+
+{@You}
+       Yeah. You're right.
+       //action card
 // TODO: Rest of Field Station (Lampricide) section here
 
 // TODO: Give action card
