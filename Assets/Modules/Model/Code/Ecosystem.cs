@@ -15,9 +15,28 @@ namespace AIS.Model
         public Vector2 Pos;
         public Sprite Sprite;
         public bool IsExternal;
+        public bool IsTributary;
+
+        public bool InvasiveHunts;
+        public bool InvasiveStarves;
+        public bool InvasiveReproduces;
 
         public Vector2[] MainSlotPoses;
         public Vector2[] SecondarySlotPoses;
+    }
+
+    /// <summary>
+    /// A standing adjustment to how fast one type of species reproduces in an ecosystem.
+    /// Applied every sim tick until the ecosystem is reloaded.
+    /// Value is signed in both modes: negative slows reproduction, positive speeds it up.
+    /// Fixed shifts the tick's offspring count; Ratio scales it by a fraction of the unmodified count.
+    /// </summary>
+    [Serializable]
+    public struct ReproductionModifier
+    {
+        public ActionTarget TargetType;
+        public float Value;
+        public ModifierType ModType;
     }
 
     public class Ecosystem : MonoBehaviour, IAddTrapable, IAddNestable, IModifiable
@@ -28,6 +47,11 @@ namespace AIS.Model
 
         public SerializedHash32 EcosystemId;
         public bool IsExternal;
+        public bool IsTributary;
+
+        public bool InvasiveHunts;
+        public bool InvasiveStarves;
+        public bool InvasiveReproduces;
 
         public List<SerializedHash32> SpeciesInEcosystem = new List<SerializedHash32>();
         public Dictionary<SerializedHash32, ClusterSlotData> SpeciesSlotDict = new Dictionary<SerializedHash32, ClusterSlotData>();
@@ -36,12 +60,22 @@ namespace AIS.Model
         public ClusterSlot[] MainSlots; // Slots for active species to occupy
         public ClusterSlot[] SecondarySlots; // Slots for secondary "species" to occupy
 
+        // Standing reproduction adjustments applied by action cards
+        public List<ReproductionModifier> ReproductionModifiers = new List<ReproductionModifier>();
+
         #endregion // Inspector
 
         public void LoadData(EcosystemSetupData setupData, GameObject transformPrefab)
         {
             EcosystemId = setupData.EcosystemId;
             IsExternal = setupData.IsExternal;
+            IsTributary = setupData.IsTributary;
+
+            InvasiveHunts = setupData.InvasiveHunts;
+            InvasiveStarves = setupData.InvasiveStarves;
+            InvasiveReproduces = setupData.InvasiveReproduces;
+
+            ReproductionModifiers.Clear();
 
             this.transform.position = setupData.Pos;
             MainRenderer.sprite = setupData.Sprite;
@@ -386,6 +420,48 @@ namespace AIS.Model
             Debug.LogWarning("[Ecosystem] Tried to query population on a species not in ecosystem!");
             return -1;
         }
+
+        #region Reproduction
+
+        public void AddReproductionModifier(ActionTarget targetType, float value, ModifierType modType)
+        {
+            ReproductionModifier modifier = new ReproductionModifier();
+            modifier.TargetType = targetType;
+            modifier.Value = value;
+            modifier.ModType = modType;
+
+            ReproductionModifiers.Add(modifier);
+        }
+
+        /// <summary>
+        /// Adjusts the offspring count a species type earned this tick by every modifier standing against it.
+        /// Ratios all scale the unmodified count, so stacking two -0.5 ratios zeroes the rate rather than quartering it.
+        /// </summary>
+        public int ApplyReproductionModifiers(ActionTarget targetType, int baseCount)
+        {
+            if (ReproductionModifiers.Count == 0) { return baseCount; }
+
+            float modifiedCount = baseCount;
+
+            foreach (var modifier in ReproductionModifiers)
+            {
+                if ((modifier.TargetType & targetType) == 0) { continue; }
+
+                if (modifier.ModType == ModifierType.Ratio)
+                {
+                    modifiedCount += baseCount * modifier.Value;
+                }
+                else
+                {
+                    modifiedCount += modifier.Value;
+                }
+            }
+
+            // rounded down, never negative
+            return Mathf.Max(0, Mathf.FloorToInt(modifiedCount));
+        }
+
+        #endregion // Reproduction
 
         #region Interfaces
 

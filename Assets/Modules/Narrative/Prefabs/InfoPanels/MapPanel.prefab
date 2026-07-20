@@ -1904,6 +1904,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HubAlpha
       objectReference: {fileID: 0}
+    - target: {fileID: 3267040236719224412, guid: a492b9a2c601c4b4a8860085da03d4f2, type: 3}
+      propertyPath: LocationName
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6131981503583108033, guid: a492b9a2c601c4b4a8860085da03d4f2, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

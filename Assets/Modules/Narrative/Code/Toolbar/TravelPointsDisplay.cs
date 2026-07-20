@@ -86,11 +86,18 @@ namespace AIS.Narrative
             locations[currentLocationIdx].MainImg.color = Color.cyan;
             for (int i = 0; i < locations.Length; i++)
             {
-                if (i == currentLocationIdx) { continue; }
+                if (i == currentLocationIdx)
+                {
+                    locations[i].MainImg.color = Color.yellow;
+                    locations[i].UpdateTimeBlockVisual(locations[i].Chunks);
+                    locations[i].GetComponent<Button>().interactable = true;
+                    continue;
+                }
 
                 if (UnlockedLocations.Contains(locations[i].MainImg))
                 {
                     locations[i].MainImg.color = Color.magenta;
+                    locations[i].UpdateTimeBlockVisual(locations[i].Chunks);
                     locations[i].GetComponent<Button>().interactable = true;
 
                     // TODO: refine logics for checking if there are any cards waiting to be found at a locations.

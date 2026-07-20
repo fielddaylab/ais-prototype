@@ -2,9 +2,11 @@ using AIS.Model;
 using BeauUtil;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using Debug = UnityEngine.Debug;
 
 namespace AIS.Intervene
 {

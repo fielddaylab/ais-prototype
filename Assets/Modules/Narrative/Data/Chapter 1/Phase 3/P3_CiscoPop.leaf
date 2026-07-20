@@ -28,6 +28,7 @@ $endif
        But this number has been decreasing. 
        I remember when this lake was teeming with cisco. 
        //give evidence chip
+       $call GiveEvidenceChip("Evidence-cisco")
 
 {@You}
        That's really helpful. Thanks for the information. 
@@ -45,10 +46,6 @@ $if global:ciscoFirst == True
        Or I could talk to Renato. Let's see...
 $endif
 
-// TODO: Rest of thread here
-
-// TODO: Give evidence chip
-// $call GiveEvidenceChip([Evidence])
 
 $call UnlockLocation(FishHatchery)
 $call EnableMapButton()
@@ -91,6 +88,7 @@ $if global:stockTrout == true
        These are cisco. Six months old. 
        We can definitely add them to the lake, if you'd like. 
        //give action card
+       $call GiveActionCard("Action-stock-cisco")
 
 {@You}
        That would be amazing. 
@@ -166,7 +164,8 @@ $elseif global:stockTrout == false
 {@Neveah}
        Oh, definitely. 
        I'm sure you'll take excellent care of my fishies.
-       //give evidence card 
+       //give action card 
+       $call GiveActionCard("Action-stock-cisco")
 
 {@You}
        I'll definitely do my best. 
@@ -195,12 +194,8 @@ $elseif global:stockTrout == false
 
 $set global:stockCisco = true
 $endif
-// TODO: Rest of Fish Hatchery section here
 
-// TODO: Give action card
-// $call GiveActionCard([Action])
-
-// TEMPORARY: skip to end
+// skip to end
 $goto .End
 
 :: End

@@ -480,8 +480,10 @@ namespace AIS.Intervene
 
         static private ActionTargetDetails ParseTarget(string targetContent)
         {
-            // Format: [type], [optional conditions]
-            // Example: "invasive, if population < 5"
+            // Format: [type], [optional ecosystem scope], [optional conditions]
+            // Examples: "invasive, if population < 5"
+            //           "invasive, tributary"
+            //           "ecosystem, non-tributary, if population < 5"
 
             string[] parts = targetContent.Split(COMMA_DELIM, StringSplitOptions.RemoveEmptyEntries);
 
@@ -493,20 +495,34 @@ namespace AIS.Intervene
                 targetDetails.Target = ParseActionTarget(parts[0].Trim());
             }
 
-            // Check if next part is a number (count) or a condition
-            int conditionStartIndex = 1;
+            // Everything past the target type is a scope keyword or an "if" condition
+            int detailStartIndex = 1;
 
-            // Parse conditions (everything after count that starts with "if")
+            EcosystemScope scope = EcosystemScope.None;
             List<ActionTargetCondition> conditions = new List<ActionTargetCondition>();
-            for (int i = conditionStartIndex; i < parts.Length; i++)
+            for (int i = detailStartIndex; i < parts.Length; i++)
             {
                 string conditionStr = parts[i].Trim();
                 if (conditionStr.ToLower().StartsWith(IF_KEYWORD))
                 {
                     ActionTargetCondition condition = ParseCondition(conditionStr);
                     conditions.Add(condition);
+                    continue;
+                }
+
+                EcosystemScope parsedScope = ParseEcosystemScope(conditionStr);
+                if (parsedScope != EcosystemScope.None)
+                {
+                    scope |= parsedScope;
+                }
+                else
+                {
+                    Debug.LogWarning("[CardUtility] Unknown target keyword: " + conditionStr + ". Ignoring.");
                 }
             }
+
+            // Targets reach every ecosystem unless the card narrows them
+            targetDetails.Scope = scope == EcosystemScope.None ? EcosystemScope.Any : scope;
             targetDetails.Conditions = conditions.ToArray();
 
             return targetDetails;
@@ -521,6 +537,10 @@ namespace AIS.Intervene
             //   "reveal, odds 0.5"
             //   "modify, (-2, -1, -1), fixed"
             //   "modify, (5, 10), fixed, odds 0.8"
+            //   "reproduce, -1, fixed"    (one fewer offspring per sim tick)
+            //   "reproduce, -0.5, ratio"  (half as many offspring per sim tick)
+            //   "trapboost, 1, fixed"     (traps on this pathway catch one more)
+            //   "trapboost, 1.0, ratio"   (traps on this pathway catch twice as many)
 
             string[] parts = verbContent.Split(COMMA_DELIM, StringSplitOptions.RemoveEmptyEntries);
 
@@ -861,7 +881,12 @@ namespace AIS.Intervene
                 }
             }
             // Pathway Type conditions (only with = operator)
-            else if ((variableName.Contains("type") || variableName.Contains("pathway")) && operatorChar == EQ_CHAR)
+            else if ((variableName.Contains("effectType") || variableName.Contains("effect")) && operatorChar == EQ_CHAR)
+            {
+                condition.Condition = ActionCondition.PathwayEffectType;
+                condition.StrCheck = valueStr;
+            }
+            else if ((variableName.Contains("path") || variableName.Contains("type")) && operatorChar == EQ_CHAR)
             {
                 condition.Condition = ActionCondition.PathwayType;
                 condition.StrCheck = valueStr;
@@ -882,7 +907,11 @@ namespace AIS.Intervene
             {
                 // Could be any string-based condition
                 // For now, attempt to determine if it's a pathway type
-                if (variableName.Contains("path") || variableName.Contains("type"))
+                if (variableName.Contains("path") && variableName.Contains("effectType"))
+                {
+                    condition.Condition = ActionCondition.PathwayEffectType;
+                }
+                else if (variableName.Contains("path") || variableName.Contains("type"))
                 {
                     condition.Condition = ActionCondition.PathwayType;
                 }
@@ -936,6 +965,30 @@ namespace AIS.Intervene
             }
         }
 
+        // Returns None when the string is not a scope keyword at all, so callers can tell
+        // "not a scope" apart from a real scope.
+        static private EcosystemScope ParseEcosystemScope(string scopeStr)
+        {
+            scopeStr = scopeStr.ToLower().Trim();
+
+            switch (scopeStr)
+            {
+                case "tributary":
+                case "trib":
+                    return EcosystemScope.Tributary;
+                case "non-tributary":
+                case "nontributary":
+                case "nontrib":
+                case "lake":
+                    return EcosystemScope.NonTributary;
+                case "any":
+                case "both":
+                    return EcosystemScope.Any;
+                default:
+                    return EcosystemScope.None;
+            }
+        }
+
         static private ActionSpecificity ParseActionSpecificity(string specificityStr)
         {
             specificityStr = specificityStr.ToLower().Trim();
@@ -985,6 +1038,14 @@ namespace AIS.Intervene
                     return ActionVerb.Modify;
                 case "match":
                     return ActionVerb.Match;
+                case "modifyreproduction":
+                case "reproduce":
+                case "repro":
+                    return ActionVerb.ModifyReproduction;
+                case "modifytrap":
+                case "trapboost":
+                case "boosttrap":
+                    return ActionVerb.ModifyTrap;
                 default:
                     Debug.LogWarning("[CardUtility] Unknown verb: " + verbStr);
                     return ActionVerb.Reduce; // default fallback

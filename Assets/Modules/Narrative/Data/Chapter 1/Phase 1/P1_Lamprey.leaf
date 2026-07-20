@@ -11,10 +11,12 @@
 // Lock all location on map
 $call SetInThreadLocks()
 $call DisableMapButton()
+$call SetBackground("bg/bg-research-lab.png")
 
 // Mark start of thread
 $set global:currentThread = "P1_Lamprey"
 
+$call  ClearVisibleLines()
 {@}   
        The university. What better place to learn about sea lamprey than at the very place researching them?
        You knock on the door to the lab. 
@@ -82,12 +84,12 @@ $set global:currentThread = "P1_Lamprey"
        Taking the photo of the sea lamprey out of your pocket, you examine its strange, round smile. 
        How come you return home and feel out of place, but it comes from far away and wins?
        
-// TODO: Rest of thread here
+$call GiveEvidenceChip("Evidence-Lamprey-Discovered")
 
-// TODO: Give evidence chip
-// $call GiveEvidenceChip([Evidence])
+{@}
+       [Open your map to continue]
 
-// TEMPORARY: skip to end
+// skip to end
 $goto .End
 
 

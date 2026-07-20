@@ -11,10 +11,12 @@
 // Lock all location on map
 $call SetInThreadLocks()
 $call DisableMapButton()
+$call SetBackground("bg/bg-dnr-office.png")
 
 // Mark start of thread
 $set global:currentThread = "P1_NativeLamprey"
 
+$call  ClearVisibleLines()
 {@}     
        You figure the Department of Natural Resources must have something to start you with. This is their whole job, right?
        The office is nicely furnished with natural memorabilia, a straight-laced office man sitting behind the desk.
@@ -105,12 +107,12 @@ $set global:currentThread = "P1_NativeLamprey"
 {@}
        Here's already back at his computer, professional-looking headphones over his ears. 
 
-// TODO: Rest of thread here
+$call GiveEvidenceChip("Evidence-native-lamprey")
 
-// TODO: Give evidence chip
-// $call GiveEvidenceChip([Evidence])
+{@}
+       This will be useful.
 
-// TEMPORARY: skip to end
+// skip to end
 $goto .End
 
 

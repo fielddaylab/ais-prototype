@@ -90,10 +90,8 @@ $set global:currentThread = "P2_Lampricide"
 {@You}
        Thanks, young scientist. 
 
-// TODO: Rest of Field Station section here
-
-// TODO: Give evidence chip
-// $call GiveEvidenceChip([Evidence])
+// Give evidence chip
+$call GiveEvidenceChip("Evidence-lampricide")
 
 $call UnlockLocation(TownHall)
 $call EnableMapButton()
@@ -212,13 +210,10 @@ $call DisableMapButton()
        ...
        You regret it.
 
-// TODO: Rest of Town Hall section here
+// Give action card
+$call GiveActionCard("Action-use-lampricide")
 
-// TODO: Give action card
-// $call GiveActionCard([Action])
-
-
-// TEMPORARY: skip to end
+// skip to end
 $goto .End
 
 

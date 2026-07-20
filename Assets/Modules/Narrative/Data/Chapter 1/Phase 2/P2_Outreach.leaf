@@ -113,10 +113,8 @@ $set global:currentThread = "P2_Outreach"
 {@}
        By the time you get back to your car, your previous phone call is almost forgotten. 
 
-// TODO: Rest of Army Corps section here
-
-// TODO: Give evidence chip
-// $call GiveEvidenceChip([Evidence])
+// Give evidence chip
+$call GiveEvidenceChip("Evidence-awareness-program")
 
 $call UnlockLocation(FishingDocks)
 $call EnableMapButton()
@@ -205,6 +203,7 @@ $call DisableMapButton()
 {@Renato}
        We'll make sure these go where they need to go. 
        //action card
+       $call GiveActionCard("Action-awareness-campaign")
        Want to join us on the boat for a bit? Have a Guaraná?
 
 {@You}
@@ -216,13 +215,8 @@ $call DisableMapButton()
 
 {@}
        They ruffle your hair. It feels nice to feel little again. 
-// TODO: Rest of Town Hall section here
 
-// TODO: Give action card
-// $call GiveActionCard([Action])
-
-
-// TEMPORARY: skip to end
+// skip to end
 $goto .End
 
 

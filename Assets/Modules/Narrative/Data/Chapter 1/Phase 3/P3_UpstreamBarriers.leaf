@@ -19,7 +19,7 @@ $call DisableMapButton()
        [This is the Barrier Site section.]
 
 // TODO: Give evidence chip
-// $call GiveEvidenceChip([Evidence])
+$call GiveEvidenceChip("Evidence-barrier")
 
 $call UnlockLocation(FishAndWildlife)
 $call EnableMapButton()
@@ -39,9 +39,9 @@ $call DisableMapButton()
        [This is the Fish and Wildlife section.]
 
 // TODO: Give action card
-// $call GiveActionCard([Action])
+$call GiveActionCard("Action-barriers")
 
-// TEMPORARY: skip to end
+// skip to end
 $goto .End
 
 

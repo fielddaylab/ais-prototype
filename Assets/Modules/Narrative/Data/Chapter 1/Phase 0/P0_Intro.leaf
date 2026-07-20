@@ -19,7 +19,6 @@ $set global:currentPhase = 0
 // Mark start of thread
 $set global:currentThread = "P0_Intro"
 
-
 //{@}   
        //[This is the introductory thread in Phase 0.]
 
@@ -86,11 +85,12 @@ $set global:currentThread = "P0_Intro"
 {@You}
        Don't worry - I get it. Let's hear the details. 
 
-{@Saoirse}
-       Local fishermen have been reporting bites on their fish. The fish they </i>can</i> catch, that is. 
+{@Renée}
+       Local fishermen have been reporting bites on their fish. The fish they <i>can</i> catch, that is. 
 
 {@}
        She hands you a photo. //insert photo of sea lamprey bite
+       $call SetScenarioData("Scenario1")
 
 {@You}
        Sea lamprey.
@@ -107,6 +107,7 @@ $set global:currentThread = "P0_Intro"
 {@Saoirse}
        You're in luck. There are plenty of people around here who have all the information you'll need. 
        Here, take this map. //map icon appears here maybe?
+       $call EnableMapButton()
        In the intervention phase, you'll need to use action certificates implement different interventions. 
        To gain those action certificates, you need to first collect evidence chips. These chips describe the science behind possible interventions. 
        Then, you'll need to make sure you have the resources to actually implement the intervention. Once you've done that, you'll get an action certificate.
@@ -141,10 +142,11 @@ $set global:currentThread = "P0_Intro"
        </i>No time like the present, huh.</i>
 
 {@}
-       You begin. 
+       You begin.
+       [Open your map to continue]
 
 // go to map, end phase 0
-// TEMPORARY: skip to end
+// skip to end
 $goto .End
 
 :: End

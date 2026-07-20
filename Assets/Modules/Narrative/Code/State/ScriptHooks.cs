@@ -139,27 +139,23 @@ namespace AIS.Narrative {
         static public IEnumerator ScriptSetScenarioData([BindThread] ScriptThread thread, StringHash32 id)
         {
             PlayerInventory inv = Find.State<PlayerInventory>();
-            if (inv.ActionCards.Add(id))
+            if (thread.IsSkipping())
             {
-                if (thread.IsSkipping())
-                {
-                    yield break;
-                }
-
-                DialogueColumn column = (DialogueColumn)thread.GetPrinter();
-                if (column)
-                {
-                    NewCardElement card = TextUtility.SpawnScenarioCard(column, id);
-                    yield return TextUtility.WaitForConfirm(card);
-                    yield return EnsureNotesVisible(inv);
-                    yield return TextUtility.FlyScenarioToToolbar(card, Find.GuiModule<ToolbarPanel>().EvidenceButton);
-                }
-                else
-                {
-                    yield return EnsureNotesVisible(inv);
-                }
+                yield break;
             }
 
+            DialogueColumn column = (DialogueColumn)thread.GetPrinter();
+            if (column)
+            {
+                NewCardElement card = TextUtility.SpawnScenarioCard(column, id);
+                yield return TextUtility.WaitForConfirm(card);
+                yield return EnsureNotesVisible(inv);
+                yield return TextUtility.FlyScenarioToToolbar(card, Find.GuiModule<ToolbarPanel>().EvidenceButton);
+            }
+            else
+            {
+                yield return EnsureNotesVisible(inv);
+            }
         }
 
         [LeafMember("EnableFieldNotesButton")]
@@ -236,7 +232,11 @@ namespace AIS.Narrative {
             DialogueColumn column = (DialogueColumn)thread.GetPrinter();
             if (!column)
             {
-                return;
+                column = DialogueColumn.Instance;
+                if (!column)
+                {
+                    return;
+                }
             }
 
             TextUtility.ClearAllLines(column.Layout);

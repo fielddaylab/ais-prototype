@@ -46,5 +46,10 @@ namespace AIS.Intervene
             }
             return false;
         }
+
+        public void ResetHovering()
+        {
+            Hovering = false;
+        }
     }
 }

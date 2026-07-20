@@ -27,9 +27,12 @@ namespace AIS.Narrative {
         [NonSerialized] private IInputLayer m_InputLayer;
         [NonSerialized] private DialogueLine m_CurrentLine;
 
+        public static DialogueColumn Instance;
+
         public override void OnRegister() {
             base.OnRegister();
             m_InputLayer = IInputLayer.Find(this);
+            Instance = this;
         }
 
         public override IEnumerator TypeLine(TagString text, TagTextData textData, DialogueCharacterState character) {

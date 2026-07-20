@@ -1,72 +1,37 @@
 // Evidence To Action Conversions
 
 ::
-@from	Evidence-Canals
-@to		angler-outreach
+@from	Evidence-awareness-program
+@to		Action-awareness-campaign
 
 ::
-@from	example-evidence-card-1
-@to		example-action-card-1
-
-
-::
-@from	example-evidence-card-2
-@to		example-action-card-2
+@from	Evidence-lampricide
+@to		Action-use-lampricide
 
 ::
-@from	example-evidence-card-3
-@to		angler-outreach
+@from	Evidence-cisco
+@to		Action-stock-cisco
 
 ::
-@from	example-evidence-card-4
-@to		example-action-card-4
+@from	Evidence-Lake-Trout
+@to		Action-stock-lake-trout
 
 ::
-@from	example-evidence-card-5
-@to		eat-the-invasive
+@from	Evidence-sterilization
+@to		Action-release-sterilized
 
 ::
-@from	example-evidence-card-6
-@to		example-action-card-6
+@from	Evidence-Feed-Downstream
+@to		Action-downstream-tributary-traps
 
 ::
-@from	example-evidence-card-7
-@to		example-action-card-7
+@from	Evidence-Spawn-Upstream
+@to		Action-upstream-tributary-traps
 
 ::
-@from	example-evidence-card-8
-@to		ballast-treatment
+@from	Evidence-barrier
+@to		Action-barriers
 
 ::
-@from	example-evidence-card-9
-@to		example-action-card-9
-
-::
-@from	example-evidence-card-10
-@to		example-action-card-10
-
-::
-@from	example-evidence-card-11
-@to		example-action-card-11
-
-::
-@from	example-evidence-card-12
-@to		example-action-card-12
-
-// END
-
-// ::
-// @from   Evidence-Chemical-Removal
-// @to     Lampricide
-
-// ::
-// @from   Evidence-Eel-Ladder
-// @to     Lamprey-Trap
-
-// ::
-// @from   Evidence-Pheromones
-// @to     Pheromone-Traps
-
-// ::
-// @from   Evidence-Poor-Jumpers
-// @to     Lamprey-Barrier
+@from	Evidence-Pheromones
+@to		Action-pheromones

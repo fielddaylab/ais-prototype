@@ -1,8 +1,10 @@
+using BeauRoutine;
 using BeauUtil;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace AIS.Intervene
 {
@@ -23,9 +25,12 @@ namespace AIS.Intervene
 
         #region Inspector
 
-        public TMP_Text LevelValueText;
-        public TMP_Text ValueText;
+        //public TMP_Text LevelValueText;
+        //public TMP_Text ValueText;
+
         public int StartingBudget;
+        public GameObject BudgetUnit;
+        public Transform BudgetGroupTransform;
 
         #endregion // Inspector
 
@@ -57,7 +62,22 @@ namespace AIS.Intervene
         {
             WorkingBudget.BudgetLevel += amt;
 
-            LevelValueText.SetText("$" + WorkingBudget.BudgetLevel.ToStringLookup() + " per turn");
+            if (amt > 0)
+            {
+                for (int i = 0; i < amt; i++)
+                {
+                    Instantiate(BudgetUnit, BudgetGroupTransform);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < -amt && BudgetGroupTransform.childCount > 0; i++)
+                {
+                    Transform child = BudgetGroupTransform.GetChild(BudgetGroupTransform.childCount - 1);
+                    child.SetParent(null);      // Destroy is deferred; detach so childCount is correct now
+                    Destroy(child.gameObject);
+                }
+            }
         }
 
         public void ClearBudget()
@@ -68,14 +88,31 @@ namespace AIS.Intervene
 
         public void AdjustBudgetValue(int amt)
         {
-            WorkingBudget.Budget += amt;
+            int newBudget = Mathf.Clamp(WorkingBudget.Budget + amt, 0, WorkingBudget.BudgetLevel);
+            amt = newBudget - WorkingBudget.Budget;
 
-            ValueText.SetText("$" + WorkingBudget.Budget.ToStringLookup());
+            if (amt < 0) // spend amt units of budget 
+            {
+                for (int i = WorkingBudget.Budget - 1; i >= WorkingBudget.Budget + amt; i--)
+                {
+                    BudgetGroupTransform.GetChild(i).GetComponent<Image>().color = Color.grey;
+                }
+            }
+
+            WorkingBudget.Budget = newBudget;
+
+            if (amt >= 0)
+            {
+                for (int i = WorkingBudget.Budget - 1; i > WorkingBudget.Budget - 1 - amt; i--)
+                {
+                    BudgetGroupTransform.GetChild(i).GetComponent<Image>().color = Color.yellow;
+                }
+            }
         }
 
         public void BestowBudget()
         {
-            AdjustBudgetValue(WorkingBudget.BudgetLevel);
+            AdjustBudgetValue(WorkingBudget.BudgetLevel - WorkingBudget.Budget);
         }
 
         public void Spend(int amt)
@@ -169,6 +206,11 @@ namespace AIS.Intervene
             }
 
             return totalCost <= budget.WorkingBudget.Budget;
+        }
+
+        public static bool CanAfford(InterveneBudgetInterfacer budget, int cost)
+        {
+            return budget.WorkingBudget.Budget >= cost;
         }
 
         public static void Spend(InterveneBudgetInterfacer budget, int amt)

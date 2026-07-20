@@ -57,14 +57,26 @@ namespace AIS.Narrative
             List<Pathway> pathways = InvasionModel.Instance.m_ModelContainer.m_Pathways;
 
             StringHash32 invasiveId = InvasionModel.Instance.m_InitModelSetupData.DefaultInvasive.SpeciesId;
+            StringHash32 predatorId = InvasionModel.Instance.m_InitModelSetupData.DefaultPredator.SpeciesId;
+            StringHash32 preyId = InvasionModel.Instance.m_InitModelSetupData.DefaultPrey.SpeciesId;
             var invasiveClusters = new List<ISimDetail>();
+            var predatorClusters = new List<ISimDetail>();
+            var preyClusters = new List<ISimDetail>();
             foreach (Ecosystem ecosystem in ecosystems)
             {
                 if (ecosystem == null) continue;
                 Cluster c = ecosystem.GetCluster(invasiveId);
                 if (c != null) invasiveClusters.Add(c);
+
+                c = ecosystem.GetCluster(predatorId);
+                if (c != null) predatorClusters.Add(c);
+
+                c = ecosystem.GetCluster(preyId);
+                if (c != null) preyClusters.Add(c);
             }
             m_DetailMap["Evidence-Lamprey-Discovered"] = invasiveClusters;
+            m_DetailMap["Evidence-LakeTrout"] = predatorClusters;
+            m_DetailMap["Evidence-Cisco"] = preyClusters;
 
             var downstreamPathways = new List<ISimDetail>();
             var upstreamPathways = new List<ISimDetail>();

@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b484e83148c49ad47a774f9533990758, type: 3}
   m_Name: Upstream
   m_EditorClassIdentifier: 
-  PathType: 0
-  Sprite: {fileID: 0}
+  PathType: 64
+  Sprite: {fileID: 21300000, guid: 57cb3fe1590768743b79b00b5d99f35c, type: 3}
   IsHidden: 0

@@ -18,7 +18,7 @@ namespace AIS.Intervene
         /// </summary>
         private void ApplyDiscoverEffects()
         {
-            var cards = CardInteractionMgr.Instance.ActionDeck.Cards;
+            var cards = CardInteractionMgr.Instance.Hand.Cards;
             foreach (var card in cards)
             {
                 var actionCard = (ActionCard)card;
@@ -99,6 +99,12 @@ namespace AIS.Intervene
                             break;
                         case ActionVerb.Match:
                             ActionEffectUtility.TryMatch(target.QueriableObj, verb);
+                            break;
+                        case ActionVerb.ModifyReproduction:
+                            ActionEffectUtility.TryModifyReproduction(target.QueriableObj, verb);
+                            break;
+                        case ActionVerb.ModifyTrap:
+                            ActionEffectUtility.TryModifyTrap(target.QueriableObj, verb);
                             break;
                         default:
                             continue;

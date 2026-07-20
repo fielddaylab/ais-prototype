@@ -41,6 +41,12 @@ namespace AIS.Model
                     // match target type
                     if ((tag.TargetType & targetDetails.Target) != 0)
                     {
+                        // skip targets outside this target's ecosystem scope
+                        if (!ActionCardUtility.MatchesScope(targetDetails.Scope, ActionCardUtility.GetTagScope(tag)))
+                        {
+                            continue;
+                        }
+
                         // skip external ecosystems
                         if ((tag.TargetType & ActionTarget.Ecosystem) != 0)
                         {

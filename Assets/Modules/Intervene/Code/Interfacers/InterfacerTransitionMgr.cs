@@ -13,10 +13,13 @@ namespace AIS.Intervene
     public class InterfacerTransitionMgr : SharedStateComponent
     {
         public InterveneBudgetInterfacer Budget;
-        public InterveneAwarenessInterfacer Awareness;
+        //public InterveneAwarenessInterfacer Awareness;
         public StatsInterfacer Stats;
         public CardInteractionMgr CardMgr;
         public InvasionCurveInterfacer CurveInterfacer;
+
+        public InterveneSwapDeckInterfacer SwapDeck;
+        public InterveneCardSelectionInterfacer CardSelection;
         [HideInInspector] public InvasionModel InvasionModel;
 
         private Routine m_LoadRoutine;
@@ -64,10 +67,20 @@ namespace AIS.Intervene
 
             // Load data
             Budget.LoadPlayerBudget(inBudget);
-            Awareness.LoadPlayerAwareness(inAwareness);
+            //Awareness.LoadPlayerAwareness(inAwareness);
             Stats.LoadPlayerStats(inStats[0], inStats[1], inStats[2], inStats[3], inStats[4]);
             CurveInterfacer.LoadCurve(inInvasionCurve);
             InvasionModel.Load(CurveInterfacer.CurrVal);
+
+            // Playtest action card data
+            inventory.ActionCards.Add("Action-use-lampricide");
+            inventory.ActionCards.Add("Action-awareness-campaign");
+            inventory.ActionCards.Add("Action-stock-cisco");
+            inventory.ActionCards.Add("Action-stock-lake-trout");
+            inventory.ActionCards.Add("Action-release-sterilized");
+
+            SwapDeck.LoadSwapDeck(inventory.ActionCards);
+            CardSelection.Load(inventory.ActionCards);
 
             // allow 1 frame for model tags to register themselves
             yield return null;

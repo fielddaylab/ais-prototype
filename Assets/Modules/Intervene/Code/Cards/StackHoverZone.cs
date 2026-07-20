@@ -20,9 +20,13 @@ namespace AIS.Intervene
         private void Awake()
         {
             m_hoverZone = GetComponent<HoverZone>();
+        }
 
+        private void OnEnable()
+        {
             m_hoverZone.OnHoverEnter.AddListener(HandleHoverEnter);
             m_hoverZone.OnHoverExit.AddListener(HandleHoverExit);
+            m_hoverZone.ResetHovering();
         }
 
         public void Update()

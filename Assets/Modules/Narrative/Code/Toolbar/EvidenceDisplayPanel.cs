@@ -15,7 +15,7 @@ using UnityEngine.UI;
 
 namespace AIS.Narrative {
     public sealed class EvidenceDisplayPanel : SharedPanel, IParameterizedGuiPanel<PlayerInventory> {
-        [Serializable] public sealed class UICardPool : SerializablePool<UICard> { }
+        //[Serializable] public sealed class UICardPool : SerializablePool<UICard> { }
 
         public Button ToModelButton;
         public Button CloseButton;
@@ -37,28 +37,30 @@ namespace AIS.Narrative {
         public Image ScenarioIllustration;
         public TMP_Text ScenarioOverviewText;
 
+        //[Header("Action Cards")]
+        //public UICardPool ActionCardPool;       // spawns deck cards into the custom layout group
+        //public UICard FocusSlot;                 // larger card shown in the rightmost focus column
+        //public GameObject NoActionCardsDefault;  // default text shown when the player has no action cards
+        //public TMP_Text FocusDescriptionText;    // bottom-right extra text for the focused/hovered card
+
+        //[Header("Focus Behavior")]
+        //[Tooltip("false = hover a deck card to preview it in the focus slot; true = click to focus/return/swap.")]
+        //public bool ClickToFocus = false;
+        //public TweenSettings FocusSlideAnim = new TweenSettings(0.2f, Curve.Smooth);
+        //[Tooltip("Off-screen X (anchored, focus slot local space) the card slides from / to.")]
+        //public float FocusHiddenX = 600f;
+
+        //// Animation routines (fields so they can be manually started/stopped).
+        //private Routine m_FocusInRoutine;
+        //private Routine m_FocusOutRoutine;
+
+        //// Click-mode state: which spawned card (by index) is currently focused, -1 if none.
+        //[NonSerialized] private int m_FocusedCardIndex = -1;
+
+        //// Cached action card data parallel to ActionCardPool.ActiveObjects, indexed by CardIndex.
+        //private readonly List<ActionCardData> m_SpawnedCardData = new List<ActionCardData>(24);
         [Header("Action Cards")]
-        public UICardPool ActionCardPool;       // spawns deck cards into the custom layout group
-        public UICard FocusSlot;                 // larger card shown in the rightmost focus column
-        public GameObject NoActionCardsDefault;  // default text shown when the player has no action cards
-        public TMP_Text FocusDescriptionText;    // bottom-right extra text for the focused/hovered card
-
-        [Header("Focus Behavior")]
-        [Tooltip("false = hover a deck card to preview it in the focus slot; true = click to focus/return/swap.")]
-        public bool ClickToFocus = false;
-        public TweenSettings FocusSlideAnim = new TweenSettings(0.2f, Curve.Smooth);
-        [Tooltip("Off-screen X (anchored, focus slot local space) the card slides from / to.")]
-        public float FocusHiddenX = 600f;
-
-        // Animation routines (fields so they can be manually started/stopped).
-        private Routine m_FocusInRoutine;
-        private Routine m_FocusOutRoutine;
-
-        // Click-mode state: which spawned card (by index) is currently focused, -1 if none.
-        [NonSerialized] private int m_FocusedCardIndex = -1;
-
-        // Cached action card data parallel to ActionCardPool.ActiveObjects, indexed by CardIndex.
-        private readonly List<ActionCardData> m_SpawnedCardData = new List<ActionCardData>(24);
+        public ActionCardDeckWidget ActionDeck;
 
         protected override void Awake() {
             base.Awake();
@@ -73,7 +75,8 @@ namespace AIS.Narrative {
             PopulateScenario();
             RecomputeStats(parms);
             PopulateStats(Find.State<PlayerStats>().StatBlock);
-            PopulateActionCards(parms);
+            ActionDeck.Populate(parms.ActionCards);
+            ActionDeck.LayoutStackedCards();
             UpdateRevealQueueDisplay();
         }
 
@@ -153,172 +156,174 @@ namespace AIS.Narrative {
 
         #endregion // Stats
 
-        #region Action Cards
+        //#region Action Cards
 
-        private void PopulateActionCards(in PlayerInventory parms) {
-            // Return any previously-spawned cards to the pool and reset focus state.
-            ClearFocus();
-            ActionCardPool.Reset();
-            m_SpawnedCardData.Clear();
+        //private void PopulateActionCards(in PlayerInventory parms) {
+        //    // Return any previously-spawned cards to the pool and reset focus state.
+        //    ClearFocus();
+        //    ActionCardPool.Reset();
+        //    m_SpawnedCardData.Clear();
 
-            ActionCardsState actionCards;
-            if (!Game.SharedState.TryGet(out actionCards) || parms.ActionCards.Count == 0) {
-                ShowNoActionCards(true);
-                return;
-            }
+        //    ActionCardsState actionCards;
+        //    if (!Game.SharedState.TryGet(out actionCards) || parms.ActionCards.Count == 0) {
+        //        ShowNoActionCards(true);
+        //        return;
+        //    }
 
-            int index = 0;
-            foreach (var id in parms.ActionCards) {
-                if (!actionCards.AllActionCards.TryGetValue(id, out ActionCardData data)) {
-                    continue;
-                }
+        //    int index = 0;
+        //    foreach (var id in parms.ActionCards) {
+        //        if (!actionCards.AllActionCards.TryGetValue(id, out ActionCardData data)) {
+        //            continue;
+        //        }
 
-                UICard card = ActionCardPool.Alloc();
-                ActionCardUtility.PopulateCardUI(card, data);
-                m_SpawnedCardData.Add(data);
+        //        UICard card = ActionCardPool.Alloc();
+        //        ActionCardUtility.PopulateCardUI(card, data);
+        //        m_SpawnedCardData.Add(data);
 
-                WireCardInput(card, index);
-                index++;
-            }
+        //        WireCardInput(card, index);
+        //        index++;
+        //    }
 
-            ShowNoActionCards(m_SpawnedCardData.Count == 0);
+        //    ShowNoActionCards(m_SpawnedCardData.Count == 0);
 
-            // Focus slot starts empty in both modes.
-            SetFocusSlotVisible(false);
-            SetFocusDescription(string.Empty);
-        }
+        //    // Focus slot starts empty in both modes.
+        //    SetFocusSlotVisible(false);
+        //    SetFocusDescription(string.Empty);
+        //}
 
-        private void ShowNoActionCards(bool show) {
-            if (NoActionCardsDefault != null) {
-                NoActionCardsDefault.SetActive(show);
-            }
-        }
+        //private void ShowNoActionCards(bool show) {
+        //    if (NoActionCardsDefault != null) {
+        //        NoActionCardsDefault.SetActive(show);
+        //    }
+        //}
 
-        // Attaches/refreshes pointer handling on a spawned card for the current focus mode.
-        private void WireCardInput(UICard card, int index) {
-            FieldNoteCardPointer pointer = card.GetComponent<FieldNoteCardPointer>();
-            if (pointer == null) {
-                pointer = card.gameObject.AddComponent<FieldNoteCardPointer>();
-            }
+        //// Attaches/refreshes pointer handling on a spawned card for the current focus mode.
+        //private void WireCardInput(UICard card, int index) {
+        //    FieldNoteCardPointer pointer = card.GetComponent<FieldNoteCardPointer>();
+        //    if (pointer == null) {
+        //        pointer = card.gameObject.AddComponent<FieldNoteCardPointer>();
+        //    }
 
-            pointer.CardIndex = index;
+        //    pointer.CardIndex = index;
 
-            if (ClickToFocus) {
-                pointer.OnEnter = null;
-                pointer.OnExit = null;
-                pointer.OnClick = HandleCardClicked;
-            } else {
-                pointer.OnEnter = HandleCardHoverEnter;
-                pointer.OnExit = HandleCardHoverExit;
-                pointer.OnClick = null;
-            }
-        }
+        //    if (ClickToFocus) {
+        //        pointer.OnEnter = null;
+        //        pointer.OnExit = null;
+        //        pointer.OnClick = HandleCardClicked;
+        //    } else {
+        //        pointer.OnEnter = HandleCardHoverEnter;
+        //        pointer.OnExit = HandleCardHoverExit;
+        //        pointer.OnClick = null;
+        //    }
+        //}
 
-        #endregion // Action Cards
+        //#endregion // Action Cards
 
-        #region Focus Slot
+        //#region Focus Slot
 
-        // --- Hover mode ---
+        //// --- Hover mode ---
 
-        private void HandleCardHoverEnter(int index) {
-            if (!IsValidIndex(index)) { return; }
+        //private void HandleCardHoverEnter(int index) {
+        //    if (!IsValidIndex(index)) { return; }
 
-            ActionCardData data = m_SpawnedCardData[index];
-            ActionCardUtility.PopulateCardUI(FocusSlot, data);
-            SetFocusSlotVisible(true);
-            SetFocusDescription(data.FocusDescription);
-        }
+        //    ActionCardData data = m_SpawnedCardData[index];
+        //    ActionCardUtility.PopulateCardUI(FocusSlot, data);
+        //    SetFocusSlotVisible(true);
+        //    SetFocusDescription(data.FocusDescription);
+        //}
 
-        private void HandleCardHoverExit(int index) {
-            // Blank the focus slot when the pointer leaves (only if it still reflects this card).
-            ClearFocus();
-        }
+        //private void HandleCardHoverExit(int index) {
+        //    // Blank the focus slot when the pointer leaves (only if it still reflects this card).
+        //    ClearFocus();
+        //}
 
-        // --- Click mode ---
+        //// --- Click mode ---
 
-        private void HandleCardClicked(int index) {
-            if (!IsValidIndex(index)) { return; }
+        //private void HandleCardClicked(int index) {
+        //    if (!IsValidIndex(index)) { return; }
 
-            // Clicking the already-focused card returns it and empties the slot.
-            if (m_FocusedCardIndex == index) {
-                m_FocusedCardIndex = -1;
-                m_FocusInRoutine.Stop();
-                m_FocusOutRoutine.Replace(this, SlideFocusOut());
-                return;
-            }
+        //    // Clicking the already-focused card returns it and empties the slot.
+        //    if (m_FocusedCardIndex == index) {
+        //        m_FocusedCardIndex = -1;
+        //        m_FocusInRoutine.Stop();
+        //        m_FocusOutRoutine.Replace(this, SlideFocusOut());
+        //        return;
+        //    }
 
-            // Focus a fresh card, or swap the currently-focused card for the clicked one.
-            bool swapping = m_FocusedCardIndex != -1;
-            m_FocusedCardIndex = index;
-            m_FocusInRoutine.Replace(this, FocusOn(index, swapping));
-        }
+        //    // Focus a fresh card, or swap the currently-focused card for the clicked one.
+        //    bool swapping = m_FocusedCardIndex != -1;
+        //    m_FocusedCardIndex = index;
+        //    m_FocusInRoutine.Replace(this, FocusOn(index, swapping));
+        //}
 
-        // Drives focusing a card into the slot. When swapping, the previous card (old content) slides
-        // out first, then the new card is populated and slides in.
-        private IEnumerator FocusOn(int index, bool swapping) {
-            RectTransform slot = FocusSlot.transform as RectTransform;
+        //// Drives focusing a card into the slot. When swapping, the previous card (old content) slides
+        //// out first, then the new card is populated and slides in.
+        //private IEnumerator FocusOn(int index, bool swapping) {
+        //    RectTransform slot = FocusSlot.transform as RectTransform;
 
-            if (swapping) {
-                // Old card (still showing previous content) slides out.
-                yield return slot.AnchorPosTo(FocusHiddenX, FocusSlideAnim, Axis.X);
-            }
+        //    if (swapping) {
+        //        // Old card (still showing previous content) slides out.
+        //        yield return slot.AnchorPosTo(FocusHiddenX, FocusSlideAnim, Axis.X);
+        //    }
 
-            // Populate with the new card's content, then slide in from off-screen.
-            ActionCardData data = m_SpawnedCardData[index];
-            ActionCardUtility.PopulateCardUI(FocusSlot, data);
-            SetFocusDescription(data.FocusDescription);
+        //    // Populate with the new card's content, then slide in from off-screen.
+        //    ActionCardData data = m_SpawnedCardData[index];
+        //    ActionCardUtility.PopulateCardUI(FocusSlot, data);
+        //    SetFocusDescription(data.FocusDescription);
 
-            SetFocusSlotVisible(true);
-            slot.SetAnchorPos(FocusHiddenX, Axis.X);
-            yield return slot.AnchorPosTo(0f, FocusSlideAnim, Axis.X);
-        }
+        //    SetFocusSlotVisible(true);
+        //    slot.SetAnchorPos(FocusHiddenX, Axis.X);
+        //    yield return slot.AnchorPosTo(0f, FocusSlideAnim, Axis.X);
+        //}
 
-        // Slides the focus card out and blanks the slot.
-        private IEnumerator SlideFocusOut() {
-            RectTransform slot = FocusSlot.transform as RectTransform;
-            yield return slot.AnchorPosTo(FocusHiddenX, FocusSlideAnim, Axis.X);
-            SetFocusSlotVisible(false);
-            SetFocusDescription(string.Empty);
-            slot.SetAnchorPos(0f, Axis.X);
-        }
+        //// Slides the focus card out and blanks the slot.
+        //private IEnumerator SlideFocusOut() {
+        //    RectTransform slot = FocusSlot.transform as RectTransform;
+        //    yield return slot.AnchorPosTo(FocusHiddenX, FocusSlideAnim, Axis.X);
+        //    SetFocusSlotVisible(false);
+        //    SetFocusDescription(string.Empty);
+        //    slot.SetAnchorPos(0f, Axis.X);
+        //}
 
-        // Immediately clears the focus slot (no animation) and resets focus state.
-        private void ClearFocus() {
-            m_FocusInRoutine.Stop();
-            m_FocusOutRoutine.Stop();
-            m_FocusedCardIndex = -1;
-            SetFocusSlotVisible(false);
-            SetFocusDescription(string.Empty);
-        }
+        //// Immediately clears the focus slot (no animation) and resets focus state.
+        //private void ClearFocus() {
+        //    m_FocusInRoutine.Stop();
+        //    m_FocusOutRoutine.Stop();
+        //    m_FocusedCardIndex = -1;
+        //    SetFocusSlotVisible(false);
+        //    SetFocusDescription(string.Empty);
+        //}
 
-        private void SetFocusSlotVisible(bool visible) {
-            if (FocusSlot != null) {
-                FocusSlot.gameObject.SetActive(visible);
-            }
-        }
+        //private void SetFocusSlotVisible(bool visible) {
+        //    if (FocusSlot != null) {
+        //        FocusSlot.gameObject.SetActive(visible);
+        //    }
+        //}
 
-        private void SetFocusDescription(string text) {
-            if (FocusDescriptionText != null) {
-                FocusDescriptionText.SetText(text);
-            }
-        }
+        //private void SetFocusDescription(string text) {
+        //    if (FocusDescriptionText != null) {
+        //        FocusDescriptionText.SetText(text);
+        //    }
+        //}
 
-        private bool IsValidIndex(int index) {
-            return index >= 0 && index < m_SpawnedCardData.Count;
-        }
+        //private bool IsValidIndex(int index) {
+        //    return index >= 0 && index < m_SpawnedCardData.Count;
+        //}
 
-        #endregion // Focus Slot
+        //#endregion // Focus Slot
 
-        public override void Show() {
+        public override void Show()
+        {
             base.Show();
             Game.Gui.PushPriority(m_InputLayer);
             UpdateRevealQueueDisplay();
             ScriptHooks.HideToolbar();
         }
 
-        public override void Hide() {
+        public override void Hide()
+        {
             Game.Gui.PopPriority(m_InputLayer);
-            ClearFocus();
+            ActionDeck.ClearFocus();
             base.Hide();
             ScriptHooks.RevealToolbar();
         }
