@@ -14,14 +14,117 @@ $set global:currentThread = "P3_UpstreamTraps"
 $call SetInThreadLocks()
 $call DisableMapButton()
 
+$if global:dnrVisited = false
 {@}   
-       [This is the DNR Office section.]
+       Paul is jamming to something when you step into the DNR office.
+       He's hiding it well, but you can see it in his eyes. 
 
-// TODO: Give evidence chip
+{@You}
+       What're you working on?
+
+{@}
+       He nearly jumps out of his seat.
+
+{@Paul}
+       Ah. Well, I guess the cat is out of the bag.
+       I moonlight as a DJ.
+
+{@You}
+       You? DJ?
+
+{@Paul}
+       Mmm. Yes. 
+       As the kids would say, I cook up "sick beats."
+
+{@You}
+       Please never say that again. 
+
+{@Paul}
+       Mm. I'll try. So what can I help you with?
+
+{@You}
+       I'm working on preparing interventions targeting sea lamprey going upstream. 
+       Is there anything the DNR's worked on before that could help with that?
+
+{@Paul}
+       Mm. Yes, we've down traps before for sea lamprey going upstream to spawn. 
+       Those could be useful to you. 
 $call GiveEvidenceChip("Evidence-attractive-traps")
 
+{@You}
+       You're right about that. 
 
-$if HasActionCard([Action])
+{@Paul}
+       Mm. You'll have to talk to the Army Corps of Engineers, though.
+       They're responsible for building and placing the traps.
+
+{@You}
+       That sounds like a pretty solid plan if I've ever heard one. 
+
+{@Paul}
+       Mm, yes. Have a great day. 
+
+{@}
+       You're on your way out when you feel the need to turn around and yell-
+
+{@You}
+       Oh, and Paul?
+       Good luck tonight, Mr. DJ!
+
+{@}
+       His quite grumble sounds more pleased than usual.
+$set global:dnrVisited = true
+
+$else
+{@}
+       Paul has his headphones on again, but when you step in he gives you a private smile.
+
+{@You}
+       How's the set going, Mr. DJ?
+
+{@Paul}
+       Mm. I'd say I'm on to something. 
+       Is there anything else you need from me?
+
+{@You}
+       That there is. You know how we talked about putting traps for sea lamprey travelling downstream?
+       Has the DNR done anything like it for sea lamprey travelling upstream?
+
+{@Paul}
+       Mm. Yes, we did in the past.
+$if !HasSeen(P3_Sterile.End) //references sterilization if the player has already seen it
+{@Paul}
+       Those were the sea lamprey that would then be sent to be sterilized, back when we did that en mass. 
+$endif
+
+{@You}
+       Thoughs on restarting that program?
+
+{@Paul}
+       Mm. I think that could help.
+       Though you'll have to talk to the Army Corps of Engineers about this.
+$call GiveEvidenceChip("Evidence-attractive-traps")
+
+{@You}
+       That can be definitely be arranged. 
+       Thanks for your help, Paul.
+
+{@Paul}
+       Of course.
+       Mmmm. 
+       Come to my performance tonight. 
+
+{@You}
+       Really? I'd love to.
+
+{@Paul}
+       Mm. Yes. No point in DJing if no one listens.
+
+{@You}
+       Well, I guess I have to come. 
+$endif
+
+$if HasActionCard("Action-upstream-tributary-traps")
        // handle player already has action card from LampreyDownstream thread
        // TEMPORARY skip to end
        $goto .End
@@ -40,12 +143,76 @@ $endif
 $call SetInThreadLocks()
 $call DisableMapButton()
 @tracked
-{@}   
-       [This is where the player receives the upstream traps action.]
 
-// TODO: Give action card (traps on upstream)
+//Splits dialogue depending on whether the player has previously been to the Army Corps
+$if global:corpsVisited = false
+{@}   
+       Robertson is deep in work on a trap but turns to greet you as you step out of the car.
+
+{@Robertson}
+       It's mighty good to see you again, ma'am.
+
+{@You}
+       Same here.
+
+$if !HasSeen(P3_Sterile.end) //adds flavor text if player knows Robertson is getting married
+{@You}
+       Congrats on the wedding, by the way. I'm excited to be there.
+
+{@Robertson}
+       Ah, geez, thanks.
+$endif
+
+{@Robertson}
+       So what can I help you with?
+
+{@You}
+       I've been talking to Paul down at the DNR, and we're thinking of putting in new traps for sea lamprey going upstream.
+       Would you be able to make and place those traps for us?
+
+{@Robertson}
+       Oh, certainly, ma'am. We'd be very pleased to help.
+       Just let us know whenever you need 'em.
 $call GiveActionCard("Action-upstream-tributary-traps")
 
+{@You}
+       Perfect! Thank you so much, Robertson. 
+
+{@Robertson}
+       'Course. Anytime. 
+$set global:corpsVisited = true
+
+$elseif global:corpsVisited = true
+{@}
+       Robertson seems to have already begun preparation on those traps. 
+
+{@You}
+       Heya. I'm back.
+
+{@Robertson}
+       Nice to see ya so soon. Anything else needed?
+
+{@You}
+       Yup. So you know how we're doing traps for sea lamprey going downstream?
+       Well, I've talked to Paul, and we've decided that it could be worth doing them for sea lamprey going upstream, too.
+
+{@Robertson}
+       Sounds like a mighty fine idea to me.
+       Just us let us know when you need 'em, and we'll have 'em.
+$call GiveActionCard("Action-upstream-tributary-traps")
+
+{@You}
+       Thank you, Robertson!
+       You're the best.
+
+{@Robertson}
+       Aw, shucks. You flatter me, ma'am.
+       By the way, I've heard someone over at the university is looking at ways to make traps more effective.
+       Might be worth yer time.
+
+{@You}
+       Interesting. I think I might know who that is...
+$endif
 // skip to end
 $goto .End
 

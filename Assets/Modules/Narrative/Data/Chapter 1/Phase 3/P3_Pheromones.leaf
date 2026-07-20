@@ -16,12 +16,72 @@ $call DisableMapButton()
 $set global:currentThread = "P3_Pheromones"
 
 {@}   
-       [This is the start of the Phase 3 thread Pheromones.]
+       You can hear Arjan's... less-than-intact... phonograph through the door to the research lab.
+       The door swings open before you knock. 
 
-// TODO: Rest of Research Lab thread here
+{@Arjan}
+       Haha. Told you I was psychic. 
+       I'm not. Come in. 
 
-// TODO: Give evidence chip
+{@}
+       You follow him inside. 
+       He's looking over into large vats. When you peek over his shoulder, you see they're filled with sea lamprey.
+
+{@Arjan}
+       I imagine you're not just here to admire my clothes.
+
+{@You}
+       Oh, haha, no. I came to ask you questions about your research. 
+       Someone at the Army Corps told me it could be useful in making traps more effective?
+
+{@Arjan}
+       Oh, yes, my research. I'm looking into pheromones. 
+
+{@You}
+       Which are...?
+
+{@Arjan}
+       Pheromones are scents that some animals produce to communicate with others.
+       In this case, I'm looking at two particular pheromes that sea lamprey utilize.
+       One which is a warning of danger, and another which is to signal to a potential mate.
+       The idea is one will repel sea lamprey and the other will attract them.
+
+{@You}
+       So you could use it to attract or repel sea lamprey to the traps that have been placed in tributaries.
+
+{@Arjan}
+       Potentially making them more effective. 
+       That's the goal, anyway. 
 $call GiveEvidenceChip("Evidence-Pheromones")
+
+{@You}
+       That seems like a great idea.
+
+{@Arjan}
+       I like to think so, too.
+       But you'll have to get permission from the townsfolk to be able to use it. 
+       People are rightfully skeptical about putting chemicals into the water.
+       If you already have a lot of contacts, that could be easy, but if not, you'll have to go to another town hall meeting.
+
+{@You}
+       Thanks for the heads up. 
+       Oh, and before I go, I have something for you. 
+
+{@Arjan}
+       Is that so?
+
+{@}
+       You fish a small music box from your bag.
+
+{@You}
+       I know it's not quite as antique as the other things you collect, but I figure you'd like it. 
+       I used to use it a lot as a kid, but I haven't in a while, and I figure you'd take better care of it. 
+
+{@Arjan}
+       Thank you, Ana. I'll cherish it.
+
+{@}
+       You watch him put it next to the phonograph, a warm feeling in your belly. 
 
 $call UnlockLocation(TownHall)
 // IF high Community/Communicate stat, optional skip townsfolk wary section
@@ -41,7 +101,50 @@ $call SetInThreadLocks()
 $call DisableMapButton()
 
 {@}   
-       [This is the Town Hall section.]
+       The town hall meeting is in full swing when you walk in. 
+       You find a moment to bring your question up to the group. 
+
+{@You}
+       Hello everyone. It's me, Ana, with Sea Grant again. 
+       We're looking into a new program in conjunction with the university.
+       We would use pheromones, or scents that sea lamprey are sensitive to, to make traps more effective.
+
+{@Fisher}
+       Is this more chemicals in the water?
+
+{@You}
+       Yes, these are a kind of chemical. 
+       But they are a naturally occuring type of chemical, just like the pheromones that the sea lamprey naturally make.
+
+{@Fisher}
+       But isn't it different when it's manmade.
+
+{@You}
+       It's the same structure. 
+       Just like if I said we'd made H2O in a lab, it would be the same water that you can buy in the store.
+       It's true that people are exposed to harmful chemicals sometimes. We have to be vigilant about that.
+       But the goal of scientists working for public health isn't to poison you. They do a lot of research to make sure things are safe.
+       I understand if you are hesitant. I understand that indigenous communities might not want chemical intervention. 
+       And if that's the consensus that the town decides on, me and all the scientists will accept it.
+       All we ask is that you give it a chance.
+
+{@}
+       There are murmurs through the crowd. 
+       At the front, the mayor raises her hand. 
+
+{@Mayor}
+       Thank you for bringing this to our attention. 
+       The city council is prepared to allow it with careful checks to ensure the longterm safety. 
+       This will only take place in municipal waters, of course.
+
+{@}
+       The crowd murmurs an assenting sound. 
+
+{@You}
+       Thank you. And thank you, everyone. 
+
+{@}
+       On your way out, you see Paul smile and nod at you. Proud.
 
 // TODO: Rest of Town Hall section here
 
@@ -63,12 +166,48 @@ $call SetInThreadLocks()
 $call DisableMapButton()
 
 {@}   
-       [This is the DNROffice section.]
+       Paul is once again at his desk.
 
-// TODO: Rest of DNR Office section here
+{@You}
+       How's the set going?
 
-// TODO: Give action card
+{@Paul}
+       Mm. I'm downloading the files now. I'd say I'm ready. 
+       And I'd say you are, too.
+
+{@You}
+       You think so?
+
+{@Paul}
+       Mm. You have the agreement of the town.
+       I'll begin the process of organizing with Arjan to get the pheromones ready to place in the tributaries. 
+       Whenever you need it, just let me know. I'll be here. 
 $call GiveActionCard("Action-pheromones")
+
+{@You}
+       Thanks, Paul. I mean it. 
+
+$if !HasSeen(P3_UpstreamBarriers.End) //ensures final dialogue with Paul doesn't happen twice
+       //does nothing in case player has already seen the dialogue
+$else
+{@You}
+       There's one more thing. In the end, you were right.
+
+{@Paul}
+       Hmm?
+
+{@You}
+       Earlier, you asked me about what I thought about coming to town. 
+       I didn't like how much it'd changed. 
+       But the future is a gift. I'm glad I'm here to see it. 
+
+{@Paul}
+       There's no time like the present. 
+
+{@}
+       You can't help but agree. 
+$endif
+// TODO: Rest of DNR Office section here
 
 $call UnlockLocation(DNROffice) // Place Pheromones
 $call EnableMapButton()

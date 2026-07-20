@@ -16,11 +16,44 @@ $call DisableMapButton()
 $set global:upstreamFirst = false
 $set global:downstreamFirst = false
 
-{@}   
-       The road before you forks out. 
-       You jump out of your car to read a signpost:
-       "Tributary - Upstream" on one side, "Tributary - Downstream" on the other.
-       You get back in your car and...
+// Sets variable that checks if the player previously visited the DNR and Army Corps to false
+$set global:dnrVisited = false
+$set global:corpsVisited = false
 
+{@}   
+       {@}   
+       You're surprised to find Claire is already in the river, wading by the traps.
+
+{@You}
+       You're incredibly efficient, Claire.
+
+{@Claire}
+       Wrong! My car is incredibly efficient!
+       But yes, I like to stay on my feet!
+       Care to take a swim, young scientist?
+
+{@You}
+       Not really. 
+
+{@}
+       You join her in the river anyway.
+
+{@You}
+       What are you working on?
+
+{@Claire}
+       I'm checking to ensure the traps are facing the correct direction!
+
+{@You}
+       Does the direction really matter?
+
+{@Claire}
+       Yes, it does! 
+       The water in this tributary, like all tributaries, flows towards the lake. 
+       The sea lamprey either swim downstream or upstream, depending on what phase of life they are in!
+
+{@You}
+       That's interesting. When do the sea lamprey go...
+//idk what part of this I can change, but the textbook should say "downstream?" for the first and "upstream?" for the second
 $OnceChoice(P3_LampreyDownstream.Start, Enter LampreyDownstream Thread)
 $OnceChoice(P3_LampreyUpstream.Start, Enter LampreyUpstream Thread)
