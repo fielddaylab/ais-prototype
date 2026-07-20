@@ -51,26 +51,18 @@ namespace AIS.Model
 
         #endregion // Unity Callbacks
 
-        public void Load(float invasionCurve)
+        public void Load(float invasionCurve, SimDetailPhase phase)
         {
             gameObject.SetActive(true);
             SetModelSetupData(m_InitModelSetupData);
+
+            // Set before the world is built: clusters and pathways apply their own visibility as
+            // they are created, so the registry has to know the phase and its locks by then.
+            simDetailRegistry?.SetPhase(phase);
+
             RefreshSetup(invasionCurve);
 
-            simDetailRegistry?.InitDetails();
-            if (simDetailRegistry != null)
-            {
-                foreach (SimDetail simDetail in simDetailRegistry.Details)
-                {
-                    foreach (ISimDetail detail in simDetail.Targets)
-                    {
-                        if (simDetailRegistry.DetailsToShow.Contains(detail))
-                            detail.Show();
-                        else
-                            detail.Hide();
-                    }
-                }
-            }
+            simDetailRegistry?.ApplyAll();
         }
 
         /// <summary>
