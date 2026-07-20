@@ -77,6 +77,7 @@ namespace AIS.Intervene
             inventory.ActionCards.Add("Action-awareness-campaign");
             inventory.ActionCards.Add("Action-stock-cisco");
             inventory.ActionCards.Add("Action-stock-lake-trout");
+            inventory.ActionCards.Add("Action-release-sterilized");
 
             SwapDeck.LoadSwapDeck(inventory.ActionCards);
             CardSelection.Load(inventory.ActionCards);
