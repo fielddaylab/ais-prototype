@@ -2,6 +2,7 @@
 #include "Header.leaf"
 
 :: Start
+@exposed
 @trigger    OnLocationChanged
 // "NONE" ensures no other threads are in-progress
 // global:currentPhase == 2 ensures player is in phase 2
@@ -226,6 +227,7 @@ $goto .End
 
 
 :: End
+@exposed
 @tracked
 // Unlock next locations
 $call UnlockLocation(FieldStationLampricide)     // P2_Lampricide

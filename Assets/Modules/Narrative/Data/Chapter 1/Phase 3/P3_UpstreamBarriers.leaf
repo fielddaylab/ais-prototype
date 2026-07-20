@@ -46,6 +46,7 @@ $goto .End
 
 
 :: End
+@exposed
 @tracked
 
 // Mark end of thread

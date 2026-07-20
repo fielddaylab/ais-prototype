@@ -7,6 +7,7 @@
 $call SetBackground("bg/Room.png")
 
 :: Start
+@exposed
 @trigger    ChapterStart
 @cutscene
 // Lock all location on map
@@ -147,6 +148,7 @@ $set global:currentThread = "P0_Intro"
 $goto .End
 
 :: End
+@exposed
 // TODO: Unlock next locations
 // $call UnlockLocation([Location 1])
 // $call UnlockLocation([Location 2])

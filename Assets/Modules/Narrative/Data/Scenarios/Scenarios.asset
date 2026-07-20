@@ -9,7 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6374628d737c9d24486747a92e860022, type: 3}
-  m_Name: Evidence-Sterile-Lamprey-Discovered
+  m_Script: {fileID: 11500000, guid: b4be90a9d33d3784caac2e5eb4b5636c, type: 3}
+  m_Name: Scenarios
   m_EditorClassIdentifier: 
-  Label: 'The Fish Hatchery has sterile Sea Lamprey. '
+  m_GlobalAssets: []
+  m_NamedAssets:
+  - {fileID: 11400000, guid: 7ecdd760e4f232742b3e45adb71bec60, type: 2}
+  m_LiteAssets: []
