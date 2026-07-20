@@ -14,7 +14,7 @@ $set global:currentThread = "P3_LampreyDownstream"
 // TODO: Rest of thread here
 
 // TODO: Give evidence chip
-// $call GiveEvidenceChip([Evidence])
+$call GiveEvidenceChip("Evidence-Feed-Downstream")
 
 $call UnlockLocation(DNROffice)
 $call EnableMapButton()
@@ -36,7 +36,7 @@ $call DisableMapButton()
 // TODO: Rest of DNR Office section here
 
 // TODO: Give evidence chip
-// $call GiveEvidenceChip([Evidence])
+$call GiveEvidenceChip("Evidence-repellent-traps")
 
 $call UnlockLocation(ArmyCorps)
 $call EnableMapButton()
@@ -57,14 +57,14 @@ $call DisableMapButton()
 // TODO: Rest of Army Corps section here
 
 // TODO: Give action card (traps on downstream)
-// $call GiveActionCard([Action])
+$call GiveActionCard("Action-downstream-tributary-traps")
 
 // TODO: Give action card IF High research (traps on upstream)
 $if StatCheck(Research, 3)
        $if HasActionCard()
               // handle player already has action card from LampreyUpstream thread
        $else
-              // $call GiveActionCard([Action])
+              $call GiveActionCard("Action-upstream-tributary-traps")
        $endif
 $endif
 

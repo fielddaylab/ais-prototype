@@ -14,7 +14,7 @@ $set global:currentThread = "P3_LampreyUpstream"
 // TODO: Rest of thread here
 
 // TODO: Give evidence chip
-// $call GiveEvidenceChip([Evidence])
+$call GiveEvidenceChip("Evidence-Spawn-Upstream")
 
 // TEMPORARY Go to end
 $goto .End

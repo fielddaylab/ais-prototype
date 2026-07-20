@@ -94,7 +94,7 @@ $endif
 // TODO: Rest of thread here
 
 // TODO: Give evidence chip
-// $call GiveEvidenceChip([Evidence])
+$call GiveEvidenceChip("Evidence-sterilization")
 
 $call UnlockLocation(FieldStationLampricide)
 $call EnableMapButton()
@@ -115,7 +115,7 @@ $call DisableMapButton()
 // TODO: Rest of Field Station (Lampricide) section here
 
 // TODO: Give action card
-// $call GiveActionCard([Action])
+$call GiveActionCard("Action-release-sterilized")
 
 // skip to end
 $goto .End

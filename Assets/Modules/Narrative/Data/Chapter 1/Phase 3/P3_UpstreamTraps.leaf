@@ -18,7 +18,8 @@ $call DisableMapButton()
        [This is the DNR Office section.]
 
 // TODO: Give evidence chip
-// $call GiveEvidenceChip([Evidence])
+$call GiveEvidenceChip("Evidence-attractive-traps")
+
 
 $if HasActionCard([Action])
        // handle player already has action card from LampreyDownstream thread
@@ -43,7 +44,7 @@ $call DisableMapButton()
        [This is where the player receives the upstream traps action.]
 
 // TODO: Give action card (traps on upstream)
-// $call GiveActionCard([Action])
+$call GiveActionCard("Action-upstream-tributary-traps")
 
 // skip to end
 $goto .End

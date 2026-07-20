@@ -29,6 +29,7 @@ $endif
        It's been falling since the last few years. 
        Currently, its at about 23 million trout. But who knows what that'll be in the future.
        //give evidence chip
+       $call GiveEvidenceChip("Evidence-Lake-Trout")
 
 {@You}
        That's...disheartening. Thanks for the information, though.
@@ -46,13 +47,9 @@ $if global:troutFirst == True
        Or I could talk to João. Let's see...
 $endif
 
-// TODO: Rest of thread here
-
-// TODO: Give evidence chip
-// $call GiveEvidenceChip([Evidence])
-
 $call UnlockLocation(FishHatchery)
 $call EnableMapButton()
+
 
 :: AtFishHatchery
 @trigger    OnLocationChanged
@@ -91,6 +88,7 @@ $if global:stockCisco == True
        These are trout. Five months old. 
        We can definitely add them to the lake, if you'd like. 
        //give action card
+       $call GiveActionCard("Action-stock-lake-trout")
 
 {@You}
        That would be amazing. 
@@ -166,7 +164,8 @@ $elseif global:stockCisco == False
 {@Neveah}
        Oh, definitely. 
        I'm sure you'll take excellent care of my fishies.
-       //give evidence card 
+       //give action card
+       $call GiveActionCard("Action-stock-lake-trout")
 
 {@You}
        I'll definitely do my best. 
@@ -195,11 +194,6 @@ $elseif global:stockCisco == False
 
 $set global:stockTrout = True
 $endif
-
-// TODO: Rest of Fish Hatchery section here
-
-// TODO: Give action card
-// $call GiveActionCard([Action])
 
 // skip to end
 $goto .End

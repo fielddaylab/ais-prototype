@@ -21,7 +21,7 @@ $set global:currentThread = "P3_Pheromones"
 // TODO: Rest of Research Lab thread here
 
 // TODO: Give evidence chip
-// $call GiveEvidenceChip([Evidence])
+$call GiveEvidenceChip("Evidence-Pheromones")
 
 $call UnlockLocation(TownHall)
 // IF high Community/Communicate stat, optional skip townsfolk wary section
@@ -46,7 +46,7 @@ $call DisableMapButton()
 // TODO: Rest of Town Hall section here
 
 // TODO: Give evidence chip
-// $call GiveEvidenceChip([Evidence])
+$call GiveEvidenceChip("Evidence-wary-townfolk")
 
 $call UnlockLocation(DNROffice) // Place Pheromones
 $call EnableMapButton()
@@ -68,7 +68,7 @@ $call DisableMapButton()
 // TODO: Rest of DNR Office section here
 
 // TODO: Give action card
-// $call GiveActionCard([Action])
+$call GiveActionCard("Action-pheromones")
 
 $call UnlockLocation(DNROffice) // Place Pheromones
 $call EnableMapButton()
