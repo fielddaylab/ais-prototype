@@ -66,26 +66,26 @@ $set global:currentThread = "P0_Intro"
 {@}
        An older woman waits for you by the front door. Her badge says "Program Director". //title subject to change
 
-{@Renée}
+{@Saoirse}
        Ana, right?
 
 {@You}
-       That's me. You must be Renée. 
+       That's me. You must be Saoirse. 
        
-{@Renée}
+{@Saoirse}
        It's nice to finally meet you. I hope the move wasn't too difficult. 
 
 {@You}
        My dorm room was pretty much empty, so it wasn't too bad. 
 
-{@Renée}
+{@Saoirse}
        Well, I hope working with us will be a good first experience post-college. 
        Speaking of working, you'll have to get started right away. Sorry about that. 
 
 {@You}
        Don't worry - I get it. Let's hear the details. 
 
-{@Renée}
+{@Saoirse}
        Local fishermen have been reporting bites on their fish. The fish they </i>can</i> catch, that is. 
 
 {@}
@@ -94,7 +94,7 @@ $set global:currentThread = "P0_Intro"
 {@You}
        Sea lamprey.
 
-{@Renée}
+{@Saoirse}
        Yeah. This is what I need you to work on. I need a plan on how to manage the sea lamprey population. 
        The interventions we can take to maintain balance in the lakes. 
        Once you're ready to use a few possible interventions, then we'll go on to the intervention phase and use them. 
@@ -103,7 +103,7 @@ $set global:currentThread = "P0_Intro"
        I mean, I know about conservation in general, but I don't know anything specific about sea lamprey. 
        Besides the teeth. 
 
-{@Renée}
+{@Saoirse}
        You're in luck. There are plenty of people around here who have all the information you'll need. 
        Here, take this map. //map icon appears here maybe?
        In the intervention phase, you'll need to use action certificates implement different interventions. 
@@ -114,20 +114,20 @@ $set global:currentThread = "P0_Intro"
 {@You}
        That's... a lot of info.
 
-{@Renée}
+{@Saoirse}
        It is. If it helps, I like to use a journal to write down field notes. //note icon appears?
        You can have this one. We'll call it a first day gift. I've already left some notes in there for you.
 
 {@You}
        Thanks. I appreciate it. 
 
-{@Renée}
+{@Saoirse}
        Of course.
 
 {@}
        She puts a hand on your shoulder.
 
-{@Renée}
+{@Saoirse}
        I want you to be successful. I know you'll be. 
 
 {@You}

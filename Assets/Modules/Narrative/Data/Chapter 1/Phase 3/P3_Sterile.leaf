@@ -14,9 +14,82 @@ $call DisableMapButton()
 // Mark start of thread
 $set global:currentThread = "P3_Sterile"
 
+// Adds flavor text if player has finished talking to aquaculture specialist
+$if !HasSeen(P3_CiscoPop.End)
 {@}   
-       [This is the start of the Phase 3 thread Sterile.]
+       Neveah's portrait stares at you from it's place on the dash. 
+$elseif !HasSeen(P3_TroutPop.End) // I'm not sure what the or function is, which is why the code looks like this
+{@}   
+       Neveah's portrait stares at you from it's place on the dash. 
+$endif
 
+{@}
+       Adding fish to the lake is possible, and if you remember correctly, there was another way of changing populations beyond that...
+       Just as the thought crosses your mind, a sign for a Biological Field Station passes by. 
+
+{@You}
+       What beautiful timing. 
+
+{@}
+       You stop at a small building by the edge of a tributary and get out of your car.
+       Just as you are about to knock on the door, it swings open. 
+
+{@Robertson}
+       Hello, ma'am.
+
+{@You}
+       Holy s-
+       You scared me. 
+
+{@Robertson}
+       My apologies, ma'am. 
+       I simply like to be... proactive.
+
+{@}
+       You can tell they are containing a laugh. 
+
+{@Robertson}
+       What brings you to my neck of the woods?
+
+{@}
+       Sterilization. You mentioned that you used to do it. 
+
+{@Robertson}
+       Yes, ma'am. That we did. 
+       We still have a small program up and running, if you'd like to see.
+
+{@You}
+       That would be really nice. 
+
+{@Robertson}
+       Of course, ma'am. Here, follow me.
+
+{@}
+       Robertson leads you to a tank filled with squirming sea lamprey. 
+
+{@Robertson}
+       We catch male sea lamprey from traps in the tributaries. 
+       Then, we inject 'em with a chemosterilant.
+       That's a fancy word for a chemical that makes the sea lamprey unable to reproduce. 
+       We tag 'em, for science purposes, and then release 'em in tributaries where sea lampreys mate.
+
+{@}
+       Robertson reaches into the tank and pulls out a single sea lamprey.
+
+{@Robertson}
+       The female sea lamprey can't tell 'em apart from non-sterilized sea lamprey. 
+       Wouldn't work if we gave 'em the ick, you know. 
+
+{@}
+       They give you a wink. The sea lamprey continues to worm around their palms.
+
+{@Robertson}
+       Wanna hold it?
+
+{@You}
+       Not particularly. 
+
+{@Robertson}
 // TODO: Rest of thread here
 
 // TODO: Give evidence chip
