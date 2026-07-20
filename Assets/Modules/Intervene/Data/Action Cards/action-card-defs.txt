@@ -34,9 +34,9 @@
 
 
 ::Action-stock-cisco
-@title		Stock Cisco
+@title		Stock Cisco Walleye
 @suit		ranger
-@desc		+2M to a Cisco population within a target lake
+@desc		+2M to a Cisco Walleye population within a target lake
 @path		temp.png
 @cost		1
 
