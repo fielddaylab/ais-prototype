@@ -6,11 +6,12 @@
 // Mark start of phase
 $set global:currentPhase = 1
 
-{@}   
-       // [This is the entry hub for Phase 1.]
 $call DisableMapButton()
 $call EnableMapButton()
 $call UnlockLocation(ResearchLab)  // P1_Lamprey
+$call SetTravelTime(ResearchLab, 1)
+{@}   
+       [Open your map to continue]
 
 // TODO: Rest of entry hub here
 

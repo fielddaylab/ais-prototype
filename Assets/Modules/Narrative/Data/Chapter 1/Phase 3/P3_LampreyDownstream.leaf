@@ -7,7 +7,7 @@
 
 // Mark start of thread
 $set global:currentThread = "P3_LampreyDownstream"
-$call DecreaseTime(1)
+
 
 // Splits dialogue depending on which option player chose first
 $if global:upstreamFirst == false
@@ -64,6 +64,7 @@ $endif
 // TODO: Rest of thread here
 
 $call UnlockLocation(DNROffice)
+$call SetTravelTime(DNROffice, 1)
 $call EnableMapButton()
 
 
@@ -76,6 +77,7 @@ $call EnableMapButton()
 // Lock all location on map
 $call SetInThreadLocks()
 $call DisableMapButton()
+
 
 // Splits dialogue depending on whether the player has been to the DNR before
 $if global:dnrVisited = false
@@ -188,6 +190,7 @@ $endif
 $call GiveEvidenceChip("Evidence-repellent-traps")
 
 $call UnlockLocation(ArmyCorps)
+$call SetTravelTime(ArmyCorps, 1)
 $call EnableMapButton()
 
 
@@ -199,6 +202,7 @@ $call EnableMapButton()
 // Lock all location on map
 $call SetInThreadLocks()
 $call DisableMapButton()
+
 
 //Splits dialogue depending on whether the player has previously been to the Army Corps
 $if global:corpsVisited = false

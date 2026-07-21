@@ -7,7 +7,7 @@
 
 // Mark start of thread
 $set global:currentThread = "P3_TroutPop"
-$call DecreaseTime(1)
+
 
 //checks to see if the player has chosen to look at trout population first
 $if global:ciscoFirst == false
@@ -48,6 +48,7 @@ $if global:troutFirst == true
 $endif
 
 $call UnlockLocation(FishHatchery)
+$call SetTravelTime(FishHatchery, 1)
 $call EnableMapButton()
 
 
@@ -59,6 +60,7 @@ $call EnableMapButton()
 // Lock all location on map
 $call SetInThreadLocks()
 $call DisableMapButton()
+
 
 //Changes dialogue depending on whether stock cisco is already done
 $if global:stockCisco == true

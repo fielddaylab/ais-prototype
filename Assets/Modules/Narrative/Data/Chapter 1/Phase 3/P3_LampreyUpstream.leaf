@@ -7,7 +7,7 @@
 
 // Mark start of thread
 $set global:currentThread = "P3_LampreyUpstream"
-$call DecreaseTime(1)
+
 
 // Separates dialogue depending on if player chose upstream or downstream first
 $if global:downstreamFirst == false

@@ -144,7 +144,6 @@ $set global:currentThread = "P0_Intro"
 
 {@}
        You begin.
-       [Open your map to continue]
 
 // go to map, end phase 0
 // skip to end
@@ -152,10 +151,6 @@ $goto .End
 
 :: End
 @exposed
-// TODO: Unlock next locations
-// $call UnlockLocation([Location 1])
-// $call UnlockLocation([Location 2])
-
 // Mark end of thread
 $set global:currentThread = "NONE"
 // Go to Phase 1 Hub

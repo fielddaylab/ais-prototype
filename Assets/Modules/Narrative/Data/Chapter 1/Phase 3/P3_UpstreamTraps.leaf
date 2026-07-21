@@ -9,7 +9,7 @@
 @when       global:currentThread == "NONE", global:currentPhase == 3, location == "DNROffice"
 // Mark start of thread
 $set global:currentThread = "P3_UpstreamTraps"
-$call DecreaseTime(1)
+
 
 // Lock all location on map
 $call SetInThreadLocks()
@@ -131,6 +131,7 @@ $if HasActionCard("Action-upstream-tributary-traps")
        $goto .End
 $else
        $call UnlockLocation(ArmyCorps)
+       $call SetTravelTime(ArmyCorps, 1)
        $call EnableMapButton()
 $endif
 
@@ -140,10 +141,12 @@ $endif
 // global:currentThread ensures the correct thread
 // global:currentPhase == 3 ensures player is in phase 3
 @when       global:currentThread == "P3_UpstreamTraps", global:currentPhase == 3, location == "ArmyCorps"
+@tracked
+
 // Lock all location on map
 $call SetInThreadLocks()
 $call DisableMapButton()
-@tracked
+
 
 //Splits dialogue depending on whether the player has previously been to the Army Corps
 $if global:corpsVisited = false

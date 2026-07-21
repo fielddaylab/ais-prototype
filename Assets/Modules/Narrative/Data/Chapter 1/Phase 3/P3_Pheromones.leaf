@@ -14,7 +14,7 @@ $call DisableMapButton()
 
 // Mark start of thread
 $set global:currentThread = "P3_Pheromones"
-$call DecreaseTime(1)
+
 
 {@}   
        You can hear Arjan's... less-than-intact... phonograph through the door to the research lab.
@@ -85,9 +85,11 @@ $call GiveEvidenceChip("Evidence-Pheromones")
        You watch him put it next to the phonograph, a warm feeling in your belly. 
 
 $call UnlockLocation(TownHall)
+$call SetTravelTime(TownHall, 1)
 // IF high Community/Communicate stat, optional skip townsfolk wary section
 $if StatCheck(Communicate, 3)
        $call UnlockLocation(DNROffice) // Place Pheromones
+       $call SetTravelTime(DNROffice, 1)
 $endif
 $call EnableMapButton()
 
@@ -100,6 +102,7 @@ $call EnableMapButton()
 // Lock all location on map
 $call SetInThreadLocks()
 $call DisableMapButton()
+
 
 {@}   
        The town hall meeting is in full swing when you walk in. 
@@ -153,6 +156,7 @@ $call DisableMapButton()
 $call GiveEvidenceChip("Evidence-wary-townfolk")
 
 $call UnlockLocation(DNROffice) // Place Pheromones
+$call SetTravelTime(DNROffice, 1)
 $call EnableMapButton()
 
 
@@ -165,6 +169,7 @@ $call EnableMapButton()
 // Lock all location on map
 $call SetInThreadLocks()
 $call DisableMapButton()
+
 
 {@}   
        Paul is once again at his desk.
@@ -211,6 +216,7 @@ $endif
 // TODO: Rest of DNR Office section here
 
 $call UnlockLocation(DNROffice) // Place Pheromones
+$call SetTravelTime(DNROffice, 1)
 $call EnableMapButton()
 
 // skip to end
