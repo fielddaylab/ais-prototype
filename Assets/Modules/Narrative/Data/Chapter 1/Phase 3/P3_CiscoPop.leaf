@@ -60,6 +60,7 @@ $call EnableMapButton()
 $call SetInThreadLocks()
 $call DisableMapButton()
 
+//Dialogue changes depending on whether the player has already seen trout
 $if global:stockTrout == true
 {@}
        Neveah is still looking over the pools. 
@@ -164,8 +165,7 @@ $elseif global:stockTrout == false
 {@Neveah}
        Oh, definitely. 
        I'm sure you'll take excellent care of my fishies.
-       //give action card 
-       $call GiveActionCard("Action-stock-cisco")
+$call GiveActionCard("Action-stock-cisco")
 
 {@You}
        I'll definitely do my best. 
