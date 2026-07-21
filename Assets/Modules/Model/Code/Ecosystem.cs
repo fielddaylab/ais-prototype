@@ -44,6 +44,7 @@ namespace AIS.Model
         #region Inspector
 
         public SpriteRenderer MainRenderer;
+        public SpriteRenderer HighlightRenderer;
 
         public SerializedHash32 EcosystemId;
         public bool IsExternal;
@@ -79,6 +80,7 @@ namespace AIS.Model
 
             this.transform.position = setupData.Pos;
             MainRenderer.sprite = setupData.Sprite;
+            HighlightRenderer.sprite = setupData.Sprite;
             MainRenderer.sortingOrder = InvasionModelSorting.ECOSYSTEM_SORTING;
 
             MainSlots = new ClusterSlot[setupData.MainSlotPoses.Length];

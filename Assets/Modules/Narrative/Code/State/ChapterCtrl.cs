@@ -10,7 +10,7 @@ namespace AIS.Narrative {
         private int m_StartingThreadCount;
 
         protected override IEnumerator<WorkSlicer.Result?> OnScenePreload() {
-            InvasionModel.Instance.Load(0);
+            InvasionModel.Instance.Load(0, SimDetailPhase.Narrative);
             InvasionModel.Instance.gameObject.SetActive(false);
             m_StartingThreadCount = ScriptUtility.CurrentThreadCount;
             return null;

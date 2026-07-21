@@ -20,7 +20,6 @@ namespace AIS.Intervene
         public ActionCardDeckWidget DeckWidget;
         public PlayerHand Hand;
         public Button ConfirmBtn;
-        public TMP_Text PromptText;
         public int RequiredCount = 4;
 
         public TweenSettings CardTravelAnim = new TweenSettings(0.2f, Curve.Smooth);
@@ -54,7 +53,8 @@ namespace AIS.Intervene
             m_Selected.Clear();
             m_Cards.Clear();
 
-            InterveneSwapDeckInterfacer.Instance.SwapBtn.interactable = false;
+            InterveneSwapDeckInterfacer.Instance.gameObject.SetActive(false);
+            //InterveneSwapDeckInterfacer.Instance.SwapBtn.interactable = false;
 
             // Widget spawns and lays out the cards as usual
             DeckWidget.Populate(cardIds);
@@ -175,11 +175,6 @@ namespace AIS.Intervene
         private void RefreshUI()
         {
             ConfirmBtn.interactable = m_Selected.Count == RequiredCount;
-            if (PromptText != null)
-            {
-                PromptText.SetText(string.Format("Select {0} cards ({1}/{0}) to use",
-                RequiredCount, m_Selected.Count));
-            }
         }
 
         private void FinishPendingFlights()
@@ -230,7 +225,8 @@ namespace AIS.Intervene
             handHoverZone.enabled = true;
             Hand.OnCardClickedOverride = null;
 
-            InterveneSwapDeckInterfacer.Instance.SwapBtn.interactable = true;
+            //InterveneSwapDeckInterfacer.Instance.SwapBtn.interactable = true;
+            InterveneSwapDeckInterfacer.Instance.gameObject.SetActive(true);
         }
     }
 

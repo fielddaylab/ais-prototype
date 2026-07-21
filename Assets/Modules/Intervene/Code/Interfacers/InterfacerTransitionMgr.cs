@@ -12,7 +12,8 @@ namespace AIS.Intervene
 {
     public class InterfacerTransitionMgr : SharedStateComponent
     {
-        public InterveneBudgetInterfacer Budget;
+        public InterveneBudgetInterfacer BudgetPanel;
+        public IntervenePopulationInterfacer PopulationPanel;
         //public InterveneAwarenessInterfacer Awareness;
         public StatsInterfacer Stats;
         public CardInteractionMgr CardMgr;
@@ -66,18 +67,27 @@ namespace AIS.Intervene
             float inInvasionCurve = 0;
 
             // Load data
-            Budget.LoadPlayerBudget(inBudget);
+            BudgetPanel.LoadPlayerBudget(inBudget);
+            PopulationPanel.Hide();
             //Awareness.LoadPlayerAwareness(inAwareness);
             Stats.LoadPlayerStats(inStats[0], inStats[1], inStats[2], inStats[3], inStats[4]);
             CurveInterfacer.LoadCurve(inInvasionCurve);
-            InvasionModel.Load(CurveInterfacer.CurrVal);
+
+            // The model scene reloads on the way into this phase, so the registry starts blank.
+            // Everything the player earned during the narrative counts as already revealed here --
+            // there is nothing left to animate in.
+            InvasionModel.SimDetailRegistry?.SyncFromInventory();
+            InvasionModel.Load(CurveInterfacer.CurrVal, SimDetailPhase.Intervene);
 
             // Playtest action card data
-            inventory.ActionCards.Add("Action-use-lampricide");
-            inventory.ActionCards.Add("Action-awareness-campaign");
-            inventory.ActionCards.Add("Action-stock-cisco");
-            inventory.ActionCards.Add("Action-stock-lake-trout");
-            inventory.ActionCards.Add("Action-release-sterilized");
+            if (inventory.ActionCards.Count == 0)
+            {
+                inventory.ActionCards.Add("Action-use-lampricide");
+                inventory.ActionCards.Add("Action-awareness-campaign");
+                inventory.ActionCards.Add("Action-stock-cisco");
+                inventory.ActionCards.Add("Action-stock-lake-trout");
+                inventory.ActionCards.Add("Action-release-sterilized");
+            }
 
             SwapDeck.LoadSwapDeck(inventory.ActionCards);
             CardSelection.Load(inventory.ActionCards);
@@ -97,6 +107,7 @@ namespace AIS.Intervene
         private void HandleInterveneRestart()
         {
             Load();
+            PopulationPanel.LoadPopulation();
         }
     }
 }

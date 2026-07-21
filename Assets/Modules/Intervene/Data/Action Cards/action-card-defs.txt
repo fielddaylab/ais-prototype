@@ -41,7 +41,7 @@
 @cost		1
 
 @effect
-    target: ecosystem, if scope == non-tributary
+    target: ecosystem, non-tributary
     verb: modify, (0; 0; 2), fixed
     specificity: specific
     maxtargets: 1
@@ -55,7 +55,7 @@
 @cost		1
 
 @effect
-    target: ecosystem, if scope == non-tributary
+    target: ecosystem, non-tributary
     verb: modify, (0; 0; 2), fixed
     specificity: specific
     maxtargets: 1
@@ -64,14 +64,14 @@
 ::Action-release-sterilized
 @title		Release Sterilized Lamprey
 @suit		research
-@desc		-2 Invasive reproduction in a target ecosystem
+@desc		-2 Invasive reproduction in a target tributary
 @path		temp.png
 @cost		1
 
 // reproduce takes a signed rate: negative slows reproduction, positive speeds it up.
 // "fixed" shifts the offspring count each sim tick; "ratio" scales it (-0.5 = half as many).
 @effect
-    target: invasive
+    target: invasive, tributary
     verb: reproduce, -2, fixed
     specificity: specific
     maxtargets: 1

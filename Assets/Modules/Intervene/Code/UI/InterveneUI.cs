@@ -13,6 +13,7 @@ namespace AIS.Intervene {
         [SerializeField] private Button m_TickSimButton;
         [SerializeField] private InterveneDriver m_Driver;
         [SerializeField] private InterveneBudgetInterfacer m_BudgetInterfacer;
+        [SerializeField] private IntervenePopulationInterfacer m_PopulationInterfacer;
 
         [Header("Sim Phase")]
         public GameObject SimPhaseGroup;
