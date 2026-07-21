@@ -50,7 +50,7 @@ $goto .Plaza.Hub
 {@Angler1}
         Caught nothing all morning. Used to pull three, four trout out of here easy.
 
-{@Player}
+{@You}
         Noted. Something is going on with this lake.
 
 :: Plaza.Mayor
@@ -59,7 +59,7 @@ $goto .Plaza.Hub
         Oh - you're the one from the DNR, aren't you?
         Whatever you find out there, the council will want numbers, not hunches.
 
-{@Player}
+{@You}
         Numbers I can do.
 
 :: Plaza.Fountain
@@ -106,7 +106,7 @@ $goto .Square.Hub
 
 :: Square.Leave
 
-{@Player}
+{@You}
         Time to see the docks.
 
 // DecreaseTime() spends time outside of a choice - here it burns the clock
