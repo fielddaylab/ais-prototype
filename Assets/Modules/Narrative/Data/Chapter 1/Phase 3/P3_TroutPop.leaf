@@ -9,16 +9,16 @@
 $set global:currentThread = "P3_TroutPop"
 
 //checks to see if the player has chosen to look at trout population first
-$if global:ciscoFirst == False
-$set global:troutFirst = True
+$if global:ciscoFirst == false
+$set global:troutFirst = true
 $endif
 
 //varies dialogue depending on whether the player talked to Renato first
-$if global:troutFirst == True
+$if global:troutFirst == true
 {Renato}   
        I've see you've decided to ditch my brother for me. 
        Always a great sight.
-$elseif global: troutFirst == False
+$elseif global: troutFirst == false
 {@Renato}
        Finished talking to my brother? He sure knows how to talk. 
 $endif
@@ -28,13 +28,12 @@ $endif
        The other fishers and I have been looking through the data, recently. 
        It's been falling since the last few years. 
        Currently, its at about 23 million trout. But who knows what that'll be in the future.
-       //give evidence chip
-       $call GiveEvidenceChip("Evidence-Lake-Trout")
+$call GiveEvidenceChip("Evidence-Lake-Trout")
 
 {@You}
        That's...disheartening. Thanks for the information, though.
 
-$if global:troutFirst == True
+$if global:troutFirst == true
 {@You}
        I wonder if adding more fish to the lake could potentially help with the decrease.
 
@@ -60,7 +59,8 @@ $call EnableMapButton()
 $call SetInThreadLocks()
 $call DisableMapButton()
 
-$if global:stockCisco == True
+//Changes dialogue depending on whether stock cisco is already done
+$if global:stockCisco == true
 {@}
        Neveah is still looking over the pools. 
 
@@ -87,8 +87,7 @@ $if global:stockCisco == True
        Hi, babies. 
        These are trout. Five months old. 
        We can definitely add them to the lake, if you'd like. 
-       //give action card
-       $call GiveActionCard("Action-stock-lake-trout")
+$call GiveActionCard("Action-stock-lake-trout")
 
 {@You}
        That would be amazing. 
@@ -116,7 +115,7 @@ $if global:stockCisco == True
 {@}
        She pulls you into a tight hug. 
        Back in your car, you put the photo on the dash, and the sea lamprey almost seems to smile at you. 
-$elseif global:stockCisco == False
+$elseif global:stockCisco == false
 {@}
        The hatchery is... different than what you imagined. 
        Rows of deep pools remind you of your university's Olympic swimming pool.
@@ -164,8 +163,7 @@ $elseif global:stockCisco == False
 {@Neveah}
        Oh, definitely. 
        I'm sure you'll take excellent care of my fishies.
-       //give action card
-       $call GiveActionCard("Action-stock-lake-trout")
+$call GiveActionCard("Action-stock-lake-trout")
 
 {@You}
        I'll definitely do my best. 
@@ -192,7 +190,7 @@ $elseif global:stockCisco == False
 {@}
        Before you have time to say anything, she's back to greeting the fish. 
 
-$set global:stockTrout = True
+$set global:stockTrout = true
 $endif
 
 // skip to end

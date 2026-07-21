@@ -8,13 +8,59 @@
 // Mark start of thread
 $set global:currentThread = "P3_LampreyDownstream"
 
-{@}   
-       [This is the start of the Phase 3 thread LampreyDownstream.]
+// Splits dialogue depending on which option player chose first
+$if global:upstreamFirst == false
+{@Claire}   
+       Sea lamprey go downstream as soon as they have matured to feed on fish!
+       Which means that any intervention focusing on sea lamprey going downstream is meant to stop them from getting to the lake!
 
-// TODO: Rest of thread here
+{@You}
+       So that they would never feed on the other fish in the first place!
+       That makes a lot of sense, Claire.
 
-// TODO: Give evidence chip
+{@Claire}
+       Why thank you, young scientist!
 $call GiveEvidenceChip("Evidence-Feed-Downstream")
+
+{@Claire}
+       If you have any other questions, I'm happy to answer them, but I know you can be quite busy!
+
+{@You}
+       Let's see...
+$set global:downstreamFirst = true
+
+$elseif global:upstreamFirst == true
+{@}
+       Claire tinkers with a trap in the river.
+
+{@You}
+       So when would sea lamprey go downstream?
+
+{@Claire}   
+       Sea lamprey go downstream as soon as they have matured to feed on fish!
+       Which means that any intervention focusing on sea lamprey going downstream is meant to stop them from getting to the lake!
+
+{@You}
+       So that they would never feed on the other fish in the first place!
+       That makes a lot of sense, Claire.
+
+{@Claire}
+       Why thank you, young scientist!
+$call GiveEvidenceChip("Evidence-Feed-Downstream")
+
+{@Claire}
+       Well, my work here is done! Shall we go into town for a dessert?
+
+{@You}
+       I can't, but maybe this weekend?
+
+{@Claire}
+       We have a deal. 
+
+{@}
+       She walks with you back to your car.
+$endif
+// TODO: Rest of thread here
 
 $call UnlockLocation(DNROffice)
 $call EnableMapButton()
@@ -30,9 +76,111 @@ $call EnableMapButton()
 $call SetInThreadLocks()
 $call DisableMapButton()
 
+// Splits dialogue depending on whether the player has been to the DNR before
+$if global:dnrVisited = false
 {@}   
-       [This is the DNR Office section.]
+       Paul is jamming to something when you step into the DNR office.
+       He's hiding it well, but you can see it in his eyes. 
 
+{@You}
+       What're you working on?
+
+{@}
+       He nearly jumps out of his seat.
+
+{@Paul}
+       Ah. Well, I guess the cat is out of the bag.
+       I moonlight as a DJ.
+
+{@You}
+       You? DJ?
+
+{@Paul}
+       Mmm. Yes. 
+       As the kids would say, I cook up "sick beats."
+
+{@You}
+       Please never say that again. 
+
+{@Paul}
+       Mm. I'll try. So what can I help you with?
+
+{@You}
+       I'm working on preparing interventions targeting sea lamprey going downstream.
+       Has the DNR worked on those before?
+
+{@Paul}
+       Mm, yes, certainly. 
+       Back when we had more traps, we would place some to catch sea lamprey heading to the lake.
+
+$if !HasSeen(P3_Sterile.End) //references sterilization if the player has already seen it
+{@Paul}
+       Those were the sea lamprey that would then be sent to be sterilized, back when we did that en mass. 
+$endif
+
+{@You}
+       Could these programs with traps be restarted?
+
+{@Paul}
+       Mm. Yes, but you would hvae to talk to the Army Corps of Engineers about it. 
+       They are responsible for that. 
+$call GiveEvidenceChip("Evidence-repellent-traps")
+
+{@You}
+       Perfect! Sounds like a plan. 
+
+
+{@Paul}
+       Mm, yes. Have a great day. 
+
+{@}
+       You're on your way out when you feel the need to turn around and yell-
+
+{@You}
+       Oh, and Paul?
+       Good luck tonight, Mr. DJ!
+
+{@}
+       His quite grumble sounds more pleased than usual.
+$set global:dnrVisited = true
+
+$else
+{@}
+       Paul has his headphones on again, but when you step in he gives you a private smile.
+
+{@You}
+       How's the set going, Mr. DJ?
+
+{@Paul}
+       Mm. I'd say I'm on to something. 
+       Is there anything else you need from me?
+
+{@You}
+       There is, yeah. I was wondering if the DNR worked on any interventions targeting sea lamprey going downstream.
+       Maybe like those traps we talked about earlier?
+
+{@Paul}
+       Mm. Yes, we have done that before.
+       Though just like with upstream traps, you'll need to talk to Corps.
+
+{@You}
+       That can be definitely be arranged. 
+       Thanks for your help, Paul.
+
+{@Paul}
+       Of course.
+       Mmmm. 
+       Come to my performance tonight. 
+
+{@You}
+       Really? I'd love to.
+
+{@Paul}
+       Mm. Yes. No point in DJing if no one listens.
+
+{@You}
+       Well, I guess I have to come. 
+$endif
 // TODO: Rest of DNR Office section here
 
 // TODO: Give evidence chip
@@ -51,22 +199,99 @@ $call EnableMapButton()
 $call SetInThreadLocks()
 $call DisableMapButton()
 
+//Splits dialogue depending on whether the player has previously been to the Army Corps
+$if global:corpsVisited = false
 {@}   
-       [This is the Army Corps section.]
+       Robertson is deep in work on a trap but turns to greet you as you step out of the car.
 
-// TODO: Rest of Army Corps section here
+{@Robertson}
+       It's mighty good to see you again, ma'am.
 
-// TODO: Give action card (traps on downstream)
+{@You}
+       Same here.
+
+$if !HasSeen(P3_Sterile.end) //adds flavor text if player knows Robertson is getting married
+{@You}
+       Congrats on the wedding, by the way. I'm excited to be there.
+
+{@Robertson}
+       Ah, geez, thanks.
+$endif
+
+{@Robertson}
+       So what can I help you with?
+
+{@You}
+       I've been talking to Paul down at the DNR, and we're thinking of putting in new traps for sea lamprey going downstream.
+       Would you be able to make and place those traps for us?
+
+{@Robertson}
+       Oh, certainly, ma'am. We'd be very pleased to help.
+       Just let us know whenever you need 'em.
 $call GiveActionCard("Action-downstream-tributary-traps")
 
-// TODO: Give action card IF High research (traps on upstream)
 $if StatCheck(Research, 3)
        $if HasActionCard()
               // handle player already has action card from LampreyUpstream thread
        $else
+              {@You}
+                     Well, if we're putting traps facing one direction, why not put it in the other?
+                     Claire told me that sea lamprey go upstream to spawn.
+                     So if we put traps going upstream, we can keep the sea lamprey from reproducing!
+              
+              {@Robertson}
+                     Yes, ma'am, we can definitely do that.
               $call GiveActionCard("Action-upstream-tributary-traps")
+
+              {@You}
+                     Oh, I'm a genius, Robertson!
+                     Thank you, thank you!
+              {@Robertson}
+                     I think that one was all you, ma'am.
+
        $endif
 $endif
+{@You}
+       Thank you so much, Robertson. 
+
+{@Robertson}
+       'Course. Anytime. 
+$set global:corpsVisited = true
+
+$elseif global:corpsVisited = true
+{@}
+       Robertson seems to have already begun preparation on those traps. 
+
+{@You}
+       Heya. I'm back.
+
+{@Robertson}
+       Nice to see ya so soon. Anything else needed?
+
+{@You}
+       Yup. So you know how we're doing traps for sea lamprey going upstream?
+       Well, I've talked to Paul, and we've decided that it could be worth doing them for sea lamprey going downstream, too.
+
+{@Robertson}
+       Sounds like a mighty fine idea to me.
+       Just us let us know when you need 'em, and we'll have 'em.
+$call GiveActionCard("Action-downstream-tributary-traps")
+
+{@You}
+       Thank you, Robertson!
+       You're the best.
+
+{@Robertson}
+       Aw, shucks. You flatter me, ma'am.
+       By the way, I've heard someone over at the university is looking at ways to make traps more effective.
+       Might be worth yer time.
+
+{@You}
+       Interesting. I think I might know who that is...
+$endif
+
+// TODO: Give action card IF High research (traps on upstream)
+// this has been moved up
 
 // skip to end
 $goto .End
