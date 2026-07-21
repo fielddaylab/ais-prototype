@@ -7,6 +7,7 @@
 
 // Mark start of thread
 $set global:currentThread = "P3_TroutPop"
+$call DecreaseTime(1)
 
 //checks to see if the player has chosen to look at trout population first
 $if global:ciscoFirst == false

@@ -14,6 +14,7 @@ $call DisableMapButton()
 
 // Mark start of thread
 $set global:currentThread = "P2_Lampricide"
+$call DecreaseTime(1)
 
 {@}   
        Paul had mentioned something called lampricide, and a quick call to Renée confirmed that one of the Field Station used to apply lampricide. 

@@ -17,6 +17,7 @@ $call SetBackground("bg/bg-dnr-office.png")
 $set global:currentThread = "P1_NativeLamprey"
 
 $call  ClearVisibleLines()
+$call DecreaseTime(1)
 {@}     
        You figure the Department of Natural Resources must have something to start you with. This is their whole job, right?
        The office is nicely furnished with natural memorabilia, a straight-laced office man sitting behind the desk.

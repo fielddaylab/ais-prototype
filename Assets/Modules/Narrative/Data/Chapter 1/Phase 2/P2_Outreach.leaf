@@ -14,6 +14,7 @@ $call DisableMapButton()
 
 // Mark start of thread
 $set global:currentThread = "P2_Outreach"
+$call DecreaseTime(1)
 
 {@}   
        You park your car on the side of the road, the Army Corps of Engineers building up ahead.

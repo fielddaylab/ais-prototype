@@ -9,6 +9,7 @@
 @when       global:currentThread == "NONE", global:currentPhase == 3, location == "DNROffice"
 // Mark start of thread
 $set global:currentThread = "P3_UpstreamTraps"
+$call DecreaseTime(1)
 
 // Lock all location on map
 $call SetInThreadLocks()
