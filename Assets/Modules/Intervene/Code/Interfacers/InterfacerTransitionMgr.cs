@@ -12,7 +12,8 @@ namespace AIS.Intervene
 {
     public class InterfacerTransitionMgr : SharedStateComponent
     {
-        public InterveneBudgetInterfacer Budget;
+        public InterveneBudgetInterfacer BudgetPanel;
+        public IntervenePopulationInterfacer PopulationPanel;
         //public InterveneAwarenessInterfacer Awareness;
         public StatsInterfacer Stats;
         public CardInteractionMgr CardMgr;
@@ -66,7 +67,8 @@ namespace AIS.Intervene
             float inInvasionCurve = 0;
 
             // Load data
-            Budget.LoadPlayerBudget(inBudget);
+            BudgetPanel.LoadPlayerBudget(inBudget);
+            PopulationPanel.Hide();
             //Awareness.LoadPlayerAwareness(inAwareness);
             Stats.LoadPlayerStats(inStats[0], inStats[1], inStats[2], inStats[3], inStats[4]);
             CurveInterfacer.LoadCurve(inInvasionCurve);
@@ -105,6 +107,7 @@ namespace AIS.Intervene
         private void HandleInterveneRestart()
         {
             Load();
+            PopulationPanel.LoadPopulation();
         }
     }
 }
