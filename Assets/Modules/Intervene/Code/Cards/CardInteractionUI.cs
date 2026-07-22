@@ -1,3 +1,5 @@
+using FieldDay;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -49,9 +51,19 @@ namespace AIS.Intervene
 
             if (!BudgetUtility.CanAfford(InterveneBudgetInterfacer.Instance, selectedCards))
             {
-                UseSelectedBtn.interactable = false;
+                //UseSelectedBtn.interactable = false;
                 return; 
             }
+
+            if (Game.SharedState.TryGet(out ActionCardsState cardsState))
+            {
+                if (cardsState.AllActionCards.TryGetValue(selectedCards[0].CardID, out ActionCardData data))
+                {
+                    BudgetUtility.Spend(InterveneBudgetInterfacer.Instance, data.Cost);
+                }
+            }
+            CardInteractionMgr.Instance.Hand.ClearSelections();
+            UseSelectedBtn.interactable = InterveneBudgetInterfacer.Instance.WorkingBudget.Budget > 0 ? true : false;
 
             AisGame.Events.Dispatch(InterveneEvents.OnEffectSpecifyBegin);
         }

@@ -200,12 +200,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1950308175471934421, guid: 3d915541ee8314e4393844d1f2eec9c1, type: 3}
       propertyPath: m_GlobalAssetPacks.Array.size
-      value: 6
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 1950308175471934421, guid: 3d915541ee8314e4393844d1f2eec9c1, type: 3}
       propertyPath: m_GlobalAssetPacks.Array.data[5]
       value: 
       objectReference: {fileID: 11400000, guid: 7a752077b9310574db9b34bf7fe6ef6c, type: 2}
+    - target: {fileID: 1950308175471934421, guid: 3d915541ee8314e4393844d1f2eec9c1, type: 3}
+      propertyPath: m_GlobalAssetPacks.Array.data[6]
+      value: 
+      objectReference: {fileID: 11400000, guid: 1c27fabf413a9634896cbc964fe6f6dd, type: 2}
     - target: {fileID: 1950308175471934421, guid: 3d915541ee8314e4393844d1f2eec9c1, type: 3}
       propertyPath: m_AudioConfig.DefaultEmitterProfile
       value: 

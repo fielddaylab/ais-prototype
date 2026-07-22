@@ -7234,6 +7234,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4233795018995910519, guid: 09e431a58959a4048b62270e719951be, type: 3}
+      propertyPath: cardInterationUI
+      value: 
+      objectReference: {fileID: 1232784166204741093}
     - target: {fileID: 4257591627394452386, guid: 09e431a58959a4048b62270e719951be, type: 3}
       propertyPath: m_SizeDelta.y
       value: 40
