@@ -17,6 +17,7 @@ $call SetBackground("bg/bg-dnr-office.png")
 $set global:currentThread = "P1_NativeLamprey"
 
 $call  ClearVisibleLines()
+
 {@}     
        You figure the Department of Natural Resources must have something to start you with. This is their whole job, right?
        The office is nicely furnished with natural memorabilia, a straight-laced office man sitting behind the desk.
@@ -121,6 +122,7 @@ $goto .End
 @tracked
 // Unlock next locations
 $call UnlockLocation(ResearchLab)  // P1_Lamprey
+$call SetTravelTime(ResearchLab, 1)
 
 // Mark end of thread
 $set global:currentThread = "NONE"

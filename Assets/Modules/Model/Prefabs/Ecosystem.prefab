@@ -197,14 +197,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MainRenderer: {fileID: 8485844110561123492}
+  HighlightRenderer: {fileID: 2156386552082296986}
   EcosystemId:
     m_Source: 
     m_HashValue: 0
   IsExternal: 0
   IsTributary: 0
+  InvasiveHunts: 0
+  InvasiveStarves: 0
+  InvasiveReproduces: 0
   SpeciesInEcosystem: []
   MainSlots: []
   SecondarySlots: []
+  ReproductionModifiers: []
 --- !u!212 &8485844110561123492
 SpriteRenderer:
   m_ObjectHideFlags: 0

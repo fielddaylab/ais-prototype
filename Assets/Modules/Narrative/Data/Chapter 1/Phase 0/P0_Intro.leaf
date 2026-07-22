@@ -112,6 +112,7 @@ $set global:currentThread = "P0_Intro"
        To gain those action certificates, you need to first collect evidence chips. These chips describe the science behind possible interventions. 
        Then, you'll need to make sure you have the resources to actually implement the intervention. Once you've done that, you'll get an action certificate.
        This map will show you the locations where you can find evidence chips and action certificates. 
+       $call SetTime(16)
 
 {@You}
        That's... a lot of info.
@@ -143,7 +144,6 @@ $set global:currentThread = "P0_Intro"
 
 {@}
        You begin.
-       [Open your map to continue]
 
 // go to map, end phase 0
 // skip to end
@@ -151,10 +151,6 @@ $goto .End
 
 :: End
 @exposed
-// TODO: Unlock next locations
-// $call UnlockLocation([Location 1])
-// $call UnlockLocation([Location 2])
-
 // Mark end of thread
 $set global:currentThread = "NONE"
 // Go to Phase 1 Hub

@@ -6,11 +6,12 @@
 // Mark start of phase
 $set global:currentPhase = 1
 
-{@}   
-       // [This is the entry hub for Phase 1.]
 $call DisableMapButton()
 $call EnableMapButton()
 $call UnlockLocation(ResearchLab)  // P1_Lamprey
+$call SetTravelTime(ResearchLab, 1)
+{@}   
+       [Open your map to continue]
 
 // TODO: Rest of entry hub here
 
@@ -34,15 +35,8 @@ $endif
 @exposed
 
 $call  ClearVisibleLines()
-{@}   
-       You've learned a little bit about Lamprey.
-       You've also obtained one strategy that will help address the issue.
-       Well done!
-       Take some time to prepare yourself for whatever will come your way next.
-       [End of Demo]
-      // [This is the exit hub for Phase 1.]
 
 // TODO: Rest of exit hub here
 
 // Go to Phase 2 Hub
-// $goto   P2_Hub.Entry
+$goto   P2_Hub.Entry

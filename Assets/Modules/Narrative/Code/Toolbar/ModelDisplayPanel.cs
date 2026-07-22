@@ -7,6 +7,7 @@ using FieldDay.UI;
 using FieldDay.UI.Widgets;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.UI;
@@ -25,6 +26,9 @@ namespace AIS.Narrative {
         public float WidgetHiddenX = -600f;
 
         private Routine m_RevealRoutine;
+
+        // Reused across dequeues -- targets are resolved fresh from the live model each time.
+        private readonly List<ISimDetail> m_RevealScratch = new List<ISimDetail>(8);
 
         protected override void Awake() {
             base.Awake();
@@ -45,7 +49,7 @@ namespace AIS.Narrative {
             Game.Gui.PushPriority(m_InputLayer);
             DisplayModel();
             Assert.IsNotNull(InvasionModel.Instance.SimDetailRegistry, "SimDetailRegistry must not be null when showing ModelDisplayPanel");
-            InvasionModel.Instance.SimDetailRegistry.ApplyInitialVisibility();
+            InvasionModel.Instance.SimDetailRegistry.ApplyAll();
             ScriptHooks.HideToolbar();
             m_RevealRoutine.Replace(this, PlayRevealQueue());
         }
@@ -98,11 +102,12 @@ namespace AIS.Narrative {
                 PopulateEvidenceWidget(evidenceId);
                 yield return SlideWidgetIn();
 
-                foreach (ISimDetail target in registry.MapEvidenceToDetail(evidenceId)) {
-                    if (!registry.DetailsToShow.Contains(target)) {
-                        registry.DetailsToShow.Add(target);
-                        yield return RevealDetailAnimated(target);
-                    }
+                registry.CollectTargets(evidenceId, m_RevealScratch);
+                // Marked up front so each ApplyTo below resolves to Revealed.
+                registry.MarkRevealed(evidenceId);
+
+                foreach (ISimDetail target in m_RevealScratch) {
+                    yield return RevealDetailAnimated(target);
                 }
 
                 yield return SlideWidgetOut();
@@ -132,8 +137,9 @@ namespace AIS.Narrative {
 
             SimDetailRegistry registry = InvasionModel.Instance.SimDetailRegistry;
             SparkleEffect effect = registry.SparklePool.Alloc();
+            // Positioned before the reveal: an inactive GameObject still has a valid transform.
             effect.Prepare(detailMono.transform.position, registry.SparkleSprite);
-            detail.Show();
+            registry.ApplyTo(detail);
             yield return effect.Play();
             registry.SparklePool.Free(effect);
         }
@@ -145,11 +151,12 @@ namespace AIS.Narrative {
 
             while (registry.RevealQueue.Count > 0) {
                 StringHash32 evidenceId = registry.RevealQueue.Dequeue();
-                foreach (ISimDetail target in registry.MapEvidenceToDetail(evidenceId)) {
-                    if (!registry.DetailsToShow.Contains(target)) {
-                        registry.DetailsToShow.Add(target);
-                        target.Show();
-                    }
+
+                registry.CollectTargets(evidenceId, m_RevealScratch);
+                registry.MarkRevealed(evidenceId);
+
+                foreach (ISimDetail target in m_RevealScratch) {
+                    registry.ApplyTo(target);
                 }
             }
         }

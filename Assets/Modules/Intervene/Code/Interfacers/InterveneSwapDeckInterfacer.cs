@@ -15,6 +15,7 @@ namespace AIS.Intervene
     public class InterveneSwapDeckInterfacer : MonoBehaviour
     {
         public static InterveneSwapDeckInterfacer Instance;
+        public Image BG;
         public Button SwapBtn;
         public Button ConfirmSwapBtn;
         public int SwapCost;
@@ -43,6 +44,8 @@ namespace AIS.Intervene
             SwapDeckWidget.gameObject.SetActive(false);
             ConfirmSwapBtn.gameObject.SetActive(false);
 
+            BG.gameObject.SetActive(true);
+
             SwapBtn.GetComponent<Button>().onClick.AddListener(SwapCardOnclick);
             ConfirmSwapBtn.GetComponent<Button>().onClick.AddListener(ConfirmSwapOnclick);
         }
@@ -56,7 +59,6 @@ namespace AIS.Intervene
             ConfirmSwapBtn.interactable = m_SwapArmed;
 
             if (hasSwapped || m_SwapArmed) { return; }
-
             if (SwapDeckWidget.HasFocusedCard && CardInteractionMgr.Instance.Hand.SelectedCardIndices.Count > 0)
             {
                 PerformSwap();
@@ -178,6 +180,7 @@ namespace AIS.Intervene
             SwapDeckWidget.ClearFocus();
             SwapDeckWidget.gameObject.SetActive(false);
             ConfirmSwapBtn.gameObject.SetActive(false);
+            BG.gameObject.SetActive(true);
         }
 
         private void SwapCardOnclick()
@@ -188,6 +191,7 @@ namespace AIS.Intervene
                 if (m_SwapArmed) { CancelSwap(); }
                 SwapDeckWidget.gameObject.SetActive(false);
                 ConfirmSwapBtn.gameObject.SetActive(false);
+                BG.gameObject.SetActive(true);
             }
 
             else
@@ -208,6 +212,7 @@ namespace AIS.Intervene
 
                 SwapDeckWidget.gameObject.SetActive(true);
                 ConfirmSwapBtn.gameObject.SetActive(true);
+                BG.gameObject.SetActive(false);
                 ConfirmSwapBtn.interactable = false;
             }
         }

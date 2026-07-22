@@ -38,6 +38,9 @@ namespace AIS.Model
         
         [HideInInspector]public bool IsSpawnable; // spawn condition placeholder
 
+        // Suit stamp on the text hider, cached off the hider's first child.
+        private SpriteRenderer m_TextHiderSuitIcon;
+
         /*
         public void LoadData(SpeciesSetupData setupData)
         {
@@ -59,22 +62,26 @@ namespace AIS.Model
             ParentEcosystem = ecosystem;
 
             IconRenderer.sprite = ModelSpriteLookup.Instance.LookupSpeciesIcon(contentsId);
-            PopulationText.SetText("x" + Population.ToStringLookup());
+            PopulationText.SetText("x" + Population.ToStringLookup() + "M");
             ActionTag.Highlight.sortingOrder = InvasionModelSorting.SPECIES_SORTING;
             //BGRenderer.sortingOrder = InvasionModelSorting.SPECIES_SORTING + 10;
 
             TextHider.sortingOrder = InvasionModelSorting.SPECIES_SORTING + 17;
-            Transform SuitIcon = TextHider.transform.GetChild(0);
-            SuitIcon.GetComponent<SpriteRenderer>().sortingOrder = InvasionModelSorting.SPECIES_SORTING + 18;
+            m_TextHiderSuitIcon = TextHider.transform.GetChild(0).GetComponent<SpriteRenderer>();
+            m_TextHiderSuitIcon.sortingOrder = InvasionModelSorting.SPECIES_SORTING + 18;
 
             IconRenderer.sortingOrder = InvasionModelSorting.SPECIES_SORTING + 20;
             PopulationText.GetComponent<MeshRenderer>().sortingOrder = InvasionModelSorting.SPECIES_SORTING + 15;
+
+            // Clusters are created and destroyed all through the sim, so each one asks for its own
+            // visibility rather than the registry tracking instances that will not outlive a tick.
+            InvasionModel.Instance?.SimDetailRegistry?.ApplyTo(this);
         }
 
         public void AdjustPopulation(int amt)
         {
             Population += amt;
-            PopulationText.SetText("x" + Population.ToStringLookup());
+            PopulationText.SetText("x" + Population.ToStringLookup() + "M");
         }
 
 
@@ -158,37 +165,17 @@ namespace AIS.Model
 
         // ISimDetail
 
-        public void Show()
+        public void SetDisplay(SimDetailDisplay display, PlayerStatId lockSuit)
         {
-            this.gameObject.SetActive(true);
-        }
+            this.gameObject.SetActive(display != SimDetailDisplay.Hidden);
 
-        // Reveal species population
-        public void Show(SerializedHash32 speciesId)
-        {
-            TextHider.gameObject.SetActive(false);
-        }
+            // The population text keeps updating underneath -- the hider just sorts above it.
+            bool obscurePopulation = display == SimDetailDisplay.Obscured;
+            TextHider.gameObject.SetActive(obscurePopulation);
 
-        public void Hide()
-        {
-            this.gameObject.SetActive(false);
-        }
-
-        public void Hide(string detail, PlayerStatId suit = PlayerStatId.Invalid) // e.g. someCluster.Hide("population")
-        {
-            // In case if hiding other specific details are needed, for example, species icon/num eggs, etc.
-            switch (detail)
+            if (obscurePopulation && lockSuit != PlayerStatId.Invalid && m_TextHiderSuitIcon != null)
             {
-                case "population":
-                    TextHider.gameObject.SetActive(true);
-                    if (suit != PlayerStatId.Invalid)
-                    {
-                        Transform SuitIcon = TextHider.transform.GetChild(0);
-                        SuitIcon.GetComponent<SpriteRenderer>().sprite = CardVisualLookupUtility.LookupSuitIcon(suit);
-                    }
-                    break;
-                default:
-                    break;
+                m_TextHiderSuitIcon.sprite = CardVisualLookupUtility.LookupSuitIcon(lockSuit);
             }
         }
 

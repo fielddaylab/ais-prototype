@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 using AIS.Intervene;
+using AIS.Narrative;
 using TMPro;
 using Debug = UnityEngine.Debug;
 
@@ -111,6 +112,9 @@ namespace AIS.Model
 
         #endregion // Inspector
 
+        // True while IsHidden is the registry's evidence mask rather than the setup data's own request.
+        private bool m_RegistryObscured;
+
         public void LoadData(PathwaySetupData setupData)
         {
             PathwayId = setupData.PathwayId;
@@ -118,6 +122,7 @@ namespace AIS.Model
             DestEcosystemId = setupData.DestEcosystemId;
             IsBidirectional = setupData.IsBidirectional;
             PathwayType = setupData.PathwayType;
+            m_RegistryObscured = false;
             SetIsHidden(!setupData.IsNotHidden);
             Dir = setupData.StartingDir;
 
@@ -137,6 +142,10 @@ namespace AIS.Model
             SetTriggerChance(setupData.StartingTriggerChance);
 
             UpdateVisuals();
+
+            // Masks or hides this pathway if its type is gated behind evidence the player lacks.
+            // Ungated pathways keep whatever IsNotHidden asked for.
+            InvasionModel.Instance?.SimDetailRegistry?.ApplyTo(this);
         }
 
         public void AddPathwayType(PathwayType type)
@@ -364,14 +373,24 @@ namespace AIS.Model
 
         // ISimDetail
 
-        public void Show()
+        public void SetDisplay(SimDetailDisplay display, PlayerStatId lockSuit)
         {
-            this.gameObject.SetActive(true);
-        }
+            this.gameObject.SetActive(display != SimDetailDisplay.Hidden);
 
-        public void Hide()
-        {
-            this.gameObject.SetActive(false);
+            // IsHidden already renders the "present but unknown" look: an unmarked type icon and
+            // no transfer rate. That is exactly what an obscured pathway should show.
+            if (display == SimDetailDisplay.Obscured)
+            {
+                m_RegistryObscured = true;
+                SetIsHidden(true);
+            }
+            else if (m_RegistryObscured)
+            {
+                // Only lifts a mask the registry put here. A pathway the setup data asked to hide
+                // stays hidden until something explicitly reveals it.
+                m_RegistryObscured = false;
+                SetIsHidden(false);
+            }
         }
 
         public StringHash32 Id()

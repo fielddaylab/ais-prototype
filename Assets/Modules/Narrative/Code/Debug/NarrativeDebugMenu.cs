@@ -56,6 +56,7 @@ namespace AIS.Narrative {
 
             menu.AddText("State", GetStateText);
             menu.AddButton("Complete Current Thread", CompleteCurrentThread, IsThreadActive);
+            menu.AddButton("Begin Intervention", BeginIntervention, CanJump);
             menu.AddDivider();
 
             BuildJumpTree(menu);
@@ -172,6 +173,12 @@ namespace AIS.Narrative {
             // Prefer the discovered End id; fall back to reverse-lookup (works in DEVELOPMENT).
             string endId = (found && match.EndNodeId != null) ? match.EndNodeId : current.ToString() + ".End";
             ScriptUtility.SpawnThread(endId);
+        }
+
+        // Drop out of the narrative and load the intervention scene, same as the leaf hook.
+        static private void BeginIntervention() {
+            ScriptUtility.KillAllThreads();
+            ScriptHooks.LoadIntoInterventionScene();
         }
 
         #endregion // Actions

@@ -225,7 +225,9 @@ namespace AIS.Narrative
             }
 
             if (currentLocationIdx != selectedLocationIdx && Game.SharedState.TryGet(out PlayerInventory _))
+            {
                 PlayerUtility.DecreaseTime(locations[selectedLocationIdx].Chunks);
+            }
 
             SetCurrentLocation(selectedLocationIdx);
 
