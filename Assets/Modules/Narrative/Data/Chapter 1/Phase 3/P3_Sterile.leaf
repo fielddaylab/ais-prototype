@@ -112,6 +112,7 @@ $endif
        There're only a few right now, and these'll get released soon at the lampricide tributary site.
        But if you'd like to expand the program, that can always be done. 
        //evidence chip
+$call GiveEvidenceChip("Evidence-sterilization")
 
 {@You}
        Thanks, Robertson. 
@@ -125,7 +126,6 @@ $endif
 // TODO: Rest of thread here
 
 // TODO: Give evidence chip
-$call GiveEvidenceChip("Evidence-sterilization")
 
 $call UnlockLocation(FieldStationLampricide)
 $call EnableMapButton()
@@ -168,6 +168,7 @@ $call DisableMapButton()
 {@}
        Together with Claire, you spend a few hours transferring the sea lamprey from the tank into the river.
        Finally, the tanks are empty, and you collapse to the ground, spent.
+$call GiveActionCard("Action-release-sterilized")
 
 {@You}
        Well, that's done.
@@ -201,11 +202,11 @@ $call DisableMapButton()
 
 {@You}
        Yeah. You're right.
-       //action card
+
 // TODO: Rest of Field Station (Lampricide) section here
 
 // TODO: Give action card
-$call GiveActionCard("Action-release-sterilized")
+
 
 // skip to end
 $goto .End

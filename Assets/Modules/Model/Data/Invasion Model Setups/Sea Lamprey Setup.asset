@@ -115,40 +115,6 @@ MonoBehaviour:
     SecondarySlotPoses:
     - {x: 0, y: 0}
     - {x: 0, y: 0}
-  - EcosystemId:
-      m_Source: eco-EXTERN-IN
-      m_HashValue: 848023977
-    Pos: {x: -9, y: 2.8}
-    Sprite: {fileID: 0}
-    IsExternal: 1
-    IsTributary: 0
-    InvasiveHunts: 1
-    InvasiveStarves: 1
-    InvasiveReproduces: 1
-    MainSlotPoses:
-    - {x: 0, y: 0}
-    - {x: 0, y: 0}
-    - {x: 0, y: 0}
-    SecondarySlotPoses:
-    - {x: 0, y: 0}
-    - {x: 0, y: 0}
-  - EcosystemId:
-      m_Source: eco-EXTERN-OUT
-      m_HashValue: 3287957386
-    Pos: {x: 8.5, y: -3}
-    Sprite: {fileID: 0}
-    IsExternal: 1
-    IsTributary: 0
-    InvasiveHunts: 1
-    InvasiveStarves: 1
-    InvasiveReproduces: 1
-    MainSlotPoses:
-    - {x: 0, y: 0}
-    - {x: 0, y: 0}
-    - {x: 0, y: 0}
-    SecondarySlotPoses:
-    - {x: 0, y: 0}
-    - {x: 0, y: 0}
   Pathways:
   - PathwayId:
       m_Source: path-little-to-little-trib
@@ -432,16 +398,7 @@ MonoBehaviour:
       StartingPopulation: 2
       StartingTravelType: 0
       StartingTargetType: 1
-  SharedSpeciesSetups:
-  - SpeciesId:
-      m_Source: sea-lamprey
-      m_HashValue: 1595256039
-    StartingEcosystemId:
-      m_Source: eco-EXTERN-IN
-      m_HashValue: 848023977
-    StartingPopulation: -1
-    StartingTravelType: -1
-    StartingTargetType: 1
+  SharedSpeciesSetups: []
   DefaultInvasive:
     SpeciesId:
       m_Source: sea-lamprey
