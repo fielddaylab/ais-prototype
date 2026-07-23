@@ -176,8 +176,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 117.45, y: -134.93}
-  m_SizeDelta: {x: 234.9, y: 0}
+  m_AnchoredPosition: {x: 72.45, y: -159.43}
+  m_SizeDelta: {x: 144.9, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6056389214198305848
 CanvasRenderer:
@@ -2261,7 +2261,7 @@ MonoBehaviour:
     m_DefaultSpawnRoot: {fileID: 8162499034957891199}
     m_ResetTransformOnAlloc: 1
   FocusedCard: {fileID: 7369617218373278178}
-  FocusSlot: {fileID: 0}
+  FocusSlot: {fileID: 4069671146206970419}
   FocusEmpty: {fileID: 4851226299410542917}
   FocusView: {fileID: 217976061043037535}
   NoActionCardsDefault: {fileID: 660262169942650906}
