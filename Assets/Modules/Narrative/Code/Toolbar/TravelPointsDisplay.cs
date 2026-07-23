@@ -76,7 +76,14 @@ namespace AIS.Narrative
             RectTransform currentLocTransform = locations[index].MainImg.GetComponent<RectTransform>();
             if (pointerTransform != null && currentLocTransform != null)
             {
-                pointerTransform.position = currentLocTransform.position;
+                RectTransform parent = (RectTransform)pointerTransform.parent;
+
+                // Convert the location's world position into the pointer's parent local space
+                Vector3 world = currentLocTransform.position;
+                Vector2 local = parent.InverseTransformPoint(world);
+
+                local.y += currentLocTransform.rect.height * 0.5f;
+                pointerTransform.anchoredPosition = local;
             }
         }
 
