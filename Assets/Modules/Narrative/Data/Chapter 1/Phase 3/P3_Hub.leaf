@@ -21,6 +21,7 @@ $call SetTravelTime(FieldStationTraps, 1)
 
 {@}   
        [This is the continue hub for Phase 3.]
+$call CheckIfOutOfTime()
 $call EnableMapButton()
 
 // If the player has not completed both CiscoPop AND TroutPop, allow access to the other one

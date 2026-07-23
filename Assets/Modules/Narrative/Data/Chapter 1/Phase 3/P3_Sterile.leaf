@@ -131,6 +131,7 @@ $call GiveEvidenceChip("Evidence-sterilization")
 $call UnlockLocation(FieldStationLampricide)
 $call SetTravelTime(FieldStationLampricide, 1)
 $call EnableMapButton()
+$call CheckIfOutOfTime()
 
 
 :: AtFieldStationLampricide
