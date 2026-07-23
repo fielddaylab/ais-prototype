@@ -52,14 +52,14 @@ namespace AIS.Narrative {
             PlayerInventory inv = Find.State<PlayerInventory>();
             if (chunks > 0) {
                 inv.TimeRemaining = Math.Max(0, inv.TimeRemaining - chunks);
-                Find.GuiModule<ToolbarPanel>().TimeCounter.SetValue(inv.TimeRemaining);
+                Find.GuiModule<ToolbarPanel>().SetTime(inv.TimeRemaining);
             }
         }
 
         static public void SetTime(int chunks) {
             PlayerInventory inv = Find.State<PlayerInventory>();
             inv.TimeRemaining = chunks;
-            Find.GuiModule<ToolbarPanel>().TimeCounter.SetValue(inv.TimeRemaining);
+            Find.GuiModule<ToolbarPanel>().SetTime(inv.TimeRemaining);
             ToolbarPanel.ResetTimeGroup(Find.GuiModule<ToolbarPanel>().TimeGroup, true);
         }
     }
