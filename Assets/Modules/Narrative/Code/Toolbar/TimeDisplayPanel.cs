@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using AIS.Shared;
 using BeauUtil;
 using FieldDay.UI;
 using TMPro;
@@ -34,12 +35,10 @@ namespace AIS.Narrative {
         {
             ClockIncrements.Populate(Clocks, timeRemaining);
 
-            // these should later be moved to a stats/consts class, however I am unsure where to place them for now
-            int timeUnitsPerHour = 4;
-            int minutesPerTimeUnit = 15;
+            // these should later be moved to a stats/consts class
 
-            int hours = timeRemaining / timeUnitsPerHour;
-            int minutes = (timeRemaining % timeUnitsPerHour) * minutesPerTimeUnit;
+            int hours = timeRemaining / Constants.TimeUnitsPerHour;
+            int minutes = (timeRemaining % Constants.TimeUnitsPerHour) * Constants.MinutesPerTimeUnit;
 
             Hour0.SetText((hours / 10).ToStringLookup());
             Hour1.SetText((hours % 10).ToStringLookup());

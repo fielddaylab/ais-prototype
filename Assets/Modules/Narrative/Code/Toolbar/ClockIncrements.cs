@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using AIS.Shared;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,13 +12,8 @@ public sealed class ClockIncrements : MonoBehaviour
 
         static public void Populate(ClockIncrements increments, int timeRemaining)
         {
-            // these should later be moved to a stats/consts class, however I am unsure where to place them for now
-            int timeUnitsPerHour = 4;
-            int minutesPerTimeUnit = 15;
-
-            int hours = timeRemaining / timeUnitsPerHour;
-            int hourChunks = timeRemaining % timeUnitsPerHour;
-            int minutes = hourChunks * minutesPerTimeUnit;
+            int hours = timeRemaining / Constants.TimeUnitsPerHour;
+            int hourChunks = timeRemaining % Constants.TimeUnitsPerHour;
 
             int clocksUsed = (int) hours;
             if (hourChunks > 0)
@@ -30,8 +26,8 @@ public sealed class ClockIncrements : MonoBehaviour
             for (int i = 0; i < clocksUsed; i++)
             {
                 clock = increments.Clocks[i];
-                diff = Math.Min(timeRemaining - (i * timeUnitsPerHour), timeUnitsPerHour);
-                clock.fillAmount = (float) diff / timeUnitsPerHour;
+                diff = Math.Min(timeRemaining - (i * Constants.TimeUnitsPerHour), Constants.TimeUnitsPerHour);
+                clock.fillAmount = (float) diff / Constants.TimeUnitsPerHour;
                 clock.gameObject.SetActive(true);
             }
 
