@@ -80,23 +80,31 @@
 ::Action-downstream-tributary-traps
 @title		Use Downstream Tributary Traps
 @suit		ranger
-@desc		When a Downstream pathway activates, -1 Invasive from source instead of moving.
+@desc		When a target Downstream pathway activates, -1 Invasive from source instead of moving.
 @path		temp.png
 @cost		1
 
+// trappathway installs a "trap on move" effect: when the pathway activates it traps
+// [value] Invasive at the source instead of moving them through.
 @effect
-    hardcoded
+    target: pathway, if type = downstream
+    verb: trappathway, 1, fixed
+    specificity: specific
+    maxtargets: 1
 
 
 ::Action-upstream-tributary-traps
 @title		Use Upstream Tributary Traps
 @suit		ranger
-@desc		When an Upstream pathway activates, -1 Invasive from source instead of moving.
+@desc		When a target Upstream pathway activates, -1 Invasive from source instead of moving.
 @path		temp.png
 @cost		1
 
 @effect
-    hardcoded
+    target: pathway, if type = upstream
+    verb: trappathway, 1, fixed
+    specificity: specific
+    maxtargets: 1
 
 
 ::Action-barriers

@@ -72,6 +72,9 @@ namespace AIS.Narrative {
                 return;
             }
 
+            s_EvidenceMenu.AddButton("Unlock All Evidence", GiveAllEvidenceChips, () => Game.SharedState.TryGet(out PlayerInventory _));
+            s_EvidenceMenu.AddDivider();
+
             s_EvidenceScratch.Sort((a, b) => string.CompareOrdinal(a.name, b.name));
 
             foreach (EvidenceCard card in s_EvidenceScratch) {
@@ -96,6 +99,9 @@ namespace AIS.Narrative {
                 s_ActionMenu.AddText("(no action cards loaded)");
                 return;
             }
+
+            s_ActionMenu.AddButton("Unlock All Cards", GiveAllActionCards, () => Game.SharedState.TryGet(out PlayerInventory _));
+            s_ActionMenu.AddDivider();
 
             s_ActionScratch.Sort((a, b) => string.CompareOrdinal(a.Value, b.Value));
 
@@ -123,6 +129,22 @@ namespace AIS.Narrative {
             if (!Game.SharedState.TryGet(out PlayerInventory inv)) { return; }
 
             inv.ActionCards.Add(id);
+        }
+
+        // Bulk version of the per-chip buttons: hands over every loaded evidence card at once.
+        static private void GiveAllEvidenceChips() {
+            foreach (EvidenceCard card in Game.Assets.GetAllNamed<EvidenceCard>()) {
+                GiveEvidenceChip(card.AssetId);
+            }
+        }
+
+        // Bulk version of the per-card buttons: hands over every parsed action card at once.
+        static private void GiveAllActionCards() {
+            if (!Game.SharedState.TryGet(out ActionCardsState cardsState)) { return; }
+
+            foreach (StringHash32 id in cardsState.AllActionCards.Keys) {
+                GiveActionCard(id);
+            }
         }
 
         #endregion // Actions

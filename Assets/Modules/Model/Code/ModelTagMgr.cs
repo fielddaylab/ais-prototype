@@ -1,6 +1,7 @@
 using AIS.Intervene;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace AIS.Model
@@ -31,7 +32,19 @@ namespace AIS.Model
             {
                 // by default use full set
                 toFilter = new List<ModelTag>();
-                toFilter.AddRange(RegisteredTags);
+                for (int i = 0; i < RegisteredTags.Count; i++)
+                {
+                    if (RegisteredTags[i].QueriableObj == null)
+                    {
+                        Debug.LogWarning("[ModelTagMgr] tag on object " + RegisteredTags[i].gameObject.name + " had no queriable object!");
+                        RegisteredTags.RemoveAt(i);
+                        i--;
+                    }
+                    else
+                    {
+                        toFilter.Add(RegisteredTags[i]);
+                    }
+                }
             }
 
             foreach (var targetDetails in allTargetDetails)

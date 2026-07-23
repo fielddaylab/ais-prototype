@@ -15,6 +15,11 @@ namespace AIS.Intervene
         public List<int> SelectedCardIndices = new List<int>();
         public bool AllowMultiSelect = false;
 
+        // While true, the player is locked into their current selection (they have committed to
+        // specifying an action's effects). Card clicks in hand are ignored until the effects are
+        // confirmed or canceled. See CardInteractionMgr effect-specify handlers.
+        public bool SelectionLocked = false;
+
         public System.Action<StringHash32> OnCardClickedOverride;
 
         public CardInteractionUI cardInterationUI;
@@ -41,6 +46,7 @@ namespace AIS.Intervene
                             OnCardClickedOverride(newCard.CardID);   // selection-mode path
                             return;
                         }
+                        if (SelectionLocked) { return; }   // locked in while specifying effects
                         int index = PlayerCards.IndexOf(newCard);
                         if (index >= 0) { ToggleSelectAtIndex(index); }
                     });
