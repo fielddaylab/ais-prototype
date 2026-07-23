@@ -15,6 +15,7 @@ $call DisableMapButton()
 // Mark start of thread
 $set global:currentThread = "P3_Sterile"
 
+
 // Adds flavor text if player has finished talking to aquaculture specialist
 $if !HasSeen(P3_CiscoPop.End)
 {@}   
@@ -128,6 +129,7 @@ $call GiveEvidenceChip("Evidence-sterilization")
 // TODO: Give evidence chip
 
 $call UnlockLocation(FieldStationLampricide)
+$call SetTravelTime(FieldStationLampricide, 1)
 $call EnableMapButton()
 
 
@@ -139,6 +141,7 @@ $call EnableMapButton()
 // Lock all location on map
 $call SetInThreadLocks()
 $call DisableMapButton()
+
 
 {@}   
        Claire is waiting for you at the edge of the river, tanks filled with sea lamprey by the building.

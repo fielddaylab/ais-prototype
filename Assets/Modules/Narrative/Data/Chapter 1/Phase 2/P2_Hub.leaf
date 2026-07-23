@@ -10,7 +10,9 @@ $set global:currentPhase = 2
        [This is the entry hub for Phase 2.]
 $call EnableMapButton()
 $call UnlockLocation(FieldStationLampricide)     // P2_Lampricide
+$call SetTravelTime(FieldStationLampricide, 1)
 $call UnlockLocation(ArmyCorps)                  // P2_Outreach
+$call SetTravelTime(ArmyCorps, 1)
 
 // TODO: Rest of entry hub here
 

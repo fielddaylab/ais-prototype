@@ -17,6 +17,7 @@ $call SetBackground("bg/bg-research-lab.png")
 $set global:currentThread = "P1_Lamprey"
 
 $call  ClearVisibleLines()
+
 {@}   
        The university. What better place to learn about sea lamprey than at the very place researching them?
        You knock on the door to the lab. 
@@ -98,6 +99,8 @@ $goto .End
 @tracked
 // Unlock next locations
 $call UnlockLocation(DNROffice)  // P1_NativeLamprey
+$call SetTravelTime(DNROffice, 1)
+
 
 // Mark end of thread
 $set global:currentThread = "NONE"

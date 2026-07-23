@@ -10,7 +10,7 @@
 @effect
     target: invasive
     verb: reduce, 2, fixed
-    specificity: specfic
+    specificity: specific
 
 
 ::Action-awareness-campaign

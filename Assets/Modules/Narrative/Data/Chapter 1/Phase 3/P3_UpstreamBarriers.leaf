@@ -11,6 +11,7 @@
 // Mark start of thread
 $set global:currentThread = "P3_UpstreamBarriers"
 
+
 // Lock all location on map
 $call SetInThreadLocks()
 $call DisableMapButton()
@@ -57,6 +58,7 @@ $call GiveEvidenceChip("Evidence-barrier")
        Any time. 
 
 $call UnlockLocation(FishAndWildlife)
+$call SetTravelTime(FishAndWildlife, 1)
 $call EnableMapButton()
 
 
@@ -69,6 +71,7 @@ $call EnableMapButton()
 // Lock all location on map
 $call SetInThreadLocks()
 $call DisableMapButton()
+
 
 {@}   
        The Fish and Wildlife building sits at the end of a dirt road, as rustic as its name. 
