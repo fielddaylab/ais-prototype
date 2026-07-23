@@ -304,6 +304,7 @@ namespace AIS.Narrative
             //     FocusSlot.gameObject.SetActive(visible);
             // }
             FocusEmpty.SetActive(!visible);
+            if (ClickToFocus) FocusEmpty.SetActive(false);
             FocusView.gameObject.SetActive(visible);
         }
 
