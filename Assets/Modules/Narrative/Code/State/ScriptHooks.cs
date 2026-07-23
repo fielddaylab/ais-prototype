@@ -360,6 +360,12 @@ namespace AIS.Narrative {
             mapPanel.ClearNextCardAtLocation(index);
         }
 
+        [LeafMember("SetTime")]
+        static public void SetTime(int chunks)
+        {
+            PlayerUtility.SetTime(chunks);
+        }
+
         [LeafMember("DecreaseTime")]
         static public void DecreaseTime(int chunks) {
             PlayerUtility.DecreaseTime(chunks);

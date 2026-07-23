@@ -8,6 +8,7 @@
 // Mark start of thread
 $set global:currentThread = "P3_TroutPop"
 
+
 //checks to see if the player has chosen to look at trout population first
 $if global:ciscoFirst == false
 $set global:troutFirst = true
@@ -23,7 +24,7 @@ $elseif global: troutFirst == false
        Finished talking to my brother? He sure knows how to talk. 
 $endif
 
-{@Renator}
+{@Renato}
        It's the population numbers for trout that you need, right?
        The other fishers and I have been looking through the data, recently. 
        It's been falling since the last few years. 
@@ -47,6 +48,7 @@ $if global:troutFirst == true
 $endif
 
 $call UnlockLocation(FishHatchery)
+$call SetTravelTime(FishHatchery, 1)
 $call EnableMapButton()
 
 
@@ -58,6 +60,7 @@ $call EnableMapButton()
 // Lock all location on map
 $call SetInThreadLocks()
 $call DisableMapButton()
+
 
 //Changes dialogue depending on whether stock cisco is already done
 $if global:stockCisco == true

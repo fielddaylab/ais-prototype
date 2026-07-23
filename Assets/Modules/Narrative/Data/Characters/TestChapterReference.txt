@@ -14,7 +14,7 @@ $call SetBackground("bg/Room.png")
 
 {@}     Reality arrives swiftly and disorientingly.
 
-{@Player}   Welp, another one for my therapist.
+{@You}   Welp, another one for my therapist.
 
 {@}     On your desk, you spot several notes you've taken.
 
@@ -51,7 +51,7 @@ $goto .AnglersDocks
 
 {@}     
         You decide to say hello. 
-{@Player}   
+{@You}   
         Hi there! 
 
 {@}    
@@ -89,13 +89,13 @@ $call GiveEvidenceChip("Evidence-Lake-Trout")
 {@Angler1} 
         Rotten fish means you can't sell the fish. 
 
-{@Player} 
+{@You} 
         Not only are you guys out of your jobs, but the entire town's economy is at threat.
 
 {@}     The anglers nod their heads in unison. 
         You think for a moment, understanding the gravity of the situation.
 
-{@Player} 
+{@You} 
         What can I do to help? 
 
 {@Angler1}   
@@ -121,14 +121,14 @@ $choose branch
 {@Angler1}      Holy worms kid! Can't sneak on an old soul like that! 
 {@Angler2}      Ye' tryin' to kill us? 
 
-{@Player}       No! Sorry, I... just... what's with the fish? 
+{@You}       No! Sorry, I... just... what's with the fish? 
  
 :: Docks.Attention.B
 
 {@Angler1}      Huh? Oh kid! Nice to see ya! To answer your question...
 {@Angler2}      Nay, things be not well... 
 
-{@Player}       How come? 
+{@You}       How come? 
 
 :: Docks.Attention.C
 
@@ -137,19 +137,19 @@ $choose branch
 {@Angler2} Aye. When the lady of the lake be singing her solemn song. 
 {@Angler1} ...Pardon him. But he's right, it's a solemn day indeed. 
 
-{@Player} What's wrong?
+{@You} What's wrong?
 
 :: Nature.Museum
 
 $goto .Nature.Museum.Location
 
-{@Player} The Museuam seems the best place to go. 
+{@You} The Museuam seems the best place to go. 
 
 {@Angler1} Good choice, they may provide more info on what's going on. 
 
 :: University.Research.Lab
 
-{@Player} The University Research Lab. I remember hearing they were studying lampreys. 
+{@You} The University Research Lab. I remember hearing they were studying lampreys. 
 
 {@Angler2} Aye, they might put a stop to this. 
 
@@ -157,7 +157,7 @@ $goto .University.Research.Lab.Location
 
 :: Town.Hall
 
-{@Player} I can always bring it to Town Hall. 
+{@You} I can always bring it to Town Hall. 
 
 {@Angler1} Ah. Politics. Have fun convincing them to do anything. 
 
@@ -177,7 +177,7 @@ $goto .Town.Hall.Location.One
 {@Curator}
         Welcome to the Nature Museum. Tours on the right. Studies on the left. Have fun. 
 
-{@Player} 
+{@You} 
         Actually, I was wondering if I could learn more about Sea Lamprey. 
 
 {@}     The Curator's eyes glance up at you for the first time. They light up. 
@@ -185,7 +185,7 @@ $goto .Town.Hall.Location.One
 {@Curator} 
         You're interested in Sea Lamprey? 
 
-{@Player} 
+{@You} 
         Uh... yes-- 
 
 {@} 
@@ -281,13 +281,13 @@ $set local:Lamprey.Invasive = true
         You enter the building and it just so happens the mayor is standing in the lobby. 
         How convenient. 
 
-{@Player}      
+{@You}      
         Madam Mayor!
 
 {@Mayor} 
         Hi! Do... I know you? 
 
-{@Player} 
+{@You} 
         I'm investigating the Sea Lamprey in town. Mayor, it's serious. We need to do something. 
 
 {@Mayor} 
@@ -339,7 +339,7 @@ $set local:Complete.DNR = false
         Hi there! Welcome to the DNR Station. We're one of two in town. 
         How can I help you? 
 
-{@Player}
+{@You}
         I'm hoping to learn more about Sea Lamprey. 
 
 

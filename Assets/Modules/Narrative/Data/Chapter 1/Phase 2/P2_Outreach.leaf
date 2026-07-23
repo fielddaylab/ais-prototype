@@ -15,6 +15,7 @@ $call DisableMapButton()
 // Mark start of thread
 $set global:currentThread = "P2_Outreach"
 
+
 {@}   
        You park your car on the side of the road, the Army Corps of Engineers building up ahead.
        In it's shade, you have a sudden memory of being here for a high school field trip. 
@@ -117,6 +118,7 @@ $set global:currentThread = "P2_Outreach"
 $call GiveEvidenceChip("Evidence-awareness-program")
 
 $call UnlockLocation(FishingDocks)
+$call SetTravelTime(FishingDocks, 1)
 $call EnableMapButton()
 
 
@@ -128,6 +130,7 @@ $call EnableMapButton()
 // Lock all location on map
 $call SetInThreadLocks()
 $call DisableMapButton()
+
 
 {@}   
        When you were a kid, you always found the sound of the water lapping at the dock soothing. 
@@ -225,6 +228,7 @@ $goto .End
 @tracked
 // Unlock next locations
 $call UnlockLocation(FieldStationLampricide)     // P2_Lampricide
+$call SetTravelTime(FieldStationLampricide, 1)
 
 // Mark end of thread
 $set global:currentThread = "NONE"

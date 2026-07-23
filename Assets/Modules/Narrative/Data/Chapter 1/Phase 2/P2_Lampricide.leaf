@@ -15,6 +15,7 @@ $call DisableMapButton()
 // Mark start of thread
 $set global:currentThread = "P2_Lampricide"
 
+
 {@}   
        Paul had mentioned something called lampricide, and a quick call to Renée confirmed that one of the Field Station used to apply lampricide. 
        So here you are, on the shore of one of the lake's many tributaries, being attacked by a horde of mosquitoes. 
@@ -94,6 +95,7 @@ $set global:currentThread = "P2_Lampricide"
 $call GiveEvidenceChip("Evidence-lampricide")
 
 $call UnlockLocation(TownHall)
+$call SetTravelTime(TownHall, 1)
 $call EnableMapButton()
 
 
@@ -105,6 +107,7 @@ $call EnableMapButton()
 // Lock all location on map
 $call SetInThreadLocks()
 $call DisableMapButton()
+
 
 {@}   
        The town hall meeting has just started when you slip inside the main chamber. 
@@ -221,7 +224,7 @@ $goto .End
 @exposed
 @tracked
 // Unlock next locations
-$call UnlockLocation(ArmyCorps)    // P2_Outreach
+(ArmyCorps)    // P2_Outreach
 
 // Mark end of thread
 $set global:currentThread = "NONE"
