@@ -469,7 +469,8 @@ namespace AIS.Model
             }
 
             // rounded down, never negative
-            return Mathf.Max(0, Mathf.FloorToInt(modifiedCount));
+            // return Mathf.Max(0, Mathf.FloorToInt(modifiedCount));
+            return Mathf.FloorToInt(modifiedCount);
         }
 
         #endregion // Reproduction
