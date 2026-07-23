@@ -1637,7 +1637,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32834d0b78e452f40937c3fb6d99c262, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StartingBudget: 6
+  StartingBudget: 3
   BudgetUnit: {fileID: 3284353509148006948, guid: 27c7b6f17b76be847bcab263410821c9, type: 3}
   BudgetGroupTransform: {fileID: 7767682101436082170}
 --- !u!114 &6912354202597963777
