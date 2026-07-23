@@ -18,7 +18,7 @@ namespace AIS.Narrative {
         public Image MapMissing;
         public ToolbarButton EvidenceButton;
         public Image EvidenceMissing;
-
+        public ToolbarButton TimeButton;
         public CanvasGroup TimeGroup;
         public GuiCounter TimeCounter;
 
@@ -26,6 +26,7 @@ namespace AIS.Narrative {
             //ModelButton.Listener.onClick.Register(ToggleModel);
             MapButton.Listener.onClick.Register(PanelUtility.ToggleMap);
             EvidenceButton.Listener.onClick.Register(PanelUtility.ToggleEvidence);
+            TimeButton.Listener.onClick.Register(PanelUtility.ToggleTime);
 
             //ResetToolbarButton(ModelMissing, ModelButton, false);
             ResetToolbarButton(MapMissing, MapButton, false);
@@ -71,6 +72,13 @@ namespace AIS.Narrative {
             yield return group.FadeTo(1, 0.3f);
             group.blocksRaycasts = true;
         }
+
+        public void SetTime(int timeRemaining)
+        {
+            TimeCounter.SetValue(timeRemaining);
+            var timePanel = Find.Panel<TimeDisplayPanel>();
+            timePanel.SetTime(timeRemaining);
+        }
     }
 
     public static class PanelUtility
@@ -80,6 +88,8 @@ namespace AIS.Narrative {
             var mapPanel = Find.Panel<MapDisplayPanel>();
             var modelPanel = Find.Panel<ModelDisplayPanel>();
             var evidencePanel = Find.Panel<EvidenceDisplayPanel>();
+            var timePanel = Find.Panel<TimeDisplayPanel>();
+
             if (evidencePanel.IsShowing())
             {
                 evidencePanel.Hide();
@@ -88,6 +98,7 @@ namespace AIS.Narrative {
             {
                 mapPanel.Hide();
                 modelPanel.Hide();
+                timePanel.Hide();
                 InvasionModel.Instance.gameObject.SetActive(false);
                 evidencePanel.Populate(Find.State<PlayerInventory>());
 
@@ -106,6 +117,7 @@ namespace AIS.Narrative {
             var mapPanel = Find.Panel<MapDisplayPanel>();
             var modelPanel = Find.Panel<ModelDisplayPanel>();
             var evidencePanel = Find.Panel<EvidenceDisplayPanel>();
+            var timePanel = Find.Panel<TimeDisplayPanel>();
 
             var toolbarPanel = Find.GuiModule<ToolbarPanel>();
             if (mapPanel.IsShowing())
@@ -116,6 +128,7 @@ namespace AIS.Narrative {
             {
                 modelPanel.Hide();
                 evidencePanel.Hide();
+                timePanel.Hide();
                 mapPanel.Show();
 
                 // TODO: reveal time group at the appriopriate point
@@ -130,6 +143,7 @@ namespace AIS.Narrative {
             var mapPanel = Find.Panel<MapDisplayPanel>();
             var modelPanel = Find.Panel<ModelDisplayPanel>();
             var evidencePanel = Find.Panel<EvidenceDisplayPanel>();
+            var timePanel = Find.Panel<TimeDisplayPanel>();
 
             if (modelPanel.IsShowing())
             {
@@ -140,9 +154,31 @@ namespace AIS.Narrative {
             {
                 mapPanel.Hide();
                 evidencePanel.Hide();
+                timePanel.Hide();
                 modelPanel.Show();
             }
             Find.GuiModule<DialoguePanel>().SetVisible(!(modelPanel.IsShowing() || evidencePanel.IsShowing()));
+        }
+
+        public static void ToggleTime()
+        {
+            var mapPanel = Find.Panel<MapDisplayPanel>();
+            var modelPanel = Find.Panel<ModelDisplayPanel>();
+            var evidencePanel = Find.Panel<EvidenceDisplayPanel>();
+            var timePanel = Find.Panel<TimeDisplayPanel>();
+
+            if (timePanel.IsShowing())
+            {
+                timePanel.Hide();
+            }
+            else
+            {
+                mapPanel.Hide();
+                evidencePanel.Hide();
+                modelPanel.Hide();
+
+                timePanel.Show();
+            }
         }
     }
 }

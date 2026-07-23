@@ -1,5 +1,87 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &731360203791725705
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2919562529056373124}
+  - component: {fileID: 1142262253866850722}
+  - component: {fileID: 7776876806368382216}
+  - component: {fileID: 5714305932571023239}
+  m_Layer: 5
+  m_Name: Clickable
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &2919562529056373124
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 731360203791725705}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6040429209981689312}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -8.2361, y: 7.1379}
+  m_SizeDelta: {x: -46.1221, y: -14.2759}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1142262253866850722
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 731360203791725705}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30a1eab2b1f3865409a77930639df3e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+--- !u!222 &7776876806368382216
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 731360203791725705}
+  m_CullTransparentMesh: 1
+--- !u!114 &5714305932571023239
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 731360203791725705}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a59a59fc4e9a014c8fbb22f00e5eeff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AlwaysFireClickEvents: 0
+  AcceptedMouseButtons: 1
+  CursorType:
+    m_HashValue: 0
+  Flags: 0
+  TooltipHeader: Time
+  Tooltip: 
+  TooltipFooter: 
 --- !u!1 &2864249564794144152
 GameObject:
   m_ObjectHideFlags: 0
@@ -130,6 +212,7 @@ MonoBehaviour:
   MapMissing: {fileID: 7048324300286731018}
   EvidenceButton: {fileID: 1359734543965691250}
   EvidenceMissing: {fileID: 2832495797862592261}
+  TimeButton: {fileID: 7116821185028257439}
   TimeGroup: {fileID: 3503654026393646128}
   TimeCounter: {fileID: 1593049606835906536}
 --- !u!1 &5007688597273717777
@@ -343,6 +426,7 @@ GameObject:
   - component: {fileID: 1593049606835906536}
   - component: {fileID: 5376530044732090847}
   - component: {fileID: 3503654026393646128}
+  - component: {fileID: 7116821185028257439}
   m_Layer: 5
   m_Name: Time
   m_TagString: Untagged
@@ -368,6 +452,7 @@ RectTransform:
   - {fileID: 8269201195128211970}
   - {fileID: 3606281638938617703}
   - {fileID: 2577604135279790301}
+  - {fileID: 2919562529056373124}
   m_Father: {fileID: 1404293801801309465}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -434,6 +519,22 @@ CanvasGroup:
   m_Interactable: 0
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &7116821185028257439
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6400426575311711198}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cf3903d521d3894791d624362084bd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Listener: {fileID: 5714305932571023239}
+  Display: {fileID: 0}
+  Flash: {fileID: 0}
+  Fader: {fileID: 3503654026393646128}
 --- !u!1 &7581742730259215116
 GameObject:
   m_ObjectHideFlags: 0
