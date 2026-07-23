@@ -33,7 +33,7 @@ namespace AIS.Model
     [Flags]
     public enum PathwayType
     {
-        // Currents = 0x01,
+        Currents = 0x01,
         PetTrade = 0x02,
         BoatHulls = 0x04,
         BaitBuckets = 0x08,
