@@ -20,6 +20,8 @@ namespace AIS.Narrative
         [Header("Action Cards")]
         public UICardPool ActionCardPool;
         public UICard FocusSlot;
+        public GameObject FocusEmpty;
+        public CardFocusView FocusView;
         public GameObject NoActionCardsDefault;
         public TMP_Text FocusDescriptionText;
 
@@ -180,7 +182,10 @@ namespace AIS.Narrative
             if (!IsValidIndex(index)) { return; }
 
             ActionCardData data = m_SpawnedCardData[index];
-            ActionCardUtility.PopulateCardUI(FocusSlot, data);
+
+            FocusView.PopulateFocusView(data);
+            //ActionCardUtility.PopulateCardUI(FocusSlot, data);
+
             SetFocusSlotVisible(true);
             SetFocusDescription(data.FocusDescription);
         }
@@ -230,10 +235,13 @@ namespace AIS.Narrative
             ActionCardData data = m_SpawnedCardData[index];
             // The FocusSlot stays hidden in click mode — the deck card itself travels to it —
             // but external readers (e.g. the swap deck's FocusSlot.CardID) still need its data.
-            ActionCardUtility.PopulateCardUI(FocusSlot, data);
+            
+            FocusView.PopulateFocusView(data);
+            //ActionCardUtility.PopulateCardUI(FocusSlot, data);
+
             SetFocusDescription(data.FocusDescription);
 
-            m_FocusInRoutine.Replace(this, rect.AnchorPosTo(FocusTargetPosition(rect), FocusSlideAnim));
+            //m_FocusInRoutine.Replace(this, rect.AnchorPosTo(FocusTargetPosition(rect), FocusSlideAnim));
         }
 
         // Starts sliding a card back to its deck position. Only one card can be mid-return;
@@ -267,21 +275,23 @@ namespace AIS.Narrative
         }
 
         // Anchored position (in the card's parent space) that centers the card on the FocusSlot.
-        private Vector2 FocusTargetPosition(RectTransform cardRect)
-        {
-            RectTransform slot = (RectTransform)FocusSlot.transform;
-            Vector3 slotCenter = slot.TransformPoint(slot.rect.center);
-            Vector3 cardCenter = cardRect.TransformPoint(cardRect.rect.center);
-            Vector2 delta = ((RectTransform)cardRect.parent).InverseTransformVector(slotCenter - cardCenter);
-            return cardRect.anchoredPosition + delta;
-        }
+        // private Vector2 FocusTargetPosition(RectTransform cardRect)
+        // {
+        //     RectTransform slot = (RectTransform)FocusSlot.transform;
+        //     Vector3 slotCenter = slot.TransformPoint(slot.rect.center);
+        //     Vector3 cardCenter = cardRect.TransformPoint(cardRect.rect.center);
+        //     Vector2 delta = ((RectTransform)cardRect.parent).InverseTransformVector(slotCenter - cardCenter);
+        //     return cardRect.anchoredPosition + delta;
+        // }
 
         private void SetFocusSlotVisible(bool visible)
         {
-            if (FocusSlot != null)
-            {
-                FocusSlot.gameObject.SetActive(visible);
-            }
+            // if (FocusSlot != null)
+            // {
+            //     FocusSlot.gameObject.SetActive(visible);
+            // }
+            FocusEmpty.SetActive(!visible);
+            FocusView.gameObject.SetActive(visible);
         }
 
         private void SetFocusDescription(string text)
