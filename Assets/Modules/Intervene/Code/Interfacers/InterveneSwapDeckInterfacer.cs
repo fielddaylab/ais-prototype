@@ -27,6 +27,10 @@ namespace AIS.Intervene
 
         [HideInInspector] public bool hasSwapped = false;
 
+        // True while the swap-from-deck panel is open. Used to block "Use Selected" until the
+        // player completes or closes the swap.
+        public bool IsSwapDeckOpen => SwapDeckWidget != null && SwapDeckWidget.gameObject.activeSelf;
+
         private bool m_SwapArmed;
         private StringHash32 m_OrigHandId;
         private StringHash32 m_OrigDeckId;
@@ -54,12 +58,16 @@ namespace AIS.Intervene
         {
             if (!SwapDeckWidget.gameObject.activeSelf) { return; }
 
-            SwapBtn.interactable = !hasSwapped 
+            PlayerHand hand = CardInteractionMgr.Instance.Hand;
+
+            SwapBtn.interactable = !hasSwapped
+                && !hand.SelectionLocked
                 && BudgetUtility.CanAfford(InterveneBudgetInterfacer.Instance, SwapCost);
             ConfirmSwapBtn.interactable = m_SwapArmed;
 
-            if (hasSwapped || m_SwapArmed) { return; }
-            if (SwapDeckWidget.HasFocusedCard && CardInteractionMgr.Instance.Hand.SelectedCardIndices.Count > 0)
+            // locked into the current card while specifying effects -- no swapping allowed
+            if (hasSwapped || m_SwapArmed || hand.SelectionLocked) { return; }
+            if (SwapDeckWidget.HasFocusedCard && hand.SelectedCardIndices.Count > 0)
             {
                 PerformSwap();
             }
@@ -185,6 +193,9 @@ namespace AIS.Intervene
 
         private void SwapCardOnclick()
         {
+            // locked into the current card while specifying effects -- can't open the swap deck
+            if (CardInteractionMgr.Instance.Hand.SelectionLocked) { return; }
+
             StopTravelAnimations();
             if (SwapDeckWidget.gameObject.activeSelf)
             {

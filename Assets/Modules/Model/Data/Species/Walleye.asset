@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c0d1763b6c4f58344831aafea9553b18, type: 3}
-  m_Name: Native-Lake-Trout
+  m_Name: Walleye
   m_EditorClassIdentifier: 
   SpeciesId:
-    m_Source: LakeTrout
-    m_HashValue: 1302934472
-  Sprite: {fileID: 21300000, guid: a5e1e56237f88de48aa9119436e7d4c7, type: 3}
+    m_Source: walleye
+    m_HashValue: 892638634
+  Sprite: {fileID: 21300000, guid: 549bca6bc1128a346ad6e15cc478ecab, type: 3}
