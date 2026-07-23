@@ -1,5 +1,6 @@
 using AIS.Model;
 using BeauUtil;
+using FieldDay;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -118,9 +119,15 @@ namespace AIS.Intervene
                 // await player input
                 if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
                 {
+                    // Convert through the ecosystem camera (the panning/zooming "Main Camera (Intervene)",
+                    // registered as the primary world camera) rather than Camera.main. In this additive
+                    // multi-scene setup several cameras are tagged MainCamera, so Camera.main can resolve to
+                    // a different, non-zooming camera — making the click point drift from the rendered view
+                    // as the player pans or zooms.
+                    Camera cam = Game.Rendering.PrimaryCamera;
                     var screenPos = Input.mousePosition;
-                    screenPos.z = -Camera.main.transform.position.z;
-                    Vector2 mouseWorldPos = Camera.main.ScreenToWorldPoint(screenPos);
+                    screenPos.z = -cam.transform.position.z;
+                    Vector2 mouseWorldPos = cam.ScreenToWorldPoint(screenPos);
                     Collider2D[] hits = Physics2D.OverlapPointAll(mouseWorldPos, ModelTagLayer);
                     Collider2D highestPriorityHit = null;
 

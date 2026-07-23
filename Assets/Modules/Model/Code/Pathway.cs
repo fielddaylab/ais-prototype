@@ -85,8 +85,11 @@ namespace AIS.Model
         Output
     }
 
-    public class Pathway : MonoBehaviour, IReducible, IIncreasable, IRemovable, IRevealable, ITrapModifiable, ISimDetail
+    public class Pathway : MonoBehaviour, IReducible, IIncreasable, IRemovable, IRevealable, ITrapModifiable, IPathwayTrappable, ISimDetail
     {
+        // Effect id for the "trap invasives on move" effect installed by tributary-trap action cards.
+        private const string TRAP_PATHWAY_EFFECT_ID = "pathway-trap";
+
         #region Inspector
 
         public StringHash32 PathwayId;
@@ -358,6 +361,23 @@ namespace AIS.Model
             // Stored on the pathway rather than on its Trapped effects, so a boost played before any
             // trap exists still pays off once one is installed here.
             AddTrapModifier(amts[0], modType);
+
+            return true;
+        }
+
+        // IPathwayTrappable
+
+        public bool TryTrapPathway(int amt)
+        {
+            // When this pathway activates, trap -amt Invasive at the source instead of moving them.
+            // Each play adds its own trap effect, so re-applying the card stacks: two plays trap -2 total.
+            PathwayEffect trapEffect = new PathwayEffect();
+            trapEffect.EffectId = TRAP_PATHWAY_EFFECT_ID;
+            trapEffect.EffectType |= PathwayEffectType.Trapped;
+            trapEffect.TargetType = ActionTarget.Invasive;
+            trapEffect.Value = amt;
+
+            AddEffectOnTryMove(trapEffect);
 
             return true;
         }

@@ -61,6 +61,8 @@ namespace AIS.Model
         public ClusterSlot[] MainSlots; // Slots for active species to occupy
         public ClusterSlot[] SecondarySlots; // Slots for secondary "species" to occupy
 
+        public PolygonCollider2D Collider;
+
         // Standing reproduction adjustments applied by action cards
         public List<ReproductionModifier> ReproductionModifiers = new List<ReproductionModifier>();
 
@@ -81,6 +83,13 @@ namespace AIS.Model
             this.transform.position = setupData.Pos;
             MainRenderer.sprite = setupData.Sprite;
             HighlightRenderer.sprite = setupData.Sprite;
+            if (Collider != null)
+            {
+                // resize collider
+                var obj = Collider.gameObject;
+                Destroy(Collider);
+                obj.AddComponent<PolygonCollider2D>();
+            }
             MainRenderer.sortingOrder = InvasionModelSorting.ECOSYSTEM_SORTING;
 
             MainSlots = new ClusterSlot[setupData.MainSlotPoses.Length];

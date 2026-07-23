@@ -46,6 +46,9 @@ namespace AIS.Intervene
 
         private void HandleUseClicked()
         {
+            // Must finish or close a swap-from-deck before using a selected card.
+            if (InterveneSwapDeckInterfacer.Instance != null && InterveneSwapDeckInterfacer.Instance.IsSwapDeckOpen) { return; }
+
             var selectedCards = CardInteractionMgr.Instance.Hand.GetSelectedCards();
             if (selectedCards.Count == 0) { return; }
 

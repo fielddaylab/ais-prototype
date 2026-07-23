@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 5016278816052344482}
   - component: {fileID: 2156386552082296986}
-  - component: {fileID: 5602661131299254625}
   - component: {fileID: 3085810840006589180}
+  - component: {fileID: 7004973620190047947}
   m_Layer: 20
   m_Name: Model Tag
   m_TagString: Untagged
@@ -86,8 +86,27 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!61 &5602661131299254625
-BoxCollider2D:
+--- !u!114 &3085810840006589180
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1580411397126573502}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 786c19e67f962294eae07603090e01a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TargetType: 16
+  Highlight: {fileID: 2156386552082296986}
+  UIHighlight: {fileID: 0}
+  NormalColor: {r: 0, g: 0.7411765, b: 1, a: 1}
+  SelectedColor: {r: 0, g: 0.8117647, b: 0.047058824, a: 1}
+  QueriableObj: {fileID: 5390868531504753595}
+  IsPhantom: 0
+--- !u!60 &7004973620190047947
+PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -128,28 +147,89 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 2, y: 2.8}
-  m_EdgeRadius: 0
---- !u!114 &3085810840006589180
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1580411397126573502}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 786c19e67f962294eae07603090e01a8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TargetType: 16
-  Highlight: {fileID: 2156386552082296986}
-  UIHighlight: {fileID: 0}
-  NormalColor: {r: 0, g: 0.7411765, b: 1, a: 1}
-  SelectedColor: {r: 0, g: 0.8117647, b: 0.047058824, a: 1}
-  QueriableObj: {fileID: 5390868531504753595}
-  IsPhantom: 0
+  m_Points:
+    m_Paths:
+    - - {x: 0.55, y: -2.52}
+      - {x: 0.75, y: -2.4099998}
+      - {x: 0.87, y: -2.34}
+      - {x: 0.97999996, y: -2.25}
+      - {x: 1.09, y: -2.1499999}
+      - {x: 1.18, y: -2.06}
+      - {x: 1.28, y: -1.93}
+      - {x: 1.38, y: -1.78}
+      - {x: 1.43, y: -1.6999999}
+      - {x: 1.52, y: -1.55}
+      - {x: 1.5699999, y: -1.4399999}
+      - {x: 1.73, y: -1}
+      - {x: 1.75, y: -0.93}
+      - {x: 1.8, y: -0.7}
+      - {x: 1.8299999, y: -0.55}
+      - {x: 1.86, y: -0.44}
+      - {x: 1.88, y: 0.07}
+      - {x: 1.88, y: 0.22}
+      - {x: 1.87, y: 0.5}
+      - {x: 1.8199999, y: 0.83}
+      - {x: 1.79, y: 0.98999995}
+      - {x: 1.76, y: 1.05}
+      - {x: 1.7199999, y: 1.3}
+      - {x: 1.66, y: 1.38}
+      - {x: 1.65, y: 1.4699999}
+      - {x: 1.62, y: 1.55}
+      - {x: 1.5, y: 1.81}
+      - {x: 1.43, y: 1.93}
+      - {x: 1.31, y: 2.1299999}
+      - {x: 1.17, y: 2.29}
+      - {x: 1.11, y: 2.36}
+      - {x: 0.94, y: 2.51}
+      - {x: 0.76, y: 2.6499999}
+      - {x: 0.57, y: 2.74}
+      - {x: 0.45999998, y: 2.77}
+      - {x: 0.39, y: 2.8}
+      - {x: 0.22, y: 2.84}
+      - {x: -0.07, y: 2.84}
+      - {x: -0.16, y: 2.83}
+      - {x: -0.29, y: 2.8}
+      - {x: -0.41, y: 2.75}
+      - {x: -0.47, y: 2.74}
+      - {x: -0.74, y: 2.59}
+      - {x: -0.84, y: 2.51}
+      - {x: -1.01, y: 2.36}
+      - {x: -1.16, y: 2.19}
+      - {x: -1.28, y: 2.02}
+      - {x: -1.3299999, y: 1.92}
+      - {x: -1.4, y: 1.81}
+      - {x: -1.56, y: 1.4699999}
+      - {x: -1.5799999, y: 1.36}
+      - {x: -1.61, y: 1.29}
+      - {x: -1.63, y: 1.23}
+      - {x: -1.66, y: 1.0799999}
+      - {x: -1.6899999, y: 0.98999995}
+      - {x: -1.7199999, y: 0.87}
+      - {x: -1.77, y: 0.5}
+      - {x: -1.77, y: 0.22999999}
+      - {x: -1.78, y: 0.22999999}
+      - {x: -1.78, y: -0.02}
+      - {x: -1.77, y: -0.17999999}
+      - {x: -1.75, y: -0.42999998}
+      - {x: -1.73, y: -0.56}
+      - {x: -1.67, y: -0.82}
+      - {x: -1.65, y: -0.93}
+      - {x: -1.5999999, y: -1.1}
+      - {x: -1.55, y: -1.22}
+      - {x: -1.4699999, y: -1.4399999}
+      - {x: -1.42, y: -1.55}
+      - {x: -1.24, y: -1.8499999}
+      - {x: -1.18, y: -1.93}
+      - {x: -1.02, y: -2.11}
+      - {x: -0.88, y: -2.25}
+      - {x: -0.77, y: -2.34}
+      - {x: -0.59, y: -2.45}
+      - {x: -0.45, y: -2.52}
+      - {x: -0.17, y: -2.6}
+      - {x: 0.17999999, y: -2.6}
+      - {x: 0.34, y: -2.59}
+      - {x: 0.44, y: -2.56}
+  m_UseDelaunayMesh: 0
 --- !u!1 &5390868531504753595
 GameObject:
   m_ObjectHideFlags: 0
@@ -209,6 +289,7 @@ MonoBehaviour:
   SpeciesInEcosystem: []
   MainSlots: []
   SecondarySlots: []
+  Collider: {fileID: 7004973620190047947}
   ReproductionModifiers: []
 --- !u!212 &8485844110561123492
 SpriteRenderer:

@@ -396,6 +396,9 @@ namespace AIS.Intervene
                             case ActionVerb.ModifyTrap:
                                 ActionEffectUtility.TryModifyTrap(target.QueriableObj, verb);
                                 break;
+                            case ActionVerb.TrapPathway:
+                                ActionEffectUtility.TryTrapPathway(target.QueriableObj, verb);
+                                break;
                             default:
                                 continue;
                         }
@@ -463,12 +466,6 @@ namespace AIS.Intervene
                 case "ballast-treatment":
                     ExecuteBallastTreatment();
                     break;
-                case "Action-downstream-tributary-traps":
-                    ExecuteDownstreamTributaryTraps();
-                    break;
-                case "Action-upstream-tributary-traps":
-                    ExecuteUpstreamTributaryTraps();
-                    break;
                 default:
                     Debug.LogWarning("[ActionEffectSpecifierSystem] Tried to execute hard code on " + toExecute.HardCodedId + ", but no handling is in place!");
                     break;
@@ -489,18 +486,6 @@ namespace AIS.Intervene
         {
             // When a "Ballast" pathway activates, -1 Invasive from source instead of moving.
             ExecuteTrapInvasiveOnPathwayType("ballastwater", "ballast-treatment");
-        }
-
-        private void ExecuteDownstreamTributaryTraps()
-        {
-            // When a "Downstream" pathway activates, -1 Invasive from source instead of moving.
-            ExecuteTrapInvasiveOnPathwayType("downstream", "downstream-tributary-traps");
-        }
-
-        private void ExecuteUpstreamTributaryTraps()
-        {
-            // When an "Upstream" pathway activates, -1 Invasive from source instead of moving.
-            ExecuteTrapInvasiveOnPathwayType("upstream", "upstream-tributary-traps");
         }
 
         /// <summary>
@@ -727,6 +712,22 @@ namespace AIS.Intervene
             else
             {
                 Debug.LogWarning("[TrapModifiable] Tried to modify traps on a tag (" + queriable.name + ") that does not support it!");
+                return false;
+            }
+        }
+
+        public static bool TryTrapPathway(GameObject queriable, ActionVerbDetails verbDetails)
+        {
+            var toTrap = queriable.GetComponent<IPathwayTrappable>();
+
+            if (toTrap != null)
+            {
+                int amt = verbDetails.Values.Count > 0 ? (int)verbDetails.Values[0] : 1;
+                return toTrap.TryTrapPathway(amt);
+            }
+            else
+            {
+                Debug.LogWarning("[PathwayTrappable] Tried to trap on a tag (" + queriable.name + ") that does not support it!");
                 return false;
             }
         }
