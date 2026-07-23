@@ -19,6 +19,8 @@ namespace AIS.Narrative
 
         [Header("Action Cards")]
         public UICardPool ActionCardPool;
+        public RectTransform FocusedCard;
+        private int _lastFocused = -1;
         public UICard FocusSlot;
         public GameObject FocusEmpty;
         public CardFocusView FocusView;
@@ -184,6 +186,11 @@ namespace AIS.Narrative
             ActionCardData data = m_SpawnedCardData[index];
 
             FocusView.PopulateFocusView(data);
+
+            GameObject hoverCard = ActionCardPool.ActiveObjects[index].gameObject;
+            hoverCard.transform.parent = FocusedCard;
+            _lastFocused = index;
+            
             //ActionCardUtility.PopulateCardUI(FocusSlot, data);
 
             SetFocusSlotVisible(true);
@@ -192,6 +199,12 @@ namespace AIS.Narrative
 
         private void HandleCardHoverExit(int index)
         {
+            if (_lastFocused != -1) {
+                GameObject hoverCard = FocusedCard.GetChild(0).gameObject;
+                hoverCard.transform.parent = ActionCardPool.DefaultSpawnTransform;
+                hoverCard.transform.SetSiblingIndex(_lastFocused);
+            }
+            
             ClearFocus();
         }
 

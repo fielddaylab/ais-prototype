@@ -4,7 +4,7 @@
 @title		Use Lampricide
 @suit		tech
 @desc		-2M Invasive Lamprey
-@focusdescription [Placeholder] Lampricide is a lamprey poison that, when applied to lamprey, poisons them until they are poisoned. Poisoning lamprey is this fashion results in them being dead.
+@focusdescription [Placeholder] Lampricide is a lamprey poison that, when applied to lamprey, poisons them until they are poisoned. Poisoning lamprey is this fashion results in them being dead from poison.
 @path		temp.png
 @cost		1
 
