@@ -133,6 +133,7 @@ $else
        $call UnlockLocation(ArmyCorps)
        $call SetTravelTime(ArmyCorps, 1)
        $call EnableMapButton()
+       $call CheckIfOutOfTime()
 $endif
 
 

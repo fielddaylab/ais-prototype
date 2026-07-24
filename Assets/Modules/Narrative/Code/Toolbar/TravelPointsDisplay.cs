@@ -76,7 +76,14 @@ namespace AIS.Narrative
             RectTransform currentLocTransform = locations[index].MainImg.GetComponent<RectTransform>();
             if (pointerTransform != null && currentLocTransform != null)
             {
-                pointerTransform.position = currentLocTransform.position;
+                RectTransform parent = (RectTransform)pointerTransform.parent;
+
+                // Convert the location's world position into the pointer's parent local space
+                Vector3 world = currentLocTransform.position;
+                Vector2 local = parent.InverseTransformPoint(world);
+
+                local.y += currentLocTransform.rect.height * 0.5f;
+                pointerTransform.anchoredPosition = local;
             }
         }
 
@@ -219,6 +226,21 @@ namespace AIS.Narrative
 
             // bool locationChanged = currentLocationIdx != selectedLocationIdx;
             MapLocation location = locations[selectedLocationIdx].LocationName;
+
+            // If the destination costs more time than the player has, enter the OutOfTime
+            // fallback instead of traveling (do not move, spend time, or trigger the location).
+            if (currentLocationIdx != selectedLocationIdx
+                && Game.SharedState.TryGet(out PlayerInventory inv)
+                && inv.TimeRemaining < locations[selectedLocationIdx].Chunks)
+            {
+                if (PathLine != null)
+                {
+                    PathLine.gameObject.SetActive(false);
+                }
+                ScriptUtility.SpawnThread(DialogueChoiceUtility.OutOfTimeNodeName);
+                return;
+            }
+
             if (PathLine != null)
             {
                 PathLine.gameObject.SetActive(false);

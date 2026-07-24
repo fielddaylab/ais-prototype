@@ -523,7 +523,6 @@ GameObject:
   - component: {fileID: 1735002430}
   - component: {fileID: 1735002429}
   - component: {fileID: 1735002428}
-  - component: {fileID: 1735002427}
   - component: {fileID: 1735002426}
   - component: {fileID: 1735002425}
   m_Layer: 0
@@ -566,18 +565,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DepthTest: 8
---- !u!114 &1735002427
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1735002424}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 40c018c42a0a1434c9573b5326b0a779, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!81 &1735002428
 AudioListener:
   m_ObjectHideFlags: 0
@@ -716,6 +703,14 @@ PrefabInstance:
       propertyPath: Details.Array.size
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7867884430833366825, guid: 878caef155bfd84448b843d5305ddbc1, type: 3}
+      propertyPath: m_AllSpeciesDefs.Array.data[8]
+      value: 
+      objectReference: {fileID: 11400000, guid: ede39d3681b120a4d896e554ef128866, type: 2}
+    - target: {fileID: 7867884430833366825, guid: 878caef155bfd84448b843d5305ddbc1, type: 3}
+      propertyPath: m_AllSpeciesDefs.Array.data[9]
+      value: 
+      objectReference: {fileID: 11400000, guid: ede39d3681b120a4d896e554ef128866, type: 2}
     - target: {fileID: 8844354057996248262, guid: 878caef155bfd84448b843d5305ddbc1, type: 3}
       propertyPath: m_Camera
       value: 

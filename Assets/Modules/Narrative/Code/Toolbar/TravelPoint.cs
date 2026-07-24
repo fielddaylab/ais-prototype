@@ -29,7 +29,7 @@ namespace AIS.Narrative
         {
             if (m_TimeChunk == null)
             {
-                m_TimeChunk = TimeDisplay.GetComponent<ToolbarTimeChunk>();
+                m_TimeChunk = TimeDisplay.GetComponentInChildren<ToolbarTimeChunk>();
                 if (m_TimeChunk == null)
                 {
                     Debug.LogWarning($"[TravelPoint] {name}: Time object has no ToolbarTimeChunk", this);

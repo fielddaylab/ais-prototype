@@ -1,3 +1,5 @@
+using FieldDay;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -44,14 +46,27 @@ namespace AIS.Intervene
 
         private void HandleUseClicked()
         {
+            // Must finish or close a swap-from-deck before using a selected card.
+            if (InterveneSwapDeckInterfacer.Instance != null && InterveneSwapDeckInterfacer.Instance.IsSwapDeckOpen) { return; }
+
             var selectedCards = CardInteractionMgr.Instance.Hand.GetSelectedCards();
             if (selectedCards.Count == 0) { return; }
 
             if (!BudgetUtility.CanAfford(InterveneBudgetInterfacer.Instance, selectedCards))
             {
-                UseSelectedBtn.interactable = false;
+                //UseSelectedBtn.interactable = false;
                 return; 
             }
+
+            //if (Game.SharedState.TryGet(out ActionCardsState cardsState))
+            //{
+            //    if (cardsState.AllActionCards.TryGetValue(selectedCards[0].CardID, out ActionCardData data))
+            //    {
+            //        BudgetUtility.Spend(InterveneBudgetInterfacer.Instance, data.Cost);
+            //    }
+            //}
+            //CardInteractionMgr.Instance.Hand.ClearSelections();
+            UseSelectedBtn.interactable = InterveneBudgetInterfacer.Instance.WorkingBudget.Budget > 0 ? true : false;
 
             AisGame.Events.Dispatch(InterveneEvents.OnEffectSpecifyBegin);
         }

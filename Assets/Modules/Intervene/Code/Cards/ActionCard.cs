@@ -25,6 +25,7 @@ namespace AIS.Intervene {
         Match,
         ModifyReproduction,
         ModifyTrap,
+        TrapPathway,
     }
 
     [Flags]
@@ -430,6 +431,7 @@ namespace AIS.Intervene {
         public static EcosystemScope GetTagScope(ModelTag tag)
         {
             Ecosystem eco = null;
+            if (tag.QueriableObj == null) { return EcosystemScope.None; }
 
             if ((tag.TargetType & ActionTarget.Ecosystem) != 0)
             {
