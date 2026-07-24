@@ -44,6 +44,7 @@ namespace AIS.Intervene {
             HideSimPhase();
 
             AisGame.Events.Register(InterveneEvents.OnInterveneRestart, HandleInterveneRestart);
+            AisGame.Events.Register(InterveneEvents.OnInterveneEnd, HandleInterveneEnd);
         }
 
         private void OnDisable()
@@ -55,6 +56,7 @@ namespace AIS.Intervene {
             m_DefeatBtn.onClick.RemoveAllListeners();
 
             AisGame.Events.Deregister(InterveneEvents.OnInterveneRestart, HandleInterveneRestart);
+            AisGame.Events.Deregister(InterveneEvents.OnInterveneEnd, HandleInterveneEnd);
         }
         
         public void ShowSimPhase()
@@ -89,6 +91,12 @@ namespace AIS.Intervene {
         private void HandleDeclareDefeatClicked()
         {
             m_EndPanel.SetVictory(false);
+            m_EndPanel.Show();
+        }
+
+        private void HandleInterveneEnd()
+        {
+            m_EndPanel.ShowResults(InterveneRoundCounterInterfacer.Instance.LastResult);
             m_EndPanel.Show();
         }
 

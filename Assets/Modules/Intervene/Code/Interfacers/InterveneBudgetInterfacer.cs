@@ -98,6 +98,7 @@ namespace AIS.Intervene
             {
                 for (int i = WorkingBudget.Budget - 1; i >= WorkingBudget.Budget + amt; i--)
                 {
+                    if (i < 0) { continue; }
                     var img = BudgetGroupTransform.GetChild(i).GetComponentInChildren<Image>();
                     if (img != null) img.color = Color.grey;
                 }

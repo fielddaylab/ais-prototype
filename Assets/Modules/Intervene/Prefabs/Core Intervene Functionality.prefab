@@ -6005,6 +6005,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   RoundCounter: {fileID: 563045624118204748}
   Turn: {fileID: 1227118204696108674}
+  m_MaxRounds: 5
 --- !u!1 &7403069694935247452
 GameObject:
   m_ObjectHideFlags: 0
