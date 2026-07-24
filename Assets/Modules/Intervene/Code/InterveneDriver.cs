@@ -57,6 +57,7 @@ namespace AIS.Intervene {
 
         private IEnumerator TickSimRoutine()
         {
+            InterveneUI.Instance.SetSimInProgress(true);
             InterveneUI.Instance.ShowSimPhase();
 
             // predator / prey dynamics
@@ -129,8 +130,8 @@ namespace AIS.Intervene {
             InterveneUI.Instance.HideSimPhase();
 
             Debug.Log("[InterveneDriver] Sim Progressed by 1 tick");
+            InterveneUI.Instance.SetSimInProgress(false);
             AisGame.Events.Dispatch(InterveneEvents.OnEndTurn);
-
         }
 
         #region Simulate & Modify

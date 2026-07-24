@@ -18,6 +18,7 @@ namespace AIS.Narrative {
         public CanvasGroup ActionSlot;
         public CanvasGroup ActionContents;
         public Image SlotImg;
+        public Image CardPairIcon;
     }
 
     /// <summary>
@@ -36,7 +37,15 @@ namespace AIS.Narrative {
             }
 
             if (widget.Illustration != null) {
-                widget.Illustration.sprite = data.Illustration != null ? data.Illustration.sprite : null;
+                //var locationDB = Find.GlobalAsset<LocationVisualsDB>();
+                //widget.Illustration.sprite = LocationVisualsDBUtility.LookupLocationSprite(locationDB, data.ActivateLocation);
+                widget.Illustration.enabled = false; // turn off based on new ui changes
+
+            }
+
+            if (widget.CardPairIcon != null)
+            {
+                widget.CardPairIcon.enabled = false;
             }
 
             if (widget.Content != null) {

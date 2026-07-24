@@ -48,6 +48,8 @@ namespace AIS.Intervene
         {
             // Must finish or close a swap-from-deck before using a selected card.
             if (InterveneSwapDeckInterfacer.Instance != null && InterveneSwapDeckInterfacer.Instance.IsSwapDeckOpen) { return; }
+            // Cannot use selected cards during sim phases
+            if (InterveneUI.Instance.SimInProgress) { return; }
 
             var selectedCards = CardInteractionMgr.Instance.Hand.GetSelectedCards();
             if (selectedCards.Count == 0) { return; }
