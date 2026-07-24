@@ -16,18 +16,18 @@
 ::Action-awareness-campaign
 @title		Outreach Campaign
 @suit		communicate
-@desc		+1 Awareness
+@desc		+1 Budget
 @path		temp.png
 @cost		2
 
 @effect
-    target: aware
+    target: budget
     verb: increase, 1, fixed
     specificity: all
 
-@overrideEffect if social > 0
-    desc: Additional +1 Awareness
-    target: aware
+@overrideEffect if social > 2
+    desc: Additional +1 Budget
+    target: budget
     verb: increase, 2, fixed
     specificity: all
 
