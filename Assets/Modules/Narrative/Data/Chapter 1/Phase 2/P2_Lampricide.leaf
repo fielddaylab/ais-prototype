@@ -224,7 +224,7 @@ $goto .End
 @exposed
 @tracked
 // Unlock next locations
-(ArmyCorps)    // P2_Outreach
+$call UnlockLocation(ArmyCorps)    // P2_Outreach
 
 // Mark end of thread
 $set global:currentThread = "NONE"

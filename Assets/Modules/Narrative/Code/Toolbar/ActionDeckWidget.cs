@@ -19,7 +19,11 @@ namespace AIS.Narrative
 
         [Header("Action Cards")]
         public UICardPool ActionCardPool;
+        public RectTransform FocusedCard;
+        private int _lastFocused = -1;
         public UICard FocusSlot;
+        public GameObject FocusEmpty;
+        public CardFocusView FocusView;
         public GameObject NoActionCardsDefault;
         public TMP_Text FocusDescriptionText;
 
@@ -180,13 +184,29 @@ namespace AIS.Narrative
             if (!IsValidIndex(index)) { return; }
 
             ActionCardData data = m_SpawnedCardData[index];
-            ActionCardUtility.PopulateCardUI(FocusSlot, data);
+
+            FocusView.PopulateFocusView(data);
+
+            GameObject hoverCard = ActionCardPool.ActiveObjects[index].gameObject;
+            hoverCard.transform.parent = FocusedCard;
+            _lastFocused = index;
+            
+            if (ClickToFocus) {
+                ActionCardUtility.PopulateCardUI(FocusSlot, data);
+            }
+
             SetFocusSlotVisible(true);
             SetFocusDescription(data.FocusDescription);
         }
 
         private void HandleCardHoverExit(int index)
         {
+            if (_lastFocused != -1) {
+                GameObject hoverCard = FocusedCard.GetChild(0).gameObject;
+                hoverCard.transform.parent = ActionCardPool.DefaultSpawnTransform;
+                hoverCard.transform.SetSiblingIndex(_lastFocused);
+            }
+            
             ClearFocus();
         }
 
@@ -230,10 +250,15 @@ namespace AIS.Narrative
             ActionCardData data = m_SpawnedCardData[index];
             // The FocusSlot stays hidden in click mode — the deck card itself travels to it —
             // but external readers (e.g. the swap deck's FocusSlot.CardID) still need its data.
-            ActionCardUtility.PopulateCardUI(FocusSlot, data);
+            
+            FocusView.PopulateFocusView(data);
+            if (ClickToFocus) {
+                ActionCardUtility.PopulateCardUI(FocusSlot, data);
+            }
+
             SetFocusDescription(data.FocusDescription);
 
-            m_FocusInRoutine.Replace(this, rect.AnchorPosTo(FocusTargetPosition(rect), FocusSlideAnim));
+            if (ClickToFocus) m_FocusInRoutine.Replace(this, rect.AnchorPosTo(FocusTargetPosition(rect), FocusSlideAnim));
         }
 
         // Starts sliding a card back to its deck position. Only one card can be mid-return;
@@ -278,10 +303,13 @@ namespace AIS.Narrative
 
         private void SetFocusSlotVisible(bool visible)
         {
-            if (FocusSlot != null)
+            if (FocusSlot != null && ClickToFocus)
             {
                 FocusSlot.gameObject.SetActive(visible);
             }
+            FocusEmpty.SetActive(!visible);
+            if (ClickToFocus) FocusEmpty.SetActive(false);
+            FocusView.gameObject.SetActive(visible);
         }
 
         private void SetFocusDescription(string text)
