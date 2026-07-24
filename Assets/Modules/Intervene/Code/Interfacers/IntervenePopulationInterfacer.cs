@@ -12,23 +12,24 @@ namespace AIS.Intervene
 {
     public class IntervenePopulationInterfacer : MonoBehaviour
     {
-        public static IntervenePopulationInterfacer Instance;
+        public GameObject PopulationGroupPrefab;
+        public Transform PopulationGroupParent;
+        private IntervenePopulationGroup[] populationGroups;
 
-        public GameObject PopulationStatus;
-
-        private void Awake()
+        public void Setup()
         {
-            Instance = this;
+            // TODO!
         }
 
-        public void LoadPopulation()
+        public void UpdatePopulation()
         {
-            Instance.gameObject.SetActive(true);
+            // TODO!
+            gameObject.SetActive(true);
         }
 
         public void Hide()
         {
-            Instance.gameObject.SetActive(false);
+            gameObject.SetActive(false);
         }
     }
 }
