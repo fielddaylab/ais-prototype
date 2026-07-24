@@ -318,7 +318,7 @@ MonoBehaviour:
     y: 0
     width: 1
     height: 1
-  MinPadding: {x: 128, y: 0}
+  MinPadding: {x: 0, y: 0}
   MaxPadding: {x: 0, y: 0}
 --- !u!1 &665037694
 GameObject:
