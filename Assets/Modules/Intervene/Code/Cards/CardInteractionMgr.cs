@@ -163,16 +163,19 @@ namespace AIS.Intervene
 
         private void HandleOnEffectSpecifyBegin()
         {
-            
+            // Player committed to their selection -- lock it in until the effects resolve or cancel.
+            Hand.SelectionLocked = true;
         }
 
         private void HandleOnEffectSpecifyCancel()
         {
+            Hand.SelectionLocked = false;
             Hand.ClearSelections();
         }
 
         private void HandleOnEffectSpecifyConfirm()
         {
+            Hand.SelectionLocked = false;
             //DiscardSelectedCards();
         }
 
@@ -182,6 +185,7 @@ namespace AIS.Intervene
 
         private void ToggleSelectHandAtIndex(int index)
         {
+            if (Hand.SelectionLocked) { return; }   // locked in while specifying effects
             Hand.ToggleSelectAtIndex(index);
         }
 

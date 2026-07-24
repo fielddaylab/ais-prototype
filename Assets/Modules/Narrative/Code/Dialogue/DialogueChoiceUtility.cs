@@ -1,4 +1,5 @@
 using BeauUtil;
+using BeauUtil.Debugger;
 using FieldDay;
 using FieldDay.Scripting;
 using Leaf;
@@ -84,6 +85,24 @@ namespace AIS.Narrative {
             choice.AddOption(new LeafChoice.Option(nodeId, default(StringHash32)));
             choice.Offer();
             choice.Choose(0);
+        }
+
+        /// <summary>
+        /// Redirects a running thread to its resolved fallback node (package-local override
+        /// preferred, else the global one). Returns false if no fallback node exists.
+        /// </summary>
+        static public bool GotoFallback(ScriptThread thread, bool outOfTime) {
+            ScriptNode currentNode = thread.PeekNode();
+            StringHash32 fallbackId = ResolveFallbackNode(currentNode, outOfTime);
+            if (fallbackId.IsEmpty) {
+                Log.Error("[DialogueChoiceUtility] No fallback node found from '{0}'", currentNode?.Id());
+                return false;
+            }
+            if (ScriptDBUtility.TryLookupNode(ScriptUtility.DB, currentNode, fallbackId, out ScriptNode fallbackNode)) {
+                thread.GotoNode(fallbackNode);
+                return true;
+            }
+            return false;
         }
     }
 }

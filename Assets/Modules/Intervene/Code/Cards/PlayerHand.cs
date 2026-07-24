@@ -1,6 +1,7 @@
 using AIS.Narrative;
 using BeauUtil;
 using FieldDay;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,7 +15,14 @@ namespace AIS.Intervene
         public List<int> SelectedCardIndices = new List<int>();
         public bool AllowMultiSelect = false;
 
+        // While true, the player is locked into their current selection (they have committed to
+        // specifying an action's effects). Card clicks in hand are ignored until the effects are
+        // confirmed or canceled. See CardInteractionMgr effect-specify handlers.
+        public bool SelectionLocked = false;
+
         public System.Action<StringHash32> OnCardClickedOverride;
+
+        public CardInteractionUI cardInterationUI;
 
         public void AddActionCard(SerializedHash32 actionId)
         {
@@ -38,6 +46,7 @@ namespace AIS.Intervene
                             OnCardClickedOverride(newCard.CardID);   // selection-mode path
                             return;
                         }
+                        if (SelectionLocked) { return; }   // locked in while specifying effects
                         int index = PlayerCards.IndexOf(newCard);
                         if (index >= 0) { ToggleSelectAtIndex(index); }
                     });
@@ -81,9 +90,20 @@ namespace AIS.Intervene
 
         public void ToggleSelectAtIndex(int index)
         {
+            cardInterationUI.UseSelectedBtn.interactable = 
+                InterveneBudgetInterfacer.Instance.WorkingBudget.Budget > 0 ? true : false;
+
             if (SelectedCardIndices.Contains(index))
             {
                 DeselectCard(index);
+                if (Game.SharedState.TryGet(out ActionCardsState cardsState))
+                {
+                    if (cardsState.AllActionCards.TryGetValue(PlayerCards[index].CardID, out ActionCardData data))
+                    {
+                        var cost = Math.Clamp(data.Cost, 0, InterveneBudgetInterfacer.Instance.WorkingBudget.Budget);
+                        BudgetUtility.UpdateBudgetVisualsForSelectedCard(InterveneBudgetInterfacer.Instance, cost);
+                    }
+                }
             }
             else if (AllowMultiSelect)
             {
@@ -92,6 +112,17 @@ namespace AIS.Intervene
             else
             {
                 SingleSelectCard(index);
+                if (Game.SharedState.TryGet(out ActionCardsState cardsState))
+                {
+                    if (cardsState.AllActionCards.TryGetValue(PlayerCards[index].CardID, out ActionCardData data))
+                    {
+                        BudgetUtility.UpdateBudgetVisualsForSelectedCard(InterveneBudgetInterfacer.Instance, - data.Cost);
+                        if (!BudgetUtility.CanAfford(InterveneBudgetInterfacer.Instance, data.Cost))
+                        {
+                            cardInterationUI.UseSelectedBtn.interactable = false;
+                        }
+                    }
+                }
             }
 
             UpdateSelectVisuals();
@@ -147,20 +178,20 @@ namespace AIS.Intervene
             {
                 selected.Add(PlayerCards[index]);
 
-                if (BudgetUtility.CanAfford(InterveneBudgetInterfacer.Instance, selected))
-                {
-                    for (int i = InterveneBudgetInterfacer.Instance.WorkingBudget.Budget - 1; i >= 0 ; i--)
-                    {
-                        InterveneBudgetInterfacer.Instance.BudgetGroupTransform.GetChild(i).GetComponent<Image>().color = Color.white;
-                    }
-                }
-                else
-                {
-                    for (int i = InterveneBudgetInterfacer.Instance.WorkingBudget.Budget - 1; i >= 0 ; i--)
-                    {
-                        InterveneBudgetInterfacer.Instance.BudgetGroupTransform.GetChild(i).GetComponent<Image>().color = Color.red;
-                    }
-                }
+                //if (BudgetUtility.CanAfford(InterveneBudgetInterfacer.Instance, selected))
+                //{
+                //    for (int i = InterveneBudgetInterfacer.Instance.WorkingBudget.Budget - 1; i >= 0 ; i--)
+                //    {
+                //        InterveneBudgetInterfacer.Instance.BudgetGroupTransform.GetChild(i).GetComponent<Image>().color = Color.white;
+                //    }
+                //}
+                //else
+                //{
+                //    for (int i = InterveneBudgetInterfacer.Instance.WorkingBudget.Budget - 1; i >= 0 ; i--)
+                //    {
+                //        InterveneBudgetInterfacer.Instance.BudgetGroupTransform.GetChild(i).GetComponent<Image>().color = Color.red;
+                //    }
+                //}
             }
 
             return selected;

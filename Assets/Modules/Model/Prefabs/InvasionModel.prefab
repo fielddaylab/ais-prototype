@@ -500,11 +500,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_AllSpeciesDefs:
-  - {fileID: 11400000, guid: fc4f9edc24e16b6498079c5399329ad6, type: 2}
   - {fileID: 11400000, guid: 00074f573a8314145b68f35bed9e0361, type: 2}
   - {fileID: 11400000, guid: f68a740d609102141a8bc1a07afd97d1, type: 2}
-  - {fileID: 11400000, guid: 6239a7ea86bc7b246a8a5797c6e01449, type: 2}
-  - {fileID: 11400000, guid: 95e00717f53a2be4981c112df0ec443a, type: 2}
   - {fileID: 11400000, guid: 3d735810310225542a8d98a5542ea32a, type: 2}
   - {fileID: 11400000, guid: 1cafaa9a8600cc846894a674fe613016, type: 2}
   - {fileID: 11400000, guid: d763cc96cf0b3d14ba733a039b975c8c, type: 2}

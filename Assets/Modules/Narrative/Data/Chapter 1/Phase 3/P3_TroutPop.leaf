@@ -50,6 +50,7 @@ $endif
 $call UnlockLocation(FishHatchery)
 $call SetTravelTime(FishHatchery, 1)
 $call EnableMapButton()
+$call CheckIfOutOfTime()
 
 
 :: AtFishHatchery

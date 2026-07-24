@@ -60,7 +60,7 @@ $call GiveEvidenceChip("Evidence-barrier")
 $call UnlockLocation(FishAndWildlife)
 $call SetTravelTime(FishAndWildlife, 1)
 $call EnableMapButton()
-
+$call CheckIfOutOfTime()
 
 
 :: AtFishAndWildlife

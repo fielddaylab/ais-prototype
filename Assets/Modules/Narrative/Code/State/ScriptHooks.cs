@@ -381,6 +381,16 @@ namespace AIS.Narrative {
             return Find.State<PlayerInventory>().TimeRemaining <= 0;
         }
 
+        // If the player is out of time, redirect the current thread to its OutOfTime fallback
+        // node (honoring any per-file <basePath>.Fallback.OutOfTime override); otherwise a no-op.
+        [LeafMember("CheckIfOutOfTime")]
+        static public void CheckIfOutOfTime([BindThread] ScriptThread thread) {
+            if (!IsOutOfTime()) {
+                return;
+            }
+            DialogueChoiceUtility.GotoFallback(thread, true);
+        }
+
         [LeafMember("HasChoices")]
         static public bool HasChoices([BindThread] ScriptThread thread) {
             return thread.AvailableOptionCount(DialogueChoiceUtility.SelectablePredicate) > 0;
