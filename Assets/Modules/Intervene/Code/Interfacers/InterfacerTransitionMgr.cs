@@ -107,7 +107,7 @@ namespace AIS.Intervene
         private void HandleInterveneRestart()
         {
             Load();
-            PopulationPanel.UpdatePopulation();
+            PopulationPanel.Show();
         }
     }
 }

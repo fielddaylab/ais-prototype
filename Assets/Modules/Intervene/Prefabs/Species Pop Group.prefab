@@ -204,7 +204,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 12
+  m_text: 12M
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 51bfe775e743dae45bcd384d27d966a8, type: 2}
   m_sharedMaterial: {fileID: 1979487466454423167, guid: 51bfe775e743dae45bcd384d27d966a8, type: 2}
@@ -343,9 +343,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 04c13592ba241324fb34d82ce2ea7843, type: 3}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -449,6 +449,8 @@ MonoBehaviour:
   PopulationImage: {fileID: 4240135048591430548}
   PopulationNumber: {fileID: 7542303799414359106}
   PopulationTrendImage: {fileID: 5771065074311774959}
+  UpTrend: {fileID: 21300000, guid: b17269f826509fb47aa0cf914f642a0f, type: 3}
+  DownTrend: {fileID: 21300000, guid: 7ddc95c863814ff4e9e078a90dee5731, type: 3}
 --- !u!1 &6772061362571714369
 GameObject:
   m_ObjectHideFlags: 0
@@ -483,7 +485,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 72.5, y: 0}
+  m_AnchoredPosition: {x: 80.5, y: 0}
   m_SizeDelta: {x: 18.52, y: 18.52}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7987097853309016331
