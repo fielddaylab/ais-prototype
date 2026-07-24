@@ -25,6 +25,8 @@ namespace AIS.Intervene {
         [SerializeField] private Button m_DefeatBtn;
         [SerializeField] private EndIntervenePanel m_EndPanel;
 
+        public bool SimInProgress;
+
         public GraphicRaycaster Raycaster;
 
         private void Awake()
@@ -45,6 +47,11 @@ namespace AIS.Intervene {
 
             AisGame.Events.Register(InterveneEvents.OnInterveneRestart, HandleInterveneRestart);
             AisGame.Events.Register(InterveneEvents.OnInterveneEnd, HandleInterveneEnd);
+
+            // Hide the End Turn button while the player is specifying a selected card's effects.
+            AisGame.Events.Register(InterveneEvents.OnEffectSpecifyBegin, HandleEffectSpecifyBegin);
+            AisGame.Events.Register(InterveneEvents.OnEffectSpecifyConfirm, HandleEffectSpecifyEnd);
+            AisGame.Events.Register(InterveneEvents.OnEffectSpecifyCancel, HandleEffectSpecifyEnd);
         }
 
         private void OnDisable()
@@ -57,6 +64,15 @@ namespace AIS.Intervene {
 
             AisGame.Events.Deregister(InterveneEvents.OnInterveneRestart, HandleInterveneRestart);
             AisGame.Events.Deregister(InterveneEvents.OnInterveneEnd, HandleInterveneEnd);
+
+            AisGame.Events.Deregister(InterveneEvents.OnEffectSpecifyBegin, HandleEffectSpecifyBegin);
+            AisGame.Events.Deregister(InterveneEvents.OnEffectSpecifyConfirm, HandleEffectSpecifyEnd);
+            AisGame.Events.Deregister(InterveneEvents.OnEffectSpecifyCancel, HandleEffectSpecifyEnd);
+        }
+
+        public void SetSimInProgress(bool inProgress)
+        {
+            SimInProgress = inProgress;
         }
         
         public void ShowSimPhase()
@@ -92,6 +108,16 @@ namespace AIS.Intervene {
         {
             m_EndPanel.SetVictory(false);
             m_EndPanel.Show();
+        }
+
+        private void HandleEffectSpecifyBegin()
+        {
+            m_TickSimButton.gameObject.SetActive(false);
+        }
+
+        private void HandleEffectSpecifyEnd()
+        {
+            m_TickSimButton.gameObject.SetActive(true);
         }
 
         private void HandleInterveneEnd()
