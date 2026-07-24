@@ -16,16 +16,25 @@ namespace AIS.Intervene
         
         public GameObject PopulationGroupPrefab;
         public Transform PopulationGroupParent;
-        private IntervenePopulationGroup[] populationGroups;
+        private IntervenePopulationGroup[] populationGroups = null;
 
         public void Start()
         {
             AisGame.Events.Register(InterveneEvents.OnPopulationSnapshotRecorded, UpdatePopulation);
         }
 
-        public void Setup()
+        public void Setup(List<PopulationTrend> populationTrends)
         {
-            // TODO!
+            populationGroups = new IntervenePopulationGroup[populationTrends.Count];
+
+            for (int i = 0; i < populationTrends.Count; i++)
+            {
+                GameObject popObject = Instantiate(PopulationGroupPrefab);
+                popObject.transform.SetParent(PopulationGroupParent, false);
+
+                IntervenePopulationGroup popGroup = popObject.GetComponent<IntervenePopulationGroup>();
+                populationGroups[i] = popGroup;
+            }
         }
 
         public void UpdatePopulation()
@@ -33,16 +42,13 @@ namespace AIS.Intervene
             var evaluator = InterveneRoundCounterInterfacer.Instance.Evaluator;
             var populationTrends = evaluator.GetTrends(1); // only 1 round of trends
 
-            Clear();
+            if (populationGroups == null) Setup(populationTrends);
 
             for (int i = 0; i < populationTrends.Count; i++)
             {
                 PopulationTrend trend = populationTrends[i];
-                GameObject popObject = Instantiate(PopulationGroupPrefab);
-                popObject.transform.SetParent(PopulationGroupParent, false);
 
-                IntervenePopulationGroup popGroup = popObject.GetComponent<IntervenePopulationGroup>();
-                popGroup.PopulateInfo(trend);
+                populationGroups[i].PopulateInfo(trend);
             }
 
             gameObject.SetActive(true);
