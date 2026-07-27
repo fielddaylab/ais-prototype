@@ -1,3 +1,4 @@
+using FieldDay;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -57,6 +58,15 @@ namespace AIS.Intervene
         private void HandleConfirmClicked()
         {
             SetUIElementsActive(false);
+            if (Game.SharedState.TryGet(out ActionCardsState cardsState))
+            {
+                var selectedCards = CardInteractionMgr.Instance.Hand.GetSelectedCards();
+                if (selectedCards.Count != 0 && cardsState.AllActionCards.TryGetValue(selectedCards[0].CardID, out ActionCardData data))
+                {
+                    BudgetUtility.Spend(InterveneBudgetInterfacer.Instance, data.Cost);
+                    CardInteractionMgr.Instance.Hand.ClearSelections();
+                }
+            }
 
             AisGame.Events.Dispatch(InterveneEvents.OnEffectSpecifyConfirm);
         }
@@ -64,6 +74,7 @@ namespace AIS.Intervene
         private void HandleCancelAllClicked()
         {
             SetUIElementsActive(false);
+            CardInteractionMgr.Instance.Hand.ToggleSelectAtIndex(CardInteractionMgr.Instance.Hand.SelectedCardIndices[0]);
 
             AisGame.Events.Dispatch(InterveneEvents.OnEffectSpecifyCancel);
         }

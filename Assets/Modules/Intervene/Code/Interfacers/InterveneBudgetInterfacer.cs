@@ -1,7 +1,10 @@
 using BeauRoutine;
 using BeauUtil;
+using FieldDay;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -54,7 +57,7 @@ namespace AIS.Intervene
         public void LoadPlayerBudget(int budgetLevel)
         {
             ClearBudget();
-            AdjustBudgetLevel(budgetLevel);
+            AdjustBudgetLevel(StartingBudget);
             BestowBudget();
         }
 
@@ -95,6 +98,7 @@ namespace AIS.Intervene
             {
                 for (int i = WorkingBudget.Budget - 1; i >= WorkingBudget.Budget + amt; i--)
                 {
+                    if (i < 0) { continue; }
                     var img = BudgetGroupTransform.GetChild(i).GetComponentInChildren<Image>();
                     if (img != null) img.color = Color.grey;
                 }
@@ -204,7 +208,13 @@ namespace AIS.Intervene
 
             foreach (var card in toAfford)
             {
-                totalCost += card.GetAdjustedCost();
+                if (Game.SharedState.TryGet(out ActionCardsState cardsState))
+                {
+                    if (cardsState.AllActionCards.TryGetValue(card.CardID, out ActionCardData data))
+                    {
+                        totalCost += data.Cost;
+                    }
+                }
             }
 
             return totalCost <= budget.WorkingBudget.Budget;
@@ -218,6 +228,36 @@ namespace AIS.Intervene
         public static void Spend(InterveneBudgetInterfacer budget, int amt)
         {
             budget.Spend(amt);
+        }
+
+        public static void UpdateBudgetVisualsForSelectedCard(InterveneBudgetInterfacer budget, int cost)
+        {
+            if (CanAfford(budget, Math.Abs(cost)) && cost < 0) // going to spend budget, turn yellow budget to white
+            {
+                for (int i = budget.WorkingBudget.Budget - 1; i >= budget.WorkingBudget.Budget + cost; i--)
+                {
+                    var img = budget.BudgetGroupTransform.GetChild(i).GetComponentInChildren<Image>();
+                    if (img != null) img.color = Color.white;
+                }
+            }
+
+            else if (cost >= 0) // going to return budget, turn white budget back to yellow
+            {
+                for (int i = budget.WorkingBudget.Budget - 1; i >= budget.WorkingBudget.Budget - cost; i--)
+                {
+                    var img = budget.BudgetGroupTransform.GetChild(i).GetComponentInChildren<Image>();
+                    if (img != null) img.color = Color.yellow;
+                }
+            }
+
+            else
+            {
+                for (int i = budget.WorkingBudget.Budget - 1; i >= 0; i--)
+                {
+                    var img = budget.BudgetGroupTransform.GetChild(i).GetComponentInChildren<Image>();
+                    if (img != null) img.color = Color.red;
+                }
+            }
         }
     }
 }

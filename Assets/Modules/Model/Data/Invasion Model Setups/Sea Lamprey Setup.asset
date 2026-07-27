@@ -244,9 +244,9 @@ MonoBehaviour:
     Rotation: 0
     Sprite: {fileID: 21300000, guid: 982d9117f01cacc4c82578bc731ff5c8, type: 3}
     TransferRateType: 0
-    StartingTransferRate: 0.5
+    StartingTransferRate: 0.25
     StartingTriggerChance: 1
-    PathwayType: 0
+    PathwayType: 1
     IsNotHidden: 1
     StartingDir: 0
   - PathwayId:
@@ -263,9 +263,9 @@ MonoBehaviour:
     Rotation: 47.43
     Sprite: {fileID: 21300000, guid: 982d9117f01cacc4c82578bc731ff5c8, type: 3}
     TransferRateType: 0
-    StartingTransferRate: 0.5
+    StartingTransferRate: 0.25
     StartingTriggerChance: 1
-    PathwayType: 0
+    PathwayType: 1
     IsNotHidden: 1
     StartingDir: 0
   - PathwayId:
@@ -282,9 +282,9 @@ MonoBehaviour:
     Rotation: 87.54
     Sprite: {fileID: 21300000, guid: 982d9117f01cacc4c82578bc731ff5c8, type: 3}
     TransferRateType: 0
-    StartingTransferRate: 0.5
+    StartingTransferRate: 0.25
     StartingTriggerChance: 1
-    PathwayType: 0
+    PathwayType: 1
     IsNotHidden: 1
     StartingDir: 0
   InvasionCurveThresholds:
@@ -297,7 +297,7 @@ MonoBehaviour:
         m_Source: little-lake
         m_HashValue: 3686629487
       StartingPopulation: 1
-      StartingTravelType: -1
+      StartingTravelType: 193
       StartingTargetType: 1
     - SpeciesId:
         m_Source: sea-lamprey
@@ -306,7 +306,7 @@ MonoBehaviour:
         m_Source: big-lake
         m_HashValue: 320318183
       StartingPopulation: 2
-      StartingTravelType: -1
+      StartingTravelType: 193
       StartingTargetType: 1
     - SpeciesId:
         m_Source: sea-lamprey
@@ -315,34 +315,34 @@ MonoBehaviour:
         m_Source: med-lake
         m_HashValue: 1599097255
       StartingPopulation: 2
-      StartingTravelType: -1
+      StartingTravelType: 193
       StartingTargetType: 1
     - SpeciesId:
-        m_Source: lake-whitefish
-        m_HashValue: 3907387900
+        m_Source: walleye
+        m_HashValue: 892638634
       StartingEcosystemId:
         m_Source: little-lake
         m_HashValue: 3686629487
-      StartingPopulation: 1
-      StartingTravelType: 0
+      StartingPopulation: 4
+      StartingTravelType: 1
       StartingTargetType: 4
     - SpeciesId:
-        m_Source: lake-whitefish
-        m_HashValue: 3907387900
+        m_Source: walleye
+        m_HashValue: 892638634
       StartingEcosystemId:
         m_Source: big-lake
         m_HashValue: 320318183
-      StartingPopulation: 6
-      StartingTravelType: 0
+      StartingPopulation: 10
+      StartingTravelType: 1
       StartingTargetType: 4
     - SpeciesId:
-        m_Source: lake-whitefish
-        m_HashValue: 3907387900
+        m_Source: walleye
+        m_HashValue: 892638634
       StartingEcosystemId:
         m_Source: med-lake
         m_HashValue: 1599097255
-      StartingPopulation: 4
-      StartingTravelType: 0
+      StartingPopulation: 8
+      StartingTravelType: 1
       StartingTargetType: 4
     - SpeciesId:
         m_Source: lake-trout
@@ -351,7 +351,7 @@ MonoBehaviour:
         m_Source: little-lake
         m_HashValue: 3686629487
       StartingPopulation: 2
-      StartingTravelType: 0
+      StartingTravelType: 1
       StartingTargetType: 2
     - SpeciesId:
         m_Source: lake-trout
@@ -360,7 +360,7 @@ MonoBehaviour:
         m_Source: big-lake
         m_HashValue: 320318183
       StartingPopulation: 6
-      StartingTravelType: 0
+      StartingTravelType: 1
       StartingTargetType: 2
     - SpeciesId:
         m_Source: lake-trout
@@ -369,7 +369,7 @@ MonoBehaviour:
         m_Source: med-lake
         m_HashValue: 1599097255
       StartingPopulation: 4
-      StartingTravelType: 0
+      StartingTravelType: 1
       StartingTargetType: 2
     - SpeciesId:
         m_Source: sea-lamprey
@@ -378,7 +378,7 @@ MonoBehaviour:
         m_Source: little-lake-tributary
         m_HashValue: 2386798660
       StartingPopulation: 1
-      StartingTravelType: 0
+      StartingTravelType: 193
       StartingTargetType: 1
     - SpeciesId:
         m_Source: sea-lamprey
@@ -387,7 +387,7 @@ MonoBehaviour:
         m_Source: med-lake-tributary
         m_HashValue: 194951596
       StartingPopulation: 2
-      StartingTravelType: 0
+      StartingTravelType: 193
       StartingTargetType: 1
     - SpeciesId:
         m_Source: sea-lamprey
@@ -396,7 +396,7 @@ MonoBehaviour:
         m_Source: big-lake-tributary
         m_HashValue: 2279562092
       StartingPopulation: 2
-      StartingTravelType: 0
+      StartingTravelType: 193
       StartingTargetType: 1
   SharedSpeciesSetups: []
   DefaultInvasive:
@@ -407,7 +407,7 @@ MonoBehaviour:
       m_Source: 
       m_HashValue: 0
     StartingPopulation: 0
-    StartingTravelType: 0
+    StartingTravelType: 193
     StartingTargetType: 1
   DefaultPredator:
     SpeciesId:
@@ -417,15 +417,15 @@ MonoBehaviour:
       m_Source: 
       m_HashValue: 0
     StartingPopulation: 0
-    StartingTravelType: 0
+    StartingTravelType: 1
     StartingTargetType: 2
   DefaultPrey:
     SpeciesId:
-      m_Source: lake-whitefish
-      m_HashValue: 3907387900
+      m_Source: walleye
+      m_HashValue: 892638634
     StartingEcosystemId:
       m_Source: 
       m_HashValue: 0
     StartingPopulation: 0
-    StartingTravelType: 0
+    StartingTravelType: 1
     StartingTargetType: 4

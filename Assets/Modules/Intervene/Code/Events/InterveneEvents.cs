@@ -26,6 +26,10 @@ namespace AIS.Intervene
         public static StringHash32 OnActionDeckConstructed = "on-action-deck-constructed";
         public static StringHash32 OnInterveneEnd = "on-intervene-end";
 
+        // Dispatched right after the round-end population snapshot is recorded; a cue for
+        // trend UI to re-query InterveneRoundCounterInterfacer.Instance.Evaluator.
+        public static StringHash32 OnPopulationSnapshotRecorded = "on-population-snapshot-recorded";
+
         public static StringHash32 OnInvasionLevelChanged = "on-invasion-level-changed";
 
         // Events for SFX

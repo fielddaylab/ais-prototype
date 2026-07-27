@@ -31,7 +31,7 @@ namespace AIS.Model
             Game.Scenes.QueueOnEnable(this, () => ModelTagMgr.Instance.Register(this));
         }
 
-        public void OnDisable()
+        public void OnDestroy()
         {
             if (AisGame.IsShuttingDown) { return; }
 

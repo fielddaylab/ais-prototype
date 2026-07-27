@@ -1046,6 +1046,10 @@ namespace AIS.Intervene
                 case "trapboost":
                 case "boosttrap":
                     return ActionVerb.ModifyTrap;
+                case "trappathway":
+                case "pathtrap":
+                case "trapmove":
+                    return ActionVerb.TrapPathway;
                 default:
                     Debug.LogWarning("[CardUtility] Unknown verb: " + verbStr);
                     return ActionVerb.Reduce; // default fallback
@@ -1172,14 +1176,6 @@ namespace AIS.Intervene
         static private DMInfo ActionCardUnlockDebugMenu()
         {
             DMInfo info = new DMInfo("Action Cards");
-            info.AddButton("Unlock All Cards", () => {
-                var c = Game.SharedState.Get<ActionCardsState>();
-                foreach (var cardId in c.AllActionCards.Keys)
-                {
-                    ActionCardsUtility.UnlockCard(c, cardId);
-                }
-            }, () => Game.SharedState.TryGet(out ActionCardsState c));
-
             info.AddButton("Print Num Unlocked", () => {
                 var c = Game.SharedState.Get<ActionCardsState>();
                 GetUnlockedCards(c);

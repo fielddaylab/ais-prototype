@@ -4,6 +4,7 @@
 @title		Use Lampricide
 @suit		tech
 @desc		-2M Invasive Lamprey
+@focusdescription [Placeholder] Lampricide is a lamprey poison that, when applied to lamprey, poisons them until they are poisoned. Poisoning lamprey is this fashion results in them being dead from poison.
 @path		temp.png
 @cost		1
 
@@ -16,27 +17,27 @@
 ::Action-awareness-campaign
 @title		Outreach Campaign
 @suit		communicate
-@desc		+1 Awareness
+@desc		+1 Budget
 @path		temp.png
 @cost		2
 
 @effect
-    target: aware
+    target: budget
     verb: increase, 1, fixed
     specificity: all
 
-@overrideEffect if social > 0
-    desc: Additional +1 Awareness
-    target: aware
+@overrideEffect if social > 2
+    desc: Additional +1 Budget
+    target: budget
     verb: increase, 2, fixed
     specificity: all
 
 
 
 ::Action-stock-cisco
-@title		Stock Cisco Walleye
+@title		Stock Cisco
 @suit		ranger
-@desc		+2M to a Cisco Walleye population within a target lake
+@desc		+2M to a Cisco population within a target lake
 @path		temp.png
 @cost		1
 
@@ -80,23 +81,31 @@
 ::Action-downstream-tributary-traps
 @title		Use Downstream Tributary Traps
 @suit		ranger
-@desc		When a Downstream pathway activates, -1 Invasive from source instead of moving.
+@desc		When a target Downstream pathway activates, -1 Invasive from source instead of moving.
 @path		temp.png
 @cost		1
 
+// trappathway installs a "trap on move" effect: when the pathway activates it traps
+// [value] Invasive at the source instead of moving them through.
 @effect
-    hardcoded
+    target: pathway, if type = downstream
+    verb: trappathway, 1, fixed
+    specificity: specific
+    maxtargets: 1
 
 
 ::Action-upstream-tributary-traps
 @title		Use Upstream Tributary Traps
 @suit		ranger
-@desc		When an Upstream pathway activates, -1 Invasive from source instead of moving.
+@desc		When a target Upstream pathway activates, -1 Invasive from source instead of moving.
 @path		temp.png
 @cost		1
 
 @effect
-    hardcoded
+    target: pathway, if type = upstream
+    verb: trappathway, 1, fixed
+    specificity: specific
+    maxtargets: 1
 
 
 ::Action-barriers

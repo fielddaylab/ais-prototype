@@ -57,6 +57,7 @@ namespace AIS.Intervene {
 
         private IEnumerator TickSimRoutine()
         {
+            InterveneUI.Instance.SetSimInProgress(true);
             InterveneUI.Instance.ShowSimPhase();
 
             // predator / prey dynamics
@@ -129,8 +130,8 @@ namespace AIS.Intervene {
             InterveneUI.Instance.HideSimPhase();
 
             Debug.Log("[InterveneDriver] Sim Progressed by 1 tick");
+            InterveneUI.Instance.SetSimInProgress(false);
             AisGame.Events.Dispatch(InterveneEvents.OnEndTurn);
-
         }
 
         #region Simulate & Modify
@@ -258,7 +259,8 @@ namespace AIS.Intervene {
                 var cluster = eco.GetCluster(invasiveCounts[0].Item1);
                 if (cluster != null)
                 {
-                    cluster.NumEgg += reproduceNum;
+                    // never negative
+                    cluster.NumEgg = Math.Max(0, cluster.NumEgg + reproduceNum);
 
                     if (cluster.NumEgg > 0 && cluster.IsSpawnable)
                     {
@@ -370,7 +372,8 @@ namespace AIS.Intervene {
             var predatorCluster = eco.GetCluster(predatorCounts[0].Item1);
             if (predatorCluster != null)
             {
-                predatorCluster.NumEgg += reproduceNum;
+                // never negative
+                predatorCluster.NumEgg = Math.Max(0, predatorCluster.NumEgg + reproduceNum);
 
                 if (predatorCluster.NumEgg > 0 && predatorCluster.IsSpawnable)
                 {
@@ -425,7 +428,8 @@ namespace AIS.Intervene {
             {
                 if (preyCluster != null)
                 {
-                    preyCluster.NumEgg += reproduceNum;
+                    // never negative
+                    preyCluster.NumEgg = Math.Max(0, preyCluster.NumEgg + reproduceNum);
                 }
             }
 
