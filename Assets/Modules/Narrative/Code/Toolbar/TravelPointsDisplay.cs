@@ -128,6 +128,7 @@ namespace AIS.Narrative
 
             currentLocationIdx = index;
             selectedLocationIdx = index;
+            locations[index].TimeDisplay.SetActive(false);
 
             if (isActiveAndEnabled)
             {
