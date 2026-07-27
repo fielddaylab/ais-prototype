@@ -17,7 +17,7 @@ $set global:currentThread = "P2_Lampricide"
 
 
 {@}   
-       Paul had mentioned something called lampricide, and a quick call to Renée confirmed that one of the Field Station used to apply lampricide. 
+       Paul had mentioned something called lampricide, and a quick call to Saoirse confirmed that one of the Field Station used to apply lampricide. 
        So here you are, on the shore of one of the lake's many tributaries, being attacked by a horde of mosquitoes. 
 
 {@Claire}
@@ -31,7 +31,7 @@ $set global:currentThread = "P2_Lampricide"
 
 {@Claire}
        Ah, but the mosquitoes are part of the experience! Here, put on more bug repellant! 
-       We must be valiant towards diseases spread by insects like mosquitoes and ticks!
+       We must be vigilant towards diseases spread by insects like mosquitoes and ticks!
 
 {@}
        She covers you in a thick layer of repellant and ensures your legs are properly covered by your pants and socks. 
@@ -75,7 +75,7 @@ $set global:currentThread = "P2_Lampricide"
 {@Claire}
        After the pandemic, our lampricide program ended, and no new funding for lampricide has been given. 
        It's important to remember that not everyone wants to add chemicals to the water, and people have their worries about lampricide. 
-       Though lampricide is safe, it's also important to respect the wishes of people like indigenous populations who would rather use other methods. 
+       Though lampricide is safe, it's also important to respect the wishes of indigenous peoples and local populations who would rather use other methods. 
        We are all working together to create a balanced ecosystem, so we have to decide on the next steps together and consult with the community. //evidence chip
 
 {@You}
@@ -111,7 +111,7 @@ $call DisableMapButton()
 
 {@}   
        The town hall meeting has just started when you slip inside the main chamber. 
-       At the front, a young woman you recognize as Mayor Avery Byrde sits alongside Paul, the DNR representative, and your boss Saoirse. 
+       At the front, a young woman you recognize as Mayor Avery Byrde sits alongside Paul, the DNR representative, and your boss, Saoirse. 
 
 {@Mayor}
        Hello, everyone, and thank you for coming today.
@@ -156,7 +156,7 @@ $call DisableMapButton()
 {@Citizen}//idk what to call this person
        You mentioned funding. How much would that be?
 
-{@Ana}
+{@You}
        Well, I can't really give you a particular number right now. 
        I know the city has a lot of services, and it's important to find a balance with everything.
        But sea lamprey can pose an economic risk when their population isn't regulated.
