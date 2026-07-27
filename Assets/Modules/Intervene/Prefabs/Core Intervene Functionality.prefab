@@ -806,6 +806,7 @@ MonoBehaviour:
   m_VictoryBtn: {fileID: 6713641336846941938}
   m_DefeatBtn: {fileID: 1998085089915055899}
   m_EndPanel: {fileID: 8702474494442968615}
+  SimInProgress: 0
   Raycaster: {fileID: 7045346726542897301}
 --- !u!114 &1002163005149313078
 MonoBehaviour:
@@ -2081,6 +2082,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd70f4c5532517d418734c1b4b85d6af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Instance: {fileID: 0}
   PopulationGroupPrefab: {fileID: 4900647047278428266, guid: 6a2e8c55ca85c4d4aa2f3fb7ae69c66a, type: 3}
   PopulationGroupParent: {fileID: 3799798134509919207}
 --- !u!1 &3147834259410069230
@@ -6007,6 +6009,7 @@ MonoBehaviour:
   RoundCounter: {fileID: 563045624118204748}
   Turn: {fileID: 1227118204696108674}
   m_MaxRounds: 5
+  m_TrendWindow: 3
 --- !u!1 &7403069694935247452
 GameObject:
   m_ObjectHideFlags: 0
