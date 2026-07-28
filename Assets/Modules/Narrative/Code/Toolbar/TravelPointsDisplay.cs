@@ -50,7 +50,6 @@ namespace AIS.Narrative
             returnButton.gameObject.SetActive(false);
             UnlockedLocations.Add(locations[0].MainImg);
             SetCurrentLocation(0);
-            locations[currentLocationIdx].MainImg.color = Color.cyan;
             travelButton.interactable = false;
         }
 
@@ -89,45 +88,34 @@ namespace AIS.Narrative
 
         public void SetCurrentLocation(int index)
         {
-            // Deselect current location
-            locations[currentLocationIdx].MainImg.color = Color.cyan;
+            currentLocationIdx = index;
+            selectedLocationIdx = -1;
+
             for (int i = 0; i < locations.Length; i++)
             {
-                if (i == currentLocationIdx)
-                {
-                    locations[i].MainImg.color = Color.yellow;
-                    locations[i].UpdateTimeBlockVisual(locations[i].Chunks);
-                    locations[i].GetComponent<Button>().interactable = true;
-                    continue;
-                }
+                bool unlocked = i == currentLocationIdx || UnlockedLocations.Contains(locations[i].MainImg);
 
-                if (UnlockedLocations.Contains(locations[i].MainImg))
-                {
-                    locations[i].MainImg.color = Color.magenta;
-                    locations[i].UpdateTimeBlockVisual(locations[i].Chunks);
-                    locations[i].GetComponent<Button>().interactable = true;
+                locations[i].GetComponent<Button>().interactable = unlocked;
+                locations[i].UpdateTimeBlockVisual(unlocked ? locations[i].Chunks : 0);
 
-                    // TODO: refine logics for checking if there are any cards waiting to be found at a locations.
-                    // If not, disable NextCardToFind.
+                if (i == currentLocationIdx) { continue; }
+
+                if (unlocked)
+                {
+                    // TODO: refine logics for checking if there are any cards waiting to be found at a location.
                     Transform BG = locations[i].NextCardToFind.gameObject.transform.GetChild(0);
                     Transform SuitIcon = locations[i].NextCardToFind.gameObject.transform.GetChild(1);
-                    if (BG.GetComponent<Image>().color == Color.white || SuitIcon.GetComponent<Image>().sprite == null)
-                        locations[i].NextCardToFind.SetActive(false);
-                    else
-                        locations[i].NextCardToFind.SetActive(true);
-
+                    locations[i].NextCardToFind.SetActive(
+                        BG.GetComponent<Image>().color != Color.white
+                        && SuitIcon.GetComponent<Image>().sprite != null);
                 }
                 else
                 {
-                    locations[i].MainImg.color = Color.grey;
-                    locations[i].GetComponent<Button>().interactable = false;
-                    locations[i].UpdateTimeBlockVisual(0);
                     locations[i].NextCardToFind.SetActive(false);
                 }
             }
 
-            currentLocationIdx = index;
-            selectedLocationIdx = index;
+            RefreshTravelPointHighlight();
 
             if (isActiveAndEnabled)
             {
@@ -139,10 +127,13 @@ namespace AIS.Narrative
 
         public void SelectLocation(int index)
         {
-            if (index == currentLocationIdx)
+            if (index == selectedLocationIdx)
             {
-                locations[currentLocationIdx].MainImg.color = (locations[currentLocationIdx].MainImg.color == Color.yellow) ? Color.cyan : Color.yellow;
-                selectedLocationIdx = currentLocationIdx;
+                selectedLocationIdx = -1;
+                PathLine.gameObject.SetActive(false);
+                travelButton.interactable = false;
+                mapDisplayPanel.ClearTravelInfo();
+                RefreshTravelPointHighlight();
                 return;
             }
 
@@ -152,27 +143,29 @@ namespace AIS.Narrative
                 return;
             }
 
-            //locations[index].Time.SetActive(true);
+            selectedLocationIdx = index;
+            RefreshTravelPointHighlight();
 
-            // Deselect current selected location
-            if (selectedLocationIdx != index)
+            if (index == currentLocationIdx)
             {
-                locations[selectedLocationIdx].MainImg.color = Color.magenta;
-                locations[currentLocationIdx].MainImg.color = Color.cyan;
-                Path route = new Path()
-                {
-                    Origin = locations[currentLocationIdx].MainImg,
-                    Destination = locations[index].MainImg
-                };
-                DrawPath(route);
-            }
-            else
-            {
-                locations[selectedLocationIdx].MainImg.color = Color.magenta;
-                selectedLocationIdx = 0;
+                // Selecting where you already are: nothing to travel to, no path to draw.
                 PathLine.gameObject.SetActive(false);
+                travelButton.interactable = false;
+                mapDisplayPanel.ClearTravelInfo();
                 return;
             }
+
+            DrawPath(new Path() {
+                Origin = locations[currentLocationIdx].MainImg,
+                Destination = locations[index].MainImg
+            });
+
+            mapDisplayPanel.ShowTravelInfo(
+                locations[currentLocationIdx].LocationName.ToString(),
+                locations[index].LocationName.ToString(),
+                locations[index].Chunks);
+
+            travelButton.interactable = true;
 
             // Return to hub selection if player is currently at hub and selected hub
             /*
@@ -182,10 +175,6 @@ namespace AIS.Narrative
                 return;
             }
             */
-
-            selectedLocationIdx = index;
-            locations[index].MainImg.color = Color.yellow;
-            travelButton.interactable = true;
         }
 
         private void DrawPath(Path path)
@@ -218,10 +207,14 @@ namespace AIS.Narrative
 
             returnButton.gameObject.SetActive(true);
             returnButton.interactable = true;
+
+            RefreshTravelPointHighlight();
         }
 
         public void TravelToSelectedLocation(bool userTriggered)
         {
+            if (selectedLocationIdx < 0) return;
+
             Debug.Log($"[TravelPointsDisplay] Travel to {locations[selectedLocationIdx]}");
 
             // bool locationChanged = currentLocationIdx != selectedLocationIdx;
@@ -260,6 +253,21 @@ namespace AIS.Narrative
                     table.Set("location", location.ToString());
                     ScriptUtility.Trigger("OnLocationChanged", table);
                 }
+            }
+        }
+
+        // TODO: Finalize how to highlight accessible locations during threads and selected locations
+        private void RefreshTravelPointHighlight()
+        {
+            for (int i = 0; i < locations.Length; i++)
+            {
+                Color color;
+                if (i == selectedLocationIdx) { color = Color.yellow; }
+                else if (i == currentLocationIdx) { color = Color.cyan; }
+                else if (UnlockedLocations.Contains(locations[i].MainImg)) { color = Color.magenta; }
+                else { color = Color.grey; }
+
+                locations[i].MainImg.color = color;
             }
         }
     }

@@ -253,11 +253,11 @@ MonoBehaviour:
   TimeDisplay: {fileID: 599843086516352876}
   NextCardToFind: {fileID: 808009166803390953}
   m_UnitSprites:
-  - {fileID: -7352664550879960363, guid: 67ad1be2da52d50409d2d278fe8cc877, type: 3}
-  - {fileID: 6293501518269557312, guid: 67ad1be2da52d50409d2d278fe8cc877, type: 3}
-  - {fileID: -6815810491483390975, guid: 67ad1be2da52d50409d2d278fe8cc877, type: 3}
-  - {fileID: 4613115529637828903, guid: 67ad1be2da52d50409d2d278fe8cc877, type: 3}
-  - {fileID: -3460734942905223259, guid: 67ad1be2da52d50409d2d278fe8cc877, type: 3}
+  - {fileID: 21300000, guid: 74f369679ca17624085e66fceb3b499a, type: 3}
+  - {fileID: 21300000, guid: 76312c2749cca0645b3a1fcf3b7fbced, type: 3}
+  - {fileID: 21300000, guid: 6b2552268cad68e428fc0f8c80018236, type: 3}
+  - {fileID: 21300000, guid: 82fd1f7c999854b44bee85e3be3aab5b, type: 3}
+  - {fileID: 21300000, guid: b7259abe84c5e3347bb8c2f3a446172e, type: 3}
   m_FlashDuration: 0.35
 --- !u!1 &1978338367740302590
 GameObject:
@@ -623,7 +623,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1140384852777610255, guid: 798e9ad6eee2b414096c6e9c5bf53448, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 8
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 1140384852777610255, guid: 798e9ad6eee2b414096c6e9c5bf53448, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -637,21 +637,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2256138933617982828, guid: 798e9ad6eee2b414096c6e9c5bf53448, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3051304476098308437, guid: 798e9ad6eee2b414096c6e9c5bf53448, type: 3}
       propertyPath: m_Name
       value: TimeBlock
       objectReference: {fileID: 0}
     - target: {fileID: 8419606319641461700, guid: 798e9ad6eee2b414096c6e9c5bf53448, type: 3}
-      propertyPath: m_Color.b
-      value: 0.6392157
-      objectReference: {fileID: 0}
-    - target: {fileID: 8419606319641461700, guid: 798e9ad6eee2b414096c6e9c5bf53448, type: 3}
-      propertyPath: m_Color.g
-      value: 0.63529414
-      objectReference: {fileID: 0}
-    - target: {fileID: 8419606319641461700, guid: 798e9ad6eee2b414096c6e9c5bf53448, type: 3}
-      propertyPath: m_Color.r
-      value: 0.3137255
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
