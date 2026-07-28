@@ -108,8 +108,17 @@ namespace AIS.Intervene
                 m_Focused = card;
                 if (DeckWidget.FocusView != null)
                 {
-                    DeckWidget.FocusView.PopulateFocusView(data);
                     DeckWidget.FocusView.gameObject.SetActive(true);
+                    DeckWidget.FocusView.PopulateFocusView(data);
+
+                    // force vertical layout to update
+                    RectTransform root = (RectTransform)DeckWidget.FocusView.transform;
+                    foreach (TMP_Text text in root.GetComponentsInChildren<TMP_Text>(true))
+                    {
+                        text.ForceMeshUpdate();
+                    }
+
+                    LayoutRebuilder.ForceRebuildLayoutImmediate(root);
                 }
 
                 if (DeckWidget.FocusSlot != null)

@@ -65,8 +65,21 @@ namespace AIS.Intervene
                 && BudgetUtility.CanAfford(InterveneBudgetInterfacer.Instance, SwapCost);
             ConfirmSwapBtn.interactable = m_SwapArmed;
 
+            int highlight = m_SwapArmed ? m_HandIndex
+                : (hand.SelectedCardIndices.Count > 0 ? hand.SelectedCardIndices[0] : -1);
+
+            Transform container = hand.Visuals.CardContainer;
+            for (int i = 0; i < container.childCount; i++)
+            {
+                UICard card = container.GetChild(i).GetComponent<UICard>();
+                if (card == null) { continue; }
+
+                HighlightCard(card, i == highlight);
+            }
+
             // locked into the current card while specifying effects -- no swapping allowed
             if (hasSwapped || m_SwapArmed || hand.SelectionLocked) { return; }
+
             if (SwapDeckWidget.HasFocusedCard && hand.SelectedCardIndices.Count > 0)
             {
                 PerformSwap();
@@ -98,11 +111,13 @@ namespace AIS.Intervene
 
             m_SwapArmed = true;
             hand.ClearSelections();
+            ApplyHandVisuals(m_HandIndex);
 
             // Unlock all other cards in swap deck
             hand.OnCardClickedOverride = (id) => {
                     if (m_SwapArmed && id == m_OrigDeckId) { CancelSwap(); }
                 };
+            ResetCardStates();
 
             foreach (UICard card in SwapDeckWidget.ActionCardPool.ActiveObjects)
             {
@@ -113,6 +128,10 @@ namespace AIS.Intervene
                     pointer.OnEnter = null;
                     pointer.OnExit = null;
                 }
+
+                bool isSwapped = card.CardID == m_OrigHandId;
+                GrayOutCard(card, !isSwapped);
+                HighlightCard(card, isSwapped);
 
                 Button btn = card.GetComponentInChildren<Button>(true);
                 if (btn == null) { continue; }
@@ -165,13 +184,9 @@ namespace AIS.Intervene
 
             m_SwapArmed = false;
             hand.OnCardClickedOverride = null;
+            ApplyHandVisuals(-1);
 
-            // unlock all cards in swap deck for future swaps
-            foreach (UICard card in SwapDeckWidget.ActionCardPool.ActiveObjects)
-            {
-                Button btn = card.GetComponentInChildren<Button>(true);
-                if (btn != null) { btn.interactable = true; }
-            }
+            ResetCardStates();
         }
 
         private void ConfirmSwapOnclick()
@@ -186,6 +201,9 @@ namespace AIS.Intervene
 
             CardInteractionMgr.Instance.Hand.OnCardClickedOverride = null;
             SwapDeckWidget.ClearFocus();
+            ResetCardStates();
+            ApplyHandVisuals(-1);
+
             SwapDeckWidget.gameObject.SetActive(false);
             ConfirmSwapBtn.gameObject.SetActive(false);
             BG.gameObject.SetActive(true);
@@ -199,7 +217,11 @@ namespace AIS.Intervene
             StopTravelAnimations();
             if (SwapDeckWidget.gameObject.activeSelf)
             {
-                if (m_SwapArmed) { CancelSwap(); }
+                if (m_SwapArmed)
+                { 
+                    CancelSwap();
+                    ApplyHandVisuals(-1);
+                }
                 SwapDeckWidget.gameObject.SetActive(false);
                 ConfirmSwapBtn.gameObject.SetActive(false);
                 BG.gameObject.SetActive(true);
@@ -220,6 +242,7 @@ namespace AIS.Intervene
                 }
                 SwapDeckWidget.Populate(m_DeckIds);
                 SwapDeckWidget.LayoutStackedCards();
+                ResetCardStates();
 
                 SwapDeckWidget.gameObject.SetActive(true);
                 ConfirmSwapBtn.gameObject.SetActive(true);
@@ -234,7 +257,11 @@ namespace AIS.Intervene
             m_DeckIds.AddRange(cardIds);
             SwapDeckWidget.Populate(m_DeckIds);
             SwapDeckWidget.LayoutStackedCards();
+
+            ResetCardStates();
         }
+
+        #region Helpers
 
         private RectTransform HandCardRect(int index)
         {
@@ -248,6 +275,51 @@ namespace AIS.Intervene
                 if (card.CardID == id) { return (RectTransform)card.transform; }
             }
             return null;
+        }
+
+        private void HighlightCard(UICard card, bool toHighlight)
+        {
+            Transform highlight = card.transform.Find("Highlight");
+            if (highlight == null) { return; }
+            highlight.gameObject.SetActive(toHighlight);
+        }
+
+        private void GrayOutCard(UICard card, bool toGrayOut)
+        {
+            CanvasGroup group = card.GetComponent<CanvasGroup>();
+            if (group == null)
+            {
+                if (!toGrayOut) { return; }
+                group = card.gameObject.AddComponent<CanvasGroup>();
+            }
+
+            group.alpha = toGrayOut ? 0.4f : 1f;
+        }
+        private void ResetCardStates()
+        {
+            foreach (UICard card in SwapDeckWidget.ActionCardPool.ActiveObjects)
+            {
+                GrayOutCard(card, false);
+                HighlightCard(card, false);
+
+                Button btn = card.GetComponentInChildren<Button>(true);
+                if (btn != null) { btn.interactable = true; }
+            }
+        }
+
+        private void ApplyHandVisuals(int highlightIndex)
+        {
+            Transform container = CardInteractionMgr.Instance.Hand.Visuals.CardContainer;
+
+            for (int i = 0; i < container.childCount; i++)
+            {
+                UICard card = container.GetChild(i).GetComponent<UICard>();
+                if (card == null) { continue; }
+
+                bool isSwapped = i == highlightIndex;
+                GrayOutCard(card, highlightIndex >= 0 && !isSwapped);
+                HighlightCard(card, isSwapped);
+            }
         }
 
         private void StopTravelAnimations()
@@ -299,5 +371,7 @@ namespace AIS.Intervene
             yield return rect.AnchorPosTo(m_HandCardHome, CardTravelAnim);
             m_AnimatingHandCard = null;
         }
+
+        #endregion
     }
 }
