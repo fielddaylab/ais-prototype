@@ -73,6 +73,10 @@ namespace AIS.Narrative
             selectedHubIdx = currentHubIdx;
             TravelToSelectedHub(false);
 
+            foreach(TravelPointsDisplay hub in travelPointsDisplays)
+            {
+                hub.RefreshTravelPointLocks();
+            }
             // Zoom out
             //Camera.main.transform.position = hubSelectionDisplay.cameraTransform;
             //Camera.main.orthographicSize = 5f;
@@ -191,6 +195,7 @@ namespace AIS.Narrative
             int destinationIdx = travelPointsDisplays[currentHubIdx].IndexOfLocation(location);
             TravelPoint target = travelPointsDisplays[currentHubIdx].locations[destinationIdx];
 
+            target.TimeDisplay.gameObject.SetActive(isRevealed);
             target.SetTravelTime(chunks);
             target.UpdateTimeBlockVisual(chunks, isRevealed);
         }

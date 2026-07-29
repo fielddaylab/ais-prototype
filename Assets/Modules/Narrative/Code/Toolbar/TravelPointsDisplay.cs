@@ -1,5 +1,6 @@
 using AIS.Model;
 using AIS.Narrative;
+using BeauRoutine;
 using BeauUtil.UI;
 using FieldDay;
 using FieldDay.Scripting;
@@ -121,6 +122,18 @@ namespace AIS.Narrative
             {
                 StartCoroutine(UpdatePointerPositionNextFrame(index));
             }
+
+            if (LocPointer == null || locations[index].MainImg == null) return;
+
+            RectTransform pointerTransform = LocPointer.GetComponent<RectTransform>();
+            RectTransform locTransform = locations[index].MainImg.GetComponent<RectTransform>();
+            if (pointerTransform == null || locTransform == null) return;
+
+            RectTransform parent = (RectTransform)pointerTransform.parent;
+            Vector3 world = locTransform.position;
+            Vector2 local = parent.InverseTransformPoint(world);
+            local.y += locTransform.rect.height * 0.5f;
+            pointerTransform.anchoredPosition = local;
 
             travelButton.interactable = false;
         }
@@ -252,6 +265,27 @@ namespace AIS.Narrative
                 {
                     table.Set("location", location.ToString());
                     ScriptUtility.Trigger("OnLocationChanged", table);
+                }
+            }
+
+            // disable all travel point time block displays, allow leaf member to setup travel time
+            foreach(TravelPoint travelPoint in locations)
+            {
+                travelPoint.TimeDisplay.gameObject.SetActive(false);
+            }
+        }
+
+        public void RefreshTravelPointLocks()
+        {
+            foreach(TravelPoint location in locations)
+            {
+                if (UnlockedLocations.Contains(location.MainImg))
+                {
+                    location.GetComponent<Button>().interactable = true;
+                }
+                else
+                {
+                    location.GetComponent<Button>().interactable = false;
                 }
             }
         }
