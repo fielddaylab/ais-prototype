@@ -4,10 +4,11 @@ using BeauUtil;
 using BeauUtil.UI;
 using FieldDay;
 using FieldDay.UI;
+using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections.Generic;
 
 namespace AIS.Narrative
 {
@@ -22,10 +23,16 @@ namespace AIS.Narrative
         private int currentHubIdx;
         private int selectedHubIdx;
 
+        [Header("Travel Info Display")]
+        public TMP_Text TravelInfo;
+        public Image TravelTimeInfo;
+        public Sprite[] TimeChunkSprites;
+
         protected override void Awake()
         {
             base.Awake();
             Hide();
+            ClearTravelInfo();
             travelButton.onClick.AddListener(OnTravelButtonClicked);
             currentHubIdx = 0;
             ShowMap(); // default to travel mode
@@ -49,6 +56,10 @@ namespace AIS.Narrative
                 mapImage.SetActive(false);
             }
 
+            // reset selections
+            selectedHubIdx = currentHubIdx;
+            travelPointsDisplays[selectedHubIdx].SelectLocation(currentHubIdx);
+
             //currMode = null;
         }
 
@@ -66,6 +77,10 @@ namespace AIS.Narrative
             selectedHubIdx = currentHubIdx;
             TravelToSelectedHub(false);
 
+            foreach(TravelPointsDisplay hub in travelPointsDisplays)
+            {
+                hub.RefreshTravelPointLocks();
+            }
             // Zoom out
             //Camera.main.transform.position = hubSelectionDisplay.cameraTransform;
             //Camera.main.orthographicSize = 5f;
@@ -122,6 +137,39 @@ namespace AIS.Narrative
             travelPointsDisplays[currentHubIdx].gameObject.SetActive(true);
         }
 
+        /// <summary>
+        /// Display origination, destinaation, travel time info.
+        /// </summary>
+        /// <param name="originName"></param>
+        /// <param name="destinationName"></param>
+        /// <param name="chunks"></param>
+        public void ShowTravelInfo(string originName, string destinationName, int chunks)
+        {
+            if (TravelInfo != null)
+            {
+                TravelInfo.gameObject.SetActive(true);
+                TravelInfo.SetText(string.Format("{0} to {1}", originName, destinationName));
+            }
+
+            SetTravelTimeSprite(chunks);
+        }
+
+        public void ClearTravelInfo()
+        {
+            if (TravelInfo != null) { TravelInfo.SetText(string.Empty); }
+            SetTravelTimeSprite(0);
+        }
+
+        private void SetTravelTimeSprite(int units)
+        {
+            if (TravelTimeInfo == null || TimeChunkSprites == null || TimeChunkSprites.Length == 0) { return; }
+
+            units = Mathf.Clamp(units, 0, TimeChunkSprites.Length - 1);
+
+            TravelTimeInfo.enabled = units > 0;
+            if (units > 0) { TravelTimeInfo.sprite = TimeChunkSprites[units]; }
+        }
+
         //TODO: control location accessibility via script hooks
         public void UnlockLocation(MapLocation location)
         {
@@ -151,6 +199,7 @@ namespace AIS.Narrative
             int destinationIdx = travelPointsDisplays[currentHubIdx].IndexOfLocation(location);
             TravelPoint target = travelPointsDisplays[currentHubIdx].locations[destinationIdx];
 
+            target.TimeDisplay.gameObject.SetActive(isRevealed);
             target.SetTravelTime(chunks);
             target.UpdateTimeBlockVisual(chunks, isRevealed);
         }

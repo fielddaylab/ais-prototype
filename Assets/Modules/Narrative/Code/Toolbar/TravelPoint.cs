@@ -44,15 +44,7 @@ namespace AIS.Narrative
             m_CurrentUnits = units;
 
             TimeDisplay.SetActive(units > 0);
-            if (units <= 0)
-            {
-                m_TimeChunk.Display.enabled = false;
-            }
-            else
-            {
-                m_TimeChunk.Display.enabled = true;
-                m_TimeChunk.Display.sprite = m_UnitSprites[units];
-            }
+            TimeChunkUtility.Populate(m_TimeChunk, m_UnitSprites, units);
 
             // flash the lost wedges
             if (animate && decreased)
@@ -65,10 +57,6 @@ namespace AIS.Narrative
                 m_TimeChunk.Flash.gameObject.SetActive(true);
                 m_TimeChunk.Flash.canvasRenderer.SetAlpha(1f);
                 m_TimeChunk.Flash.CrossFadeAlpha(0f, m_FlashDuration, true);
-            }
-            else
-            {
-                m_TimeChunk.Flash.gameObject.SetActive(false);
             }
         }
 
@@ -90,6 +78,26 @@ namespace AIS.Narrative
             Image BGImage = BG.GetComponent<Image>();
             BGImage.color = isActionable ? new Color(1.0f, 0.647f, 0.0f, 1.0f) : new Color(0.2956123f, 0.6010253f, 0.8584906f, 1f);
             SuitIcon.gameObject.GetComponent<Image>().sprite = CardVisualLookupUtility.LookupSuitIcon(suit);
+        }
+    }
+
+    static public class TimeChunkUtility
+    {
+        // sprites are indexed by unit count (element 0 unused - zero units hides the display).
+        static public void Populate(ToolbarTimeChunk chunk, Sprite[] sprites, int units)
+        {
+            if (chunk == null || sprites == null || sprites.Length == 0) { return; }
+
+            units = Mathf.Clamp(units, 0, sprites.Length - 1);
+
+            chunk.Display.enabled = units > 0;
+            if (units > 0) { chunk.Display.sprite = sprites[units]; }
+
+            if (chunk.Flash != null)
+            {
+                chunk.Flash.canvasRenderer.SetAlpha(0f);
+                chunk.Flash.gameObject.SetActive(false);
+            }
         }
     }
 }

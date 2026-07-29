@@ -47,6 +47,13 @@
     specificity: specific
     maxtargets: 1
 
+@overrideEffect if ranger > 2
+    desc: Additional +1M to Cisco population
+    target: ecosystem, non-tributary
+    verb: modify, (0; 0; 3), fixed
+    specificity: specific
+    maxtargets: 1
+
 
 ::Action-stock-lake-trout
 @title		Stock Lake Trout
@@ -57,9 +64,17 @@
 
 @effect
     target: ecosystem, non-tributary
-    verb: modify, (0; 0; 2), fixed
+    verb: modify, (0; 2; 0), fixed
     specificity: specific
     maxtargets: 1
+
+@overrideEffect if ranger > 2
+    desc: Additional +1M to Lake Trout population
+    target: ecosystem, non-tributary
+    verb: modify, (0; 3; 0), fixed
+    specificity: specific
+    maxtargets: 1
+
 
 
 ::Action-release-sterilized
@@ -93,6 +108,13 @@
     specificity: specific
     maxtargets: 1
 
+@overrideEffect if research > 2
+    desc: -1 additional Invasive
+    target: pathway, if type = upstream
+    verb: trappathway, 2, fixed
+    specificity: specific
+    maxtargets: 1
+
 
 ::Action-upstream-tributary-traps
 @title		Use Upstream Tributary Traps
@@ -104,6 +126,13 @@
 @effect
     target: pathway, if type = upstream
     verb: trappathway, 1, fixed
+    specificity: specific
+    maxtargets: 1
+
+@overrideEffect if research > 2
+    desc: -1 additional Invasive
+    target: pathway, if type = upstream
+    verb: trappathway, 2, fixed
     specificity: specific
     maxtargets: 1
 
@@ -135,5 +164,12 @@
 @effect
     target: pathway
     verb: trapboost, 2, ratio
+    specificity: specific
+    maxtargets: 1
+
+@overrideEffect if tech > 2
+    desc: Traps on a target pathway catch 3x as many Invasives.
+    target: pathway
+    verb: trapboost, 3, ratio
     specificity: specific
     maxtargets: 1

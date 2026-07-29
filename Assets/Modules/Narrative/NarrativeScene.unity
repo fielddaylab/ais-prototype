@@ -3333,33 +3333,9 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 193203220828361127, guid: 463e001eb30341745ae355d4dc1a6132, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 193203220828361127, guid: 463e001eb30341745ae355d4dc1a6132, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 193203220828361127, guid: 463e001eb30341745ae355d4dc1a6132, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 193203220828361127, guid: 463e001eb30341745ae355d4dc1a6132, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 1510585264409549433, guid: 463e001eb30341745ae355d4dc1a6132, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -15.199997
-      objectReference: {fileID: 0}
-    - target: {fileID: 2180604505072783586, guid: 463e001eb30341745ae355d4dc1a6132, type: 3}
-      propertyPath: m_Name
-      value: ModelSlot
-      objectReference: {fileID: 0}
-    - target: {fileID: 2577604135279790301, guid: 463e001eb30341745ae355d4dc1a6132, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: -20.200005
       objectReference: {fileID: 0}
     - target: {fileID: 2577604135279790301, guid: 463e001eb30341745ae355d4dc1a6132, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -3367,19 +3343,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2919562529056373124, guid: 463e001eb30341745ae355d4dc1a6132, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -8.236084
+      value: -8.236099
       objectReference: {fileID: 0}
     - target: {fileID: 2919562529056373124, guid: 463e001eb30341745ae355d4dc1a6132, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 7.1379013
-      objectReference: {fileID: 0}
-    - target: {fileID: 2928541617467068864, guid: 463e001eb30341745ae355d4dc1a6132, type: 3}
-      propertyPath: ModelButton
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 2928541617467068864, guid: 463e001eb30341745ae355d4dc1a6132, type: 3}
-      propertyPath: ModelMissing
-      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 3731814594110376333, guid: 463e001eb30341745ae355d4dc1a6132, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -3481,7 +3449,7 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: 101.79999
       objectReference: {fileID: 0}
-    - target: {fileID: 6040429209981689312, guid: 463e001eb30341745ae355d4dc1a6132, type: 3}
+    - target: {fileID: 6040429209981689312, guid: 463e001eb30341745ae355d4dc1a6132x, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 10.476074
       objectReference: {fileID: 0}
@@ -3504,10 +3472,6 @@ PrefabInstance:
     - target: {fileID: 8072628063339502885, guid: 463e001eb30341745ae355d4dc1a6132, type: 3}
       propertyPath: m_Name
       value: Sidebar
-      objectReference: {fileID: 0}
-    - target: {fileID: 8072628063339502885, guid: 463e001eb30341745ae355d4dc1a6132, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

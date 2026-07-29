@@ -84,7 +84,7 @@ namespace AIS.Narrative
 
             for (int i = 0; i < ScienceBonuses.Length; i++)
             {
-                ScienceBonuses[i].sprite = CardVisualLookupUtility.LookupSuitIcon(data.Suit);
+                ScienceBonuses[i].sprite = CardVisualLookupUtility.LookupSuitIcon(suite);
                 ScienceBonuses[i].gameObject.SetActive(true);
                 
                 if (i + 1 > requirement)
@@ -99,11 +99,17 @@ namespace AIS.Narrative
                 {
                     ScienceBonuses[i].color = Color.white;
                 }
-
-                
             }
 
-            BonusText.SetText($"{suitTotal}/{requirement} {data.Suit.ToString().ToLower()} bonus active!"); 
+            if (suitTotal >= requirement)
+            {
+                BonusText.SetText($"{suitTotal}/{requirement} {suite.ToString().ToLower()} -- bonus active!");
+            }
+            else
+            {
+                BonusText.SetText($"{suitTotal}/{requirement} {suite.ToString().ToLower()} -- bonus not yet active");
+            }
+
         }
     }
 }

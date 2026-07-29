@@ -12,35 +12,69 @@
 $call SetInThreadLocks()
 $call DisableMapButton()
 
-// Sets variables for which branch the player goes to first to false
-$set   global:ciscoFirst = false
-$set   global: troutFirst = false
+//checks to see if player has been to the decision point before 
+$if global:ciscoFirst == false
+       $if global:troutFirst == false
+       {@}   
+              You find your uncles hauling nets of fish from their boat onto the dock. 
+              They seem exhausted, but that fades when they see you. 
 
-// Sets variable for whether player has already completed certain branches to false
-$set   global:stockCisco = false
-$set   global: stockTrout = false
+       {@João}
+              Querida, que bom te ver. 
+              </b>It's good to see you, darling.</b>
+              What brings you back here?
 
-{@}   
-       You find your uncles hauling nets of fish from their boat onto the dock. 
-       They seem exhausted, but that seems to fade when they see you. 
+       {@You} 
+              I need some numbers, and I figure you'd be the best to ask. 
+              Do you information on the populations of cisco and trout in the lake?
 
-{@João}
-       Querida, que bom te ver. 
-       </b>It's good to see you, darling.</b>
-       What brings you back here?
+       {@João}
+              I've been keeping track of the population for cisco. 
+              Your uncle's been looking at trout. 
+              Two heads are better than one, you know. 
+              So ask whichever one of us you wanna know about first.
 
-{@You} 
-       I need some numbers, and I figure you'd be the best to ask. 
-       Do you information on the populations of cisco and trout in the lake?
+       {@You}
+              Hmm, let's see...
 
-{@João}
-       I've been keeping track of the population for cisco. 
-       Your uncle's been looking at trout. 
-       Two heads are better than one, you know. 
-       So ask whichever one of us you wanna know about first.
+       $OnceChoice(P3_CiscoPop.Start, Ask about cisco populations.)
+       $OnceChoice(P3_TroutPop.Start, Ask about trout populations.)
+       $else
+       {@}
+              Your uncles are still hauling nets.
+       {@João}
+              Ready to talk to me?
+       $OnceChoice(P3_CiscoPop.Start, Ask about cisco populations.)
+       $endif
+$elseif global:troutFirst == false
+       $if global:ciscoFirst == false
+       {@}   
+              You find your uncles hauling nets of fish from their boat onto the dock. 
+              They seem exhausted, but that fades when they see you. 
 
-{@You}
-       Hmm, let's see...
+       {@João}
+              Querida, que bom te ver. 
+              </b>It's good to see you, darling.</b>
+              What brings you back here?
 
-$OnceChoice(P3_CiscoPop.Start, Enter CiscoPop Thread)
-$OnceChoice(P3_TroutPop.Start, Enter TroutPop Thread)
+       {@You} 
+              I need some numbers, and I figure you'd be the best to ask. 
+              Do you information on the populations of cisco and trout in the lake?
+
+       {@João}
+              I've been keeping track of the population for cisco. 
+              Your tio's been looking at trout. 
+              Two heads are better than one, you know. 
+              So ask whichever one of us you wanna know about first.
+
+       {@You}
+              Hmm, let's see...
+
+       $OnceChoice(P3_CiscoPop.Start, Ask about cisco populations.)
+       $OnceChoice(P3_TroutPop.Start, Ask about trout populations.)
+       $else
+       {@João}
+              Your tio's waiting for you whenever you are.
+       $OnceChoice(P3_TroutPop.Start, Ask your uncle about trout populations.)
+       $endif
+$endif
