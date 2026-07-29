@@ -63,7 +63,7 @@ namespace AIS.Intervene
                 var selectedCards = CardInteractionMgr.Instance.Hand.GetSelectedCards();
                 if (selectedCards.Count != 0 && cardsState.AllActionCards.TryGetValue(selectedCards[0].CardID, out ActionCardData data))
                 {
-                    BudgetUtility.Spend(InterveneBudgetInterfacer.Instance, data.Cost);
+                    //BudgetUtility.Spend(InterveneBudgetInterfacer.Instance, data.Cost);
                     CardInteractionMgr.Instance.Hand.ClearSelections();
                 }
             }

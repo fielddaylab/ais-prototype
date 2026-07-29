@@ -52,8 +52,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ToMove: {fileID: 8405487665491005190}
-  HiddenY: -80
-  FocusedY: 130
+  HiddenY: -60
+  FocusedY: 100
 --- !u!222 &5324031293867695045
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -240,6 +240,8 @@ MonoBehaviour:
   FacingDir: 0
   SelectedCardIndices: 
   AllowMultiSelect: 0
+  SelectionLocked: 0
+  cardInterationUI: {fileID: 0}
 --- !u!1 &6074894738479610778
 GameObject:
   m_ObjectHideFlags: 0
