@@ -19,8 +19,21 @@ $set global:currentPhase = 0
 // Mark start of thread
 $set global:currentThread = "P0_Intro"
 
-//{@}   
-       //[This is the introductory thread in Phase 0.]
+// Sets variables for which branch the player goes to first in Phase 3 Cisco/Trour Decision to false
+$set   global:ciscoFirst = false
+$set   global: troutFirst = false
+
+// Sets variable for whether player has already completed certain branches in Phase 3 to false
+$set   global:stockCisco = false
+$set   global: stockTrout = false
+
+// Sets variables for which path the player decides to take first in Phase 3 Upstream/Downstream decision to false
+$set global:upstreamFirst = false
+$set global:downstreamFirst = false
+
+// Sets variable that checks if the player previously visited the DNR and Army Corps to false
+$set global:dnrVisited = false
+$set global:corpsVisited = false
 
 // TODO: Rest of thread here
 {@You} 
@@ -85,7 +98,7 @@ $set global:currentThread = "P0_Intro"
 {@You}
        Don't worry - I get it. Let's hear the details. 
 
-{@Renée}
+{@Saoirse}
        Local fishermen have been reporting bites on their fish. The fish they <i>can</i> catch, that is. 
 
 {@}

@@ -12,48 +12,89 @@
 $call SetInThreadLocks()
 $call DisableMapButton()
 
-// Sets variables for which path the player decides to take first to false
-$set global:upstreamFirst = false
-$set global:downstreamFirst = false
-
-// Sets variable that checks if the player previously visited the DNR and Army Corps to false
-$set global:dnrVisited = false
-$set global:corpsVisited = false
-
-{@}   
+//splits dialogue based on whether the player has been to this section before
+$if global:upstreamFirst == false
+       $if global:downstreamFirst == false
        {@}   
-       You're surprised to find Claire is already in the river, wading by the traps.
+              You're surprised to find Claire is already in the river, wading by the traps.
 
-{@You}
-       You're incredibly efficient, Claire.
+       {@You}
+              You're incredibly efficient, Claire.
 
-{@Claire}
-       Wrong! My car is incredibly efficient!
-       But yes, I like to stay on my feet!
-       Care to take a swim, young scientist?
+       {@Claire}
+              Wrong! My car is incredibly efficient!
+              But yes, I like to stay on my feet!
+              Care to take a swim, young scientist?
 
-{@You}
-       Not really. 
+       {@You}
+              Not really. 
 
-{@}
-       You join her in the river anyway.
+       {@}
+              You join her in the river anyway.
 
-{@You}
-       What are you working on?
+       {@You}
+              What are you working on?
 
-{@Claire}
-       I'm checking to ensure the traps are facing the correct direction!
+       {@Claire}
+              I'm checking to ensure the traps are facing the correct direction!
 
-{@You}
-       Does the direction really matter?
+       {@You}
+              Does the direction really matter?
 
-{@Claire}
-       Yes, it does! 
-       The water in this tributary, like all tributaries, flows towards the lake. 
-       The sea lamprey either swim downstream or upstream, depending on what phase of life they are in!
+       {@Claire}
+              Yes, it does! 
+              The water in this tributary, like all tributaries, flows towards the lake. 
+              The sea lamprey either swim downstream or upstream, depending on what phase of life they are in!
 
-{@You}
-       That's interesting. When do the sea lamprey go...
-//idk what part of this I can change, but the textbook should say "downstream?" for the first and "upstream?" for the second
-$OnceChoice(P3_LampreyDownstream.Start, Enter LampreyDownstream Thread)
-$OnceChoice(P3_LampreyUpstream.Start, Enter LampreyUpstream Thread)
+       {@You}
+              That's interesting. When do the sea lamprey go...
+       $OnceChoice(P3_LampreyDownstream.Start, downstream?)
+       $OnceChoice(P3_LampreyUpstream.Start, upstream?)
+       $else
+       {@Claire}
+              Young scientist! Do you have more questions for me?
+       $OnceChoice(P3_LampreyUpstream.Start, So, when do sea lamprey go upstream?)
+       $endif
+$elseif global:downstreamFirst == false
+       $if global:upstreamFirst == false
+       {@}   
+              You're surprised to find Claire is already in the river, wading by the traps.
+
+       {@You}
+              You're incredibly efficient, Claire.
+
+       {@Claire}
+              Wrong! My car is incredibly efficient!
+              But yes, I like to stay on my feet!
+              Care to take a swim, young scientist?
+
+       {@You}
+              Not really. 
+
+       {@}
+              You join her in the river anyway.
+
+       {@You}
+              What are you working on?
+
+       {@Claire}
+              I'm checking to ensure the traps are facing the correct direction!
+
+       {@You}
+              Does the direction really matter?
+
+       {@Claire}
+              Yes, it does! 
+              The water in this tributary, like all tributaries, flows towards the lake. 
+              The sea lamprey either swim downstream or upstream, depending on what phase of life they are in!
+
+       {@You}
+              That's interesting. When do the sea lamprey go...
+       $OnceChoice(P3_LampreyDownstream.Start, downstream?)
+       $OnceChoice(P3_LampreyUpstream.Start, upstream?)
+       $else
+       {@Claire}
+              Young scientist! Do you have any more questions for me?
+       $OnceChoice(P3_LampreyDownstream.Start, So, when do sea lamprey go downstream?)
+       $endif
+$endif

@@ -11,12 +11,12 @@ $set global:currentThread = "P3_CiscoPop"
 
 //checks to see if the player has chosen to look at cisco population first
 $if global:troutFirst == false
-$set global:ciscoFirst = true
+       $set global:ciscoFirst = true
 $endif
 
 //varies dialogue depending on whether the player talked to João first
 $if global:ciscoFirst == true
-{João}   
+{@João}   
        Nice to see you've decided to stick with me. 
 $elseif global: ciscoFirst == false
 {@João}
