@@ -117,6 +117,9 @@ namespace AIS.Narrative
             }
 
             RefreshTravelPointHighlight();
+            currentLocationIdx = index;
+            selectedLocationIdx = index;
+            locations[index].TimeDisplay.SetActive(false);
 
             if (isActiveAndEnabled)
             {
@@ -252,7 +255,7 @@ namespace AIS.Narrative
                 PathLine.gameObject.SetActive(false);
             }
 
-            if (currentLocationIdx != selectedLocationIdx && Game.SharedState.TryGet(out PlayerInventory _))
+            if (currentLocationIdx != selectedLocationIdx && Game.SharedState.TryGet(out PlayerInventory _) && userTriggered)
             {
                 PlayerUtility.DecreaseTime(locations[selectedLocationIdx].Chunks);
             }

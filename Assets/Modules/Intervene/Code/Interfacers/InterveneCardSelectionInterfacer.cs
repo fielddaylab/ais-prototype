@@ -1,4 +1,6 @@
 ﻿using AIS.Narrative;
+using AIS.Model;
+using FieldDay;
 using BeauRoutine;
 using BeauUtil;
 using System;
@@ -19,6 +21,7 @@ namespace AIS.Intervene
         public GameObject CardSelectionPanel;
         public ActionCardDeckWidget DeckWidget;
         public PlayerHand Hand;
+        public Button AddBtn;              // "ADD TO DECK" button
         public Button ConfirmBtn;
         public int RequiredCount = 4;
 
@@ -38,11 +41,15 @@ namespace AIS.Intervene
         private readonly Dictionary<UICard, Routine> m_Flying = new Dictionary<UICard, Routine>();
         private Routine m_RestackRoutine;
 
+        // Card currently highlighted in the deck widget; null when nothing is focused.
+        private UICard m_Focused;
+
         private void Awake()
         {
             Instance = this;
             CardSelectionPanel.SetActive(false);
             ConfirmBtn.onClick.AddListener(HandleConfirm);
+            AddBtn.onClick.AddListener(HandleAdd);
         }
 
         public void Load(IEnumerable<StringHash32> cardIds)
@@ -59,7 +66,7 @@ namespace AIS.Intervene
             // Widget spawns and lays out the cards as usual
             DeckWidget.Populate(cardIds);
             DeckWidget.LayoutStackedCards();
-            DeckWidget.ClearFocus();
+            ClearFocus();
             DeckWidget.gameObject.SetActive(true);
 
             foreach (UICard card in DeckWidget.ActionCardPool.ActiveObjects)
@@ -76,24 +83,90 @@ namespace AIS.Intervene
             handHoverZone = Hand.GetComponentInChildren<StackHoverZone>(true);
             handHoverZone.enabled = false;
             handHoverZone.MoveRoutine.Stop();
-            m_MoveRoutine.Replace(this, 
+            m_MoveRoutine.Replace(this,
                 handHoverZone.ToMove.MoveTo(handHoverZone.FocusedY, 0.1f, Axis.Y, Space.Self));
         }
 
-        private void ToggleSelection(UICard card)
+        #region Focus
+
+        // Clicking a card in the deck only focuses it now - adding happens through AddBtn.
+        private void HandleCardClicked(UICard card)
         {
+            if (card == null) { return; }
             if (m_Selected.Contains(card.CardID)) { return; }
+            if (m_Flying.ContainsKey(card)) { return; }
+
+            FocusCard(card);
+        }
+
+        private void FocusCard(UICard card)
+        {
+            ActionCardData data;
+            if (Game.SharedState.TryGet(out ActionCardsState actionCards)
+                && actionCards.AllActionCards.TryGetValue(card.CardID, out data))
+            {
+                m_Focused = card;
+                if (DeckWidget.FocusView != null)
+                {
+                    DeckWidget.FocusView.gameObject.SetActive(true);
+                    DeckWidget.FocusView.PopulateFocusView(data);
+
+                    // force vertical layout to update
+                    RectTransform root = (RectTransform)DeckWidget.FocusView.transform;
+                    foreach (TMP_Text text in root.GetComponentsInChildren<TMP_Text>(true))
+                    {
+                        text.ForceMeshUpdate();
+                    }
+
+                    LayoutRebuilder.ForceRebuildLayoutImmediate(root);
+                }
+
+                if (DeckWidget.FocusSlot != null)
+                {
+                    ActionCardUtility.PopulateCardUI(DeckWidget.FocusSlot, data);
+                }
+                
+                if (DeckWidget.FocusDescriptionText != null)
+                {
+                    DeckWidget.FocusDescriptionText.SetText(data.FocusDescription);
+                }
+
+                if (DeckWidget.FocusEmpty != null) { DeckWidget.FocusEmpty.SetActive(false); }
+            }
+
+            RefreshUI();
+        }
+
+        private void ClearFocus()
+        {
+            m_Focused = null;
+            DeckWidget.ClearFocus();
+
+            if (DeckWidget.FocusSlot != null) { DeckWidget.FocusSlot.gameObject.SetActive(false); }
+            if (DeckWidget.FocusView != null) { DeckWidget.FocusView.gameObject.SetActive(false); }
+            if (DeckWidget.FocusEmpty != null) { DeckWidget.FocusEmpty.SetActive(true); }
+        }
+
+        #endregion // Focus
+
+        private void HandleAdd()
+        {
+            UICard card = m_Focused;
+            if (card == null) { return; }
             if (m_Selected.Count >= RequiredCount) { return; }
             if (m_Flying.ContainsKey(card)) { return; }
+            if (m_Selected.Contains(card.CardID)) { return; }
 
             StringHash32 id = card.CardID;
             m_Selected.Add(id);
-            RefreshUI();
 
             Button clickBtn = card.GetComponentInChildren<Button>(true);
             if (clickBtn != null) { clickBtn.interactable = false; }
 
+            ClearFocus();
+
             m_Flying[card] = Routine.Start(this, FlyCardToHand(card, id));
+            RefreshUI();
         }
 
         private IEnumerator FlyCardToHand(UICard card, StringHash32 cardId)
@@ -105,6 +178,7 @@ namespace AIS.Intervene
             DeckWidget.ActionCardPool.Free(card);
             Hand.AddActionCard(cardId);
             m_RestackRoutine.Replace(this, CardTravelUtility.AnimatedRestack(DeckWidget, CardTravelAnim));
+            RefreshUI();
         }
 
         private RectTransform HandTarget()
@@ -118,10 +192,13 @@ namespace AIS.Intervene
             m_RestackRoutine.Stop();
             if (!m_Selected.Remove(id)) { return; }
 
+            // Repopulating recycles the pooled cards, so any focused instance is now stale.
+            ClearFocus();
+
             Hand.RemoveActionCard(id);
 
             List<StringHash32> inDeckIds = new List<StringHash32>(m_Cards.Count);
-            foreach(StringHash32 otherId in m_Cards)
+            foreach (StringHash32 otherId in m_Cards)
             {
                 if (!m_Selected.Contains(otherId)) { inDeckIds.Add(otherId); }
             }
@@ -131,7 +208,7 @@ namespace AIS.Intervene
             RebindCardButtons();
 
             int index = 0;
-            foreach(UICard card in DeckWidget.ActionCardPool.ActiveObjects)
+            foreach (UICard card in DeckWidget.ActionCardPool.ActiveObjects)
             {
                 if (card.CardID == id)
                 {
@@ -151,7 +228,7 @@ namespace AIS.Intervene
 
         private void RebindCardButtons()
         {
-            foreach(UICard card in DeckWidget.ActionCardPool.ActiveObjects)
+            foreach (UICard card in DeckWidget.ActionCardPool.ActiveObjects)
             {
                 FieldNoteCardPointer pointer = card.GetComponent<FieldNoteCardPointer>();
                 if (pointer != null)
@@ -167,19 +244,25 @@ namespace AIS.Intervene
                     UICard captured = card;
                     clickBtn.interactable = true;
                     clickBtn.onClick.RemoveAllListeners();
-                    clickBtn.onClick.AddListener(() => ToggleSelection(captured));
+                    clickBtn.onClick.AddListener(() => HandleCardClicked(captured));
                 }
             }
         }
 
         private void RefreshUI()
         {
+            bool canAdd = m_Focused != null
+                && m_Selected.Count < RequiredCount
+                && !m_Selected.Contains(m_Focused.CardID)
+                && !m_Flying.ContainsKey(m_Focused);
+
+            if (AddBtn != null) { AddBtn.interactable = canAdd; }
             ConfirmBtn.interactable = m_Selected.Count == RequiredCount;
         }
 
         private void FinishPendingFlights()
         {
-            foreach(var kvp in m_Flying)
+            foreach (var kvp in m_Flying)
             {
                 kvp.Value.Stop();
                 StringHash32 id = kvp.Key.CardID;
@@ -190,6 +273,7 @@ namespace AIS.Intervene
                 }
             }
             m_Flying.Clear();
+            m_Focused = null;
         }
 
         private IEnumerator SlideIntoSlot(UICard card, RectTransform rect, Vector2 slot, int sibling)
@@ -197,6 +281,7 @@ namespace AIS.Intervene
             yield return rect.AnchorPosTo(slot, CardTravelAnim);
             rect.SetSiblingIndex(sibling);
             m_Flying.Remove(card);
+            RefreshUI();
         }
 
         private void HandleConfirm()
@@ -215,10 +300,12 @@ namespace AIS.Intervene
 
             DeckWidget.Populate(remainingIds);
             DeckWidget.LayoutStackedCards();
+            ClearFocus();
             DeckWidget.gameObject.SetActive(false);   // hidden until the swap button opens it
 
             CardSelectionPanel.SetActive(false);
             IsComplete = true;
+            RefreshUI();
 
             m_MoveRoutine.Replace(handHoverZone,
                 handHoverZone.ToMove.MoveTo(handHoverZone.HiddenY, 0.1f, Axis.Y, Space.Self));

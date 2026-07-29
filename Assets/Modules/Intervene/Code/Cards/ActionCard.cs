@@ -203,6 +203,7 @@ namespace AIS.Intervene {
         {
             CardID = data.CardID;      // adjust to CardBase's actual field names
             Title = data.Title;
+            BaseCost = data.Cost;
             Description = data.Description;
             FocusDescription = data.FocusDescription;
             ImgPath = data.ImgPath;

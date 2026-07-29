@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75296ad72b8319a4d9050a4f28549138, type: 3}
+  m_Name: LocationVisualsDB
+  m_EditorClassIdentifier: 
+  FishingDocks: {fileID: 21300000, guid: 95ba408dc0996d246a275c144801beb8, type: 3}
+  TownHall: {fileID: 21300000, guid: 67af97c5df530a64eb3479d4e680b70e, type: 3}
+  FishHatchery: {fileID: 21300000, guid: f321a779bd9bdd243ba1072d94f9ded3, type: 3}
+  DNROffice: {fileID: 21300000, guid: ce93c9492a685314599203dc49345542, type: 3}
+  BarrierSite: {fileID: 21300000, guid: 8399f79647489a04a976c7edda5c5671, type: 3}
+  FieldStationLampricide: {fileID: 21300000, guid: 6e84401812d31b5499814ceab6e1c8ad, type: 3}
+  ResearchLab: {fileID: 21300000, guid: 351ac9f5089f1564aa968eec019d06e7, type: 3}
+  ArmyCorps: {fileID: 21300000, guid: c66fd05ad53c51f4b801a46a9ee2c027, type: 3}
+  FieldStationSterile: {fileID: 21300000, guid: 51fa951c8d80df6428b3d34bf7c7d2d3, type: 3}
+  FishAndWildlife: {fileID: 21300000, guid: c1277b48129ec0647919a4ecbc0ced11, type: 3}
+  FieldStationTraps: {fileID: 21300000, guid: c455a4f5db0b45a4582d29c87508feeb, type: 3}

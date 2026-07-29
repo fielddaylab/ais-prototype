@@ -20,22 +20,33 @@ namespace AIS.Intervene
 
         public void SetVictory(bool victorious)
         {
-            if (victorious)
+            ClearEvalRows();
+            for (int i = 0; i < EvalNum; i++)
             {
-                for (int i = 0; i < EvalNum; i++)
-                {
-                    GameObject newRow = Instantiate(EvalRow, EvalGroup);
-                    newRow.transform.GetChild(0).GetComponent<Image>().color = Color.yellow;
-                }
+                AddEvalRow(victorious);
             }
-            else
+        }
+
+        /// <summary>
+        /// Displays one star per end-of-game condition, and forces a restart (hides the
+        /// continue button) when the player earns zero stars.
+        /// </summary>
+        public void ShowResults(InterveneEvaluation result)
+        {
+            ClearEvalRows();
+            EvalNum = 3;
+
+            AddEvalRow(result.InvasiveControlled, "Invasive Species decreasing or zero");
+            AddEvalRow(result.NativesStable, "All native species stable or increasing");
+            AddEvalRow(result.AllEcosystemsHaveNative, "Native species present in each ecosystem");
+
+            if (MainText != null)
             {
-               for (int i = 0; i < EvalNum; i++)
-                {
-                    GameObject newRow = Instantiate(EvalRow, EvalGroup);
-                    newRow.transform.GetChild(0).GetComponent<Image>().color = Color.grey;
-                }
+                MainText.SetText(GetResultMessage(result.Stars));
             }
+
+            // Zero stars forces a restart: leave only the Restart button available.
+            EndInterveneBtn.gameObject.SetActive(result.Stars > 0);
         }
 
         public void Show()
@@ -50,8 +61,47 @@ namespace AIS.Intervene
         {
             this.gameObject.SetActive(false);
 
+            // Restore the continue button in case it was hidden by a zero-star result.
+            EndInterveneBtn.gameObject.SetActive(true);
+
             EndInterveneBtn.onClick.RemoveAllListeners();
             RestartInterveneBtn.onClick.RemoveAllListeners();
+        }
+
+        private void ClearEvalRows()
+        {
+            for (int i = EvalGroup.childCount - 1; i >= 0; i--)
+            {
+                Destroy(EvalGroup.GetChild(i).gameObject);
+            }
+        }
+
+        private void AddEvalRow(bool passed, string label = null)
+        {
+            GameObject newRow = Instantiate(EvalRow, EvalGroup);
+
+            // Child 0 is the star icon; child 1 is the condition description.
+            newRow.transform.GetChild(0).GetComponent<Image>().color = passed ? Color.yellow : Color.grey;
+
+            if (label != null)
+            {
+                TMP_Text desc = newRow.transform.GetChild(1).GetComponent<TMP_Text>();
+                if (desc != null)
+                {
+                    desc.SetText(label);
+                }
+            }
+        }
+
+        private string GetResultMessage(int stars)
+        {
+            switch (stars)
+            {
+                case 3: return "Success! Your intervention plan stabilized every ecosystem.";
+                case 2: return "Your intervention plan was largely successful.";
+                case 1: return "Your intervention plan had limited success.";
+                default: return "Your intervention plan failed. You must restart.";
+            }
         }
 
         private void HandleEndInterveneClicked()

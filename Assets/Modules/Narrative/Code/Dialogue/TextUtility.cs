@@ -27,6 +27,10 @@ namespace AIS.Narrative {
             column.Layout.ActiveLines.PushBack(newElem.Positioner);
             newElem.DependencyWidget.gameObject.SetActive(true);
             newElem.DependencyWidget.Content.SetText(data.Label);
+
+            var locationDB = Find.GlobalAsset<LocationVisualsDB>();
+            newElem.DependencyWidget.Illustration.sprite = LocationVisualsDBUtility.LookupLocationSprite(locationDB, data.ActivateLocation);
+
             newElem.DependencyWidget.Suit.sprite = CardVisualLookupUtility.LookupSuitIcon(data.Suit);
             newElem.SetVisible(true);
             column.Layout.RecomputePositioning();

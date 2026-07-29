@@ -108,7 +108,7 @@ namespace AIS.Narrative {
                 evidencePanel.PopulateStats(Find.State<PlayerStats>().StatBlock);
                 evidencePanel.Show();
             }
-            Find.GuiModule<DialoguePanel>().SetVisible(!(modelPanel.IsShowing() || evidencePanel.IsShowing()));
+            Find.GuiModule<DialoguePanel>().SetVisible(!(modelPanel.IsShowing() || evidencePanel.IsShowing() || timePanel.IsShowing()));
             InvasionModel.Instance.gameObject.SetActive(false);
         }
 
@@ -157,7 +157,7 @@ namespace AIS.Narrative {
                 timePanel.Hide();
                 modelPanel.Show();
             }
-            Find.GuiModule<DialoguePanel>().SetVisible(!(modelPanel.IsShowing() || evidencePanel.IsShowing()));
+            Find.GuiModule<DialoguePanel>().SetVisible(!(modelPanel.IsShowing() || evidencePanel.IsShowing() || timePanel.IsShowing()));
         }
 
         public static void ToggleTime()
@@ -170,6 +170,8 @@ namespace AIS.Narrative {
             if (timePanel.IsShowing())
             {
                 timePanel.Hide();
+
+                Find.GuiModule<DialoguePanel>().SetVisible(!(modelPanel.IsShowing() || evidencePanel.IsShowing() || timePanel.IsShowing()));
             }
             else
             {
@@ -178,6 +180,8 @@ namespace AIS.Narrative {
                 modelPanel.Hide();
 
                 timePanel.Show();
+
+                Find.GuiModule<DialoguePanel>().SetVisible(!(modelPanel.IsShowing() || evidencePanel.IsShowing() || timePanel.IsShowing()));
             }
         }
     }

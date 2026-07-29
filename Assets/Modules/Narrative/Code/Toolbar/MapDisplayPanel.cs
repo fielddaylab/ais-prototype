@@ -56,6 +56,10 @@ namespace AIS.Narrative
                 mapImage.SetActive(false);
             }
 
+            // reset selections
+            selectedHubIdx = currentHubIdx;
+            travelPointsDisplays[selectedHubIdx].SelectLocation(currentHubIdx);
+
             //currMode = null;
         }
 
