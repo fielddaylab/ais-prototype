@@ -765,7 +765,7 @@ namespace AIS.Intervene
                 }
             }
             // Ranger/Outdoor conditions
-            else if (variableName.Contains("outdoor"))
+            else if (variableName.Contains("outdoor") || variableName.Contains("ranger"))
             {
                 if (operatorChar == LE_CHAR || operatorChar == '≤')
                 {
