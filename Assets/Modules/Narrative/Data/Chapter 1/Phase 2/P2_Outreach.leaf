@@ -14,6 +14,7 @@ $call DisableMapButton()
 
 // Mark start of thread
 $set global:currentThread = "P2_Outreach"
+$call SetBackground("bg/army-corps-bg.png")
 
 
 {@}   
@@ -130,6 +131,7 @@ $call EnableMapButton()
 // Lock all location on map
 $call SetInThreadLocks()
 $call DisableMapButton()
+$call SetBackground("bg/fishing-docks-bg.png")
 
 
 {@}   

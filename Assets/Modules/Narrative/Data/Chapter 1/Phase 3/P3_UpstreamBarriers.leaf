@@ -15,6 +15,7 @@ $set global:currentThread = "P3_UpstreamBarriers"
 // Lock all location on map
 $call SetInThreadLocks()
 $call DisableMapButton()
+$call SetBackground("bg/barrier-site-bg.png")
 
 {@}   
        It's not really much of a barrier by your standards. 
@@ -71,6 +72,7 @@ $call CheckIfOutOfTime()
 // Lock all location on map
 $call SetInThreadLocks()
 $call DisableMapButton()
+$call SetBackground("bg/fish-and-wildlife-bg.png")
 
 
 {@}   
@@ -117,22 +119,22 @@ $call GiveActionCard("Action-barriers")
 $if !HasSeen(P3_Pheromones.End) //checks to see if player has already seen ending dialogue
        //does nothing if they have
 $else
-{@You}
-       I guess you were right, then.
+       {@You}
+              I guess you were right, then.
 
-{@Paul}
-       Hmm?
+       {@Paul}
+              Hmm?
 
-{@You}
-       Earlier, you asked me about what I thought about coming to town. 
-       I didn't like how much it'd changed. 
-       But the future is a gift. I'm glad I'm here to see it. 
+       {@You}
+              Earlier, you asked me about what I thought about coming to town. 
+              I didn't like how much it'd changed. 
+              But the future is a gift. I'm glad I'm here to see it. 
 
-{@Paul}
-       There's no time like the present. 
+       {@Paul}
+              There's no time like the present. 
 
-{@}
-       You can't help but agree. 
+       {@}
+              You can't help but agree. 
 $endif
 // TODO: Give action card
 
