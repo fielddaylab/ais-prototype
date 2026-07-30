@@ -11,7 +11,7 @@
 // Lock all location on map
 $call SetInThreadLocks()
 $call DisableMapButton()
-$call SetBackground("bg/field-station-traps.png")
+$call SetBackground("bg/field-station-traps-bg.png")
 
 
 //splits dialogue based on whether the player has been to this section before
