@@ -1678,14 +1678,14 @@ MonoBehaviour:
   m_MeshFilter: {fileID: 1589339000}
   m_MeshRenderer: {fileID: 1589338999}
   m_ColorGroup: {fileID: 0}
-  m_Path: bg/Nightmare.png
+  m_Path: bg/bedroom-bg.png
   m_Material: {fileID: 2100000, guid: 60855d63c0d48d948a42a0dfb348b4f6, type: 2}
   m_Tessellation: 0
   m_Color:
     serializedVersion: 2
     rgba: 4294967295
   m_Visible: 1
-  m_Size: {x: 13.28125, y: 10}
+  m_Size: {x: 13.333333, y: 10}
   m_Pivot: {x: 0.5, y: 0.5}
   m_UVRect:
     serializedVersion: 2
@@ -1769,19 +1769,19 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1118996065030100150, guid: b8def919a8aaeca49b777375e84ea6ca, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1118996065030100150, guid: b8def919a8aaeca49b777375e84ea6ca, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1118996065030100150, guid: b8def919a8aaeca49b777375e84ea6ca, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 62.86
       objectReference: {fileID: 0}
     - target: {fileID: 1118996065030100150, guid: b8def919a8aaeca49b777375e84ea6ca, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -15.52
       objectReference: {fileID: 0}
     - target: {fileID: 1151823417621701369, guid: b8def919a8aaeca49b777375e84ea6ca, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1889,19 +1889,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1527357224197614721, guid: b8def919a8aaeca49b777375e84ea6ca, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1527357224197614721, guid: b8def919a8aaeca49b777375e84ea6ca, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1527357224197614721, guid: b8def919a8aaeca49b777375e84ea6ca, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 174.28
       objectReference: {fileID: 0}
     - target: {fileID: 1527357224197614721, guid: b8def919a8aaeca49b777375e84ea6ca, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -15.52
       objectReference: {fileID: 0}
     - target: {fileID: 1695101613778148548, guid: b8def919a8aaeca49b777375e84ea6ca, type: 3}
       propertyPath: m_fontSize
@@ -1957,19 +1957,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1956696438850466701, guid: b8def919a8aaeca49b777375e84ea6ca, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1956696438850466701, guid: b8def919a8aaeca49b777375e84ea6ca, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1956696438850466701, guid: b8def919a8aaeca49b777375e84ea6ca, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 137.14
       objectReference: {fileID: 0}
     - target: {fileID: 1956696438850466701, guid: b8def919a8aaeca49b777375e84ea6ca, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -15.52
       objectReference: {fileID: 0}
     - target: {fileID: 2229638020415618479, guid: b8def919a8aaeca49b777375e84ea6ca, type: 3}
       propertyPath: m_AnchorMax.y
@@ -2197,19 +2197,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4951854732658537359, guid: b8def919a8aaeca49b777375e84ea6ca, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4951854732658537359, guid: b8def919a8aaeca49b777375e84ea6ca, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4951854732658537359, guid: b8def919a8aaeca49b777375e84ea6ca, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 4951854732658537359, guid: b8def919a8aaeca49b777375e84ea6ca, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -15.52
       objectReference: {fileID: 0}
     - target: {fileID: 4957698629082561444, guid: b8def919a8aaeca49b777375e84ea6ca, type: 3}
       propertyPath: m_AnchorMax.y
@@ -2317,19 +2317,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7066380088724242447, guid: b8def919a8aaeca49b777375e84ea6ca, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7066380088724242447, guid: b8def919a8aaeca49b777375e84ea6ca, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7066380088724242447, guid: b8def919a8aaeca49b777375e84ea6ca, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 25.720001
       objectReference: {fileID: 0}
     - target: {fileID: 7066380088724242447, guid: b8def919a8aaeca49b777375e84ea6ca, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -15.52
       objectReference: {fileID: 0}
     - target: {fileID: 7258701088371157921, guid: b8def919a8aaeca49b777375e84ea6ca, type: 3}
       propertyPath: GrayedOutColor.a
@@ -3448,10 +3448,6 @@ PrefabInstance:
     - target: {fileID: 6040429209981689312, guid: 463e001eb30341745ae355d4dc1a6132, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 101.79999
-      objectReference: {fileID: 0}
-    - target: {fileID: 6040429209981689312, guid: 463e001eb30341745ae355d4dc1a6132x, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 10.476074
       objectReference: {fileID: 0}
     - target: {fileID: 8049427145942524665, guid: 463e001eb30341745ae355d4dc1a6132, type: 3}
       propertyPath: m_AnchorMax.y

@@ -4,7 +4,7 @@
 :: Preload
 @function    ChapterPreload
 
-$call SetBackground("bg/Room.png")
+$call SetBackground("bg/bedroom-bg.png")
 
 :: Start
 @exposed
@@ -75,6 +75,7 @@ $set global:corpsVisited = false
        </i>Right?</i>
 
 //at this point we go to the sea grant building
+$call SetBackground("bg/sea-grant-office-bg.png")
 
 {@}
        An older woman waits for you by the front door. Her badge says "Program Director". //title subject to change

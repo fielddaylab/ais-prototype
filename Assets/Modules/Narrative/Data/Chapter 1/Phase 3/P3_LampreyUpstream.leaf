@@ -11,67 +11,67 @@ $set global:currentThread = "P3_LampreyUpstream"
 
 // Separates dialogue depending on if player chose upstream or downstream first
 $if global:downstreamFirst == false
-{@Claire}
-       Sea lamprey go upstream at the end of their lives!
-       After spending about a year in the lake, the sea lamprey travel into the tributaries to reproduce!
-       Then they die!
+       {@Claire}
+              Sea lamprey go upstream at the end of their lives!
+              After spending about a year in the lake, the sea lamprey travel into the tributaries to reproduce!
+              Then they die!
 
-{@You}
-       That's a bit dramatic, don't you think?
+       {@You}
+              That's a bit dramatic, don't you think?
 
-{@Claire}
-       A bit, yes!
-       That is all to say that any intervention that target sea lamprey going upstream is targetting adults going to reproduce!
-$call GiveEvidenceChip("Evidence-Spawn-Upstream")
-{@Claire}
-       These interventions can traps or barriers!
+       {@Claire}
+              A bit, yes!
+              That is all to say that any intervention that target sea lamprey going upstream is targetting adults going to reproduce!
+       $call GiveEvidenceChip("Evidence-Spawn-Upstream")
+       {@Claire}
+              These interventions can traps or barriers!
 
-{@You}
-       That's good to keep in mind. 
+       {@You}
+              That's good to keep in mind. 
 
-{@Claire}
-       Excellent!
-       If you'd like any more information, I'm happy to share, but I know you can be busy!
+       {@Claire}
+              Excellent!
+              If you'd like any more information, I'm happy to share, but I know you can be busy!
 
-{@}
-       There are many places to go...
-$set global:upstreamFirst = true
+       {@}
+              There are many places to go...
+       $set global:upstreamFirst = true
 $elseif global:downstreamFirst == true
-{@}
-       Claire tinkers with a trap in the river.
+       {@}
+              Claire tinkers with a trap in the river.
 
-{@You}
-       So when do sea lamprey go upstream?
+       {@You}
+              So when do sea lamprey go upstream?
 
-{@Claire}
-       Sea lamprey go upstream at the end of their lives!
-       After spending about a year in the lake, the sea lamprey travel into the tributaries to reproduce!
-       Then they die!
+       {@Claire}
+              Sea lamprey go upstream at the end of their lives!
+              After spending about a year in the lake, the sea lamprey travel into the tributaries to reproduce!
+              Then they die!
 
-{@You}
-       That's a bit dramatic, don't you think?
+       {@You}
+              That's a bit dramatic, don't you think?
 
-{@Claire}
-       A bit, yes!
-       That is all to say that any intervention that target sea lamprey going upstream is targetting adults going to reproduce!
-$call GiveEvidenceChip("Evidence-Spawn-Upstream")
-{@Claire}
-       These interventions can traps or barriers!
-{@You}
-       That's good to keep in mind. 
+       {@Claire}
+              A bit, yes!
+              That is all to say that any intervention that target sea lamprey going upstream is targetting adults going to reproduce!
+       $call GiveEvidenceChip("Evidence-Spawn-Upstream")
+       {@Claire}
+              These interventions can traps or barriers!
+       {@You}
+              That's good to keep in mind. 
 
-{@Claire}
-       Excellent!
-       Well, my work here is done! Shall we go into town for a dessert?
+       {@Claire}
+              Excellent!
+              Well, my work here is done! Shall we go into town for a dessert?
 
-{@You}
-       I can't, but maybe this weekend?
+       {@You}
+              I can't, but maybe this weekend?
 
-{@Claire}
-       We have a deal. 
+       {@Claire}
+              We have a deal. 
 
-{@}
-       She walks with you back to your car.
+       {@}
+              She walks with you back to your car.
 $endif
 // TEMPORARY Go to end
 $goto .End

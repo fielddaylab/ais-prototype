@@ -14,15 +14,16 @@ $call DisableMapButton()
 
 // Mark start of thread
 $set global:currentThread = "P3_Sterile"
+$call SetBackground("bg/field-station-sterile-bg.png")
 
 
 // Adds flavor text if player has finished talking to aquaculture specialist
 $if !HasSeen(P3_CiscoPop.End)
-{@}   
-       Neveah's portrait stares at you from it's place on the dash. 
+       {@}   
+              Neveah's portrait stares at you from it's place on the dash. 
 $elseif !HasSeen(P3_TroutPop.End) // I'm not sure what the or function is, which is why the code looks like this
-{@}   
-       Neveah's portrait stares at you from it's place on the dash. 
+       {@}   
+              Neveah's portrait stares at you from it's place on the dash. 
 $endif
 
 {@}
@@ -142,6 +143,7 @@ $call CheckIfOutOfTime()
 // Lock all location on map
 $call SetInThreadLocks()
 $call DisableMapButton()
+$call SetBackground("bg/field-station-lampricide-bg.png")
 
 
 {@}   

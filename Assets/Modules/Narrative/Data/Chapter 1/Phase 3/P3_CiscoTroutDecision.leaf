@@ -11,6 +11,8 @@
 // Lock all location on map
 $call SetInThreadLocks()
 $call DisableMapButton()
+$call SetBackground("bg/fishing-docks-bg.png")
+
 
 //checks to see if player has been to the decision point before 
 $if global:ciscoFirst == false

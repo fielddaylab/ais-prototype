@@ -14,6 +14,7 @@ $call DisableMapButton()
 
 // Mark start of thread
 $set global:currentThread = "P3_Pheromones"
+$call SetBackground("bg/research-lab-bg.png")
 
 
 {@}   
@@ -103,6 +104,7 @@ $call CheckIfOutOfTime()
 // Lock all location on map
 $call SetInThreadLocks()
 $call DisableMapButton()
+$call SetBackground("bg/town-hall-bg.png")
 
 
 {@}   
@@ -170,6 +172,7 @@ $call CheckIfOutOfTime()
 // Lock all location on map
 $call SetInThreadLocks()
 $call DisableMapButton()
+$call SetBackground("bg/dnr-office-bg.png")
 
 
 {@}   
@@ -197,22 +200,22 @@ $call GiveActionCard("Action-pheromones")
 $if !HasSeen(P3_UpstreamBarriers.End) //ensures final dialogue with Paul doesn't happen twice
        //does nothing in case player has already seen the dialogue
 $else
-{@You}
-       There's one more thing. In the end, you were right.
+       {@You}
+              There's one more thing. In the end, you were right.
 
-{@Paul}
-       Hmm?
+       {@Paul}
+              Hmm?
 
-{@You}
-       Earlier, you asked me about what I thought about coming to town. 
-       I didn't like how much it'd changed. 
-       But the future is a gift. I'm glad I'm here to see it. 
+       {@You}
+              Earlier, you asked me about what I thought about coming to town. 
+              I didn't like how much it'd changed. 
+              But the future is a gift. I'm glad I'm here to see it. 
 
-{@Paul}
-       There's no time like the present. 
+       {@Paul}
+              There's no time like the present. 
 
-{@}
-       You can't help but agree. 
+       {@}
+              You can't help but agree. 
 $endif
 // TODO: Rest of DNR Office section here
 

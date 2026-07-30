@@ -14,7 +14,7 @@ $call DisableMapButton()
 
 // Mark start of thread
 $set global:currentThread = "P2_Lampricide"
-
+$call SetBackground("bg/field-station-lampricide-bg.png")
 
 {@}   
        Paul had mentioned something called lampricide, and a quick call to Saoirse confirmed that one of the Field Station used to apply lampricide. 
@@ -107,6 +107,7 @@ $call EnableMapButton()
 // Lock all location on map
 $call SetInThreadLocks()
 $call DisableMapButton()
+$call SetBackground("bg/town-hall-bg.png")
 
 
 {@}   
