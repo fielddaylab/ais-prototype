@@ -16,3 +16,4 @@ MonoBehaviour:
     m_Source: sea-lamprey
     m_HashValue: 1595256039
   Sprite: {fileID: 21300000, guid: 04c13592ba241324fb34d82ce2ea7843, type: 3}
+  DisplayName: Sea Lamprey

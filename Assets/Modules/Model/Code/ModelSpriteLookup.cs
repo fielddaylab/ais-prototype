@@ -68,6 +68,18 @@ namespace AIS.Model
             return def.Sprite;
         }
 
+        public string LookupSpeciesDisplayName(SerializedHash32 speciesId)
+        {
+            if (m_SpeciesMap == null)
+            {
+                BuildSpeciesLookup();
+            }
+            SpeciesDef def;
+            m_SpeciesMap.TryGetValue(speciesId, out def);
+
+            return def.DisplayName;
+        }
+
         public Sprite LookupPathwayIcon(PathwayType pathType, bool isHidden = false)
         {
             if (isHidden) { return m_HiddenPathwayDef.Sprite; }

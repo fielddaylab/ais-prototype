@@ -40,6 +40,7 @@ namespace AIS.Intervene
 
         private void Start()
         {
+            AisGame.Events.Register(InterveneEvents.OnInterveneStart, HandleStart);
             AisGame.Events.Register(InterveneEvents.OnEndTurn, HandleEndTurn);
             AisGame.Events.Register(InterveneEvents.OnInterveneRestart, HandleRestart);
         }
@@ -89,11 +90,23 @@ namespace AIS.Intervene
             }
         }
 
+        private void HandleStart()
+        {
+            StartCommon();
+        }
+
         private void HandleRestart()
+        {
+            StartCommon();
+        }
+
+        private void StartCommon()
         {
             m_CurrentRound = 1;
             SetRound(1);
             m_Evaluator.Reset();
+            m_Evaluator.RecordSnapshot();
+            AisGame.Events.Dispatch(InterveneEvents.OnPopulationSnapshotRecorded);
         }
     }
 }
