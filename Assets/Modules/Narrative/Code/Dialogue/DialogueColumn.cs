@@ -205,6 +205,15 @@ namespace AIS.Narrative {
                         btn.StatGroup.gameObject.SetActive(false);
                     }
 
+                    // Cosmetic suit tag - shows which stat the choice is associated with.
+                    if (req.Suit != PlayerStatId.Invalid) {
+                        btn.SuitGroup.SetActive(true);
+                        btn.SuitIcon.sprite = icons.StatIcons[(int) req.Suit];
+                        btn.SuitIcon.color = icons.StatColors[(int) req.Suit];
+                    } else {
+                        btn.SuitGroup.SetActive(false);
+                    }
+
                     btn.Listener.enabled = choiceAvailable;
 
                     if (choiceAvailable) {
@@ -247,6 +256,10 @@ namespace AIS.Narrative {
             var chosenRequirements = DialogueChoiceRequirements.Read(choice, choice.ChosenIndex());
             if (chosenRequirements.TimeConsumed > 0) {
                 PlayerUtility.DecreaseTime(chosenRequirements.TimeConsumed);
+            }
+
+            if (chosenRequirements.OpenMap) {
+                yield return ScriptHooks.OpenMap();
             }
         }
     }

@@ -13,20 +13,20 @@ MonoBehaviour:
   m_Name: GameIcons
   m_EditorClassIdentifier: 
   TimeIcons:
-  - {fileID: -7352664550879960363, guid: 67ad1be2da52d50409d2d278fe8cc877, type: 3}
-  - {fileID: 6293501518269557312, guid: 67ad1be2da52d50409d2d278fe8cc877, type: 3}
-  - {fileID: -6815810491483390975, guid: 67ad1be2da52d50409d2d278fe8cc877, type: 3}
-  - {fileID: 4613115529637828903, guid: 67ad1be2da52d50409d2d278fe8cc877, type: 3}
-  - {fileID: -3460734942905223259, guid: 67ad1be2da52d50409d2d278fe8cc877, type: 3}
+  - {fileID: 21300000, guid: 74f369679ca17624085e66fceb3b499a, type: 3}
+  - {fileID: 21300000, guid: 76312c2749cca0645b3a1fcf3b7fbced, type: 3}
+  - {fileID: 21300000, guid: 6b2552268cad68e428fc0f8c80018236, type: 3}
+  - {fileID: 21300000, guid: 82fd1f7c999854b44bee85e3be3aab5b, type: 3}
+  - {fileID: 21300000, guid: b7259abe84c5e3347bb8c2f3a446172e, type: 3}
   TimeColor:
     serializedVersion: 2
-    rgba: 4278207160
+    rgba: 4294967295
   StatIcons:
-  - {fileID: -2232950738939389605, guid: 4509e9e250d10464eb0e3018fb3acfc0, type: 3}
-  - {fileID: -8313078148496640839, guid: 4509e9e250d10464eb0e3018fb3acfc0, type: 3}
-  - {fileID: 8209244977770430746, guid: 4509e9e250d10464eb0e3018fb3acfc0, type: 3}
-  - {fileID: 7090847894660574460, guid: 4509e9e250d10464eb0e3018fb3acfc0, type: 3}
-  - {fileID: 832823234063075852, guid: 4509e9e250d10464eb0e3018fb3acfc0, type: 3}
+  - {fileID: 21300000, guid: c1a193d58804b0a459709b944c24c88e, type: 3}
+  - {fileID: 21300000, guid: ada683ef771fdc74fac907f7613afe89, type: 3}
+  - {fileID: 21300000, guid: 628101e898687ec46b55b8e6b1aca0e7, type: 3}
+  - {fileID: 21300000, guid: a44aa0dd1bfbadc479ad3da81e2cbad1, type: 3}
+  - {fileID: 21300000, guid: a81f2c149ceef3d40bc36ed6c1ba1b24, type: 3}
   StatColors:
   - serializedVersion: 2
     rgba: 4281005311

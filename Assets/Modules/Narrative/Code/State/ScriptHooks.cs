@@ -172,6 +172,16 @@ namespace AIS.Narrative {
             yield return EnsureMapVisible(inv);
         }
 
+        // Opens the map panel, revealing the map toolbar button first if it is still hidden.
+        // Also backs the "OpenMap" choice data flag (see the MapChoice macro in Header.leaf).
+        [LeafMember("OpenMap")]
+        static public IEnumerator OpenMap()
+        {
+            PlayerInventory inv = Find.State<PlayerInventory>();
+            yield return EnsureMapVisible(inv);
+            PanelUtility.OpenMap();
+        }
+
         [LeafMember("DisableMapButton")]
         static public void DisableMapButton()
         {

@@ -30,6 +30,9 @@ namespace AIS.Narrative {
         public Image TimeRequirement;
         public GameObject TimeGroup;
 
+        public Image SuitIcon;
+        public GameObject SuitGroup;
+
         [NonSerialized] public bool Clicked;
 
         private void Awake() {
@@ -53,24 +56,21 @@ namespace AIS.Narrative {
         public int StatThreshold;
         public int TimeConsumed;
         public bool Once;
+        public bool OpenMap;
+        public PlayerStatId Suit;
 
         static public DialogueChoiceRequirements Read(LeafChoice choice, int choiceIndex) {
             DialogueChoiceRequirements requirements = default;
             requirements.StatId = PlayerStatId.Invalid;
-            
+            requirements.Suit = PlayerStatId.Invalid;
+
             if (choice.TryGetCustomData(choiceIndex, "CheckStat", out var checkStatId)) {
-                StringHash32 statIdHash = checkStatId.AsStringHash();
-                if (statIdHash == "Tech") {
-                    requirements.StatId = PlayerStatId.Tech;
-                } else if (statIdHash == "Communicate") {
-                    requirements.StatId = PlayerStatId.Communicate;
-                } else if (statIdHash == "Ranger") {
-                    requirements.StatId = PlayerStatId.Ranger;
-                } else if (statIdHash == "Research") {
-                    requirements.StatId = PlayerStatId.Research;
-                } else if (statIdHash == "Innovate" || statIdHash == "Innovator") {
-                    requirements.StatId = PlayerStatId.Innovate;
-                }
+                requirements.StatId = ParseStatId(checkStatId.AsStringHash());
+            }
+
+            // Purely cosmetic: tags the choice with a suit icon (see the TimeChoice macro).
+            if (choice.TryGetCustomData(choiceIndex, "Suit", out var suitId)) {
+                requirements.Suit = ParseStatId(suitId.AsStringHash());
             }
 
             choice.TryGetCustomData(choiceIndex, "CheckStatValue", out var checkStatValue);
@@ -80,8 +80,32 @@ namespace AIS.Narrative {
             requirements.TimeConsumed = (int) Math.Min(timeValue.AsUInt(), MaxTimeConsumed);
 
             requirements.Once = choice.HasCustomData(choiceIndex, "Once");
+            requirements.OpenMap = choice.HasCustomData(choiceIndex, "OpenMap");
 
             return requirements;
+        }
+
+        /// <summary>
+        /// Maps a suit/stat name as written in leaf ("Ranger", "ranger", ...) to its id.
+        /// Returns Invalid for an omitted or unrecognized name.
+        /// </summary>
+        static public PlayerStatId ParseStatId(StringHash32 statIdHash) {
+            if (statIdHash == "Tech" || statIdHash == "tech") {
+                return PlayerStatId.Tech;
+            }
+            if (statIdHash == "Research" || statIdHash == "research") {
+                return PlayerStatId.Research;
+            }
+            if (statIdHash == "Innovate" || statIdHash == "Innovator" || statIdHash == "innovate") {
+                return PlayerStatId.Innovate;
+            }
+            if (statIdHash == "Ranger" || statIdHash == "ranger") {
+                return PlayerStatId.Ranger;
+            }
+            if (statIdHash == "Communicate" || statIdHash == "communicate") {
+                return PlayerStatId.Communicate;
+            }
+            return PlayerStatId.Invalid;
         }
     }
 

@@ -138,6 +138,20 @@ namespace AIS.Narrative {
         }
 
 
+        /// <summary>
+        /// Opens the map, hiding the other panels. No-op if the map is already showing.
+        /// </summary>
+        public static void OpenMap()
+        {
+            if (Find.Panel<MapDisplayPanel>().IsShowing())
+            {
+                return;
+            }
+
+            ToggleMap();
+        }
+
+
         public static void ToggleModel()
         {
             var mapPanel = Find.Panel<MapDisplayPanel>();

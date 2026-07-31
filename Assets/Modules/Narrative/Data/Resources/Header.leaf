@@ -1,7 +1,8 @@
 // Shared choice macros. Include at the top of every chapter file:
 //   #include "Header.leaf"
 //
-// All macro choices disappear after their target node is visited ("Once").
+// Most macro choices disappear after their target node is visited ("Once").
+// The exceptions are MapChoice and FallbackChoice, which are repeatable.
 // For a repeatable choice, use a plain $choice (with $data Time = n if it costs time).
 
 // Time cost + once: the standard hub choice. Grays out when the player
@@ -11,10 +12,14 @@
         $data Time = $time \
         $data Once
 
-// Same as HubChoice, under a more literal name.
-#macro TimeChoice(nodeId, text, time) \
+// Same as HubChoice, plus an optional suit tag. When a suit is given, the choice
+// shows that suit's icon; leave it off and no icon appears. Suits: Tech, Research,
+// Innovate, Ranger, Communicate. The icon is purely cosmetic - it advertises which
+// stat the choice is about, and does not gate the choice (that's StatChoice).
+#macro TimeChoice(nodeId, text, time, suit?) \
     $choice $nodeId; $text \
         $data Time = $time \
+        $data Suit = "$suit" \
         $data Once
 
 // Disappears after its target node is visited.
@@ -30,6 +35,15 @@
         $data CheckStat = "$stat" \
         $data CheckStatValue = $value \
         $data Once
+
+// Opens the map the moment the choice is selected (revealing the map toolbar
+// button first if it was hidden), then continues into the target node. Repeatable:
+// add "$data Once" at the call site if it should disappear after its target is visited.
+// The dialogue panel stays hidden while the map is up, so the target node is usually
+// just travel setup (SetInThreadLocks / UnlockLocation) or an OnLocationChanged wait.
+#macro MapChoice(nodeId, text) \
+    $choice $nodeId; $text \
+        $data OpenMap
 
 // Only appears when no other choice is selectable. A hub with one of these
 // never triggers the engine's Fallback.OutOfOptions redirect.

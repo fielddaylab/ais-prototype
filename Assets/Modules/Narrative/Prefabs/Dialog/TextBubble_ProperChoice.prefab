@@ -436,15 +436,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: 4bf7827f87effae4c87139268974fec1, type: 2}
-  m_Color: {r: 0.72156864, g: 0.25882354, b: 0, a: 1}
+  m_Material: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -3460734942905223259, guid: 67ad1be2da52d50409d2d278fe8cc877, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 76312c2749cca0645b3a1fcf3b7fbced, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -511,15 +511,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: 4bf7827f87effae4c87139268974fec1, type: 2}
-  m_Color: {r: 0, g: 1, b: 0.9529979, a: 1}
+  m_Material: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 3479621760721790128, guid: 4509e9e250d10464eb0e3018fb3acfc0, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ada683ef771fdc74fac907f7613afe89, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -576,12 +576,12 @@ GameObject:
   m_Component:
   - component: {fileID: 4939695122025892882}
   m_Layer: 5
-  m_Name: PossibleStatChange
+  m_Name: StatIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &4939695122025892882
 RectTransform:
   m_ObjectHideFlags: 0
@@ -822,9 +822,17 @@ PrefabInstance:
       value: 80
       objectReference: {fileID: 0}
     - target: {fileID: 6054224633552131975, guid: c278d3862698d694492ca16f68d65751, type: 3}
+      propertyPath: SuitIcon
+      value: 
+      objectReference: {fileID: 6533586784677966796}
+    - target: {fileID: 6054224633552131975, guid: c278d3862698d694492ca16f68d65751, type: 3}
       propertyPath: StatGroup
       value: 
       objectReference: {fileID: 3881996914920638279}
+    - target: {fileID: 6054224633552131975, guid: c278d3862698d694492ca16f68d65751, type: 3}
+      propertyPath: SuitGroup
+      value: 
+      objectReference: {fileID: 8166804019479240037}
     - target: {fileID: 6054224633552131975, guid: c278d3862698d694492ca16f68d65751, type: 3}
       propertyPath: TimeGroup
       value: 

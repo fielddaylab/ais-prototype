@@ -45,6 +45,9 @@ $if global:troutFirst == true
        {@You}
               That's a good idea. I should check it out. 
               Or I could talk to João. Let's see...
+       $TimeChoice(.RedirectToAction, Stay here, 1, ranger)
+       $MapChoice(.End, Go to the map)
+       $choose branch
 $endif
 
 $call EnableMapButton()
@@ -54,6 +57,18 @@ $call CheckIfOutOfTime()
 $goto .End
 
 
+
+// Skips returning to P3 Hub and goes directly to P3_TroutPop_Action.Start on end
+:: RedirectToAction
+@exposed
+@tracked
+
+$set local:redirectToAction = true
+$goto .End
+
+
+
+
 :: End
 @exposed
 @tracked
@@ -61,5 +76,11 @@ $goto .End
 // Mark end of thread
 $set global:currentThread = "NONE"
 
-// Go to Phase 2 Continue Hub
-$goto P3_Hub.Continue
+$if local:redirectToAction == true
+       // flag is used -- reset
+       $set local:redirectToAction = false
+       $goto P3_CiscoPop_Note.Start
+$else
+       // Go to Phase 3 Continue Hub
+       $goto P3_Hub.Continue
+$endif
