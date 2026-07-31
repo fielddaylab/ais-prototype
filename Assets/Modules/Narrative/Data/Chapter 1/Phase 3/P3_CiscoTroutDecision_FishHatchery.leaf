@@ -1,0 +1,32 @@
+#basePath P3_CiscoTroutDecision_FishHatchery
+#include "Header.leaf"
+
+:: Decide
+@exposed
+@trigger    OnLocationChanged
+// "NONE" ensures no other threads are in-progress
+// global:currentPhase == 3 ensures player is in phase 3
+@when       global:currentThread == "NONE", global:currentPhase == 3, location == "FishHatchery"
+@cutscene
+// Lock all location on map
+$call SetInThreadLocks()
+$call DisableMapButton()
+$call SetBackground("bg/fish-hatchery-bg.png")
+
+$if HasSeen(P3_CiscoPop_Note.End), !HasSeen(P3_CiscoPop_Action.End), HasSeen(P3_TroutPop_Note.End), !HasSeen(P3_TroutPop_Action.End)
+       // player has two leads open (cisco and lake trout)
+       {@}
+              You currently have two leads here. Which do you wish to investigate right now?
+       $OnceChoice(P3_CiscoPop_Action.Start, Stocking Cisco)
+       $OnceChoice(P3_TroutPop_Action.Start, Stocking Trout)
+        // TODO: ability to specify upcoming suit in choice bubble
+
+$elseif HasSeen(P3_CiscoPop_Note.End), !HasSeen(P3_CiscoPop_Action.End)
+       // player only has cisco lead open
+       $goto P3_CiscoPop_Action.Start
+
+$elseif HasSeen(P3_TroutPop_Note.End), !HasSeen(P3_TroutPop_Action.End)
+       // player only has trout lead open
+       $goto P3_TroutPop_Action.Start
+
+$endif

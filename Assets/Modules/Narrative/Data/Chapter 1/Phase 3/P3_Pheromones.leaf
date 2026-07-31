@@ -12,6 +12,8 @@
 $call SetInThreadLocks()
 $call DisableMapButton()
 
+$call  ClearVisibleLines()
+
 // Mark start of thread
 $set global:currentThread = "P3_Pheromones"
 $call SetBackground("bg/research-lab-bg.png")
@@ -94,6 +96,7 @@ $if StatCheck(Communicate, 3)
 $endif
 $call EnableMapButton()
 $call CheckIfOutOfTime()
+$call OpenMap()
 
 
 :: AtTownHall
@@ -105,6 +108,8 @@ $call CheckIfOutOfTime()
 $call SetInThreadLocks()
 $call DisableMapButton()
 $call SetBackground("bg/town-hall-bg.png")
+
+$call  ClearVisibleLines()
 
 
 {@}   
@@ -162,6 +167,7 @@ $call UnlockLocation(DNROffice) // Place Pheromones
 $call SetTravelTime(DNROffice, 1)
 $call EnableMapButton()
 $call CheckIfOutOfTime()
+$call OpenMap()
 
 
 :: AtDNROffice
@@ -173,6 +179,8 @@ $call CheckIfOutOfTime()
 $call SetInThreadLocks()
 $call DisableMapButton()
 $call SetBackground("bg/dnr-office-bg.png")
+
+$call  ClearVisibleLines()
 
 
 {@}   

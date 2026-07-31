@@ -10,8 +10,7 @@ $call DisableMapButton()
 $call EnableMapButton()
 $call UnlockLocation(ResearchLab)  // P1_Lamprey
 $call SetTravelTime(ResearchLab, 1)
-{@}   
-       [Open your map to continue]
+$call OpenMap()
 
 // TODO: Rest of entry hub here
 
@@ -28,6 +27,8 @@ $call EnableMapButton()
 // if all Phase 1 threads have been visited, exit
 $if HasSeen(P1_NativeLamprey.End), HasSeen(P1_Lamprey.End)
         $goto .Exit
+$else
+        $call OpenMap()
 $endif
 
 

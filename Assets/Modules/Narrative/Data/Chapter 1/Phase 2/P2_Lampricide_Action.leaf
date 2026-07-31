@@ -1,4 +1,4 @@
-#basePath P2_Lampricide
+#basePath P2_Lampricide_Action
 #include "Header.leaf"
 
 :: Start
@@ -6,107 +6,16 @@
 @trigger    OnLocationChanged
 // "NONE" ensures no other threads are in-progress
 // global:currentPhase == 2 ensures player is in phase 2
-@when       global:currentThread == "NONE", global:currentPhase == 2, location == "FieldStationLampricide"
+@when       global:currentThread == "NONE", global:currentPhase == 2, location == "TownHall"
 @cutscene
 // Lock all location on map
 $call SetInThreadLocks()
 $call DisableMapButton()
 
+$call  ClearVisibleLines()
+
 // Mark start of thread
-$set global:currentThread = "P2_Lampricide"
-$call SetBackground("bg/field-station-lampricide-bg.png")
-
-{@}   
-       Paul had mentioned something called lampricide, and a quick call to Saoirse confirmed that one of the Field Station used to apply lampricide. 
-       So here you are, on the shore of one of the lake's many tributaries, being attacked by a horde of mosquitoes. 
-
-{@Claire}
-       Isn't this WONDERFUL?!
-
-{@}
-       At your side, the Field Station's engineer, Claire, looks out at the water like a mother would her child. 
-
-{@You}
-       I'm not sure if wonderful is the word I'd use...
-
-{@Claire}
-       Ah, but the mosquitoes are part of the experience! Here, put on more bug repellant! 
-       We must be vigilant towards diseases spread by insects like mosquitoes and ticks!
-
-{@}
-       She covers you in a thick layer of repellant and ensures your legs are properly covered by your pants and socks. 
-
-{@Claire}
-       Excellent! We are PREPARED! Now, what has brought you to my domain, young scientist?!
-
-{@You}
-       Um, I'm here to ask you about something called lampricide?
-
-{@Claire}
-       Yes! LAMPRICIDE! We used to apply it to the tributaries around the lake!
-       
-{@You}
-       So, like, what </i>is</i> it?
-
-{@Claire}
-       Lampricide is a pesticide that kills sea lamprey larvae but doesn't affect other fish! Hmm. Firstly, you must understand the life cycle of sea lamprey! 
-       Sea lamprey eggs are laid in tributaries, which are small rivers that feed into the lake!
-       Once the eggs hatch, sea lamprey spend the first four to five years as larvae buried in the riverbed, eating organic material that floats past them!
-       After maturing, the sea lamprey then swim towards the lake and spend 12-16 months there before returning to the tributary to spawn and die!
-
-{@You}
-       So this lampricide is only effective when the sea lamprey are in this larvae stage?
-
-{@Claire}
-       PRECISELY, young scientist! And it is very effective at lowering the population of sea lamprey! //evidence chip
-
-{@You}
-       You do know that you can't be more than, like, five years older than me?
-
-{@Claire}
-       We are ALL young at heart! I, too, am a young scientist!
-
-{@You}
-       Hmm. Well, if lampricide is so effective, why hasn't it been used recently?
-
-{@}
-       Claire's demeanor becomes more serious. 
-
-{@Claire}
-       After the pandemic, our lampricide program ended, and no new funding for lampricide has been given. 
-       It's important to remember that not everyone wants to add chemicals to the water, and people have their worries about lampricide. 
-       Though lampricide is safe, it's also important to respect the wishes of indigenous peoples and local populations who would rather use other methods. 
-       We are all working together to create a balanced ecosystem, so we have to decide on the next steps together and consult with the community. //evidence chip
-
-{@You}
-       Hm. I can go to the town hall later today and ask whether the town will give money for lampricide. 
-       That way everyone will have a say in the next steps.  
-
-{@}
-       Claire smiles. 
-
-{@Claire}
-       Yes! That is an excellent idea, young scientist!
-
-{@You}
-       Thanks, young scientist. 
-
-// Give evidence chip
-$call GiveEvidenceChip("Evidence-lampricide")
-
-$call UnlockLocation(TownHall)
-$call SetTravelTime(TownHall, 1)
-$call EnableMapButton()
-
-
-:: AtTownHall
-@trigger    OnLocationChanged
-// global:currentThread ensures the correct thread
-// global:currentPhase == 2 ensures player is in phase 2
-@when       global:currentThread == "P2_Lampricide", global:currentPhase == 2, location == "TownHall"
-// Lock all location on map
-$call SetInThreadLocks()
-$call DisableMapButton()
+$set global:currentThread = "P2_Lampricide_Action"
 $call SetBackground("bg/town-hall-bg.png")
 
 
@@ -224,9 +133,6 @@ $goto .End
 :: End
 @exposed
 @tracked
-// Unlock next locations
-$call UnlockLocation(ArmyCorps)    // P2_Outreach
-
 // Mark end of thread
 $set global:currentThread = "NONE"
 

@@ -67,6 +67,7 @@ $call UnlockLocation(DNROffice)
 $call SetTravelTime(DNROffice, 1)
 $call EnableMapButton()
 $call CheckIfOutOfTime()
+$call OpenMap()
 
 
 :: AtDNROffice
@@ -194,6 +195,8 @@ $call UnlockLocation(ArmyCorps)
 $call SetTravelTime(ArmyCorps, 1)
 $call EnableMapButton()
 $call CheckIfOutOfTime()
+$call OpenMap()
+
 
 :: AtArmyCorps
 @trigger    OnLocationChanged

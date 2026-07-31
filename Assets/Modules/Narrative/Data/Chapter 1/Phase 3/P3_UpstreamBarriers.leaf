@@ -11,6 +11,7 @@
 // Mark start of thread
 $set global:currentThread = "P3_UpstreamBarriers"
 
+$call  ClearVisibleLines()
 
 // Lock all location on map
 $call SetInThreadLocks()
@@ -62,6 +63,7 @@ $call UnlockLocation(FishAndWildlife)
 $call SetTravelTime(FishAndWildlife, 1)
 $call EnableMapButton()
 $call CheckIfOutOfTime()
+$call OpenMap()
 
 
 :: AtFishAndWildlife
@@ -73,6 +75,8 @@ $call CheckIfOutOfTime()
 $call SetInThreadLocks()
 $call DisableMapButton()
 $call SetBackground("bg/fish-and-wildlife-bg.png")
+
+$call  ClearVisibleLines()
 
 
 {@}   

@@ -6,31 +6,46 @@
 // Mark start of phase
 $set global:currentPhase = 3
 
-{@}   
-       [This is the entry hub for Phase 3.]
+//{@}   
+//       [This is the entry hub for Phase 3.]
+$call  ClearVisibleLines()
 $call EnableMapButton()
-$call UnlockLocation(FishingDocks)        // P3_CiscoTroutDecision
+$call UnlockLocation(FishingDocks)        // P3_CiscoTroutDecision_Docks
 $call SetTravelTime(FishingDocks, 1)
 $call UnlockLocation(FieldStationTraps)   // P3_DownstreamUpstreamDecision
 $call SetTravelTime(FieldStationTraps, 1)
+$call OpenMap()
 // TODO: Rest of entry hub here
 
 
 :: Continue
 @exposed
 
-{@}   
-       [This is the continue hub for Phase 3.]
+//{@}   
+//       [This is the continue hub for Phase 3.]
 $call CheckIfOutOfTime()
 $call EnableMapButton()
+$call  ClearVisibleLines()
 
-// If the player has not completed both CiscoPop AND TroutPop, allow access to the other one
-$if !HasSeen(P3_CiscoPop.End)
-       $call UnlockLocation(FishingDocks)        // P3_CiscoTroutDecision
+// If the player has yet to complete one of the Cisco_Note or Trout_Note options, allow access to the docks
+$if !HasSeen(P3_CiscoPop_Note.End)
+       $call UnlockLocation(FishingDocks)        // P3_CiscoTroutDecision_Docks
        $call SetTravelTime(FishingDocks, 1)
-$elseif !HasSeen(P3_TroutPop.End)
-       $call UnlockLocation(FishingDocks)        // P3_CiscoTroutDecision
+$elseif !HasSeen(P3_TroutPop_Note.End)
+       $call UnlockLocation(FishingDocks)        // P3_CiscoTroutDecision_Docks
        $call SetTravelTime(FishingDocks, 1)
+$endif
+
+// If the player has completed CiscoPop_Note but not the action half, allow access to action half
+$if HasSeen(P3_CiscoPop_Note.End), !HasSeen(P3_CiscoPop_Action.End)
+       $call UnlockLocation(FishHatchery)        // P3_CiscoTroutDecision_FishHatchery
+       $call SetTravelTime(FishHatchery, 1)
+$endif
+
+// If the player has completed Trout_Pop_Note but not the action half, allow access to action half
+$if HasSeen(P3_TroutPop_Note.End), !HasSeen(P3_TroutPop_Action.End)
+       $call UnlockLocation(FishHatchery)        // P3_CiscoTroutDecision_FishHatchery
+       $call SetTravelTime(FishHatchery, 1)
 $endif
 
 // If the player has not completed both LampreyDownstream AND LampreyUpstream, allow access to the other one
@@ -80,6 +95,8 @@ $endif
 
 // TODO: Rest of continue hub here
 
+$call OpenMap()
+
 // TODO: if all Phase 3 threads have been visited, exit
 // $goto .Exit
 
@@ -87,8 +104,8 @@ $endif
 :: Exit
 @exposed
 
-{@}   
-      [This is the exit hub for Phase 3.]
+//{@}   
+//      [This is the exit hub for Phase 3.]
 
 // TODO: Rest of exit hub here
 

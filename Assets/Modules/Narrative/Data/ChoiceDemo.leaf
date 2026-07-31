@@ -4,6 +4,7 @@
 // Every macro choice disappears after its target node is visited ("Once"):
 //   1. $OnceChoice              - once only
 //   2. $TimeChoice / $HubChoice - once + time cost; unaffordable choices gray out
+//                                 ($TimeChoice also takes an optional suit icon)
 //   3. $StatChoice              - once + stat requirement; grays out with a label when unmet
 //   4. $FallbackChoice          - writer-authored fallback via !HasChoices()
 //   5. Fallback.OutOfOptions    - engine auto-jump when nothing is selectable (time left)
@@ -132,7 +133,9 @@ $endif
 // You arrive with 8 chunks; each TimeChoice costs 4. Two picks drain the
 // clock to 0, and the engine jumps to Fallback.OutOfTime. (If time ran out
 // with choices still unpicked, they'd gray out before the redirect.)
-$TimeChoice(.Docks.Nets, "Help haul nets", 4)
+// The 4th argument is an optional suit - it tags the choice with that suit's
+// icon. It's cosmetic only; it doesn't gate the choice the way StatChoice does.
+$TimeChoice(.Docks.Nets, "Help haul nets", 4, Ranger)
 $TimeChoice(.Docks.Stories, "Swap fishing stories", 4)
 $choose branch
 

@@ -6,13 +6,16 @@
 // Mark start of phase
 $set global:currentPhase = 2
 
-{@}   
-       [This is the entry hub for Phase 2.]
+//{@}   
+//       [This is the entry hub for Phase 2.]
+$call  ClearVisibleLines()
 $call EnableMapButton()
-$call UnlockLocation(FieldStationLampricide)     // P2_Lampricide
+$call UnlockLocation(FieldStationLampricide)     // P2_Lampricide_Note
 $call SetTravelTime(FieldStationLampricide, 1)
-$call UnlockLocation(ArmyCorps)                  // P2_Outreach
+$call UnlockLocation(ArmyCorps)                  // P2_Outreach_Note
 $call SetTravelTime(ArmyCorps, 1)
+
+$call OpenMap()
 
 // TODO: Rest of entry hub here
 
@@ -20,22 +23,41 @@ $call SetTravelTime(ArmyCorps, 1)
 :: Continue
 @exposed
 
-{@}   
-       [This is the continue hub for Phase 2.]
+//{@}   
+//       [This is the continue hub for Phase 2.]
+$call  ClearVisibleLines()
 $call EnableMapButton()
-// TODO: Rest of continue hub here
+
+$if !HasSeen(P2_Lampricide_Note.End)
+       $call UnlockLocation(FieldStationLampricide)     // P2_Lampricide_Note
+       $call SetTravelTime(FieldStationLampricide, 1)
+$endif
+$if !HasSeen(P2_Lampricide_Action.End), HasSeen(P2_Lampricide_Note.End)
+       $call UnlockLocation(TownHall)                   // P2_Lampricide_Action
+       $call SetTravelTime(TownHall, 1)
+$endif
+$if !HasSeen(P2_Outreach_Note.End)
+       $call UnlockLocation(ArmyCorps)                  // P2_Outreach_Note
+       $call SetTravelTime(ArmyCorps, 1)
+$endif
+$if !HasSeen(P2_Outreach_Action.End), HasSeen(P2_Outreach_Note.End)
+       $call UnlockLocation(FishingDocks)                // P2_Outreach_Action
+       $call SetTravelTime(FishingDocks, 1)
+$endif
 
 // if all Phase 2 threads have been visited, exit
-$if HasSeen(P2_Lampricide.End), HasSeen(P2_Outreach.End)
+$if HasSeen(P2_Lampricide_Note.End), HasSeen(P2_Lampricide_Action.End), HasSeen(P2_Outreach_Note.End), HasSeen(P2_Outreach_Action.End)
         $goto .Exit
+$else
+        $call OpenMap()
 $endif
 
 
 :: Exit
 @exposed
 
-{@}   
-      [This is the exit hub for Phase 2.]
+//{@}   
+//      [This is the exit hub for Phase 2.]
 
 // TODO: Rest of exit hub here
 

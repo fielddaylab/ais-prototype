@@ -1,4 +1,4 @@
-#basePath P3_CiscoPop
+#basePath P3_TroutPop_Action
 #include "Header.leaf"
 
 :: Start
@@ -6,67 +6,10 @@
 @cutscene
 
 // Mark start of thread
-$set global:currentThread = "P3_CiscoPop"
+$set global:currentThread = "P3_TroutPop_Action"
 
-
-//checks to see if the player has chosen to look at cisco population first
-$if global:troutFirst == false
-       $set global:ciscoFirst = true
-$endif
-
-//varies dialogue depending on whether the player talked to João first
-$if global:ciscoFirst == true
-       {@João}   
-              Nice to see you've decided to stick with me. 
-$elseif global: ciscoFirst == false
-       {@João}
-              Nice of you to come back. 
-$endif
-
-{@João}
-       So, you need the population numbers for cisco? 
-       Currently, there are x million cisco in the Great Lakes. //team i cannot find this number
-       But this number has been decreasing. 
-       I remember when this lake was teeming with cisco. 
-       //give evidence chip
-       $call GiveEvidenceChip("Evidence-cisco")
-
-{@You}
-       That's really helpful. Thanks for the information. 
-
-$if global:ciscoFirst == True
-       {@You}
-              I wonder if adding more fish to the lake could potentially help with the decrease.
-
-       {@João}
-              It might be worth looking into. 
-              There's an aquaculture facility nearby that might be able to help.
-
-       {@You}
-              That's a good idea. I should check it out. 
-              Or I could talk to Renato. Let's see...
-$endif
-
-
-$call UnlockLocation(FishHatchery)
-$call SetTravelTime(FishHatchery, 1)
-$call EnableMapButton()
-$call CheckIfOutOfTime()
-
-
-:: AtFishHatchery
-@trigger    OnLocationChanged
-// global:currentThread ensures the correct thread
-// global:currentPhase == 3 ensures player is in phase 3
-@when       global:currentThread == "P3_CiscoPop", global:currentPhase == 3, location == "FishHatchery"
-// Lock all location on map
-$call SetInThreadLocks()
-$call DisableMapButton()
-$call SetBackground("bg/fish-hatchery-bg.png")
-
-
-//Dialogue changes depending on whether the player has already seen trout
-$if global:stockTrout == true
+//Changes dialogue depending on whether stock cisco is already done
+$if global:stockCisco == true
        {@}
               Neveah is still looking over the pools. 
 
@@ -79,8 +22,8 @@ $if global:stockTrout == true
               What's up?
 
        {@You}
-              You know how you told me trout can be added back into the lake.
-              I was wondering if that would also be possible with cisco?
+              You know how you told me cisco can be added back into the lake.
+              I was wondering if that would also be possible with trout?
 
        {Neveah}
               Ooo, yes, definitely. 
@@ -91,10 +34,9 @@ $if global:stockTrout == true
 
        {@Neveah}
               Hi, babies. 
-              These are cisco. Six months old. 
+              These are trout. Five months old. 
               We can definitely add them to the lake, if you'd like. 
-              //give action card
-              $call GiveActionCard("Action-stock-cisco")
+       $call GiveActionCard("Action-stock-lake-trout")
 
        {@You}
               That would be amazing. 
@@ -122,7 +64,7 @@ $if global:stockTrout == true
        {@}
               She pulls you into a tight hug. 
               Back in your car, you put the photo on the dash, and the sea lamprey almost seems to smile at you. 
-$elseif global:stockTrout == false
+$elseif global:stockCisco == false
        {@}
               The hatchery is... different than what you imagined. 
               Rows of deep pools remind you of your university's Olympic swimming pool.
@@ -130,7 +72,7 @@ $elseif global:stockTrout == false
               At the edge of one of the rows, an aquaculture specialist looks lovingly into the water.
 
        {@Specialist}
-              Hello, George. Hello, Henrietta. Hello, Cisco Systems Incorporated. 
+              Hello, George. Hello, Henrietta. Hello, Sir Troutsalot. 
 
        {@You}
               Um, hello?
@@ -145,15 +87,15 @@ $elseif global:stockTrout == false
               You join her at the edge of the pool and peer into the water.
 
        {@Specialist}
-              These are cisco. Six months old. 
+              These are trout. Five months old. 
               I'm Neveah, by the way!
 
        {@You}
-              Ana. I've actually come to talk to you about the cisco.
+              Ana. I've actually come to talk to you about the trout.
 
        {@Neveah}
               I'd love to talk about my fish children. 
-              That's what I call them. The cisco.
+              That's what I call them. The trout.
 
        {@You}
               Makes sense.
@@ -164,13 +106,13 @@ $elseif global:stockTrout == false
               It's been helpful to the population in the lake in the past.
 
        {@You}   
-              Well, that's good news.
+              Well, that's good news. 
               Do you think that would be possible to do now?
               
        {@Neveah}
               Oh, definitely. 
               I'm sure you'll take excellent care of my fishies.
-       $call GiveActionCard("Action-stock-cisco")
+       $call GiveActionCard("Action-stock-lake-trout")
 
        {@You}
               I'll definitely do my best. 
@@ -192,16 +134,17 @@ $elseif global:stockTrout == false
 
        {@Neveah}
               Nope, too late!
-              Okay, bye bye now. I've got cisco to look after!
+              Okay, bye bye now. I've got trout to look after!
 
        {@}
               Before you have time to say anything, she's back to greeting the fish. 
 
-       $set global:stockCisco = true
+       $set global:stockTrout = true
 $endif
 
 // skip to end
 $goto .End
+
 
 :: End
 @exposed

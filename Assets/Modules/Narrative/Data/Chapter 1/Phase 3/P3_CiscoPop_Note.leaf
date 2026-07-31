@@ -1,0 +1,86 @@
+#basePath P3_CiscoPop_Note
+#include "Header.leaf"
+
+:: Start
+@exposed
+@cutscene
+
+// Mark start of thread
+$set global:currentThread = "P3_CiscoPop_Note"
+
+
+//checks to see if the player has chosen to look at cisco population first
+$if global:troutFirst == false
+       $set global:ciscoFirst = true
+$endif
+
+//varies dialogue depending on whether the player talked to João first
+$if global:ciscoFirst == true
+       {@João}   
+              Nice to see you've decided to stick with me. 
+$elseif global: ciscoFirst == false
+       {@João}
+              Nice of you to come back. 
+$endif
+
+{@João}
+       So, you need the population numbers for cisco? 
+       Currently, there are x million cisco in the Great Lakes. //team i cannot find this number
+       But this number has been decreasing. 
+       I remember when this lake was teeming with cisco. 
+       //give evidence chip
+       $call GiveEvidenceChip("Evidence-cisco")
+
+{@You}
+       That's really helpful. Thanks for the information. 
+
+$if global:ciscoFirst == True
+       {@You}
+              I wonder if adding more fish to the lake could potentially help with the decrease.
+
+       {@João}
+              It might be worth looking into. 
+              There's an aquaculture facility nearby that might be able to help.
+
+       {@You}
+              That's a good idea. I should check it out. 
+              Or I could talk to Renato. Let's see...
+       $TimeChoice(.RedirectToAction, Stay here, 1, ranger)
+       $MapChoice(.End, Go to the map)
+       $choose branch
+$endif
+
+$call EnableMapButton()
+$call CheckIfOutOfTime()
+
+// skip to end
+$goto .End
+
+
+
+// Skips returning to P3 Hub and goes directly to P3_CiscoPop_Action.Start on end
+:: RedirectToAction
+@exposed
+@tracked
+
+$set local:redirectToAction = true
+$goto .End
+
+
+
+:: End
+@exposed
+@tracked
+
+// Mark end of thread
+$set global:currentThread = "NONE"
+
+$if local:redirectToAction == true
+       // flag is used -- reset
+       $set local:redirectToAction = false
+       $goto P3_TroutPop_Note.Start
+$else
+       // Go to Phase 3 Continue Hub
+       $goto P3_Hub.Continue
+$endif
+
