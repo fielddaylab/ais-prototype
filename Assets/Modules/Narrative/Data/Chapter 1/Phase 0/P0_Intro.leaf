@@ -21,11 +21,11 @@ $set global:currentThread = "P0_Intro"
 
 // Sets variables for which branch the player goes to first in Phase 3 Cisco/Trour Decision to false
 $set   global:ciscoFirst = false
-$set   global: troutFirst = false
+$set   global:troutFirst = false
 
 // Sets variable for whether player has already completed certain branches in Phase 3 to false
 $set   global:stockCisco = false
-$set   global: stockTrout = false
+$set   global:stockTrout = false
 
 // Sets variables for which path the player decides to take first in Phase 3 Upstream/Downstream decision to false
 $set global:upstreamFirst = false

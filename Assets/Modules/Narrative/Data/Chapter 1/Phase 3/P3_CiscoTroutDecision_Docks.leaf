@@ -1,4 +1,4 @@
-#basePath P3_CiscoTroutDecision
+#basePath P3_CiscoTroutDecision_Docks
 #include "Header.leaf"
 
 :: Decide
@@ -39,14 +39,14 @@ $if global:ciscoFirst == false
        {@You}
               Hmm, let's see...
 
-       $OnceChoice(P3_CiscoPop.Start, Ask about cisco populations.)
-       $OnceChoice(P3_TroutPop.Start, Ask about trout populations.)
+       $OnceChoice(P3_CiscoPop_Note.Start, Ask about cisco populations.)
+       $OnceChoice(P3_TroutPop_Note.Start, Ask about trout populations.)
        $else
        {@}
               Your uncles are still hauling nets.
        {@João}
               Ready to talk to me?
-       $OnceChoice(P3_CiscoPop.Start, Ask about cisco populations.)
+       $OnceChoice(P3_CiscoPop_Note.Start, Ask about cisco populations.)
        $endif
 $elseif global:troutFirst == false
        $if global:ciscoFirst == false
@@ -72,11 +72,11 @@ $elseif global:troutFirst == false
        {@You}
               Hmm, let's see...
 
-       $OnceChoice(P3_CiscoPop.Start, Ask about cisco populations.)
-       $OnceChoice(P3_TroutPop.Start, Ask about trout populations.)
+       $OnceChoice(P3_CiscoPop_Note.Start, Ask about cisco populations.)
+       $OnceChoice(P3_TroutPop_Note.Start, Ask about trout populations.)
        $else
        {@João}
               Your tio's waiting for you whenever you are.
-       $OnceChoice(P3_TroutPop.Start, Ask your uncle about trout populations.)
+       $OnceChoice(P3_TroutPop_Note.Start, Ask your uncle about trout populations.)
        $endif
 $endif
