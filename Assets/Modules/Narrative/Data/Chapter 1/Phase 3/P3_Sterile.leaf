@@ -11,6 +11,7 @@
 // Lock all location on map
 $call SetInThreadLocks()
 $call DisableMapButton()
+$call  ClearVisibleLines()
 
 // Mark start of thread
 $set global:currentThread = "P3_Sterile"
@@ -144,6 +145,7 @@ $call CheckIfOutOfTime()
 $call SetInThreadLocks()
 $call DisableMapButton()
 $call SetBackground("bg/field-station-lampricide-bg.png")
+$call  ClearVisibleLines()
 
 
 {@}   

@@ -1,0 +1,119 @@
+#basePath P2_Outreach_Action
+#include "Header.leaf"
+
+:: Start
+@exposed
+@trigger    OnLocationChanged
+// "NONE" ensures no other threads are in-progress
+// global:currentPhase == 2 ensures player is in phase 2
+@when       global:currentThread == "NONE", global:currentPhase == 2, location == "FishingDocks"
+@cutscene
+// Lock all location on map
+$call SetInThreadLocks()
+$call DisableMapButton()
+
+$call  ClearVisibleLines()
+
+// Mark start of thread
+$set global:currentThread = "P2_Outreach_Action"
+$call SetBackground("bg/fishing-docks-bg.png")
+
+{@}   
+       When you were a kid, you always found the sound of the water lapping at the dock soothing. 
+       You're pleased to see it's still soothing now, all these years later. 
+
+{@João}
+       Ana, querida. It's good to see you. 
+
+{@}
+       You look up to see your uncles heading your way, quickly enveloping you in a warm hug. 
+
+{@You}
+       It's good to see you, too, Tio João, Tio Renato. 
+       How've things been?
+
+{@Renato}
+       Well, you know how it is. Good tides, bad tides. 
+
+{@You}
+       Lakes don't have meaningful tides. 
+
+{@}
+       He waves at you as if to say, "You know what I mean."
+       You look around the dock and notice its newfound emptiness. 
+
+{@You}
+       Where's everyone else?
+
+{@João}
+       Ah. 
+       Johnny and Rick retired a few years, Lana moved away, the rental place closed...
+
+{@Renato}
+       The kids left for college and didn't come back. 
+       Except for you, of course. 
+
+{@}
+       He ruffles your hair. 
+       Up close you can see wrinkles on his face that you don't remember being there. 
+
+{@You}
+       Anyway, um, I've actually come to ask for your help. 
+
+{@João}
+       Claro, querida. Whatever you need. 
+
+{@You}
+       You've been seeing more lamprey bites on your fish, right?
+
+{@Renato}
+       We have, yes. 
+
+{@João}
+       Some of the others have seen bites too.
+
+{@You}
+       As part of my work, I'm trying to get more information on where fishers are seeing these bites. 
+       I'm starting a program where fishers can call in to a number at my work if they see sea lamprey bites.
+       Would you be willing to spread this information to the others?
+
+{@Renato}
+       Definitely. We'll ask them to spread the numbers around, too. 
+
+{@João}
+       This is our livelihood. It's in our best interest to help, too. 
+
+{@You}
+       Obrigada! It really means a lot to me. 
+
+{@}
+       You hand them a stack of fliers with the number for your office. 
+
+{@Renato}
+       We'll make sure these go where they need to go. 
+       //action card
+       $call GiveActionCard("Action-awareness-campaign")
+       Want to join us on the boat for a bit? Have a Guaraná?
+
+{@You}
+       I'm sorry, I can't. I have so much to do. 
+       But what about after I'm done? 
+
+{@João}
+       That works. We'll celebrate out on the water like when you were a kid. 
+
+{@}
+       They ruffle your hair. It feels nice to feel little again. 
+
+// skip to end
+$goto .End
+
+
+:: End
+@exposed
+@tracked
+// Mark end of thread
+$set global:currentThread = "NONE"
+
+// Go to Phase 2 Continue Hub
+$goto P2_Hub.Continue

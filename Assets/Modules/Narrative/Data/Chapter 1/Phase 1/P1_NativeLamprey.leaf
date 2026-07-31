@@ -120,10 +120,6 @@ $goto .End
 :: End
 @exposed
 @tracked
-// Unlock next locations
-$call UnlockLocation(ResearchLab)  // P1_Lamprey
-$call SetTravelTime(ResearchLab, 1)
-
 // Mark end of thread
 $set global:currentThread = "NONE"
 

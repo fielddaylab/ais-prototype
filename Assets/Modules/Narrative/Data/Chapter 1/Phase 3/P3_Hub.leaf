@@ -6,8 +6,9 @@
 // Mark start of phase
 $set global:currentPhase = 3
 
-{@}   
-       [This is the entry hub for Phase 3.]
+//{@}   
+//       [This is the entry hub for Phase 3.]
+$call  ClearVisibleLines()
 $call EnableMapButton()
 $call UnlockLocation(FishingDocks)        // P3_CiscoTroutDecision
 $call SetTravelTime(FishingDocks, 1)
@@ -19,10 +20,11 @@ $call SetTravelTime(FieldStationTraps, 1)
 :: Continue
 @exposed
 
-{@}   
-       [This is the continue hub for Phase 3.]
+//{@}   
+//       [This is the continue hub for Phase 3.]
 $call CheckIfOutOfTime()
 $call EnableMapButton()
+$call  ClearVisibleLines()
 
 // If the player has not completed both CiscoPop AND TroutPop, allow access to the other one
 $if !HasSeen(P3_CiscoPop.End)
@@ -87,8 +89,8 @@ $endif
 :: Exit
 @exposed
 
-{@}   
-      [This is the exit hub for Phase 3.]
+//{@}   
+//      [This is the exit hub for Phase 3.]
 
 // TODO: Rest of exit hub here
 

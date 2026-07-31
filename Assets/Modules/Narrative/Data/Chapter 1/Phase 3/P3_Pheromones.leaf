@@ -12,6 +12,8 @@
 $call SetInThreadLocks()
 $call DisableMapButton()
 
+$call  ClearVisibleLines()
+
 // Mark start of thread
 $set global:currentThread = "P3_Pheromones"
 $call SetBackground("bg/research-lab-bg.png")
@@ -106,6 +108,8 @@ $call SetInThreadLocks()
 $call DisableMapButton()
 $call SetBackground("bg/town-hall-bg.png")
 
+$call  ClearVisibleLines()
+
 
 {@}   
        The town hall meeting is in full swing when you walk in. 
@@ -173,6 +177,8 @@ $call CheckIfOutOfTime()
 $call SetInThreadLocks()
 $call DisableMapButton()
 $call SetBackground("bg/dnr-office-bg.png")
+
+$call  ClearVisibleLines()
 
 
 {@}   
