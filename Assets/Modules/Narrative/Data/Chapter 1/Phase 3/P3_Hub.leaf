@@ -14,6 +14,7 @@ $call UnlockLocation(FishingDocks)        // P3_CiscoTroutDecision_Docks
 $call SetTravelTime(FishingDocks, 1)
 $call UnlockLocation(FieldStationTraps)   // P3_DownstreamUpstreamDecision
 $call SetTravelTime(FieldStationTraps, 1)
+$call OpenMap()
 // TODO: Rest of entry hub here
 
 
@@ -93,6 +94,8 @@ $endif
 
 
 // TODO: Rest of continue hub here
+
+$call OpenMap()
 
 // TODO: if all Phase 3 threads have been visited, exit
 // $goto .Exit

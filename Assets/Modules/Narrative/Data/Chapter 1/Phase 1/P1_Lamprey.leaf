@@ -87,9 +87,6 @@ $call  ClearVisibleLines()
        
 $call GiveEvidenceChip("Evidence-Lamprey-Discovered")
 
-{@}
-       [Open your map to continue]
-
 // skip to end
 $goto .End
 
@@ -100,7 +97,7 @@ $goto .End
 // Unlock next locations
 $call UnlockLocation(DNROffice)  // P1_NativeLamprey
 $call SetTravelTime(DNROffice, 1)
-
+$call OpenMap()
 
 // Mark end of thread
 $set global:currentThread = "NONE"

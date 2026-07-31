@@ -123,5 +123,7 @@ $goto .End
 // Mark end of thread
 $set global:currentThread = "NONE"
 
+$call OpenMap()
+
 // Go to Phase 1 Continue Hub
 $goto P1_Hub.Continue

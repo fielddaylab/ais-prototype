@@ -96,6 +96,7 @@ $if StatCheck(Communicate, 3)
 $endif
 $call EnableMapButton()
 $call CheckIfOutOfTime()
+$call OpenMap()
 
 
 :: AtTownHall
@@ -166,6 +167,7 @@ $call UnlockLocation(DNROffice) // Place Pheromones
 $call SetTravelTime(DNROffice, 1)
 $call EnableMapButton()
 $call CheckIfOutOfTime()
+$call OpenMap()
 
 
 :: AtDNROffice
