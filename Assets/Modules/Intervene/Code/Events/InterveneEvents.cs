@@ -22,6 +22,7 @@ namespace AIS.Intervene
 
         public static StringHash32 OnEffectSpecifyAllActionsProcessed = "on-effect-specify-all-actions-processed";
 
+        public static StringHash32 OnInterveneStart = "on-intervene-start";
         public static StringHash32 OnInterveneRestart = "on-intervene-restart";
         public static StringHash32 OnActionDeckConstructed = "on-action-deck-constructed";
         public static StringHash32 OnInterveneEnd = "on-intervene-end";

@@ -216,14 +216,14 @@ namespace AIS.Intervene
         }
 
         // Condition 2: every native species is stable (|avg change| < 1) or increasing,
-        // i.e. average change > -1. A native crashing by 1+ per round on average fails.
+        // i.e. average change > 0. A native crashing by 1+ per round on average fails.
         private bool EvaluateNatives()
         {
             foreach (var id in m_SpeciesOrder)
             {
                 if (!IsNativeRole(m_Roles[id])) { continue; }
 
-                if (AverageOfLastDeltas(BuildSpeciesSeries(id), m_TrendWindow) <= -1f)
+                if (AverageOfLastDeltas(BuildSpeciesSeries(id), m_TrendWindow) <= 0f)
                 {
                     return false;
                 }
