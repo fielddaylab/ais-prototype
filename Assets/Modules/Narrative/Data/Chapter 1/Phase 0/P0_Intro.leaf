@@ -43,36 +43,27 @@ $set global:corpsVisited = false
 
 {@}
        You stand in front of the mirror you dented at 15, brushing your hair.
-
-{@You} 
-       </i>After all this time, it's hard to tell.</i> 
-
-{@}
        A knock at the door. Your mom sticks her head inside. 
 
 {@Mom}
-       Ana, você tá pronta? 
-       </b>[Ana, are you ready?]</b>
+       Ana, você tá pronta? <b>[Ana, are you ready?]</b>
 
 {@You}
-       Tou sim. 
-       </b>[Yeah, I am.]</b>
+       Tou sim. <b>[Yeah, I am.]</b>
 
 {@Mom}
-       Ok. Tenha um bom dia hoje. Te amo. 
-       </b>[Have a good day today. I love you.]</b>
+       Ok. Tenha um bom dia hoje. <b>[Have a good day today.]</b> Te amo. 
 
 {@You}
        Te amo também. 
-       </b>[I love you, too.]</b>
 
 {@}
        She steps out. 
        You put down the brush. 
 
 {@You} 
-       </i>No time like the present.</i> 
-       </i>Right?</i>
+       <i>No time like the present.</i> 
+       <i>Right?</i>
 
 //at this point we go to the sea grant building
 $call SetBackground("bg/sea-grant-office-bg.png")
@@ -94,52 +85,33 @@ $call SetBackground("bg/sea-grant-office-bg.png")
 
 {@Saoirse}
        Well, I hope working with us will be a good first experience post-college. 
-       Speaking of working, you'll have to get started right away. Sorry about that. 
-
-{@You}
-       Don't worry - I get it. Let's hear the details. 
-
-{@Saoirse}
+       Speaking of working, you'll have to get started right away.
        Local fishermen have been reporting bites on their fish. The fish they <i>can</i> catch, that is. 
 
 {@}
        She hands you a photo. //insert photo of sea lamprey bite
-       $call SetScenarioData("Scenario1")
+       $call SetScenarioData("Sea Lamprey")
 
 {@You}
        Sea lamprey.
 
 {@Saoirse}
-       Yeah. This is what I need you to work on. I need a plan on how to manage the sea lamprey population. 
-       The interventions we can take to maintain balance in the lakes. 
-       Once you're ready to use a few possible interventions, then we'll go on to the intervention phase and use them. 
+       Yeah. This is what I need you to work on. 
+       You'll be making a model of what the current sea lamprey situation looks like. 
 
 {@You}
-       I mean, I know about conservation in general, but I don't know anything specific about sea lamprey. 
+       I mean, I know about invasive species in general, but I don't know anything specific about sea lamprey. 
        Besides the teeth. 
 
 {@Saoirse}
        You're in luck. There are plenty of people around here who have all the information you'll need. 
        Here, take this map. //map icon appears here maybe?
        $call EnableMapButton()
-       In the intervention phase, you'll need to use action certificates implement different interventions. 
-       To gain those action certificates, you need to first collect evidence chips. These chips describe the science behind possible interventions. 
-       Then, you'll need to make sure you have the resources to actually implement the intervention. Once you've done that, you'll get an action certificate.
-       This map will show you the locations where you can find evidence chips and action certificates. 
+       As you learn more, you'll also gain certifications to manage the sea lamprey population. 
        $call SetTime(16)
 
 {@You}
-       That's... a lot of info.
-
-{@Saoirse}
-       It is. If it helps, I like to use a journal to write down field notes. //note icon appears?
-       You can have this one. We'll call it a first day gift. I've already left some notes in there for you.
-
-{@You}
-       Thanks. I appreciate it. 
-
-{@Saoirse}
-       Of course.
+       That's... a lot of info. 
 
 {@}
        She puts a hand on your shoulder.
@@ -149,12 +121,7 @@ $call SetBackground("bg/sea-grant-office-bg.png")
 
 {@You}
        I hope so. 
-
-{@}
-       You open the map. You think about concentric circles of tiny teeth. 
-
-{@You}
-       </i>No time like the present, huh.</i>
+       <i>No time like the present, huh.</i>
 
 {@}
        You begin.
