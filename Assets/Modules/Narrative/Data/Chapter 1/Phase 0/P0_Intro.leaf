@@ -106,7 +106,6 @@ $call SetBackground("bg/sea-grant-office-bg.png")
 {@Saoirse}
        You're in luck. There are plenty of people around here who have all the information you'll need. 
        Here, take this map. //map icon appears here maybe?
-       $call EnableMapButton()
        As you learn more, you'll also gain certifications to manage the sea lamprey population. 
        $call SetTime(16)
 
@@ -125,6 +124,7 @@ $call SetBackground("bg/sea-grant-office-bg.png")
 
 {@}
        You begin.
+       $call EnableMapButton()
 
 // go to map, end phase 0
 // skip to end

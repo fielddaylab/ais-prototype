@@ -25,7 +25,7 @@ $if global:stockTrout == true
               You know how you told me trout can be added back into the lake.
               I was wondering if that would also be possible with cisco?
 
-       {Neveah}
+       {@Neveah}
               Ooo, yes, definitely. 
               Here, come look at their tank.
 
@@ -69,7 +69,7 @@ $elseif global:stockTrout == false
        {@}
               The hatchery is... different than what you imagined. 
               Rows of deep pools remind you of your university's Olympic swimming pool.
-              But with the mass of athletes replaced with tighly-packed scales.
+              But with the mass of athletes replaced with tightly-packed scales.
               At the edge of one of the rows, an aquaculture specialist looks lovingly into the water.
 
        {@Specialist}

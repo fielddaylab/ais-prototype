@@ -13,7 +13,7 @@ $set global:currentThread = "P3_LampreyUpstream"
 $if global:downstreamFirst == false
        {@Claire}
               Sea lamprey go upstream at the end of their lives!
-              After spending about a year in the lake, the sea lamprey travel into the tributaries to reproduce!
+              After spending about a year in the lake, the sea lampreys travel into the tributaries to reproduce!
               Then they die!
 
        {@You}
@@ -21,10 +21,10 @@ $if global:downstreamFirst == false
 
        {@Claire}
               A bit, yes!
-              That is all to say that any intervention that target sea lamprey going upstream is targetting adults going to reproduce!
+              That is all to say that any intervention that targets sea lamprey going upstream is targeting adults going to reproduce!
        $call GiveEvidenceChip("Evidence-Spawn-Upstream")
        {@Claire}
-              These interventions can traps or barriers!
+              These interventions can be traps or barriers!
 
        {@You}
               That's good to keep in mind. 
@@ -37,15 +37,10 @@ $if global:downstreamFirst == false
               There are many places to go...
        $set global:upstreamFirst = true
 $elseif global:downstreamFirst == true
-       {@}
-              Claire tinkers with a trap in the river.
 
-       {@You}
-              So when do sea lamprey go upstream?
-
-       {@Claire}
+        {@Claire}
               Sea lamprey go upstream at the end of their lives!
-              After spending about a year in the lake, the sea lamprey travel into the tributaries to reproduce!
+              After spending about a year in the lake, the sea lampreys travel into the tributaries to reproduce!
               Then they die!
 
        {@You}
@@ -53,10 +48,10 @@ $elseif global:downstreamFirst == true
 
        {@Claire}
               A bit, yes!
-              That is all to say that any intervention that target sea lamprey going upstream is targetting adults going to reproduce!
+              That is all to say that any intervention that targets sea lamprey going upstream is targeting adults going to reproduce!
        $call GiveEvidenceChip("Evidence-Spawn-Upstream")
        {@Claire}
-              These interventions can traps or barriers!
+              These interventions can be traps or barriers!
        {@You}
               That's good to keep in mind. 
 

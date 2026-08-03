@@ -120,20 +120,19 @@ $if global:dnrVisited = false
 
        $if !HasSeen(P3_Sterile.End) //references sterilization if the player has already seen it
               {@Paul}
-                     Those were the sea lamprey that would then be sent to be sterilized, back when we did that en mass. 
+                     Those were the sea lamprey that would then be sent to be sterilized, back when we did that en masse. 
        $endif
 
        {@You}
               Could these programs with traps be restarted?
 
        {@Paul}
-              Mm. Yes, but you would hvae to talk to the Army Corps of Engineers about it. 
+              Mm. Yes, but you would have to talk to the Army Corps of Engineers about it. 
               They are responsible for that. 
        $call GiveEvidenceChip("Evidence-repellent-traps")
 
        {@You}
               Perfect! Sounds like a plan. 
-
 
        {@Paul}
               Mm, yes. Have a great day. 
@@ -146,7 +145,7 @@ $if global:dnrVisited = false
               Good luck tonight, Mr. DJ!
 
        {@}
-              His quite grumble sounds more pleased than usual.
+              His quiet grumble sounds more pleased than usual.
        $set global:dnrVisited = true
 
 $else
@@ -169,7 +168,7 @@ $else
               Though just like with upstream traps, you'll need to talk to Corps.
 
        {@You}
-              That can be definitely be arranged. 
+              That can definitely be arranged. 
               Thanks for your help, Paul.
 
        {@Paul}
@@ -284,7 +283,7 @@ $elseif global:corpsVisited = true
 
        {@Robertson}
               Sounds like a mighty fine idea to me.
-              Just us let us know when you need 'em, and we'll have 'em.
+              Just let us know when you need 'em, and we'll have 'em.
        $call GiveActionCard("Action-downstream-tributary-traps")
 
        {@You}

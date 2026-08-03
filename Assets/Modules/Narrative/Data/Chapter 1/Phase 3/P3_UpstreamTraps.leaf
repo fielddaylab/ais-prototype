@@ -50,7 +50,7 @@ $if global:dnrVisited = false
               Is there anything the DNR's worked on before that could help with that?
 
        {@Paul}
-              Mm. Yes, we've down traps before for sea lamprey going upstream to spawn. 
+              Mm. Yes, we've done traps before for sea lamprey going upstream to spawn. 
               Those could be useful to you. 
        $call GiveEvidenceChip("Evidence-attractive-traps")
 
@@ -90,18 +90,18 @@ $else
               Is there anything else you need from me?
 
        {@You}
-              That there is. You know how we talked about putting traps for sea lamprey travelling downstream?
-              Has the DNR done anything like it for sea lamprey travelling upstream?
+              That there is. You know how we talked about putting traps for sea lamprey traveling downstream?
+              Has the DNR done anything like that for sea lamprey traveling upstream?
 
        {@Paul}
               Mm. Yes, we did in the past.
        $if !HasSeen(P3_Sterile.End) //references sterilization if the player has already seen it
               {@Paul}
-                     Those were the sea lamprey that would then be sent to be sterilized, back when we did that en mass. 
+                     Those were the sea lamprey that would then be sent to be sterilized, back when we did that en masse. 
        $endif
 
        {@You}
-              Thoughs on restarting that program?
+              Thoughts on restarting that program?
 
        {@Paul}
               Mm. I think that could help.
@@ -109,13 +109,12 @@ $else
        $call GiveEvidenceChip("Evidence-attractive-traps")
 
        {@You}
-              That can be definitely be arranged. 
+              That can definitely be arranged. 
               Thanks for your help, Paul.
 
        {@Paul}
               Of course.
-              Mmmm. 
-              Come to my performance tonight. 
+              Mmmm. Come to my performance tonight. 
 
        {@You}
               Really? I'd love to.
@@ -209,7 +208,7 @@ $elseif global:corpsVisited = true
 
        {@Robertson}
               Sounds like a mighty fine idea to me.
-              Just us let us know when you need 'em, and we'll have 'em.
+              Just let us know when you need 'em, and we'll have 'em.
        $call GiveActionCard("Action-upstream-tributary-traps")
 
        {@You}

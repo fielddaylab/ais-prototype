@@ -46,7 +46,7 @@ $call SetBackground("bg/research-lab-bg.png")
 
 {@Arjan}
        Pheromones are scents that some animals produce to communicate with others.
-       In this case, I'm looking at two particular pheromes that sea lamprey utilize.
+       In this case, I'm looking at two particular pheromones that sea lamprey utilize.
        One which is a warning of danger, and another which is to signal to a potential mate.
        The idea is one will repel sea lamprey and the other will attract them.
 
@@ -122,11 +122,11 @@ $call  ClearVisibleLines()
        We would use pheromones, or scents that sea lamprey are sensitive to, to make traps more effective.
 
 {@Fisher}
-       Is this more chemicals in the water?
+       Is this about putting more chemicals in the water?
 
 {@You}
        Yes, these are a kind of chemical. 
-       But they are a naturally occuring type of chemical, just like the pheromones that the sea lamprey naturally make.
+       But they are a naturally occurring type of chemical, just like the pheromones that the sea lamprey naturally make.
 
 {@Fisher}
        But isn't it different when it's manmade.
@@ -146,7 +146,7 @@ $call  ClearVisibleLines()
 
 {@Mayor}
        Thank you for bringing this to our attention. 
-       The city council is prepared to allow it with careful checks to ensure the longterm safety. 
+       The city council is prepared to allow it with careful checks to ensure the long-term safety. 
        This will only take place in municipal waters, of course.
 
 {@}

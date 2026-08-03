@@ -21,10 +21,10 @@ $call SetBackground("bg/field-station-sterile-bg.png")
 // Adds flavor text if player has finished talking to aquaculture specialist
 $if !HasSeen(P3_CiscoPop.End)
        {@}   
-              Neveah's portrait stares at you from it's place on the dash. 
+              Neveah's portrait stares at you from its place on the dash. 
 $elseif !HasSeen(P3_TroutPop.End) // I'm not sure what the or function is, which is why the code looks like this
        {@}   
-              Neveah's portrait stares at you from it's place on the dash. 
+              Neveah's portrait stares at you from its place on the dash. 
 $endif
 
 {@}
@@ -109,7 +109,7 @@ $endif
 
 {@}
        You release the sea lamprey back with his brethren. 
-       He's gone in a undulating tide of smooth scales as soon as you let go. 
+       He's gone in a tide of smooth scales as soon as you let go. 
 
 {@Robertson}
        There're only a few right now, and these'll get released soon at the lampricide tributary site.
@@ -160,7 +160,7 @@ $call  ClearVisibleLines()
 
 {@Claire}
        I am always ready to go! And in this particular moment that statement is very true!
-       The sterilized sea lamprey are ready to be released, thanks to my beloved Robertson.
+       The sterilized sea lampreys are ready to be released, thanks to my beloved Robertson.
 
 {@You}
        Your... beloved Robertson?

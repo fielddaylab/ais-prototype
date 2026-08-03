@@ -22,8 +22,7 @@ $if global:ciscoFirst == false
               They seem exhausted, but that fades when they see you. 
 
        {@João}
-              Querida, que bom te ver. 
-              </b>It's good to see you, darling.</b>
+              Querida, que bom te ver. <b>It's good to see you, darling.</b>
               What brings you back here?
 
        {@You} 
@@ -34,7 +33,7 @@ $if global:ciscoFirst == false
               I've been keeping track of the population for cisco. 
               Your uncle's been looking at trout. 
               Two heads are better than one, you know. 
-              So ask whichever one of us you wanna know about first.
+              So ask whichever one of us you want to know about first.
 
        {@You}
               Hmm, let's see...
