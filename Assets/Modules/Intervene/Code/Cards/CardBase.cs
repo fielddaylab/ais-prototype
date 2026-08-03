@@ -20,7 +20,10 @@ namespace AIS.Intervene {
 
         public int GetAdjustedCost()
         {
-            return (int)(BaseCost + InvasionCurveInterfacer.Instance.CurrVal * InvasionCurveInterfacer.Instance.CostIncreaseRate);
+            // remove invasion curve cost increase in prototype for now
+            // return (int)(BaseCost + InvasionCurveInterfacer.Instance.CurrVal * InvasionCurveInterfacer.Instance.CostIncreaseRate);
+
+            return (int)BaseCost;
         }
 
         public void SetBaseCost(int cost)

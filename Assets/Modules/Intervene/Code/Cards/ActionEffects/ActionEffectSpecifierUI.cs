@@ -17,8 +17,9 @@ namespace AIS.Intervene
         {
             SetUIElementsActive(false);
 
-            ConfirmBtn.onClick.AddListener(HandleConfirmClicked);
-            CancelAllBtn.onClick.AddListener(HandleCancelAllClicked);
+            // temp for prototype: skip multi-confirm
+            //ConfirmBtn.onClick.AddListener(HandleConfirmClicked);
+            //CancelAllBtn.onClick.AddListener(HandleCancelAllClicked);
 
             AisGame.Events.Register(InterveneEvents.OnEffectSpecifyBegin, HandleEffectSpecifyBegin);
             AisGame.Events.Register(InterveneEvents.OnEffectSpecifyAllActionsProcessed, HandleEffectSpecifyAllActionsProcessed);
@@ -63,6 +64,8 @@ namespace AIS.Intervene
                 var selectedCards = CardInteractionMgr.Instance.Hand.GetSelectedCards();
                 if (selectedCards.Count != 0 && cardsState.AllActionCards.TryGetValue(selectedCards[0].CardID, out ActionCardData data))
                 {
+                    CardInteractionMgr.Instance.Hand.ToggleSelectAtIndex(CardInteractionMgr.Instance.Hand.SelectedCardIndices[0]);
+
                     //BudgetUtility.Spend(InterveneBudgetInterfacer.Instance, data.Cost);
                     CardInteractionMgr.Instance.Hand.ClearSelections();
                 }
@@ -86,6 +89,9 @@ namespace AIS.Intervene
         private void HandleOnEffectChunkComplete()
         {
             SetUIElementsActiveForChunking(false);
+
+            // temp for prototype: skip multi-confirm
+            HandleConfirmClicked();
         }
 
         private void HandleOnEffectChunkCancel()
@@ -99,17 +105,19 @@ namespace AIS.Intervene
 
         private void SetUIElementsActive(bool effectSpecifyActive)
         {
-            ConfirmBtn.gameObject.SetActive(effectSpecifyActive);
-            ConfirmBtn.interactable = false;
-            CancelAllBtn.gameObject.SetActive(effectSpecifyActive);
+            // temp for prototype: skip multi-confirm
+            //ConfirmBtn.gameObject.SetActive(effectSpecifyActive);
+            //ConfirmBtn.interactable = false;
+            //CancelAllBtn.gameObject.SetActive(effectSpecifyActive);
 
             BeginEffectSpecifyBtn.gameObject.SetActive(!effectSpecifyActive);
         }
 
         private void SetUIElementsActiveForChunking(bool chunkingActive)
         {
-            ConfirmBtn.gameObject.SetActive(!chunkingActive);
-            CancelAllBtn.gameObject.SetActive(!chunkingActive);
+            // temp for prototype: skip multi-confirm
+            //ConfirmBtn.gameObject.SetActive(!chunkingActive);
+            //CancelAllBtn.gameObject.SetActive(!chunkingActive);
         }
 
         #endregion // Helpers

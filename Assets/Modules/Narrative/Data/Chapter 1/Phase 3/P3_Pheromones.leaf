@@ -87,12 +87,14 @@ $call GiveEvidenceChip("Evidence-Pheromones")
 {@}
        You watch him put it next to the phonograph, a warm feeling in your belly. 
 
-$call UnlockLocation(TownHall)
+$call UnlockLocation(TownHall)    // .AtTownHall
 $call SetTravelTime(TownHall, 1)
+$call SetNextAssetAtLocation(TownHall, "Evidence-wary-townfolk")
 // IF high Community/Communicate stat, optional skip townsfolk wary section
 $if StatCheck(Communicate, 3)
        $call UnlockLocation(DNROffice) // Place Pheromones
        $call SetTravelTime(DNROffice, 1)
+       $call SetNextAssetAtLocation(DNROffice, "Action-pheromones")
 $endif
 $call EnableMapButton()
 $call CheckIfOutOfTime()
@@ -165,6 +167,7 @@ $call GiveEvidenceChip("Evidence-wary-townfolk")
 
 $call UnlockLocation(DNROffice) // Place Pheromones
 $call SetTravelTime(DNROffice, 1)
+$call SetNextAssetAtLocation(DNROffice, "Action-pheromones")
 $call EnableMapButton()
 $call CheckIfOutOfTime()
 $call OpenMap()
@@ -227,8 +230,6 @@ $else
 $endif
 // TODO: Rest of DNR Office section here
 
-$call UnlockLocation(DNROffice) // Place Pheromones
-$call SetTravelTime(DNROffice, 1)
 $call EnableMapButton()
 $call CheckIfOutOfTime()
 

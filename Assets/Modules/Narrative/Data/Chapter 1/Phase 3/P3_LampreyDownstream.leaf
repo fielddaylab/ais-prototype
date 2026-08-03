@@ -63,8 +63,9 @@ $elseif global:upstreamFirst == true
 $endif
 // TODO: Rest of thread here
 
-$call UnlockLocation(DNROffice)
+$call UnlockLocation(DNROffice)    // .AtDNROffice
 $call SetTravelTime(DNROffice, 1)
+$call SetNextAssetAtLocation(DNROffice, "Evidence-repellent-traps")
 $call EnableMapButton()
 $call CheckIfOutOfTime()
 $call OpenMap()
@@ -191,8 +192,9 @@ $endif
 // TODO: Give evidence chip
 $call GiveEvidenceChip("Evidence-repellent-traps")
 
-$call UnlockLocation(ArmyCorps)
+$call UnlockLocation(ArmyCorps)    // .AtArmyCorps
 $call SetTravelTime(ArmyCorps, 1)
+$call SetNextAssetAtLocation(ArmyCorps, "Action-downstream-tributary-traps")
 $call EnableMapButton()
 $call CheckIfOutOfTime()
 $call OpenMap()

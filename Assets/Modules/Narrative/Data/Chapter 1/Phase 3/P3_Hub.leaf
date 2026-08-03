@@ -10,10 +10,13 @@ $set global:currentPhase = 3
 //       [This is the entry hub for Phase 3.]
 $call  ClearVisibleLines()
 $call EnableMapButton()
+// Both of these front a two-lead decision; the pip advertises the first-listed choice.
 $call UnlockLocation(FishingDocks)        // P3_CiscoTroutDecision_Docks
 $call SetTravelTime(FishingDocks, 1)
+$call SetNextAssetAtLocation(FishingDocks, "Evidence-cisco")
 $call UnlockLocation(FieldStationTraps)   // P3_DownstreamUpstreamDecision
 $call SetTravelTime(FieldStationTraps, 1)
+$call SetNextAssetAtLocation(FieldStationTraps, "Evidence-Feed-Downstream")
 $call OpenMap()
 // TODO: Rest of entry hub here
 
@@ -29,32 +32,43 @@ $call  ClearVisibleLines()
 
 // If the player has yet to complete one of the Cisco_Note or Trout_Note options, allow access to the docks
 $if !HasSeen(P3_CiscoPop_Note.End)
+       // cisco is the first-listed lead at the docks and is still open
        $call UnlockLocation(FishingDocks)        // P3_CiscoTroutDecision_Docks
        $call SetTravelTime(FishingDocks, 1)
+       $call SetNextAssetAtLocation(FishingDocks, "Evidence-cisco")
 $elseif !HasSeen(P3_TroutPop_Note.End)
+       // cisco note is done, so the docks only offer the trout lead
        $call UnlockLocation(FishingDocks)        // P3_CiscoTroutDecision_Docks
        $call SetTravelTime(FishingDocks, 1)
+       $call SetNextAssetAtLocation(FishingDocks, "Evidence-Lake-Trout")
 $endif
 
 // If the player has completed CiscoPop_Note but not the action half, allow access to action half
 $if HasSeen(P3_CiscoPop_Note.End), !HasSeen(P3_CiscoPop_Action.End)
        $call UnlockLocation(FishHatchery)        // P3_CiscoTroutDecision_FishHatchery
        $call SetTravelTime(FishHatchery, 1)
+       $call SetNextAssetAtLocation(FishHatchery, "Action-stock-cisco")
 $endif
 
 // If the player has completed Trout_Pop_Note but not the action half, allow access to action half
+// When both leads are open this block runs too, and the trout pip takes precedence.
 $if HasSeen(P3_TroutPop_Note.End), !HasSeen(P3_TroutPop_Action.End)
        $call UnlockLocation(FishHatchery)        // P3_CiscoTroutDecision_FishHatchery
        $call SetTravelTime(FishHatchery, 1)
+       $call SetNextAssetAtLocation(FishHatchery, "Action-stock-lake-trout")
 $endif
 
 // If the player has not completed both LampreyDownstream AND LampreyUpstream, allow access to the other one
 $if !HasSeen(P3_LampreyDownstream.End)
+       // downstream is the first-listed lead at the traps and is still open
        $call UnlockLocation(FieldStationTraps)        // P3_DownstreamUpstreamDecision
        $call SetTravelTime(FieldStationTraps, 1)
+       $call SetNextAssetAtLocation(FieldStationTraps, "Evidence-Feed-Downstream")
 $elseif !HasSeen(P3_LampreyUpstream.End)
+       // downstream is done, so the traps only offer the upstream lead
        $call UnlockLocation(FieldStationTraps)        // P3_DownstreamUpstreamDecision
        $call SetTravelTime(FieldStationTraps, 1)
+       $call SetNextAssetAtLocation(FieldStationTraps, "Evidence-Spawn-Upstream")
 $endif
 
 // If the player has completed LampreyUpstream, and they have not completed UpstreamTraps and/or UpstreamBarriers, allow access
@@ -62,21 +76,25 @@ $if HasSeen(P3_LampreyUpstream)
        $if !HasSeen(P3_UpstreamTraps.End)
               $call UnlockLocation(DNROffice)    // UpstreamTraps
               $call SetTravelTime(DNROffice, 1)
+              $call SetNextAssetAtLocation(DNROffice, "Evidence-attractive-traps")
        $endif
        $if !HasSeen(P3_UpstreamBarriers.End)
               $call UnlockLocation(BarrierSite)  // UpstreamBarriers
               $call SetTravelTime(BarrierSite, 1)
+              $call SetNextAssetAtLocation(BarrierSite, "Evidence-barrier")
        $endif
 $endif
 
 // if player has high Tech stat AND completed CiscoPop or TroutPop, unlock P3_Sterile thread
 $if !HasSeen(P3_Sterile.End)
        $if HasSeen(P3_CiscoPop.End), StatCheck(Tech, 3)
-              $call UnlockLocation(FieldStationSterile)
+              $call UnlockLocation(FieldStationSterile)    // P3_Sterile
               $call SetTravelTime(FieldStationSterile, 1)
+              $call SetNextAssetAtLocation(FieldStationSterile, "Evidence-sterilization")
        $elseif HasSeen(P3_TroutPop.End), StatCheck(Tech, 3)
-              $call UnlockLocation(FieldStationSterile)
+              $call UnlockLocation(FieldStationSterile)    // P3_Sterile
               $call SetTravelTime(FieldStationSterile, 1)
+              $call SetNextAssetAtLocation(FieldStationSterile, "Evidence-sterilization")
        $endif
 $endif
 
@@ -84,11 +102,13 @@ $endif
 // if player has high Outdoors stat AND completed LampreyDownstream or LampreyUpstream (traps branch), unlock P3_Pheromones thread
 $if !HasSeen(P3_Pheromones.End)
        $if HasSeen(P3_LampreyDownstream.End), StatCheck(Ranger, 3)
-              $call UnlockLocation(ResearchLab)
+              $call UnlockLocation(ResearchLab)    // P3_Pheromones
               $call SetTravelTime(ResearchLab, 1)
+              $call SetNextAssetAtLocation(ResearchLab, "Evidence-Pheromones")
        $elseif HasSeen(P3_LampreyUpstream.ReceiveTrapAction), StatCheck(Ranger, 3)
-              $call UnlockLocation(ResearchLab)
+              $call UnlockLocation(ResearchLab)    // P3_Pheromones
               $call SetTravelTime(ResearchLab, 1)
+              $call SetNextAssetAtLocation(ResearchLab, "Evidence-Pheromones")
        $endif
 $endif
 

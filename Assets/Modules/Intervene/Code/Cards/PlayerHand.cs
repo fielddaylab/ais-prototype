@@ -104,6 +104,7 @@ namespace AIS.Intervene
                         BudgetUtility.UpdateBudgetVisualsForSelectedCard(InterveneBudgetInterfacer.Instance, cost);
                     }
                 }
+                cardInterationUI.UseSelectedBtn.interactable = false;
             }
             else if (AllowMultiSelect)
             {

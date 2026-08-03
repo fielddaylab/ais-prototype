@@ -103,12 +103,7 @@ namespace AIS.Narrative
 
                 if (unlocked)
                 {
-                    // TODO: refine logics for checking if there are any cards waiting to be found at a location.
-                    Transform BG = locations[i].NextCardToFind.gameObject.transform.GetChild(0);
-                    Transform SuitIcon = locations[i].NextCardToFind.gameObject.transform.GetChild(1);
-                    locations[i].NextCardToFind.SetActive(
-                        BG.GetComponent<Image>().color != Color.white
-                        && SuitIcon.GetComponent<Image>().sprite != null);
+                    locations[i].NextCardToFind.SetActive(locations[i].HasNextAsset);
                 }
                 else
                 {
