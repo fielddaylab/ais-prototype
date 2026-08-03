@@ -49,6 +49,7 @@ namespace AIS.Intervene
         {
             if (AisGame.IsShuttingDown) { return; }
 
+            AisGame.Events.Deregister(InterveneEvents.OnInterveneStart, HandleStart);
             AisGame.Events.Deregister(InterveneEvents.OnEndTurn, HandleEndTurn);
             AisGame.Events.Deregister(InterveneEvents.OnInterveneRestart, HandleRestart);
         }

@@ -51,6 +51,13 @@ namespace AIS.Intervene
             AisGame.Events.Register(InterveneEvents.OnEndTurn, HandleTurnEnded);
         }
 
+        private void OnDestroy()
+        {
+            if (AisGame.IsShuttingDown) { return; }
+
+            AisGame.Events.Deregister(InterveneEvents.OnEndTurn, HandleTurnEnded);
+        }
+
         public void ProgressCurveOnTime()
         {
             CurrThresholdVal += 1;

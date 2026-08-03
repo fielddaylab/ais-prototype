@@ -1,8 +1,10 @@
+using BeauUtil;
 using FieldDay;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace AIS.Intervene
@@ -112,7 +114,8 @@ namespace AIS.Intervene
         private void HandleRestartInterveneClicked()
         {
             // TODO: restart via event dispatch
-            AisGame.Events.Dispatch(InterveneEvents.OnInterveneRestart);
+            // AisGame.Events.Dispatch(InterveneEvents.OnInterveneRestart);
+            Game.Scenes.ReloadMainScene();
         }
 
         public void SucceedTest(int index)
