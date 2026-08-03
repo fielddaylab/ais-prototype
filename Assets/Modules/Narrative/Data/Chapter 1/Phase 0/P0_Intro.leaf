@@ -120,8 +120,6 @@ $call SetBackground("bg/sea-grant-office-bg.png")
 
 {@Saoirse}
        You're in luck. There are plenty of people around here who have all the information you'll need. 
-       Here, take this map. //map icon appears here maybe?
-       $call EnableMapButton()
        In the intervention phase, you'll need to use action certificates implement different interventions. 
        To gain those action certificates, you need to first collect evidence chips. These chips describe the science behind possible interventions. 
        Then, you'll need to make sure you have the resources to actually implement the intervention. Once you've done that, you'll get an action certificate.
