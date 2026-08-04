@@ -14,6 +14,7 @@ namespace AIS.Intervene
         public TMP_Text MainText;
         public Transform EvalGroup;
         public GameObject EvalRow;
+        public CanvasGroup Fader;
 
         public int EvalNum;
 
@@ -49,6 +50,9 @@ namespace AIS.Intervene
 
             // Zero stars forces a restart: leave only the Restart button available.
             EndInterveneBtn.gameObject.SetActive(result.Stars > 0);
+
+            Fader.alpha = 1;
+            Fader.blocksRaycasts = true;
         }
 
         public void Show()
@@ -57,6 +61,9 @@ namespace AIS.Intervene
 
             EndInterveneBtn.onClick.AddListener(HandleEndInterveneClicked);
             RestartInterveneBtn.onClick.AddListener(HandleRestartInterveneClicked);
+
+            Fader.alpha = 1;
+            Fader.blocksRaycasts = true;
         }
 
         public void Hide()
@@ -68,6 +75,9 @@ namespace AIS.Intervene
 
             EndInterveneBtn.onClick.RemoveAllListeners();
             RestartInterveneBtn.onClick.RemoveAllListeners();
+
+            Fader.alpha = 0;
+            Fader.blocksRaycasts = false;
         }
 
         private void ClearEvalRows()
