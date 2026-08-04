@@ -23,6 +23,13 @@ namespace AIS.Intervene
             AisGame.Events.Register(InterveneEvents.OnPopulationSnapshotRecorded, UpdatePopulation);
         }
 
+        private void OnDestroy()
+        {
+            if (AisGame.IsShuttingDown) { return; }
+
+            AisGame.Events.Deregister(InterveneEvents.OnPopulationSnapshotRecorded, UpdatePopulation);
+        }
+
         public void Setup(List<PopulationTrend> populationTrends)
         {
             populationGroups = new IntervenePopulationGroup[populationTrends.Count];

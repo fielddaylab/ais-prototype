@@ -1,5 +1,7 @@
+using AIS.Intervene;
 using AIS.Model;
 using BeauUtil;
+using BeauUtil.Debugger;
 using FieldDay;
 using FieldDay.Scripting;
 using FieldDay.UI;
@@ -88,6 +90,7 @@ namespace AIS.Narrative {
             if (inv.EvidenceChips.Add(id))
             {
                 InvasionModel.Instance?.SimDetailRegistry?.TryEnqueueReveal(id);
+                PlayerUtility.OnCardCollected(id);
 
                 if (thread.IsSkipping())
                 {
@@ -115,6 +118,8 @@ namespace AIS.Narrative {
             PlayerInventory inv = Find.State<PlayerInventory>();
             if (inv.ActionCards.Add(id))
             {
+                PlayerUtility.OnCardCollected(id);
+
                 if (thread.IsSkipping())
                 {
                     yield break;
@@ -314,60 +319,47 @@ namespace AIS.Narrative {
             mapPanel.SetTravelTimeFromCurrentTo(location, chunks, isRevealed);
         }
 
-        /*
-        [LeafMember("SetNextCardToFind")]
-        static public void SetNextCardToFind(MapLocation location, StringHash32 evidenceId)
+        // Advertises the card waiting at a location on the map. The id may name either an
+        // EvidenceCard or an ActionCard; the card's type picks the pip color and its suit the icon.
+        [LeafMember("SetNextAssetAtLocation")]
+        static public void SetNextAssetAtLocation(MapLocation location, StringHash32 assetId)
         {
-            var mapPanel = Find.Panel<MapDisplayPanel>();
-            EvidenceCard evidence = Find.NamedAsset<EvidenceCard>(evidenceId);
-            mapPanel.SetNextCardAtLocation(location, evidence.Suit, evidence.isActionable);
-        }
-        */
-
-        // TODO: Delete this in later development, only use the above one
-        [LeafMember("SetNextCardToFind")]
-        static public void SetNextCardToFind(int locationIdx, string suit, bool isActionable = false)
-        {
-            var mapPanel = Find.Panel<MapDisplayPanel>();
-            PlayerStatId statSuit = PlayerStatId.Tech;
-
-            switch (suit)
+            if (!TryResolveAsset(assetId, out NextAssetInfo asset))
             {
-                case "Tech":
-                case "tech":
-                    break;
-
-                case "Research":
-                case "research":
-                    statSuit = PlayerStatId.Research;
-                    break;
-
-                case "Innovate":
-                case "innovate":
-                case "Innovation":
-                case "innovation":
-                    statSuit = PlayerStatId.Innovate;
-                    break;
-
-                case "Ranger":
-                case "ranger":
-                    statSuit = PlayerStatId.Ranger;
-                    break;
-
-                case "Communicate":
-                case "communicate":
-                    statSuit = PlayerStatId.Communicate;
-                    break;
+                Log.Warn("[ScriptHooks] No evidence or action card found with id '{0}'.", assetId.ToDebugString());
+                return;
             }
 
-            mapPanel.SetNextCardAtLocation(locationIdx, statSuit, isActionable);
+            var mapPanel = Find.Panel<MapDisplayPanel>();
+            mapPanel.SetNextAssetAtLocation(location, asset);
         }
 
-        [LeafMember("ClearNextCardToFind")]
-        static public void ClearNextCardToFind(int index)
+        [LeafMember("ClearNextAssetAtLocation")]
+        static public void ClearNextAssetAtLocation(MapLocation location)
         {
             var mapPanel = Find.Panel<MapDisplayPanel>();
-            mapPanel.ClearNextCardAtLocation(index);
+            mapPanel.ClearNextAssetAtLocation(location);
+        }
+
+        // Evidence cards are NamedAssets, while action cards are parsed at runtime into
+        // ActionCardsState, so each type is resolved from a different registry.
+        static private bool TryResolveAsset(StringHash32 assetId, out NextAssetInfo asset)
+        {
+            if (Game.Assets.TryGetNamed(assetId, out EvidenceCard evidence))
+            {
+                asset = new NextAssetInfo() { Id = assetId, Type = NextAssetType.Evidence, Suit = evidence.Suit };
+                return true;
+            }
+
+            if (Game.SharedState.TryGet(out ActionCardsState cardsState)
+                && cardsState.AllActionCards.TryGetValue(assetId, out ActionCardData action))
+            {
+                asset = new NextAssetInfo() { Id = assetId, Type = NextAssetType.Action, Suit = action.Suit };
+                return true;
+            }
+
+            asset = default;
+            return false;
         }
 
         [LeafMember("SetTime")]

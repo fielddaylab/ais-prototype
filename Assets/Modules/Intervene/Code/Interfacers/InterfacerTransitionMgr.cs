@@ -32,6 +32,13 @@ namespace AIS.Intervene
             Game.Scenes.QueueOnEnable(this, Load);
         }
 
+        private void OnDestroy()
+        {
+            if (Game.IsShuttingDown) { return; }
+
+            AisGame.Events.Deregister(InterveneEvents.OnInterveneRestart, HandleInterveneRestart);
+        }
+
         // Data passed into this scene
         public void Load()
         {

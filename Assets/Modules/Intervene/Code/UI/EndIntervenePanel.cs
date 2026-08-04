@@ -1,8 +1,10 @@
+using BeauUtil;
 using FieldDay;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace AIS.Intervene
@@ -12,6 +14,7 @@ namespace AIS.Intervene
         public TMP_Text MainText;
         public Transform EvalGroup;
         public GameObject EvalRow;
+        public CanvasGroup Fader;
 
         public int EvalNum;
 
@@ -47,6 +50,9 @@ namespace AIS.Intervene
 
             // Zero stars forces a restart: leave only the Restart button available.
             EndInterveneBtn.gameObject.SetActive(result.Stars > 0);
+
+            Fader.alpha = 1;
+            Fader.blocksRaycasts = true;
         }
 
         public void Show()
@@ -55,6 +61,9 @@ namespace AIS.Intervene
 
             EndInterveneBtn.onClick.AddListener(HandleEndInterveneClicked);
             RestartInterveneBtn.onClick.AddListener(HandleRestartInterveneClicked);
+
+            Fader.alpha = 1;
+            Fader.blocksRaycasts = true;
         }
 
         public void Hide()
@@ -66,6 +75,9 @@ namespace AIS.Intervene
 
             EndInterveneBtn.onClick.RemoveAllListeners();
             RestartInterveneBtn.onClick.RemoveAllListeners();
+
+            Fader.alpha = 0;
+            Fader.blocksRaycasts = false;
         }
 
         private void ClearEvalRows()
@@ -112,7 +124,8 @@ namespace AIS.Intervene
         private void HandleRestartInterveneClicked()
         {
             // TODO: restart via event dispatch
-            AisGame.Events.Dispatch(InterveneEvents.OnInterveneRestart);
+            // AisGame.Events.Dispatch(InterveneEvents.OnInterveneRestart);
+            Game.Scenes.ReloadMainScene();
         }
 
         public void SucceedTest(int index)

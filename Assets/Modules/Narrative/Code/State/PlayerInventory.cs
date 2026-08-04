@@ -62,5 +62,15 @@ namespace AIS.Narrative {
             Find.GuiModule<ToolbarPanel>().SetTime(inv.TimeRemaining);
             ToolbarPanel.ResetTimeGroup(Find.GuiModule<ToolbarPanel>().TimeGroup, true);
         }
+
+        /// <summary>
+        /// Call after the player receives an evidence or action card, so any map location still
+        /// advertising it as "to find" drops its pip. No-op in scenes without a map panel.
+        /// </summary>
+        static public void OnCardCollected(StringHash32 cardId) {
+            if (Game.Gui.TryGetShared(out MapDisplayPanel mapPanel)) {
+                mapPanel.ClearNextAsset(cardId);
+            }
+        }
     }
 }

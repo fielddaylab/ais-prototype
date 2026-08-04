@@ -121,6 +121,7 @@ namespace AIS.Narrative {
 
             if (inv.EvidenceChips.Add(id)) {
                 InvasionModel.Instance?.SimDetailRegistry?.TryEnqueueReveal(id);
+                PlayerUtility.OnCardCollected(id);
             }
         }
 
@@ -128,7 +129,9 @@ namespace AIS.Narrative {
         static private void GiveActionCard(StringHash32 id) {
             if (!Game.SharedState.TryGet(out PlayerInventory inv)) { return; }
 
-            inv.ActionCards.Add(id);
+            if (inv.ActionCards.Add(id)) {
+                PlayerUtility.OnCardCollected(id);
+            }
         }
 
         // Bulk version of the per-chip buttons: hands over every loaded evidence card at once.

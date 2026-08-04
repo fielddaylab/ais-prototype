@@ -46,11 +46,13 @@ namespace AIS.Narrative
         public Button returnButton;
         public Image LocPointer;
 
+        private static int HOME_LOC_INDEX = 11;
+
         private void Awake()
         {
             returnButton.gameObject.SetActive(false);
             UnlockedLocations.Add(locations[0].MainImg);
-            SetCurrentLocation(0);
+            SetCurrentLocation(HOME_LOC_INDEX);
             travelButton.interactable = false;
         }
 
@@ -72,24 +74,48 @@ namespace AIS.Narrative
         private IEnumerator UpdatePointerPositionNextFrame(int index)
         {
             yield return null; // wait one frame for layout/LayoutOffset to settle
+            PositionPointerAt(index);
+        }
+
+        /// <summary>
+        /// Moves the "you are here" pointer onto the given location. Locations that author a
+        /// <see cref="TravelPoint.PointerPos"/> place the pointer exactly there; the rest fall back
+        /// to sitting directly above the location icon.
+        /// </summary>
+        private void PositionPointerAt(int index)
+        {
+            if (LocPointer == null) { return; }
+
             RectTransform pointerTransform = LocPointer.GetComponent<RectTransform>();
-            RectTransform currentLocTransform = locations[index].MainImg.GetComponent<RectTransform>();
-            if (pointerTransform != null && currentLocTransform != null)
+            if (pointerTransform == null) { return; }
+
+            RectTransform target = locations[index].PointerPos;
+            bool authored = target != null;
+            if (!authored)
             {
-                RectTransform parent = (RectTransform)pointerTransform.parent;
-
-                // Convert the location's world position into the pointer's parent local space
-                Vector3 world = currentLocTransform.position;
-                Vector2 local = parent.InverseTransformPoint(world);
-
-                local.y += currentLocTransform.rect.height * 0.5f;
-                pointerTransform.anchoredPosition = local;
+                if (locations[index].MainImg == null) { return; }
+                target = locations[index].MainImg.GetComponent<RectTransform>();
+                if (target == null) { return; }
             }
+
+            RectTransform parent = (RectTransform)pointerTransform.parent;
+
+            // Convert the target's world position into the pointer's parent local space
+            Vector3 world = target.position;
+            Vector2 local = parent.InverseTransformPoint(world);
+
+            if (!authored)
+            {
+                local.y += target.rect.height * 0.5f;
+            }
+            pointerTransform.anchoredPosition = local;
         }
 
         public void SetCurrentLocation(int index)
         {
             currentLocationIdx = index;
+            // Arriving somewhere leaves nothing selected, so the location reads as "you are here"
+            // rather than as a destination the player has picked out and could be moved to again.
             selectedLocationIdx = -1;
 
             for (int i = 0; i < locations.Length; i++)
@@ -103,12 +129,7 @@ namespace AIS.Narrative
 
                 if (unlocked)
                 {
-                    // TODO: refine logics for checking if there are any cards waiting to be found at a location.
-                    Transform BG = locations[i].NextCardToFind.gameObject.transform.GetChild(0);
-                    Transform SuitIcon = locations[i].NextCardToFind.gameObject.transform.GetChild(1);
-                    locations[i].NextCardToFind.SetActive(
-                        BG.GetComponent<Image>().color != Color.white
-                        && SuitIcon.GetComponent<Image>().sprite != null);
+                    locations[i].NextCardToFind.SetActive(locations[i].HasNextAsset);
                 }
                 else
                 {
@@ -117,8 +138,6 @@ namespace AIS.Narrative
             }
 
             RefreshTravelPointHighlight();
-            currentLocationIdx = index;
-            selectedLocationIdx = index;
             locations[index].TimeDisplay.SetActive(false);
 
             if (isActiveAndEnabled)
@@ -126,19 +145,47 @@ namespace AIS.Narrative
                 StartCoroutine(UpdatePointerPositionNextFrame(index));
             }
 
-            if (LocPointer == null || locations[index].MainImg == null) return;
-
-            RectTransform pointerTransform = LocPointer.GetComponent<RectTransform>();
-            RectTransform locTransform = locations[index].MainImg.GetComponent<RectTransform>();
-            if (pointerTransform == null || locTransform == null) return;
-
-            RectTransform parent = (RectTransform)pointerTransform.parent;
-            Vector3 world = locTransform.position;
-            Vector2 local = parent.InverseTransformPoint(world);
-            local.y += locTransform.rect.height * 0.5f;
-            pointerTransform.anchoredPosition = local;
+            PositionPointerAt(index);
 
             travelButton.interactable = false;
+        }
+
+        /// <summary>
+        /// Puts the display into its "just opened" state: the pointer on the location the player is
+        /// standing at, and nothing selected.
+        /// </summary>
+        public void ShowAtCurrentLocation()
+        {
+            ClearSelection();
+
+            // The map has only just been activated, so give layout a frame to settle before
+            // placing the pointer.
+            if (isActiveAndEnabled)
+            {
+                StartCoroutine(UpdatePointerPositionNextFrame(currentLocationIdx));
+            }
+
+            PositionPointerAt(currentLocationIdx);
+        }
+
+        /// <summary>
+        /// Drops any destination the player has clicked without confirming. Selecting a location is
+        /// only a proposal - they have not moved until they press travel - so closing or reopening
+        /// the map has to discard it rather than carry it forward as their new location.
+        /// </summary>
+        public void ClearSelection()
+        {
+            selectedLocationIdx = -1;
+
+            if (PathLine != null)
+            {
+                PathLine.gameObject.SetActive(false);
+            }
+
+            travelButton.interactable = false;
+            mapDisplayPanel.ClearTravelInfo();
+
+            RefreshTravelPointHighlight();
         }
 
         public void SelectLocation(int index)
@@ -278,19 +325,33 @@ namespace AIS.Narrative
             }
         }
 
-        public void RefreshTravelPointLocks()
+        /// <summary>
+        /// Re-applies everything the map derives from <see cref="UnlockedLocations"/>: which points
+        /// can be clicked, how they are colored, and whether their "card waiting here" pip shows.
+        /// Runs when the map is shown, and again whenever the unlock set changes while the map is
+        /// already open, so a map opened before its thread's travel setup ends up in the same state
+        /// as one opened after it.
+        /// </summary>
+        public void RefreshTravelPoints()
         {
-            foreach(TravelPoint location in locations)
+            for (int i = 0; i < locations.Length; i++)
             {
-                if (UnlockedLocations.Contains(location.MainImg))
-                {
-                    location.GetComponent<Button>().interactable = true;
-                }
-                else
-                {
-                    location.GetComponent<Button>().interactable = false;
-                }
+                bool unlocked = UnlockedLocations.Contains(locations[i].MainImg);
+
+                locations[i].GetComponent<Button>().interactable = unlocked;
+
+                // The location the player is standing on keeps whatever pip it was left with.
+                if (i == currentLocationIdx) { continue; }
+
+                locations[i].NextCardToFind.SetActive(unlocked && locations[i].HasNextAsset);
+
+                // A location the player can no longer reach should not still advertise what it
+                // would have cost to travel there. Unlocked points keep the time the script gave
+                // them, which is set alongside the unlock.
+                if (!unlocked) { locations[i].UpdateTimeBlockVisual(0); }
             }
+
+            RefreshTravelPointHighlight();
         }
 
         // TODO: Finalize how to highlight accessible locations during threads and selected locations

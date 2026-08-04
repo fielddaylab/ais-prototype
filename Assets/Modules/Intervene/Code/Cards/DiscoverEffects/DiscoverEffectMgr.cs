@@ -13,6 +13,13 @@ namespace AIS.Intervene
             AisGame.Events.Register(InterveneEvents.OnActionDeckConstructed, HandleActionDeckConstructed);
         }
 
+        private void OnDestroy()
+        {
+            if (Game.IsShuttingDown) { return; }
+
+            AisGame.Events.Deregister(InterveneEvents.OnActionDeckConstructed, HandleActionDeckConstructed);
+        }
+
         /// <summary>
         /// For each card in Action Deck, process it's discovery action
         /// </summary>

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Id:
     m_HashValue: 0
-  Suit: 1
+  Suit: 3
   Illustration: {fileID: 0}
   Label: What is native lamprey.
   isActionable: 0

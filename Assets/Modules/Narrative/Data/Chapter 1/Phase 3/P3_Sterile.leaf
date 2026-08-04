@@ -130,8 +130,9 @@ $call GiveEvidenceChip("Evidence-sterilization")
 
 // TODO: Give evidence chip
 
-$call UnlockLocation(FieldStationLampricide)
+$call UnlockLocation(FieldStationLampricide)    // .AtFieldStationLampricide
 $call SetTravelTime(FieldStationLampricide, 1)
+$call SetNextAssetAtLocation(FieldStationLampricide, "Action-release-sterilized")
 $call EnableMapButton()
 $call CheckIfOutOfTime()
 $call OpenMap()

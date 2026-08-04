@@ -24,8 +24,8 @@ namespace AIS.Intervene
             AisGame.Events.Register(InterveneEvents.OnEffectSpecifyAllActionsProcessed, HandleEffectSpecifyAllActionsProcessed);
         
             AisGame.Events.Register(InterveneEvents.OnEffectChunkBegin, HandleOnEffectChunkBegin);
-            AisGame.Events.Register(InterveneEvents.OnEffectChunkCancel, HandleOnEffectChunkCancel);
-            AisGame.Events.Register(InterveneEvents.OnEffectChunkComplete, HandleOnEffectChunkComplete);
+            AisGame.Events.Register(InterveneEvents.PostEffectChunkCancel, HandlePostEffectChunkCancel);
+            AisGame.Events.Register(InterveneEvents.PostEffectChunkComplete, HandlePostEffectChunkComplete);
         }
 
         private void OnDisable()
@@ -39,8 +39,8 @@ namespace AIS.Intervene
             AisGame.Events.Deregister(InterveneEvents.OnEffectSpecifyAllActionsProcessed, HandleEffectSpecifyAllActionsProcessed);
 
             AisGame.Events.Deregister(InterveneEvents.OnEffectChunkBegin, HandleOnEffectChunkBegin);
-            AisGame.Events.Deregister(InterveneEvents.OnEffectChunkCancel, HandleOnEffectChunkCancel);
-            AisGame.Events.Deregister(InterveneEvents.OnEffectChunkComplete, HandleOnEffectChunkComplete);
+            AisGame.Events.Deregister(InterveneEvents.PostEffectChunkCancel, HandlePostEffectChunkCancel);
+            AisGame.Events.Deregister(InterveneEvents.PostEffectChunkComplete, HandlePostEffectChunkComplete);
         }
 
         #region Handlers
@@ -63,6 +63,8 @@ namespace AIS.Intervene
                 var selectedCards = CardInteractionMgr.Instance.Hand.GetSelectedCards();
                 if (selectedCards.Count != 0 && cardsState.AllActionCards.TryGetValue(selectedCards[0].CardID, out ActionCardData data))
                 {
+                    CardInteractionMgr.Instance.Hand.ToggleSelectAtIndex(CardInteractionMgr.Instance.Hand.SelectedCardIndices[0]);
+
                     //BudgetUtility.Spend(InterveneBudgetInterfacer.Instance, data.Cost);
                     CardInteractionMgr.Instance.Hand.ClearSelections();
                 }
@@ -83,14 +85,20 @@ namespace AIS.Intervene
             SetUIElementsActiveForChunking(true);
         }
 
-        private void HandleOnEffectChunkComplete()
+        private void HandlePostEffectChunkComplete()
         {
             SetUIElementsActiveForChunking(false);
+
+            // temp for prototype: skip multi-confirm
+            HandleConfirmClicked();
         }
 
-        private void HandleOnEffectChunkCancel()
+        private void HandlePostEffectChunkCancel()
         {
             SetUIElementsActiveForChunking(false);
+
+            // temp for prototype: skip multi-confirm
+            HandleCancelAllClicked();
         }
 
         #endregion // Handlers
@@ -99,17 +107,19 @@ namespace AIS.Intervene
 
         private void SetUIElementsActive(bool effectSpecifyActive)
         {
-            ConfirmBtn.gameObject.SetActive(effectSpecifyActive);
-            ConfirmBtn.interactable = false;
-            CancelAllBtn.gameObject.SetActive(effectSpecifyActive);
+            // temp for prototype: disable multi-ConfirmBtn and multi-cancel
+            //ConfirmBtn.gameObject.SetActive(effectSpecifyActive);
+            //ConfirmBtn.interactable = false;
+            //CancelAllBtn.gameObject.SetActive(effectSpecifyActive);
 
             BeginEffectSpecifyBtn.gameObject.SetActive(!effectSpecifyActive);
         }
 
         private void SetUIElementsActiveForChunking(bool chunkingActive)
         {
-            ConfirmBtn.gameObject.SetActive(!chunkingActive);
-            CancelAllBtn.gameObject.SetActive(!chunkingActive);
+            // temp for prototype: disable multi-ConfirmBtn and multi-cancel
+            //ConfirmBtn.gameObject.SetActive(!chunkingActive);
+            //CancelAllBtn.gameObject.SetActive(!chunkingActive);
         }
 
         #endregion // Helpers

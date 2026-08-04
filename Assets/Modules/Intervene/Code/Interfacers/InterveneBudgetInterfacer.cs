@@ -114,6 +114,11 @@ namespace AIS.Intervene
                     if (img != null) img.color = Color.yellow;
                 }
             }
+
+            if (amt != 0)
+            {
+                AisGame.Events.Dispatch(InterveneEvents.OnBudgetChanged);
+            }
         }
 
         public void BestowBudget()

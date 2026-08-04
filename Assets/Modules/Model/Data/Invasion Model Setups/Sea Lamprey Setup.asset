@@ -421,8 +421,8 @@ MonoBehaviour:
     StartingTargetType: 2
   DefaultPrey:
     SpeciesId:
-      m_Source: walleye
-      m_HashValue: 892638634
+      m_Source: cisco
+      m_HashValue: 2438048384
     StartingEcosystemId:
       m_Source: 
       m_HashValue: 0
