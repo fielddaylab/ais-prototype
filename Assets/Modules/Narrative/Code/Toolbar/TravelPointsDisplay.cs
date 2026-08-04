@@ -114,6 +114,8 @@ namespace AIS.Narrative
         public void SetCurrentLocation(int index)
         {
             currentLocationIdx = index;
+            // Arriving somewhere leaves nothing selected, so the location reads as "you are here"
+            // rather than as a destination the player has picked out and could be moved to again.
             selectedLocationIdx = -1;
 
             for (int i = 0; i < locations.Length; i++)
@@ -136,8 +138,6 @@ namespace AIS.Narrative
             }
 
             RefreshTravelPointHighlight();
-            currentLocationIdx = index;
-            selectedLocationIdx = index;
             locations[index].TimeDisplay.SetActive(false);
 
             if (isActiveAndEnabled)
@@ -148,6 +148,44 @@ namespace AIS.Narrative
             PositionPointerAt(index);
 
             travelButton.interactable = false;
+        }
+
+        /// <summary>
+        /// Puts the display into its "just opened" state: the pointer on the location the player is
+        /// standing at, and nothing selected.
+        /// </summary>
+        public void ShowAtCurrentLocation()
+        {
+            ClearSelection();
+
+            // The map has only just been activated, so give layout a frame to settle before
+            // placing the pointer.
+            if (isActiveAndEnabled)
+            {
+                StartCoroutine(UpdatePointerPositionNextFrame(currentLocationIdx));
+            }
+
+            PositionPointerAt(currentLocationIdx);
+        }
+
+        /// <summary>
+        /// Drops any destination the player has clicked without confirming. Selecting a location is
+        /// only a proposal - they have not moved until they press travel - so closing or reopening
+        /// the map has to discard it rather than carry it forward as their new location.
+        /// </summary>
+        public void ClearSelection()
+        {
+            selectedLocationIdx = -1;
+
+            if (PathLine != null)
+            {
+                PathLine.gameObject.SetActive(false);
+            }
+
+            travelButton.interactable = false;
+            mapDisplayPanel.ClearTravelInfo();
+
+            RefreshTravelPointHighlight();
         }
 
         public void SelectLocation(int index)
@@ -287,19 +325,33 @@ namespace AIS.Narrative
             }
         }
 
-        public void RefreshTravelPointLocks()
+        /// <summary>
+        /// Re-applies everything the map derives from <see cref="UnlockedLocations"/>: which points
+        /// can be clicked, how they are colored, and whether their "card waiting here" pip shows.
+        /// Runs when the map is shown, and again whenever the unlock set changes while the map is
+        /// already open, so a map opened before its thread's travel setup ends up in the same state
+        /// as one opened after it.
+        /// </summary>
+        public void RefreshTravelPoints()
         {
-            foreach(TravelPoint location in locations)
+            for (int i = 0; i < locations.Length; i++)
             {
-                if (UnlockedLocations.Contains(location.MainImg))
-                {
-                    location.GetComponent<Button>().interactable = true;
-                }
-                else
-                {
-                    location.GetComponent<Button>().interactable = false;
-                }
+                bool unlocked = UnlockedLocations.Contains(locations[i].MainImg);
+
+                locations[i].GetComponent<Button>().interactable = unlocked;
+
+                // The location the player is standing on keeps whatever pip it was left with.
+                if (i == currentLocationIdx) { continue; }
+
+                locations[i].NextCardToFind.SetActive(unlocked && locations[i].HasNextAsset);
+
+                // A location the player can no longer reach should not still advertise what it
+                // would have cost to travel there. Unlocked points keep the time the script gave
+                // them, which is set alongside the unlock.
+                if (!unlocked) { locations[i].UpdateTimeBlockVisual(0); }
             }
+
+            RefreshTravelPointHighlight();
         }
 
         // TODO: Finalize how to highlight accessible locations during threads and selected locations

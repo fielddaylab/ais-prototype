@@ -58,7 +58,7 @@ namespace AIS.Narrative
 
             // reset selections
             selectedHubIdx = currentHubIdx;
-            travelPointsDisplays[selectedHubIdx].SelectLocation(currentHubIdx);
+            travelPointsDisplays[currentHubIdx].ClearSelection();
 
             //currMode = null;
         }
@@ -72,14 +72,16 @@ namespace AIS.Narrative
 
             travelPointsContainer.SetActive(true);
             selectedHubIdx = currentHubIdx;
-            travelPointsDisplays[selectedHubIdx].TravelToSelectedLocation(false);
-
-            selectedHubIdx = currentHubIdx;
             TravelToSelectedHub(false);
+
+            // Opening the map is not travel. It re-displays where the player already is; a
+            // location they clicked on last time but never confirmed is dropped here, so it
+            // cannot quietly become their current location.
+            travelPointsDisplays[currentHubIdx].ShowAtCurrentLocation();
 
             foreach(TravelPointsDisplay hub in travelPointsDisplays)
             {
-                hub.RefreshTravelPointLocks();
+                hub.RefreshTravelPoints();
             }
             // Zoom out
             //Camera.main.transform.position = hubSelectionDisplay.cameraTransform;
@@ -170,6 +172,28 @@ namespace AIS.Narrative
             if (units > 0) { TravelTimeInfo.sprite = TimeChunkSprites[units]; }
         }
 
+        /// <summary>
+        /// Re-applies the current hub's travel state - which locations are clickable, how they are
+        /// highlighted, and which advertise a card - to the map as it is displayed right now.
+        /// </summary>
+        public void RefreshTravelPoints()
+        {
+            travelPointsDisplays[currentHubIdx].RefreshTravelPoints();
+        }
+
+        /// <summary>
+        /// Scripts change the locks both before the map is opened (a hub's OpenMap call) and while
+        /// it is already up (a $MapChoice opens the map first, then its target node runs the travel
+        /// setup), so lock changes have to reach an open map immediately. While it is closed there
+        /// is nothing to do - <see cref="Show"/> refreshes everything on the way in.
+        /// </summary>
+        private void RefreshTravelPointsIfShowing()
+        {
+            if (!IsShowing()) { return; }
+
+            RefreshTravelPoints();
+        }
+
         //TODO: control location accessibility via script hooks
         public void UnlockLocation(MapLocation location)
         {
@@ -179,18 +203,24 @@ namespace AIS.Narrative
             target.UpdateTimeBlockVisual(target.Chunks);
             // Only advertise a card here if one has actually been assigned to this location.
             target.NextCardToFind.SetActive(target.HasNextAsset);
+
+            RefreshTravelPointsIfShowing();
         }
 
         public void SetInThreadLocks()
         {
             TravelPointsDisplay currentHub = travelPointsDisplays[currentHubIdx];
             currentHub.UnlockedLocations = new List<Image>();
+
+            RefreshTravelPointsIfShowing();
         }
 
         public void ReturnTo(int locationIdx)
         {
             TravelPointsDisplay currentHub = travelPointsDisplays[currentHubIdx];
             currentHub.EnableReturnTo(locationIdx);
+
+            RefreshTravelPointsIfShowing();
         }
 
         public void SetTravelTimeFromCurrentTo(MapLocation location, int chunks, bool isRevealed)

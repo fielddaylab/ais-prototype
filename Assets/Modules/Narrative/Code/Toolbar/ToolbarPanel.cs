@@ -139,12 +139,16 @@ namespace AIS.Narrative {
 
 
         /// <summary>
-        /// Opens the map, hiding the other panels. No-op if the map is already showing.
+        /// Opens the map, hiding the other panels. If the map is already showing (a $MapChoice
+        /// opens it as soon as the choice is picked, ahead of the node that sets up the travel),
+        /// it stays up and re-reads the travel state instead, so either order leaves the same map.
         /// </summary>
         public static void OpenMap()
         {
-            if (Find.Panel<MapDisplayPanel>().IsShowing())
+            var mapPanel = Find.Panel<MapDisplayPanel>();
+            if (mapPanel.IsShowing())
             {
+                mapPanel.RefreshTravelPoints();
                 return;
             }
 
