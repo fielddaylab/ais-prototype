@@ -44,6 +44,12 @@ namespace AIS.Narrative
         public GameObject TimeDisplay;
         public GameObject NextCardToFind;
 
+        /// <summary>
+        /// Where the map's "you are here" pointer sits when the player is at this location.
+        /// Authored per-location so the pointer can dodge labels and icons that differ from point to point.
+        /// </summary>
+        public RectTransform PointerPos;
+
         [Header("Time Display")]
         [SerializeField] private Sprite[] m_UnitSprites;
 

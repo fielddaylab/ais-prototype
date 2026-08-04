@@ -113,6 +113,7 @@ RectTransform:
   - {fileID: 4311638855924487396}
   - {fileID: 5175416055046812061}
   - {fileID: 7545576191708761375}
+  - {fileID: 2047216659568029538}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -252,6 +253,7 @@ MonoBehaviour:
   Chunks: 0
   TimeDisplay: {fileID: 599843086516352876}
   NextCardToFind: {fileID: 808009166803390953}
+  PointerPos: {fileID: 2047216659568029538}
   m_UnitSprites:
   - {fileID: 21300000, guid: 74f369679ca17624085e66fceb3b499a, type: 3}
   - {fileID: 21300000, guid: 76312c2749cca0645b3a1fcf3b7fbced, type: 3}
@@ -410,6 +412,41 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &4645761204063629651
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2047216659568029538}
+  m_Layer: 5
+  m_Name: You Are Here marker pos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &2047216659568029538
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4645761204063629651}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 998.4}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6131981503583108033}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 1, y: 1}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &7681125804875861516
 GameObject:
   m_ObjectHideFlags: 0

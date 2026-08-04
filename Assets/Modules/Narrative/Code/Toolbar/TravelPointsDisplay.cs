@@ -46,11 +46,13 @@ namespace AIS.Narrative
         public Button returnButton;
         public Image LocPointer;
 
+        private static int HOME_LOC_INDEX = 11;
+
         private void Awake()
         {
             returnButton.gameObject.SetActive(false);
             UnlockedLocations.Add(locations[0].MainImg);
-            SetCurrentLocation(0);
+            SetCurrentLocation(HOME_LOC_INDEX);
             travelButton.interactable = false;
         }
 
@@ -72,19 +74,41 @@ namespace AIS.Narrative
         private IEnumerator UpdatePointerPositionNextFrame(int index)
         {
             yield return null; // wait one frame for layout/LayoutOffset to settle
+            PositionPointerAt(index);
+        }
+
+        /// <summary>
+        /// Moves the "you are here" pointer onto the given location. Locations that author a
+        /// <see cref="TravelPoint.PointerPos"/> place the pointer exactly there; the rest fall back
+        /// to sitting directly above the location icon.
+        /// </summary>
+        private void PositionPointerAt(int index)
+        {
+            if (LocPointer == null) { return; }
+
             RectTransform pointerTransform = LocPointer.GetComponent<RectTransform>();
-            RectTransform currentLocTransform = locations[index].MainImg.GetComponent<RectTransform>();
-            if (pointerTransform != null && currentLocTransform != null)
+            if (pointerTransform == null) { return; }
+
+            RectTransform target = locations[index].PointerPos;
+            bool authored = target != null;
+            if (!authored)
             {
-                RectTransform parent = (RectTransform)pointerTransform.parent;
-
-                // Convert the location's world position into the pointer's parent local space
-                Vector3 world = currentLocTransform.position;
-                Vector2 local = parent.InverseTransformPoint(world);
-
-                local.y += currentLocTransform.rect.height * 0.5f;
-                pointerTransform.anchoredPosition = local;
+                if (locations[index].MainImg == null) { return; }
+                target = locations[index].MainImg.GetComponent<RectTransform>();
+                if (target == null) { return; }
             }
+
+            RectTransform parent = (RectTransform)pointerTransform.parent;
+
+            // Convert the target's world position into the pointer's parent local space
+            Vector3 world = target.position;
+            Vector2 local = parent.InverseTransformPoint(world);
+
+            if (!authored)
+            {
+                local.y += target.rect.height * 0.5f;
+            }
+            pointerTransform.anchoredPosition = local;
         }
 
         public void SetCurrentLocation(int index)
@@ -121,17 +145,7 @@ namespace AIS.Narrative
                 StartCoroutine(UpdatePointerPositionNextFrame(index));
             }
 
-            if (LocPointer == null || locations[index].MainImg == null) return;
-
-            RectTransform pointerTransform = LocPointer.GetComponent<RectTransform>();
-            RectTransform locTransform = locations[index].MainImg.GetComponent<RectTransform>();
-            if (pointerTransform == null || locTransform == null) return;
-
-            RectTransform parent = (RectTransform)pointerTransform.parent;
-            Vector3 world = locTransform.position;
-            Vector2 local = parent.InverseTransformPoint(world);
-            local.y += locTransform.rect.height * 0.5f;
-            pointerTransform.anchoredPosition = local;
+            PositionPointerAt(index);
 
             travelButton.interactable = false;
         }
