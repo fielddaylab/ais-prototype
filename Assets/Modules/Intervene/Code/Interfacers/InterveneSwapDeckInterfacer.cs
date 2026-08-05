@@ -279,9 +279,14 @@ namespace AIS.Intervene
 
         private void HighlightCard(UICard card, bool toHighlight)
         {
-            Transform highlight = card.transform.Find("Highlight");
-            if (highlight == null) { return; }
-            highlight.gameObject.SetActive(toHighlight);
+            // The Highlight object stays active and its Image is toggled -- same mechanism the hand
+            // uses for its own selection visuals (see PlayerHand.UpdateSelectVisuals). Deactivating
+            // the object instead would leave it off once the swap panel closes, and the hand could
+            // never show a selection highlight again.
+            if (card.Highlight == null) { return; }
+
+            card.Highlight.gameObject.SetActive(true);
+            card.Highlight.enabled = toHighlight;
         }
 
         private void GrayOutCard(UICard card, bool toGrayOut)

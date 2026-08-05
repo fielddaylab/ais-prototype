@@ -51,7 +51,7 @@ namespace AIS.Narrative
         private void Awake()
         {
             returnButton.gameObject.SetActive(false);
-            UnlockedLocations.Add(locations[0].MainImg);
+            // UnlockedLocations.Add(locations[0].MainImg);
             SetCurrentLocation(HOME_LOC_INDEX);
             travelButton.interactable = false;
         }
