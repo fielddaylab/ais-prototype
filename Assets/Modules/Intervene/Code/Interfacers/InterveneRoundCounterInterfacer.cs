@@ -15,7 +15,7 @@ namespace AIS.Intervene
         public TMP_Text RoundCounter;
         public TMP_Text Turn;
         [SerializeField] private int m_MaxRounds = 5;
-        [Tooltip("Default number of recent rounds summarized by the population-trend / stability checks.")]
+        [Tooltip("Default number of recent rounds summarized by the population-trend UI. Does not affect star scoring, which always judges the most recent round.")]
         [SerializeField] private int m_TrendWindow = InterveneEndConditionEvaluator.DEFAULT_TREND_WINDOW;
         #endregion // Inspector
 

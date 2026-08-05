@@ -9,7 +9,7 @@
 @cost		1
 
 @effect
-    target: invasive
+    target: invasive, tributary
     verb: reduce, 2, fixed
     specificity: specific
 
