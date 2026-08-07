@@ -55,7 +55,7 @@ $if global:upstreamFirst == false
 
               {@Claire}
                      Young scientist! Do you have more questions for me?
-              $OnceChoice(P3_LampreyUpstream.Start, So, when do sea lamprey go upstream?)
+              $OnceChoice(P3_LampreyUpstream.Start, "So, when do sea lamprey go upstream?")
        $endif
 $elseif global:downstreamFirst == false
        $if global:upstreamFirst == false
@@ -97,6 +97,6 @@ $elseif global:downstreamFirst == false
 
               {@Claire}
                      Young scientist! Do you have any more questions for me?
-              $OnceChoice(P3_LampreyDownstream.Start, So, when do sea lamprey go downstream?)
+              $OnceChoice(P3_LampreyDownstream.Start, "So, when do sea lamprey go downstream?")
        $endif
 $endif

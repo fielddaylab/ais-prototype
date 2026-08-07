@@ -90,7 +90,7 @@ $call SetBackground("bg/sea-grant-office-bg.png")
 
 {@}
        She hands you a photo. //insert photo of sea lamprey bite
-       $call SetScenarioData("Sea Lamprey")
+       $call SetScenarioData("Scenario1")
 
 {@You}
        Sea lamprey.
