@@ -24,10 +24,8 @@ $elseif global: ciscoFirst == false
 $endif
 
 {@João}
-       So, you need the population numbers for cisco? 
-       Currently, there are x million cisco in the Great Lakes. //team i cannot find this number
-       But this number has been decreasing. 
-       I remember when this lake was teeming with cisco. 
+       So, currently, there are x million cisco in the Great Lakes. //team i cannot find this number
+       But this number has been decreasing. I remember when this lake was teeming with cisco. 
        //give evidence chip
        $call GiveEvidenceChip("Evidence-cisco")
 

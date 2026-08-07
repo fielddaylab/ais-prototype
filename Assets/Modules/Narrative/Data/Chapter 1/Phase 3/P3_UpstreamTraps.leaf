@@ -19,8 +19,7 @@ $call  ClearVisibleLines()
 
 $if global:dnrVisited = false
        {@}   
-              Paul is jamming to something when you step into the DNR office.
-              He's hiding it well, but you can see it in his eyes. 
+              Paul is jamming to something when you step into the DNR office. He's hiding it well, but you can see it in his eyes. 
 
        {@You}
               What're you working on?
@@ -29,37 +28,26 @@ $if global:dnrVisited = false
               He nearly jumps out of his seat.
 
        {@Paul}
-              Ah. Well, I guess the cat is out of the bag.
-              I moonlight as a DJ.
+              Ah. Well, I guess the cat is out of the bag. I moonlight as a DJ.
 
        {@You}
               You? DJ?
 
        {@Paul}
-              Mmm. Yes. 
-              As the kids would say, I cook up "sick beats."
+              Mmm. Yes. So, what can I help you with?
 
        {@You}
-              Please never say that again. 
+              I'm working on preparing interventions targeting sea lamprey going upstream. Is there anything the DNR's worked on before that could help with that?
 
        {@Paul}
-              Mm. I'll try. So what can I help you with?
-
-       {@You}
-              I'm working on preparing interventions targeting sea lamprey going upstream. 
-              Is there anything the DNR's worked on before that could help with that?
-
-       {@Paul}
-              Mm. Yes, we've down traps before for sea lamprey going upstream to spawn. 
-              Those could be useful to you. 
+              Mm. Yes, we've done traps before for sea lamprey going upstream to spawn. Those could be useful to you. 
        $call GiveEvidenceChip("Evidence-attractive-traps")
 
        {@You}
               You're right about that. 
 
        {@Paul}
-              Mm. You'll have to talk to the Army Corps of Engineers, though.
-              They're responsible for building and placing the traps.
+              Mm. You'll have to talk to the Army Corps of Engineers, though. They're responsible for building and placing the traps.
 
        {@You}
               That sounds like a pretty solid plan if I've ever heard one. 
@@ -71,8 +59,7 @@ $if global:dnrVisited = false
               You're on your way out when you feel the need to turn around and yell-
 
        {@You}
-              Oh, and Paul?
-              Good luck tonight, Mr. DJ!
+              Oh, and Paul? Good luck tonight, Mr. DJ!
 
        {@}
               His quite grumble sounds more pleased than usual.
@@ -86,36 +73,31 @@ $else
               How's the set going, Mr. DJ?
 
        {@Paul}
-              Mm. I'd say I'm on to something. 
-              Is there anything else you need from me?
+              Mm. I'd say I'm on to something. Is there anything else you need from me?
 
        {@You}
-              That there is. You know how we talked about putting traps for sea lamprey travelling downstream?
-              Has the DNR done anything like it for sea lamprey travelling upstream?
+              That there is. You know how we talked about putting traps for sea lamprey traveling downstream? Has the DNR done anything like that for sea lamprey traveling upstream?
 
        {@Paul}
               Mm. Yes, we did in the past.
        $if !HasSeen(P3_Sterile.End) //references sterilization if the player has already seen it
               {@Paul}
-                     Those were the sea lamprey that would then be sent to be sterilized, back when we did that en mass. 
+                     Those were the sea lamprey that would then be sent to be sterilized, back when we did that en masse. 
        $endif
 
        {@You}
-              Thoughs on restarting that program?
+              Thoughts on restarting that program?
 
        {@Paul}
-              Mm. I think that could help.
-              Though you'll have to talk to the Army Corps of Engineers about this.
+              Mm. I think that could help. Though you'll have to talk to the Army Corps of Engineers about this.
        $call GiveEvidenceChip("Evidence-attractive-traps")
 
        {@You}
-              That can be definitely be arranged. 
-              Thanks for your help, Paul.
+              That can definitely be arranged. Thanks for your help, Paul.
 
        {@Paul}
               Of course.
-              Mmmm. 
-              Come to my performance tonight. 
+              Mmmm. Come to my performance tonight. 
 
        {@You}
               Really? I'd love to.
@@ -162,29 +144,14 @@ $if global:corpsVisited = false
               Robertson is deep in work on a trap but turns to greet you as you step out of the car.
 
        {@Robertson}
-              It's mighty good to see you again, ma'am.
-
-       {@You}
-              Same here.
-
-       $if !HasSeen(P3_Sterile.end) //adds flavor text if player knows Robertson is getting married
-              {@You}
-                     Congrats on the wedding, by the way. I'm excited to be there.
-
-              {@Robertson}
-                     Ah, geez, thanks.
-       $endif
-
-       {@Robertson}
-              So what can I help you with?
+              It's mighty good to see you again, ma'am. So, what can I help you with?
 
        {@You}
               I've been talking to Paul down at the DNR, and we're thinking of putting in new traps for sea lamprey going upstream.
               Would you be able to make and place those traps for us?
 
        {@Robertson}
-              Oh, certainly, ma'am. We'd be very pleased to help.
-              Just let us know whenever you need 'em.
+              Oh, certainly, ma'am. We'd be very pleased to help. Just let us know whenever you need 'em.
        $call GiveActionCard("Action-upstream-tributary-traps")
 
        {@You}
@@ -209,8 +176,7 @@ $elseif global:corpsVisited = true
               Well, I've talked to Paul, and we've decided that it could be worth doing them for sea lamprey going upstream, too.
 
        {@Robertson}
-              Sounds like a mighty fine idea to me.
-              Just us let us know when you need 'em, and we'll have 'em.
+              Sounds like a mighty fine idea to me. Just let us know when you need 'em, and we'll have 'em.
        $call GiveActionCard("Action-upstream-tributary-traps")
 
        {@You}
@@ -218,8 +184,7 @@ $elseif global:corpsVisited = true
               You're the best.
 
        {@Robertson}
-              Aw, shucks. You flatter me, ma'am.
-              By the way, I've heard someone over at the university is looking at ways to make traps more effective.
+              Aw, shucks. You flatter me, ma'am. By the way, I've heard someone over at the university is looking at ways to make traps more effective.
               Might be worth yer time.
 
        {@You}

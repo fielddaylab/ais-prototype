@@ -17,8 +17,7 @@ $endif
 //varies dialogue depending on whether the player talked to Renato first
 $if global:troutFirst == true
        {@Renato}   
-              I've see you've decided to ditch my brother for me. 
-              Always a great sight.
+              I've seen you've decided to ditch my brother for me. Always a great sight.
 $elseif global: troutFirst == false
        {@Renato}
               Finished talking to my brother? He sure knows how to talk. 
@@ -26,9 +25,8 @@ $endif
 
 {@Renato}
        It's the population numbers for trout that you need, right?
-       The other fishers and I have been looking through the data, recently. 
-       It's been falling since the last few years. 
-       Currently, its at about 23 million trout. But who knows what that'll be in the future.
+       The other fishers and I have been looking through the data, recently. It's been falling since the last few years. 
+       Currently, it's at about 23 million trout. But who knows what that'll be in the future.
 $call GiveEvidenceChip("Evidence-Lake-Trout")
 
 {@You}
@@ -39,8 +37,7 @@ $if global:troutFirst == true
               I wonder if adding more fish to the lake could potentially help with the decrease.
 
        {@Renato}
-              It might be worth looking into. 
-              There's an aquaculture facility nearby that might be able to help.
+              It might be worth looking into. There's an aquaculture facility nearby that might be able to help.
 
        {@You}
               That's a good idea. I should check it out. 

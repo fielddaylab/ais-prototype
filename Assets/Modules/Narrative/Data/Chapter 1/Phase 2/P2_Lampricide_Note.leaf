@@ -19,7 +19,7 @@ $set global:currentThread = "P2_Lampricide_Note"
 $call SetBackground("bg/field-station-lampricide-bg.png")
 
 {@}   
-       Paul had mentioned something called lampricide, and a quick call to Saoirse confirmed that one of the Field Station used to apply lampricide. 
+       Paul had mentioned the Lampricide Field Station.
        So here you are, on the shore of one of the lake's many tributaries, being attacked by a horde of mosquitoes. 
 
 {@Claire}
@@ -33,12 +33,6 @@ $call SetBackground("bg/field-station-lampricide-bg.png")
 
 {@Claire}
        Ah, but the mosquitoes are part of the experience! Here, put on more bug repellant! 
-       We must be vigilant towards diseases spread by insects like mosquitoes and ticks!
-
-{@}
-       She covers you in a thick layer of repellant and ensures your legs are properly covered by your pants and socks. 
-
-{@Claire}
        Excellent! We are PREPARED! Now, what has brought you to my domain, young scientist?!
 
 {@You}
@@ -48,19 +42,20 @@ $call SetBackground("bg/field-station-lampricide-bg.png")
        Yes! LAMPRICIDE! We used to apply it to the tributaries around the lake!
        
 {@You}
-       So, like, what </i>is</i> it?
+       So, like, what <i>is</i> it?
 
 {@Claire}
-       Lampricide is a pesticide that kills sea lamprey larvae but doesn't affect other fish! Hmm. Firstly, you must understand the life cycle of sea lamprey! 
+       Firstly, you must understand the life cycle of sea lamprey! 
        Sea lamprey eggs are laid in tributaries, which are small rivers that feed into the lake!
-       Once the eggs hatch, sea lamprey spend the first four to five years as larvae buried in the riverbed, eating organic material that floats past them!
-       After maturing, the sea lamprey then swim towards the lake and spend 12-16 months there before returning to the tributary to spawn and die!
+       Sea lamprey spend the first four to five years as larvae buried in the riverbed, eating organic material that floats past them!
+       The sea lamprey then swim towards the lake and spend 12-16 months there before returning to the tributary to spawn and die!
 
 {@You}
-       So this lampricide is only effective when the sea lamprey are in this larvae stage?
+       So is lampricide only effective during one stage of the sea lamprey's life?
 
 {@Claire}
-       PRECISELY, young scientist! And it is very effective at lowering the population of sea lamprey! //evidence chip
+       PRECISELY, young scientist! Lampricide is only effective on larvae! //evidence chip
+$call GiveEvidenceChip("Evidence-lampricide")
 
 {@You}
        You do know that you can't be more than, like, five years older than me?
@@ -76,16 +71,11 @@ $call SetBackground("bg/field-station-lampricide-bg.png")
 
 {@Claire}
        After the pandemic, our lampricide program ended, and no new funding for lampricide has been given. 
-       It's important to remember that not everyone wants to add chemicals to the water, and people have their worries about lampricide. 
        Though lampricide is safe, it's also important to respect the wishes of indigenous peoples and local populations who would rather use other methods. 
-       We are all working together to create a balanced ecosystem, so we have to decide on the next steps together and consult with the community. //evidence chip
 
 {@You}
-       Hm. I can go to the town hall later today and ask whether the town will give money for lampricide. 
+       Hm. I can go to the town hall later and ask whether the town will give money for lampricide. 
        That way everyone will have a say in the next steps.  
-
-{@}
-       Claire smiles. 
 
 {@Claire}
        Yes! That is an excellent idea, young scientist!
@@ -94,7 +84,7 @@ $call SetBackground("bg/field-station-lampricide-bg.png")
        Thanks, young scientist. 
 
 // Give evidence chip
-$call GiveEvidenceChip("Evidence-lampricide")
+
 
 $goto .End
 

@@ -18,23 +18,18 @@ $call SetBackground("bg/fishing-docks-bg.png")
 $if global:ciscoFirst == false
        $if global:troutFirst == false
        {@}   
-              You find your uncles hauling nets of fish from their boat onto the dock. 
-              They seem exhausted, but that fades when they see you. 
+              You find your uncles hauling nets of fish from their boat onto the dock. They seem exhausted, but they hide it when they see you. 
 
        {@João}
-              Querida, que bom te ver. 
-              </b>It's good to see you, darling.</b>
-              What brings you back here?
+              Querida, que bom te ver. What brings you back here?
 
        {@You} 
               I need some numbers, and I figure you'd be the best to ask. 
               Do you information on the populations of cisco and trout in the lake?
 
        {@João}
-              I've been keeping track of the population for cisco. 
-              Your uncle's been looking at trout. 
-              Two heads are better than one, you know. 
-              So ask whichever one of us you wanna know about first.
+              I've been keeping track of the population for cisco. Your uncle's been looking at trout. 
+              So ask whichever one of us you want to know about first.
 
        {@You}
               Hmm, let's see...
@@ -50,24 +45,19 @@ $if global:ciscoFirst == false
        $endif
 $elseif global:troutFirst == false
        $if global:ciscoFirst == false
-       {@}   
-              You find your uncles hauling nets of fish from their boat onto the dock. 
-              They seem exhausted, but that fades when they see you. 
+        {@}   
+              You find your uncles hauling nets of fish from their boat onto the dock. They seem exhausted, but they hide it when they see you. 
 
        {@João}
-              Querida, que bom te ver. 
-              </b>It's good to see you, darling.</b>
-              What brings you back here?
+              Querida, que bom te ver. What brings you back here?
 
        {@You} 
               I need some numbers, and I figure you'd be the best to ask. 
               Do you information on the populations of cisco and trout in the lake?
 
        {@João}
-              I've been keeping track of the population for cisco. 
-              Your tio's been looking at trout. 
-              Two heads are better than one, you know. 
-              So ask whichever one of us you wanna know about first.
+              I've been keeping track of the population for cisco. Your uncle's been looking at trout. 
+              So ask whichever one of us you want to know about first.
 
        {@You}
               Hmm, let's see...
@@ -77,6 +67,6 @@ $elseif global:troutFirst == false
        $else
        {@João}
               Your tio's waiting for you whenever you are.
-       $OnceChoice(P3_TroutPop_Note.Start, Ask your uncle about trout populations.)
+       $OnceChoice(P3_TroutPop_Note.Start, Ask about trout populations.)
        $endif
 $endif

@@ -21,10 +21,10 @@ $call SetBackground("bg/field-station-sterile-bg.png")
 // Adds flavor text if player has finished talking to aquaculture specialist
 $if !HasSeen(P3_CiscoPop.End)
        {@}   
-              Neveah's portrait stares at you from it's place on the dash. 
-$elseif !HasSeen(P3_TroutPop.End) // I'm not sure what the or function is, which is why the code looks like this
+              Neveah's portrait stares at you from its place on the dash. 
+$elseif !HasSeen(P3_TroutPop.End)
        {@}   
-              Neveah's portrait stares at you from it's place on the dash. 
+              Neveah's portrait stares at you from its place on the dash. 
 $endif
 
 {@}
@@ -35,19 +35,14 @@ $endif
        What beautiful timing. 
 
 {@}
-       You stop at a small building by the edge of a tributary and get out of your car.
-       Just as you are about to knock on the door, it swings open. 
+       You stop at a small building by the edge of a tributary. Just as you are about to knock on the door, it swings open. 
 
 {@Robertson}
        Hello, ma'am.
 
 {@You}
-       Holy s-
+       Holy s- 
        You scared me. 
-
-{@Robertson}
-       My apologies, ma'am. 
-       I simply like to be... proactive.
 
 {@}
        You can tell they are containing a laugh. 
@@ -59,8 +54,7 @@ $endif
        Sterilization. You mentioned that you used to do it. 
 
 {@Robertson}
-       Yes, ma'am. That we did. 
-       We still have a small program up and running, if you'd like to see.
+       Yes, ma'am. That we did. We still have a small program up and running, if you'd like to see.
 
 {@You}
        That would be really nice. 
@@ -72,8 +66,7 @@ $endif
        Robertson leads you to a tank filled with squirming sea lamprey. 
 
 {@Robertson}
-       We catch male sea lamprey from traps in the tributaries. 
-       Then, we inject 'em with a chemosterilant.
+       We catch male sea lamprey from traps in the tributaries. Then, we inject 'em with a chemosterilant.
        That's a fancy word for a chemical that makes the sea lamprey unable to reproduce. 
        We tag 'em, for science purposes, and then release 'em in tributaries where sea lampreys mate.
 
@@ -81,8 +74,7 @@ $endif
        Robertson reaches into the tank and pulls out a single sea lamprey.
 
 {@Robertson}
-       The female sea lamprey can't tell 'em apart from non-sterilized sea lamprey. 
-       Wouldn't work if we gave 'em the ick, you know. 
+       The female sea lamprey can't tell 'em apart from non-sterilized sea lamprey. Wouldn't work if we gave 'em the ick, you know. 
 
 {@}
        They give you a wink. The sea lamprey continues to worm around their palms.
@@ -97,19 +89,16 @@ $endif
        It'll be fine. Here ya go...
 
 {@}
-       There's a sea lamprey in your hands, looking up at you. 
-       It's smaller than you thought it would be, given its reputation. 
+       There's a sea lamprey in your hands, looking up at you. It's smaller than you thought it would be, given its reputation. 
 
 {@You}
        He's... kinda cute.
 
 {@Robertson}
-       Yes, ma'am, they grow on ya. 
-       Ok, back into the tank, little guy. 
+       Yes, ma'am, they grow on ya. Ok, back into the tank, little guy. 
 
 {@}
-       You release the sea lamprey back with his brethren. 
-       He's gone in a undulating tide of smooth scales as soon as you let go. 
+       You release the sea lamprey back with his brethren. He's gone in a tide of smooth scales as soon as you let go. 
 
 {@Robertson}
        There're only a few right now, and these'll get released soon at the lampricide tributary site.
@@ -118,8 +107,7 @@ $endif
 $call GiveEvidenceChip("Evidence-sterilization")
 
 {@You}
-       Thanks, Robertson. 
-       And thanks for letting me hold one. 
+       Thanks, Robertson. And thanks for letting me hold one. 
 
 {@Robertson}
        What can I say? It's my favorite part of the job. 
@@ -160,8 +148,8 @@ $call  ClearVisibleLines()
        It's good to see you, too, Claire. You seem ready to go.
 
 {@Claire}
-       I am always ready to go! And in this particular moment that statement is very true!
-       The sterilized sea lamprey are ready to be released, thanks to my beloved Robertson.
+       I am always ready to go! And in this particular moment that statement is very true! 
+       The sterilized sea lampreys are ready to be released, thanks to my beloved Robertson.
 
 {@You}
        Your... beloved Robertson?
@@ -193,8 +181,7 @@ $call GiveActionCard("Action-release-sterilized")
        Come to my wedding, young scientist. 
 
 {@You}
-       Really?
-       I mean, I'm honored, but you just met me?
+       Really? I mean, I'm honored, but you just met me?
 
 {@Claire}
        Yes. It will be fun. And your uncles will be there.

@@ -19,17 +19,14 @@ $call DisableMapButton()
 $call SetBackground("bg/barrier-site-bg.png")
 
 {@}   
-       It's not really much of a barrier by your standards. 
-       Beside it, Robertson looks like they could jump over it with enough gusto. 
+       It's not really much of a barrier by your standards. Beside it, Robertson looks like they could jump over it. 
 
 {@You}
        Does this really do anything?
 
 {@Robertson}
-       I can see why ya'd ask. But yes, it works. 
-       A sea lamprey ain't much of a swimmer. Actually, they tend to float to the bottom. 
-       So a barrier that's low like this can keep sea lamprey from jumping over. 
-       But the rest of the fish go over with no issue. 
+       I can see why ya'd ask. But yes, it works. A sea lamprey ain't much of a swimmer. Actually, they tend to float to the bottom. 
+       So a barrier that's low like this can keep sea lamprey from jumping over. But the rest of the fish go over with no issue. 
 
 {@}
        Just as they're speaking, you see a flash of silvery scales as a Chinook Salmon clears the barrier. 
@@ -41,20 +38,17 @@ $call SetBackground("bg/barrier-site-bg.png")
        Are there more of these? They seem to be pretty effective.
 
 {@Robertson}
-       Unfortunately not. This is the only one that was built. 
-       We could build more, though.
+       Unfortunately not. This is the only one that was built. We could build more, though.
 $call GiveEvidenceChip("Evidence-barrier")
 
 {@You}
        We'd need the plans. You wouldn't happen to know where those could be?
 
 {@Robertson}
-       I can't say anything about particular plans, but Fish and Wildlife Services originally built this barrier. 
-       I'd say you'd best look with 'em.
+       I can't say anything about particular plans, but Fish and Wildlife Services originally built this barrier.
 
 {@You}
-       I guess I will. 
-       Thanks for the lead, Robertson. 
+       I guess I'll go there. Thanks for the lead, Robertson. 
 
 {@Robertson} 
        Any time. 
@@ -88,15 +82,13 @@ $call  ClearVisibleLines()
        Welcome to the Department of Fish and Wildlife Services. How can I help you?
 
 {@You}
-       Haha. Very funny. Nice to meet you, too. 
-       But I do need your help. 
+       Haha. Very funny. Nice to meet you, too. But I do need your help. 
 
 {@Paul}
        Mm. That's what I thought.
 
 {@You}
-       The sass is new. I like it. 
-       Anyway, the Corps told me that Fish and Wildlife Services built the old barrier. 
+       The sass is new. I like it. Anyway, the Corps told me that Fish and Wildlife Services built the old barrier. 
        I was wondering if you still have the plans. 
 
 {@Paul}
@@ -106,12 +98,10 @@ $call  ClearVisibleLines()
        He produces a blueprint and shows it to you. 
 
 {@Paul}
-       Mm, it won't be cheap, but it can be done. 
-       We all have the know-how of what to do. 
+       Mm, it won't be cheap, but it can be done. We all have the know-how of what to do. 
 
 {@You}
-       If there's anything this experience has taught me, it's that there is a lot of know-how. 
-       It's just a matter of putting things on track. 
+       If there's anything this experience has taught me, it's that there is a lot of know-how. It's just a matter of putting things on track. 
        So I'll reach out to you if I ever need a barrier built. 
 
 {@Paul}
@@ -131,8 +121,7 @@ $else
               Hmm?
 
        {@You}
-              Earlier, you asked me about what I thought about coming to town. 
-              I didn't like how much it'd changed. 
+              Earlier, you asked me about what I thought about coming to town. I didn't like how much it'd changed. 
               But the future is a gift. I'm glad I'm here to see it. 
 
        {@Paul}
