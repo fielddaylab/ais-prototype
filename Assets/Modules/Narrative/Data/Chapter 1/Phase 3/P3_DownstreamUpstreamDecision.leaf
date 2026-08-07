@@ -24,8 +24,7 @@ $if global:upstreamFirst == false
                      You're incredibly efficient, Claire.
 
               {@Claire}
-                     Wrong! My car is incredibly efficient! But yes, I like to stay on my feet!
-                     Care to take a swim, young scientist?
+                     Wrong! My car is incredibly efficient! But yes, I like to stay on my feet! Care to take a swim, young scientist?
 
               {@You}
                      Not really. 
@@ -43,8 +42,7 @@ $if global:upstreamFirst == false
                      Does the direction really matter?
 
               {@Claire}
-                     Yes, it does! 
-                     The water in this tributary, like all tributaries, flows towards the lake. 
+                     Yes, it does! The water in this tributary, like all tributaries, flows towards the lake. 
                      The sea lamprey either swim downstream or upstream, depending on what phase of life they are in!
 
               {@You}
@@ -68,8 +66,7 @@ $elseif global:downstreamFirst == false
                      You're incredibly efficient, Claire.
 
               {@Claire}
-                     Wrong! My car is incredibly efficient! But yes, I like to stay on my feet!
-                     Care to take a swim, young scientist?
+                     Wrong! My car is incredibly efficient! But yes, I like to stay on my feet! Care to take a swim, young scientist?
 
               {@You}
                      Not really. 
@@ -87,8 +84,7 @@ $elseif global:downstreamFirst == false
                      Does the direction really matter?
 
               {@Claire}
-                     Yes, it does! 
-                     The water in this tributary, like all tributaries, flows towards the lake. 
+                     Yes, it does! The water in this tributary, like all tributaries, flows towards the lake. 
                      The sea lamprey either swim downstream or upstream, depending on what phase of life they are in!
 
               {@You}

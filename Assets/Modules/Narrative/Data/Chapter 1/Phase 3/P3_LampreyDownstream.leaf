@@ -16,8 +16,7 @@ $if global:upstreamFirst == false
               Which means that any intervention focusing on sea lamprey going downstream is meant to stop them from getting to the lake!
 
        {@You}
-              So that they would never feed on the other fish in the first place!
-              That makes a lot of sense, Claire.
+              So that they would never feed on the other fish in the first place! That makes a lot of sense, Claire.
 
        {@Claire}
               Why thank you, young scientist!
@@ -31,19 +30,12 @@ $if global:upstreamFirst == false
        $set global:downstreamFirst = true
 
 $elseif global:upstreamFirst == true
-       {@}
-              Claire tinkers with a trap in the river.
-
-       {@You}
-              So when would sea lamprey go downstream?
-
        {@Claire}   
               Sea lamprey go downstream as soon as they have matured to feed on fish!
               Which means that any intervention focusing on sea lamprey going downstream is meant to stop them from getting to the lake!
 
        {@You}
-              So that they would never feed on the other fish in the first place!
-              That makes a lot of sense, Claire.
+              So that they would never feed on the other fish in the first place! That makes a lot of sense, Claire.
 
        {@Claire}
               Why thank you, young scientist!
@@ -84,8 +76,7 @@ $call SetBackground("bg/dnr-office-bg.png")
 // Splits dialogue depending on whether the player has been to the DNR before
 $if global:dnrVisited = false
        {@}   
-              Paul is jamming to something when you step into the DNR office.
-              He's hiding it well, but you can see it in his eyes. 
+              Paul is jamming to something when you step into the DNR office. He's hiding it well, but you can see it in his eyes. 
 
        {@You}
               What're you working on?
@@ -94,29 +85,19 @@ $if global:dnrVisited = false
               He nearly jumps out of his seat.
 
        {@Paul}
-              Ah. Well, I guess the cat is out of the bag.
-              I moonlight as a DJ.
+              Ah. Well, I guess the cat is out of the bag. I moonlight as a DJ.
 
        {@You}
               You? DJ?
 
        {@Paul}
-              Mmm. Yes. 
-              As the kids would say, I cook up "sick beats."
+              Mmm. Yes. So what can I help you with?
 
        {@You}
-              Please never say that again. 
+              I'm working on preparing interventions targeting sea lamprey going downstream. Has the DNR worked on those before?
 
        {@Paul}
-              Mm. I'll try. So what can I help you with?
-
-       {@You}
-              I'm working on preparing interventions targeting sea lamprey going downstream.
-              Has the DNR worked on those before?
-
-       {@Paul}
-              Mm, yes, certainly. 
-              Back when we had more traps, we would place some to catch sea lamprey heading to the lake.
+              Mm, yes, certainly. Back when we had more traps, we would place some to catch sea lamprey heading to the lake.
 
        $if !HasSeen(P3_Sterile.End) //references sterilization if the player has already seen it
               {@Paul}
@@ -127,8 +108,7 @@ $if global:dnrVisited = false
               Could these programs with traps be restarted?
 
        {@Paul}
-              Mm. Yes, but you would have to talk to the Army Corps of Engineers about it. 
-              They are responsible for that. 
+              Mm. Yes, but you would have to talk to the Army Corps of Engineers about it. They are responsible for that. 
        $call GiveEvidenceChip("Evidence-repellent-traps")
 
        {@You}
@@ -156,25 +136,21 @@ $else
               How's the set going, Mr. DJ?
 
        {@Paul}
-              Mm. I'd say I'm on to something. 
-              Is there anything else you need from me?
+              Mm. I'd say I'm on to something. Is there anything else you need from me?
 
        {@You}
-              There is, yeah. I was wondering if the DNR worked on any interventions targeting sea lamprey going downstream.
+              There is, yeah. I was wondering if the DNR worked on any interventions targeting sea lamprey going downstream. 
               Maybe like those traps we talked about earlier?
 
        {@Paul}
-              Mm. Yes, we have done that before.
-              Though just like with upstream traps, you'll need to talk to Corps.
+              Mm. Yes, we have done that before. Though just like with upstream traps, you'll need to talk to Corps.
 
        {@You}
-              That can definitely be arranged. 
-              Thanks for your help, Paul.
+              That can definitely be arranged. Thanks for your help, Paul.
 
        {@Paul}
               Of course.
-              Mmmm. 
-              Come to my performance tonight. 
+              Mmmm. Come to my performance tonight. 
 
        {@You}
               Really? I'd love to.
@@ -183,7 +159,7 @@ $else
               Mm. Yes. No point in DJing if no one listens.
 
        {@You}
-              Well, I guess I have to come. 
+              Well, I guess I have to come, then. 
 $endif
 // TODO: Rest of DNR Office section here
 
@@ -214,29 +190,14 @@ $if global:corpsVisited = false
               Robertson is deep in work on a trap but turns to greet you as you step out of the car.
 
        {@Robertson}
-              It's mighty good to see you again, ma'am.
-
-       {@You}
-              Same here.
-
-       $if !HasSeen(P3_Sterile.end) //adds flavor text if player knows Robertson is getting married
-              {@You}
-                     Congrats on the wedding, by the way. I'm excited to be there.
-
-              {@Robertson}
-                     Ah, geez, thanks.
-       $endif
-
-       {@Robertson}
-              So what can I help you with?
+              It's mighty good to see you again, ma'am. So, what can I help you with?
 
        {@You}
               I've been talking to Paul down at the DNR, and we're thinking of putting in new traps for sea lamprey going downstream.
               Would you be able to make and place those traps for us?
 
        {@Robertson}
-              Oh, certainly, ma'am. We'd be very pleased to help.
-              Just let us know whenever you need 'em.
+              Oh, certainly, ma'am. We'd be very pleased to help. Just let us know whenever you need 'em.
        $call GiveActionCard("Action-downstream-tributary-traps")
 
        $if StatCheck(Research, 3)
@@ -245,16 +206,14 @@ $if global:corpsVisited = false
               $else
                      {@You}
                             Well, if we're putting traps facing one direction, why not put it in the other?
-                            Claire told me that sea lamprey go upstream to spawn.
-                            So if we put traps going upstream, we can keep the sea lamprey from reproducing!
+                            Claire told me that sea lamprey go upstream to spawn. So if we put traps going upstream, we can keep the sea lamprey from reproducing!
                      
                      {@Robertson}
                             Yes, ma'am, we can definitely do that.
                      $call GiveActionCard("Action-upstream-tributary-traps")
 
                      {@You}
-                            Oh, I'm a genius, Robertson!
-                            Thank you, thank you!
+                            Oh, I'm a genius, Robertson! Thank you, thank you!
                      {@Robertson}
                             I think that one was all you, ma'am.
 
@@ -282,18 +241,15 @@ $elseif global:corpsVisited = true
               Well, I've talked to Paul, and we've decided that it could be worth doing them for sea lamprey going downstream, too.
 
        {@Robertson}
-              Sounds like a mighty fine idea to me.
-              Just let us know when you need 'em, and we'll have 'em.
+              Sounds like a mighty fine idea to me. Just let us know when you need 'em, and we'll have 'em.
        $call GiveActionCard("Action-downstream-tributary-traps")
 
        {@You}
-              Thank you, Robertson!
-              You're the best.
+              Thank you, Robertson! You're the best.
 
        {@Robertson}
               Aw, shucks. You flatter me, ma'am.
-              By the way, I've heard someone over at the university is looking at ways to make traps more effective.
-              Might be worth yer time.
+              By the way, I've heard someone over at the university is looking at ways to make traps more effective. Might be worth yer time.
 
        {@You}
               Interesting. I think I might know who that is...

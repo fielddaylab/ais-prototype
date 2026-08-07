@@ -22,85 +22,58 @@ $call SetBackground("bg/army-corps-bg.png")
 {@}   
        You park your car on the side of the road, the Army Corps of Engineers building up ahead.
        In it's shade, you have a sudden memory of being here for a high school field trip. 
-       At the time, Janie had said she could see herself in the Corps. 
-       You find her number quickly on your phone and call her.
+       At the time, Janie had said she could see herself in the Corps. You find her number quickly on your phone and call her.
 
 {@You}
-       Hey Janie! How are things going in New York?
+       Hey Janie! Random question, but do you remember when we visited the Army Corps of Engineers in high school?
 
 {@Janie}
-       </i>Oh, you know how it is. My manager doesn't believe in personal time or on-call pay.</i> 
+       <i>Yeah, I guess.</i>
 
 {@You}
-       That sucks a lot. 
-       So, random question, but do you remember when we visited the Army Corps of Engineers in high school?
+       Think you'd ever wanna come back?
 
 {@Janie}
-       </i>Uhhh, maybe. Oh wait, yes I do.</i>
-
-{@You}
-       Think you'd ever wanna come back? Maybe join up?
-
-{@}
-       There's a pause from the other end of the line. 
-
-{@Janie}
-       </i>Probably not. I mean, I've got the whole world at my fingertips here.</i>
-       </i>Why would I want to go back to the middle of nowhere?</i>
+       <i>Probably not. Why would I want to go back to the middle of nowhere?</i>
 
 {@You}
        I'm back in the middle of nowhere.
 
 {@Janie}
-       </i>Ana, come on, you know what I mean. </i>
-       </i>Look, I'm sorry. I gotta go. I'll call you later, okay?</i>
+       <i>Ana, come on, you know what I mean. Look, I gotta go. I'll call you later, okay?</i>
 
 {@}
-       The call disconnects. You sit for a moment in your car, gnawing at your lip. 
-       Then you throw your phone back into your pocket and step out. 
-       You notice an engineer working on a trap outside the building and flag them down. 
+       The call disconnects. You sit for a moment in your car, gnawing at your lip, before stepping out. 
+       An engineer working on a trap notices you and waves. You wave back.
 
 {@You}
        Hello. Sorry to interrupt, but could I ask you some questions? 
 
 {@}
-       The engineer stands up and nods warmly. 
-       You notice the surname "Robertson" embroidered on their high-visibility vest. 
+       The engineer stands up and nods warmly. You notice the surname "Robertson" embroidered on their high-visibility vest. 
 
 {@Robertson}
-       Yes, of course. Thanks for stopping by.
-       No one ever really comes to visit us. 
+       Yes, of course. Thanks for stopping by. 
 
 {@You}
-       You're quite a ways away from everything. 
+       I had some questions about sea lamprey management. You were pretty involved in previous management efforts, right?
 
 {@Robertson}
-       What can I say? We love the brush. 
-       So, what can I help you with, ma'am?
+       Yes, ma'am. We were very involved. We built traps, barriers, helped coordinate lampricide application. The whole works.
 
-{@You}
-       I had some questions about sea lamprey management. 
-       You were pretty involved in previous management efforts, right?
-
-{@Robertson}
-       Yes, ma'am. We were very involved. 
-       We built traps, barriers, helped coordinate lampricide application. The whole works.
-       I also sterilized some adult sea lamprey. 
 {@You}
        And these were successful?
 
 {@Robertson}
-       Yes, ma'am, they were. We helped reduce the population by 90%. 
-       Nothin' if not efficient. //receive evidence chip
+       Yes, ma'am, they were. We helped reduce the population by 90%. Nothin' if not efficient. //receive evidence chip
        Hasn't been so much work done lately, but we're always ready to restart. 
+       $call GiveEvidenceChip("Evidence-awareness-program")
 
 {@You}
-       Well, I've been tasked with creating an intervention plan for managing sea lamprey populations. 
-       You wouldn't happen to have any advice for me?
+       Well, I'm creating an intervention plan for managing sea lamprey populations. Have any advice?
 
 {@Robertson}
-       'Course I do, ma'am. 
-       All those things I mentioned earlier - barriers, traps, the like - restarting 'em will help. 
+       'Course I do, ma'am. All those things I mentioned earlier - barriers, traps, the like - restarting 'em will help. 
        In the meantime, though, getting the locals onboard will help lots. 
        If they can tell us where they are seeing bites, that can help us identify tributaries to target. 
 
@@ -108,7 +81,6 @@ $call SetBackground("bg/army-corps-bg.png")
        That can be done. I know some people down at the docks. 
 
 {@Robertson}
-       Don't we all. 
        Well, don't be a stranger, ma'am. Come back when you want yer traps. 
 
 {@You}
@@ -118,7 +90,6 @@ $call SetBackground("bg/army-corps-bg.png")
        By the time you get back to your car, your previous phone call is almost forgotten. 
 
 // Give evidence chip
-$call GiveEvidenceChip("Evidence-awareness-program")
 
 // skip to end
 $goto .End

@@ -21,11 +21,9 @@ $call SetBackground("bg/town-hall-bg.png")
 
 {@}   
        The town hall meeting has just started when you slip inside the main chamber. 
-       At the front, a young woman you recognize as Mayor Avery Byrde sits alongside Paul, the DNR representative, and your boss, Saoirse. 
 
 {@Mayor}
-       Hello, everyone, and thank you for coming today.
-       I'll open up the floor to any community members who'd like to speak. 
+       Hello, everyone, and thank you for coming today. Let's get started right away. 
 
 {@}
        Hands immediately go up, questions about funding for the middle school and zoning updates near the city center. 
@@ -33,26 +31,22 @@ $call SetBackground("bg/town-hall-bg.png")
        
 {@You}
        Um, hi. I'm Ana Almeidas. I grew up here, and I currently work for Sea Grant. 
-       We're currently looking into different methods of controlling sea lamprey in the Great Lakes.
-       An option that's been used in the past is lampricide, which is a chemical that's put in the water.
+       We're currently looking into using lampricide to manage the rising sea lamprey population. 
 
 {@}
-       There's a murmur through the crowd at the word "chemical".
+       There's a murmur through the crowd.
 
 {@You}
-       Lampricide is safe and very effective, but we would need funding for the program. 
-       We'd like to ask for that funding and permission from the community to use it.
+       Lampricide is safe and very effective, so we'd like funding for the program.
 
 {@Mayor}
        I can see there are some questions in the crowd, so we'll go through those first. 
 
 {@Fisher}
-       So my entire business relies on there being fish in the lakes. 
        How do you know this chemical isn't gonna kill everything and not just the lamprey?
 
 {@You}
-       There have been plenty of studies done on how lampricide works. 
-       It only affects sea lamprey and won't hurt any of the other fish. 
+       Lampricide only affects sea lamprey and won't hurt any of the other fish. 
        And by controlling the sea lamprey population, the other fish you need will be protected. 
 
 {@Grandparent}
@@ -60,7 +54,7 @@ $call SetBackground("bg/town-hall-bg.png")
 
 {@You}
        We also know that water that's been treated with lampricide is safe for people. 
-       Lampricide breaks down naturally in the water, so unlike something like lead, it doesn't accumulate. 
+       Lampricide breaks down naturally in the water, so it doesn't accumulate. 
        //i'd like to add something about indigenous worries over lampricide, but i think i need more information to do it respectfully
 
 {@Citizen}//idk what to call this person
@@ -70,14 +64,12 @@ $call SetBackground("bg/town-hall-bg.png")
        Well, I can't really give you a particular number right now. 
        I know the city has a lot of services, and it's important to find a balance with everything.
        But sea lamprey can pose an economic risk when their population isn't regulated.
-       By not doing anytthing now, we risk having to spend more money in the future to fix the lamprey population. 
 
 {@Mayor}
        Thank you, everyone, for your thoughtful questions. 
        Ana, the city council will think about it after this meeting, and we'll let you know soon. 
 
 {@}
-       You nod and go back to watching the rest of the townhall. 
        After the closed hearing for the city council, the Mayor approaches you.
 
 {@Mayor}
@@ -88,35 +80,31 @@ $call SetBackground("bg/town-hall-bg.png")
 
 {@Mayor}
        They've approved preliminary funding for lampricide use in municipal tributaries. 
-       It's only for a year right now, but if you show success, that can be reevaluated. 
+       It's only for a year right now, but that can be reevaluated. 
 
 {@You}
        Oh, that's a relief. I don't know what I would've told my boss otherwise. 
 
 {@Mayor}
-       Saoirse? She definitely helped during the city council meeting. 
-       She spoke highly of you, too. 
+       Saoirse? She definitely helped during the city council meeting. She spoke highly of you, too. 
 
 {@You}
        Really? This is literally my first day. 
 
 {@Mayor}
-       Call it a good vibe. I see it. 
-       We've got high hopes for you and this program. 
+       Call it a good vibe. I see it. We've got high hopes for you and this program. 
        Not to say the city's hopes are riding on your shoulders, but...
 
 {@You}
        Yeah, I know. 
 
 {@}
-       She smiles and steps away. 
        You're left watching the rest of the town walk out of the townhall. 
        You think about their private dreams and hopes, all rushing down the town's streets to the lake. 
        The photo of the sea lamprey mocks you from your pocket. It nips at your ears. 
 
 {@Lamprey}
-       There's no time like the present for me. 
-       When I'm done, where will the past you remember be?
+       There's no time like the present for me. When I'm done, where will the past you remember be?
 
 {@}
        You rip the photo in half. 
