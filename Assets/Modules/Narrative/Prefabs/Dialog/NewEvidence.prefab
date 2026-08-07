@@ -66,7 +66,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Review your Evidence in the Field Notes Tab!
+  m_text: Review your Notes in the Field Notes Tab!
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6983a897c51fa94458b311afe07e49de, type: 2}
   m_sharedMaterial: {fileID: 8927896117694637700, guid: 6983a897c51fa94458b311afe07e49de, type: 2}
@@ -415,7 +415,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Evidence obtained!
+  m_text: New Note obtained!
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d1770caf491d7eb4880c4f95e0207ba1, type: 2}
   m_sharedMaterial: {fileID: 746703281168274357, guid: d1770caf491d7eb4880c4f95e0207ba1, type: 2}
@@ -627,7 +627,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Add
 
-    Evidence'
+    Note'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 85966309638f1304db6ddfc983866b39, type: 2}
   m_sharedMaterial: {fileID: 4319821515941466920, guid: 85966309638f1304db6ddfc983866b39, type: 2}

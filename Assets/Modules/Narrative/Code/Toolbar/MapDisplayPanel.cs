@@ -58,7 +58,7 @@ namespace AIS.Narrative
 
             // reset selections
             selectedHubIdx = currentHubIdx;
-            travelPointsDisplays[selectedHubIdx].SelectLocation(currentHubIdx);
+            travelPointsDisplays[currentHubIdx].ClearSelection();
 
             //currMode = null;
         }
@@ -72,14 +72,16 @@ namespace AIS.Narrative
 
             travelPointsContainer.SetActive(true);
             selectedHubIdx = currentHubIdx;
-            travelPointsDisplays[selectedHubIdx].TravelToSelectedLocation(false);
-
-            selectedHubIdx = currentHubIdx;
             TravelToSelectedHub(false);
+
+            // Opening the map is not travel. It re-displays where the player already is; a
+            // location they clicked on last time but never confirmed is dropped here, so it
+            // cannot quietly become their current location.
+            travelPointsDisplays[currentHubIdx].ShowAtCurrentLocation();
 
             foreach(TravelPointsDisplay hub in travelPointsDisplays)
             {
-                hub.RefreshTravelPointLocks();
+                hub.RefreshTravelPoints();
             }
             // Zoom out
             //Camera.main.transform.position = hubSelectionDisplay.cameraTransform;
@@ -170,28 +172,55 @@ namespace AIS.Narrative
             if (units > 0) { TravelTimeInfo.sprite = TimeChunkSprites[units]; }
         }
 
+        /// <summary>
+        /// Re-applies the current hub's travel state - which locations are clickable, how they are
+        /// highlighted, and which advertise a card - to the map as it is displayed right now.
+        /// </summary>
+        public void RefreshTravelPoints()
+        {
+            travelPointsDisplays[currentHubIdx].RefreshTravelPoints();
+        }
+
+        /// <summary>
+        /// Scripts change the locks both before the map is opened (a hub's OpenMap call) and while
+        /// it is already up (a $MapChoice opens the map first, then its target node runs the travel
+        /// setup), so lock changes have to reach an open map immediately. While it is closed there
+        /// is nothing to do - <see cref="Show"/> refreshes everything on the way in.
+        /// </summary>
+        private void RefreshTravelPointsIfShowing()
+        {
+            if (!IsShowing()) { return; }
+
+            RefreshTravelPoints();
+        }
+
         //TODO: control location accessibility via script hooks
         public void UnlockLocation(MapLocation location)
         {
-            TravelPointsDisplay currentHub = travelPointsDisplays[currentHubIdx];
-            int locationIdx = currentHub.IndexOfLocation(location);
-            TravelPoint target = currentHub.locations[locationIdx];
+            if (!TryGetTravelPoint(location, out TravelPoint target)) { return; }
 
-            currentHub.UnlockedLocations.Add(target.MainImg);
+            travelPointsDisplays[currentHubIdx].UnlockedLocations.Add(target.MainImg);
             target.UpdateTimeBlockVisual(target.Chunks);
-            target.NextCardToFind.SetActive(true);
+            // Only advertise a card here if one has actually been assigned to this location.
+            target.NextCardToFind.SetActive(target.HasNextAsset);
+
+            RefreshTravelPointsIfShowing();
         }
 
         public void SetInThreadLocks()
         {
             TravelPointsDisplay currentHub = travelPointsDisplays[currentHubIdx];
             currentHub.UnlockedLocations = new List<Image>();
+
+            RefreshTravelPointsIfShowing();
         }
 
         public void ReturnTo(int locationIdx)
         {
             TravelPointsDisplay currentHub = travelPointsDisplays[currentHubIdx];
             currentHub.EnableReturnTo(locationIdx);
+
+            RefreshTravelPointsIfShowing();
         }
 
         public void SetTravelTimeFromCurrentTo(MapLocation location, int chunks, bool isRevealed)
@@ -204,26 +233,56 @@ namespace AIS.Narrative
             target.UpdateTimeBlockVisual(chunks, isRevealed);
         }
 
-        // TODO: Delete this in later development
-        public void SetNextCardAtLocation(int locationIdx, PlayerStatId suit, bool isActionable)
+        public void SetNextAssetAtLocation(MapLocation location, in NextAssetInfo asset)
         {
-            TravelPointsDisplay currentHub = travelPointsDisplays[currentHubIdx];
-            TravelPoint location = currentHub.locations[locationIdx];
-            location.SetNextCardToFind(suit, isActionable);
+            if (!TryGetTravelPoint(location, out TravelPoint travelPoint)) { return; }
+
+            travelPoint.SetNextAsset(asset);
         }
 
-        public void SetNextCardAtLocation(MapLocation location, PlayerStatId suit, bool isActionable)
+        public void ClearNextAssetAtLocation(MapLocation location)
+        {
+            if (!TryGetTravelPoint(location, out TravelPoint travelPoint)) { return; }
+
+            travelPoint.ClearNextAsset();
+        }
+
+        /// <summary>
+        /// Clears the pip from every location advertising the given card. Called once the player
+        /// has the card, so the map stops pointing them at something they have already found.
+        /// Sweeps all hubs, since the player may collect a card after moving on from the hub
+        /// the pip was set on.
+        /// </summary>
+        public void ClearNextAsset(StringHash32 assetId)
+        {
+            if (assetId.IsEmpty) { return; }
+
+            foreach (TravelPointsDisplay hub in travelPointsDisplays)
+            {
+                foreach (TravelPoint travelPoint in hub.locations)
+                {
+                    if (travelPoint.NextAsset.Id == assetId)
+                    {
+                        travelPoint.ClearNextAsset();
+                    }
+                }
+            }
+        }
+
+        // Locations are authored per hub, so a name that is not on the current hub has no travel point.
+        private bool TryGetTravelPoint(MapLocation location, out TravelPoint travelPoint)
         {
             TravelPointsDisplay currentHub = travelPointsDisplays[currentHubIdx];
             int locationIdx = currentHub.IndexOfLocation(location);
-            TravelPoint travelPoint = currentHub.locations[locationIdx];
-            travelPoint.SetNextCardToFind(suit, isActionable);
-        }
+            if (locationIdx < 0)
+            {
+                Debug.LogWarning($"[MapDisplayPanel] No travel point for location '{location}' on the current hub.", this);
+                travelPoint = null;
+                return false;
+            }
 
-        public void ClearNextCardAtLocation(int locationIdx)
-        {
-            TravelPointsDisplay currentHub = travelPointsDisplays[currentHubIdx];
-            currentHub.locations[locationIdx].NextCardToFind.SetActive(false);
+            travelPoint = currentHub.locations[locationIdx];
+            return true;
         }
     }
 }

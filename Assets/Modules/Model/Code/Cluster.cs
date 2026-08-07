@@ -175,7 +175,8 @@ namespace AIS.Model
 
             if (obscurePopulation && lockSuit != PlayerStatId.Invalid && m_TextHiderSuitIcon != null)
             {
-                m_TextHiderSuitIcon.sprite = CardVisualLookupUtility.LookupSuitIcon(lockSuit);
+                // use question marks by default
+                // m_TextHiderSuitIcon.sprite = CardVisualLookupUtility.LookupSuitIcon(lockSuit);
             }
         }
 

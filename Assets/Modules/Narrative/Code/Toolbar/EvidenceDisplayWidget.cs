@@ -16,7 +16,6 @@ namespace AIS.Narrative {
 
         [Header("Action Slot")]
         public CanvasGroup ActionSlot;
-        public CanvasGroup ActionContents;
         public Image SlotImg;
         public Image CardPairIcon;
     }
@@ -37,10 +36,7 @@ namespace AIS.Narrative {
             }
 
             if (widget.Illustration != null) {
-                //var locationDB = Find.GlobalAsset<LocationVisualsDB>();
-                //widget.Illustration.sprite = LocationVisualsDBUtility.LookupLocationSprite(locationDB, data.ActivateLocation);
                 widget.Illustration.enabled = false; // turn off based on new ui changes
-
             }
 
             if (widget.CardPairIcon != null)
@@ -52,23 +48,20 @@ namespace AIS.Narrative {
                 widget.Content.SetText(data.Label);
             }
 
+            var locationDB = Find.GlobalAsset<LocationVisualsDB>();
+            widget.SlotImg.sprite = LocationVisualsDBUtility.LookupLocationSprite(locationDB, data.ActivateLocation);
+
             if (widget.Type != null) {
                 widget.Type.sprite = CardVisualLookupUtility.LookupTypeIcon(data.isActionable);
             }
 
             if (data.isActionable && data.ActivateLocation != MapLocation.None)
             {
-                widget.ActionContents.gameObject.SetActive(true);
-                widget.ActionContents.GetComponentInChildren<TMP_Text>().SetText(data.ActivateLocation.ToString());
-
-                if (data.getIsActivated())
-                {
-                    widget.ActionSlot.GetComponent<SpriteRenderer>().color = Color.gray;
-                }
+                widget.ActionSlot.alpha = 1;
             }
             else
             {
-                widget.ActionContents.gameObject.SetActive(false);
+                widget.ActionSlot.alpha = 0;
             }
         }
     }

@@ -313,7 +313,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -58.7, y: -9.187498}
-  m_SizeDelta: {x: 100, y: 36.225}
+  m_SizeDelta: {x: 100, y: 103.2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2198550484589216640
 CanvasRenderer:
@@ -451,6 +451,7 @@ MonoBehaviour:
   PopulationTrendImage: {fileID: 5771065074311774959}
   UpTrend: {fileID: 21300000, guid: b17269f826509fb47aa0cf914f642a0f, type: 3}
   DownTrend: {fileID: 21300000, guid: 7ddc95c863814ff4e9e078a90dee5731, type: 3}
+  NeutralTrend: {fileID: 21300000, guid: 3788914cec2a6e642976b001554e8596, type: 3}
 --- !u!1 &6772061362571714369
 GameObject:
   m_ObjectHideFlags: 0

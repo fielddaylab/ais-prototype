@@ -90,20 +90,9 @@ namespace AIS.Intervene
 
         public void ToggleSelectAtIndex(int index)
         {
-            cardInterationUI.UseSelectedBtn.interactable = 
-                InterveneBudgetInterfacer.Instance.WorkingBudget.Budget > 0 ? true : false;
-
             if (SelectedCardIndices.Contains(index))
             {
                 DeselectCard(index);
-                if (Game.SharedState.TryGet(out ActionCardsState cardsState))
-                {
-                    if (cardsState.AllActionCards.TryGetValue(PlayerCards[index].CardID, out ActionCardData data))
-                    {
-                        var cost = Math.Clamp(data.Cost, 0, InterveneBudgetInterfacer.Instance.WorkingBudget.Budget);
-                        BudgetUtility.UpdateBudgetVisualsForSelectedCard(InterveneBudgetInterfacer.Instance, cost);
-                    }
-                }
             }
             else if (AllowMultiSelect)
             {
@@ -112,17 +101,6 @@ namespace AIS.Intervene
             else
             {
                 SingleSelectCard(index);
-                if (Game.SharedState.TryGet(out ActionCardsState cardsState))
-                {
-                    if (cardsState.AllActionCards.TryGetValue(PlayerCards[index].CardID, out ActionCardData data))
-                    {
-                        BudgetUtility.UpdateBudgetVisualsForSelectedCard(InterveneBudgetInterfacer.Instance, - data.Cost);
-                        if (!BudgetUtility.CanAfford(InterveneBudgetInterfacer.Instance, data.Cost))
-                        {
-                            cardInterationUI.UseSelectedBtn.interactable = false;
-                        }
-                    }
-                }
             }
 
             UpdateSelectVisuals();
@@ -166,6 +144,28 @@ namespace AIS.Intervene
                     cardVisual.Highlight.GetComponent<Image>().enabled = SelectedCardIndices.Contains(i);
                 }
             }
+
+            RefreshBudgetPreview();
+        }
+
+        /// <summary>
+        /// Mirrors the current selection into the budget readout. Every selection change routes
+        /// through here, so the preview can never be left showing a card that is no longer selected.
+        /// </summary>
+        private void RefreshBudgetPreview()
+        {
+            InterveneBudgetInterfacer budget = InterveneBudgetInterfacer.Instance;
+            if (budget == null) { return; }
+
+            int selectedCost = GetSelectedCost();
+
+            BudgetUtility.PreviewSelectionCost(budget, selectedCost);
+
+            if (cardInterationUI != null && cardInterationUI.UseSelectedBtn != null)
+            {
+                cardInterationUI.UseSelectedBtn.interactable =
+                    SelectedCardIndices.Count > 0 && BudgetUtility.CanAfford(budget, selectedCost);
+            }
         }
 
         #region Queries
@@ -177,24 +177,27 @@ namespace AIS.Intervene
             foreach(var index in SelectedCardIndices)
             {
                 selected.Add(PlayerCards[index]);
-
-                //if (BudgetUtility.CanAfford(InterveneBudgetInterfacer.Instance, selected))
-                //{
-                //    for (int i = InterveneBudgetInterfacer.Instance.WorkingBudget.Budget - 1; i >= 0 ; i--)
-                //    {
-                //        InterveneBudgetInterfacer.Instance.BudgetGroupTransform.GetChild(i).GetComponent<Image>().color = Color.white;
-                //    }
-                //}
-                //else
-                //{
-                //    for (int i = InterveneBudgetInterfacer.Instance.WorkingBudget.Budget - 1; i >= 0 ; i--)
-                //    {
-                //        InterveneBudgetInterfacer.Instance.BudgetGroupTransform.GetChild(i).GetComponent<Image>().color = Color.red;
-                //    }
-                //}
             }
 
             return selected;
+        }
+
+        /// <summary>
+        /// Total adjusted cost of the current selection. Uses the same value the effect specifier
+        /// charges on confirm, so the preview and the actual spend always agree.
+        /// </summary>
+        public int GetSelectedCost()
+        {
+            int cost = 0;
+
+            foreach (var index in SelectedCardIndices)
+            {
+                if (index < 0 || index >= PlayerCards.Count) { continue; }
+
+                cost += PlayerCards[index].GetAdjustedCost();
+            }
+
+            return cost;
         }
 
         #endregion // Queries

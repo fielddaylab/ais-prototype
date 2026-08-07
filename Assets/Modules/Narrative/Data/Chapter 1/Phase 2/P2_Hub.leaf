@@ -12,8 +12,10 @@ $call  ClearVisibleLines()
 $call EnableMapButton()
 $call UnlockLocation(FieldStationLampricide)     // P2_Lampricide_Note
 $call SetTravelTime(FieldStationLampricide, 1)
+$call SetNextAssetAtLocation(FieldStationLampricide, "Evidence-lampricide")
 $call UnlockLocation(ArmyCorps)                  // P2_Outreach_Note
 $call SetTravelTime(ArmyCorps, 1)
+$call SetNextAssetAtLocation(ArmyCorps, "Evidence-awareness-program")
 
 $call OpenMap()
 
@@ -31,18 +33,22 @@ $call EnableMapButton()
 $if !HasSeen(P2_Lampricide_Note.End)
        $call UnlockLocation(FieldStationLampricide)     // P2_Lampricide_Note
        $call SetTravelTime(FieldStationLampricide, 1)
+       $call SetNextAssetAtLocation(FieldStationLampricide, "Evidence-lampricide")
 $endif
 $if !HasSeen(P2_Lampricide_Action.End), HasSeen(P2_Lampricide_Note.End)
        $call UnlockLocation(TownHall)                   // P2_Lampricide_Action
        $call SetTravelTime(TownHall, 1)
+       $call SetNextAssetAtLocation(TownHall, "Action-use-lampricide")
 $endif
 $if !HasSeen(P2_Outreach_Note.End)
        $call UnlockLocation(ArmyCorps)                  // P2_Outreach_Note
        $call SetTravelTime(ArmyCorps, 1)
+       $call SetNextAssetAtLocation(ArmyCorps, "Evidence-awareness-program")
 $endif
 $if !HasSeen(P2_Outreach_Action.End), HasSeen(P2_Outreach_Note.End)
        $call UnlockLocation(FishingDocks)                // P2_Outreach_Action
        $call SetTravelTime(FishingDocks, 1)
+       $call SetNextAssetAtLocation(FishingDocks, "Action-awareness-campaign")
 $endif
 
 // if all Phase 2 threads have been visited, exit

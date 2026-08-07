@@ -29,9 +29,7 @@ namespace AIS.Narrative {
             newElem.DependencyWidget.Content.SetText(data.Label);
 
             var locationDB = Find.GlobalAsset<LocationVisualsDB>();
-            newElem.DependencyWidget.Illustration.sprite = LocationVisualsDBUtility.LookupLocationSprite(locationDB, data.ActivateLocation);
-
-            newElem.DependencyWidget.Suit.sprite = CardVisualLookupUtility.LookupSuitIcon(data.Suit);
+            EvidenceDisplayWidgetUtility.Populate(newElem.DependencyWidget, data);
             newElem.SetVisible(true);
             column.Layout.RecomputePositioning();
             return newElem;
@@ -63,8 +61,7 @@ namespace AIS.Narrative {
             column.Layout.ActiveLines.PushBack(newElem.Positioner);
             newElem.Card.gameObject.SetActive(true);
             if (dependencyData != null) {
-                newElem.DependencyWidget.Content.SetText(dependencyData.Label);
-                newElem.DependencyWidget.Suit.sprite = CardVisualLookupUtility.LookupSuitIcon(dependencyData.Suit);
+                EvidenceDisplayWidgetUtility.Populate(newElem.DependencyWidget, dependencyData);
             }
             if (hasData) {
                 ActionCardUtility.PopulateCardUI(newElem.Card, data);

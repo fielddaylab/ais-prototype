@@ -15,11 +15,11 @@ public class IntervenePopulationGroup : MonoBehaviour
         public TMP_Text PopulationNumber;
         public Image PopulationTrendImage;
 
-        public Sprite UpTrend, DownTrend;
+        public Sprite UpTrend, DownTrend, NeutralTrend;
 
         public void PopulateInfo(PopulationTrend trend)
         {
-            string speciesName = trend.SpeciesId.ToDebugString();
+            string speciesName = ModelSpriteLookup.Instance.LookupSpeciesDisplayName(trend.SpeciesId);
             string rawName = speciesName.Replace("-", " ");
             PopulationLabel.text = string.Join(" ", rawName.Split(' ')
                 .Select(word => word.Length > 0 
@@ -34,7 +34,12 @@ public class IntervenePopulationGroup : MonoBehaviour
             if (trendDirection < 0)
             {
                 PopulationTrendImage.sprite = DownTrend;
-            } else
+            }
+            else if (trendDirection == 0)
+            {
+                PopulationTrendImage.sprite = NeutralTrend;
+            }
+            else
             {
                 PopulationTrendImage.sprite = UpTrend;
             }

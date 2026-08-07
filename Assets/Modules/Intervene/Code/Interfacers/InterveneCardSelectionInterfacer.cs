@@ -314,6 +314,8 @@ namespace AIS.Intervene
 
             //InterveneSwapDeckInterfacer.Instance.SwapBtn.interactable = true;
             InterveneSwapDeckInterfacer.Instance.gameObject.SetActive(true);
+
+            AisGame.Events.Dispatch(InterveneEvents.OnInterveneStart);
         }
     }
 

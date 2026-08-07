@@ -18,6 +18,7 @@ namespace AIS.Narrative {
         FieldStationSterile,
         FishAndWildlife,
         FieldStationTraps,
+        Home,
     }
 
 

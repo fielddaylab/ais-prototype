@@ -318,8 +318,8 @@ MonoBehaviour:
       StartingTravelType: 193
       StartingTargetType: 1
     - SpeciesId:
-        m_Source: walleye
-        m_HashValue: 892638634
+        m_Source: cisco
+        m_HashValue: 2438048384
       StartingEcosystemId:
         m_Source: little-lake
         m_HashValue: 3686629487
@@ -327,8 +327,8 @@ MonoBehaviour:
       StartingTravelType: 1
       StartingTargetType: 4
     - SpeciesId:
-        m_Source: walleye
-        m_HashValue: 892638634
+        m_Source: cisco
+        m_HashValue: 2438048384
       StartingEcosystemId:
         m_Source: big-lake
         m_HashValue: 320318183
@@ -336,8 +336,8 @@ MonoBehaviour:
       StartingTravelType: 1
       StartingTargetType: 4
     - SpeciesId:
-        m_Source: walleye
-        m_HashValue: 892638634
+        m_Source: cisco
+        m_HashValue: 2438048384
       StartingEcosystemId:
         m_Source: med-lake
         m_HashValue: 1599097255
@@ -421,8 +421,8 @@ MonoBehaviour:
     StartingTargetType: 2
   DefaultPrey:
     SpeciesId:
-      m_Source: walleye
-      m_HashValue: 892638634
+      m_Source: cisco
+      m_HashValue: 2438048384
     StartingEcosystemId:
       m_Source: 
       m_HashValue: 0

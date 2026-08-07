@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6980771517378147217}
   - component: {fileID: 5123540877596911670}
   - component: {fileID: 7721275545637768702}
+  - component: {fileID: 4903118276554302891}
   m_Layer: 0
   m_Name: Budget Unit
   m_TagString: Untagged
@@ -75,3 +76,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &4903118276554302891
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3284353509148006948}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f8a1c67d94b4e2ab5c0e7f1a2d63b48, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  Fill: {fileID: 7721275545637768702}
+  SpentColor: {r: 0.72955966, g: 0.72955966, b: 0.72955966, a: 1}
+  AvailableColor: {r: 1, g: 1, b: 0, a: 1}
+  ReservedColor: {r: 1, g: 1, b: 1, a: 1}
+  UnaffordableColor: {r: 1, g: 0, b: 0, a: 1}
+  State: 0

@@ -10,7 +10,9 @@ $call DisableMapButton()
 $call EnableMapButton()
 $call UnlockLocation(ResearchLab)  // P1_Lamprey
 $call SetTravelTime(ResearchLab, 1)
+$call SetNextAssetAtLocation(ResearchLab, "Evidence-Lamprey-Discovered")
 $call OpenMap()
+$call SetTime(16)
 
 // TODO: Rest of entry hub here
 

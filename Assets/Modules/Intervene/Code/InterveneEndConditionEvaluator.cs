@@ -54,9 +54,13 @@ namespace AIS.Intervene
             public Dictionary<SerializedHash32, int> Populations; // species id -> total population that round
         }
 
-        public const int DEFAULT_TREND_WINDOW = 3;
+        public const int DEFAULT_TREND_WINDOW = 1;
 
-        // Default number of most-recent round-to-round changes summarized by trends and pass-fail checks.
+        // Star conditions are judged on the most recent round only, independent of the
+        // display window used by the population-trend UI.
+        private const int SCORING_WINDOW = 1;
+
+        // Default number of most-recent round-to-round changes summarized by trend queries.
         private int m_TrendWindow = DEFAULT_TREND_WINDOW;
 
         private readonly List<Snapshot> m_History = new List<Snapshot>();
@@ -64,8 +68,9 @@ namespace AIS.Intervene
         private readonly List<SerializedHash32> m_SpeciesOrder = new List<SerializedHash32>();
 
         /// <summary>
-        /// Default window (in rounds) used by scoring and by the parameterless trend queries.
-        /// Clamped to at least 1. Individual queries may override it with an explicit window.
+        /// Default window (in rounds) used by the parameterless trend queries. Clamped to at
+        /// least 1. Individual queries may override it with an explicit window. Display only:
+        /// star scoring always uses <see cref="SCORING_WINDOW"/>.
         /// </summary>
         public int TrendWindow
         {
@@ -212,18 +217,20 @@ namespace AIS.Intervene
             List<int> series = BuildAggregateSeries(ActionTarget.Invasive);
             if (series[series.Count - 1] == 0) { return true; }
 
-            return AverageOfLastDeltas(series, m_TrendWindow) < 0f;
+            return AverageOfLastDeltas(series, SCORING_WINDOW) < 0f;
         }
 
-        // Condition 2: every native species is stable (|avg change| < 1) or increasing,
-        // i.e. average change > -1. A native crashing by 1+ per round on average fails.
+        // Condition 2: every native species is stable or increasing over the scoring window,
+        // i.e. its change is not negative. Only an outright decline fails.
         private bool EvaluateNatives()
         {
+            if (m_History.Count == 0) { return false; }
+
             foreach (var id in m_SpeciesOrder)
             {
                 if (!IsNativeRole(m_Roles[id])) { continue; }
 
-                if (AverageOfLastDeltas(BuildSpeciesSeries(id), m_TrendWindow) <= -1f)
+                if (AverageOfLastDeltas(BuildSpeciesSeries(id), SCORING_WINDOW) < 0f)
                 {
                     return false;
                 }

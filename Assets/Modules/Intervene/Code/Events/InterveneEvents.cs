@@ -19,9 +19,12 @@ namespace AIS.Intervene
         public static StringHash32 OnEffectChunkBegin = "on-effect-chunk-begin";
         public static StringHash32 OnEffectChunkComplete = "on-effect-chunk-complete";
         public static StringHash32 OnEffectChunkCancel = "on-effect-chunk-cancel";
+        public static StringHash32 PostEffectChunkComplete = "post-effect-chunk-complete";
+        public static StringHash32 PostEffectChunkCancel = "post-effect-chunk-cancel";
 
         public static StringHash32 OnEffectSpecifyAllActionsProcessed = "on-effect-specify-all-actions-processed";
 
+        public static StringHash32 OnInterveneStart = "on-intervene-start";
         public static StringHash32 OnInterveneRestart = "on-intervene-restart";
         public static StringHash32 OnActionDeckConstructed = "on-action-deck-constructed";
         public static StringHash32 OnInterveneEnd = "on-intervene-end";
@@ -31,6 +34,10 @@ namespace AIS.Intervene
         public static StringHash32 OnPopulationSnapshotRecorded = "on-population-snapshot-recorded";
 
         public static StringHash32 OnInvasionLevelChanged = "on-invasion-level-changed";
+
+        // Dispatched whenever the player's spendable budget actually changes; a cue for UI which
+        // reacts to the player running out of budget.
+        public static StringHash32 OnBudgetChanged = "on-budget-changed";
 
         // Events for SFX
         public static StringHash32 OnHoverZone = "on-hover-zone";

@@ -246,6 +246,7 @@ namespace AIS.Intervene
         {
             IsActive = false;
             AisGame.Events.Dispatch(InterveneEvents.OnEffectChunkComplete);
+            AisGame.Events.Dispatch(InterveneEvents.PostEffectChunkComplete);
             RefreshUIElements();
 
             DisperseHighlights();
@@ -261,6 +262,7 @@ namespace AIS.Intervene
             }
 
             AisGame.Events.Dispatch(InterveneEvents.OnEffectChunkCancel);
+            AisGame.Events.Dispatch(InterveneEvents.PostEffectChunkCancel);
             RefreshUIElements();
 
             DisperseHighlights();

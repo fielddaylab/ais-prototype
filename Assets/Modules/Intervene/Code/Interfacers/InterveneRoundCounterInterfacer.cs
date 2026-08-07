@@ -15,7 +15,7 @@ namespace AIS.Intervene
         public TMP_Text RoundCounter;
         public TMP_Text Turn;
         [SerializeField] private int m_MaxRounds = 5;
-        [Tooltip("Default number of recent rounds summarized by the population-trend / stability checks.")]
+        [Tooltip("Default number of recent rounds summarized by the population-trend UI. Does not affect star scoring, which always judges the most recent round.")]
         [SerializeField] private int m_TrendWindow = InterveneEndConditionEvaluator.DEFAULT_TREND_WINDOW;
         #endregion // Inspector
 
@@ -40,6 +40,7 @@ namespace AIS.Intervene
 
         private void Start()
         {
+            AisGame.Events.Register(InterveneEvents.OnInterveneStart, HandleStart);
             AisGame.Events.Register(InterveneEvents.OnEndTurn, HandleEndTurn);
             AisGame.Events.Register(InterveneEvents.OnInterveneRestart, HandleRestart);
         }
@@ -48,6 +49,7 @@ namespace AIS.Intervene
         {
             if (AisGame.IsShuttingDown) { return; }
 
+            AisGame.Events.Deregister(InterveneEvents.OnInterveneStart, HandleStart);
             AisGame.Events.Deregister(InterveneEvents.OnEndTurn, HandleEndTurn);
             AisGame.Events.Deregister(InterveneEvents.OnInterveneRestart, HandleRestart);
         }
@@ -89,11 +91,23 @@ namespace AIS.Intervene
             }
         }
 
+        private void HandleStart()
+        {
+            StartCommon();
+        }
+
         private void HandleRestart()
+        {
+            StartCommon();
+        }
+
+        private void StartCommon()
         {
             m_CurrentRound = 1;
             SetRound(1);
             m_Evaluator.Reset();
+            m_Evaluator.RecordSnapshot();
+            AisGame.Events.Dispatch(InterveneEvents.OnPopulationSnapshotRecorded);
         }
     }
 }

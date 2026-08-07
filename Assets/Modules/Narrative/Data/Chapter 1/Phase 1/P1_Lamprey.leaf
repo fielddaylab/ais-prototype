@@ -88,6 +88,7 @@ $goto .End
 // Unlock next locations
 $call UnlockLocation(DNROffice)  // P1_NativeLamprey
 $call SetTravelTime(DNROffice, 1)
+$call SetNextAssetAtLocation(DNROffice, "Evidence-native-lamprey")
 $call OpenMap()
 
 // Mark end of thread

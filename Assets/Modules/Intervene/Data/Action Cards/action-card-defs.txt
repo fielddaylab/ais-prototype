@@ -4,12 +4,12 @@
 @title		Use Lampricide
 @suit		tech
 @desc		-2M Invasive Lamprey
-@focusdescription [Placeholder] Lampricide is a lamprey poison that, when applied to lamprey, poisons them until they are poisoned. Poisoning lamprey is this fashion results in them being dead from poison.
+@focusdescription -2M Invasive Lamprey
 @path		temp.png
 @cost		1
 
 @effect
-    target: invasive
+    target: invasive, tributary
     verb: reduce, 2, fixed
     specificity: specific
 
@@ -18,6 +18,7 @@
 @title		Outreach Campaign
 @suit		communicate
 @desc		+1 Budget
+@focusdescription +1 Budget
 @path		temp.png
 @cost		2
 
@@ -38,6 +39,7 @@
 @title		Stock Cisco
 @suit		ranger
 @desc		+2M to a Cisco population within a target lake
+@focusdescription +2M to a Cisco population within a target lake
 @path		temp.png
 @cost		1
 
@@ -59,6 +61,7 @@
 @title		Stock Lake Trout
 @suit		ranger
 @desc		+2M to a Lake Trout population within a target lake
+@focusdescription +2M to a Lake Trout population within a target lake
 @path		temp.png
 @cost		1
 
@@ -81,6 +84,7 @@
 @title		Release Sterilized Lamprey
 @suit		research
 @desc		-2 Invasive reproduction in a target tributary
+@focusdescription -2 Invasive reproduction in a target tributary
 @path		temp.png
 @cost		1
 
@@ -97,6 +101,7 @@
 @title		Use Downstream Tributary Traps
 @suit		ranger
 @desc		When a target Downstream pathway activates, -1 Invasive from source instead of moving.
+@focusdescription When a target Downstream pathway activates, -1 Invasive from source instead of moving.
 @path		temp.png
 @cost		1
 
@@ -120,6 +125,7 @@
 @title		Use Upstream Tributary Traps
 @suit		ranger
 @desc		When a target Upstream pathway activates, -1 Invasive from source instead of moving.
+@focusdescription When a target Upstream pathway activates, -1 Invasive from source instead of moving.
 @path		temp.png
 @cost		1
 
@@ -141,6 +147,7 @@
 @title		Put Up Barriers
 @suit		ranger
 @desc		Removes access to a pathway.
+@focusdescription Removes access to a pathway.
 @path		temp.png
 @cost		1
 
@@ -155,6 +162,7 @@
 @title		Place Pheromones
 @suit		tech
 @desc		Traps on a target pathway catch 2x as many Invasives.
+@focusdescription Traps on a target pathway catch 2x as many Invasives.
 @path		temp.png
 @cost		1
 

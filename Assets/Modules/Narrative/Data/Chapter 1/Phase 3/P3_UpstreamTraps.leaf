@@ -114,8 +114,9 @@ $if HasActionCard("Action-upstream-tributary-traps")
        // TEMPORARY skip to end
        $goto .End
 $else
-       $call UnlockLocation(ArmyCorps)
+       $call UnlockLocation(ArmyCorps)    // .ReceiveTrapAction
        $call SetTravelTime(ArmyCorps, 1)
+       $call SetNextAssetAtLocation(ArmyCorps, "Action-upstream-tributary-traps")
        $call EnableMapButton()
        $call CheckIfOutOfTime()
        $call OpenMap()

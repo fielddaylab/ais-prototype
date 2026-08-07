@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Scenario1
   m_EditorClassIdentifier: 
   Illustration: {fileID: 21300000, guid: 81fb0905a4c5b214e832e47d7a64203a, type: 3}
-  OverviewText: Sea lampreys spread into the Great Lakes through canals built by
-    people. They fed on fish that were not adapted to defend themselves. Their population
-    grew larger than the ecosystem could balance. As ecological disruptors, they
-    changed food webs and harmed many fish species.
+  OverviewText: 'Scenario Mission: Stop the spread of sea lamprey in Fishberg. Use
+    your allotted time to travel around the map and collect evidence chips and action
+    cards. Then, in the intervention phase, use your action cards to develop a plan
+    to control the sea lamprey population and rebalance the ecosystem.'
