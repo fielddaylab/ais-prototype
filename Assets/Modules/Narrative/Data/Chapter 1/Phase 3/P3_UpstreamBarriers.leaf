@@ -111,7 +111,7 @@ $call GiveActionCard("Action-barriers")
 {@You}
        Thanks, Paul. 
 
-$if !HasSeen(P3_Pheromones.End) //checks to see if player has already seen ending dialogue
+$if HasSeen(P3_Pheromones.End) //checks to see if player has already seen ending dialogue
        //does nothing if they have
 $else
        {@You}

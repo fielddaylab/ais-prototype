@@ -190,7 +190,7 @@ $call GiveActionCard("Action-pheromones")
 {@You}
        Thanks, Paul. I mean it. 
 
-$if !HasSeen(P3_UpstreamBarriers.End) //ensures final dialogue with Paul doesn't happen twice
+$if HasSeen(P3_UpstreamBarriers.End) //ensures final dialogue with Paul doesn't happen twice
        //does nothing in case player has already seen the dialogue
 $else
        {@You}
