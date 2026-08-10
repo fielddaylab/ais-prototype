@@ -52,6 +52,7 @@ namespace AIS.Intervene
 
             SwapBtn.GetComponent<Button>().onClick.AddListener(SwapCardOnclick);
             ConfirmSwapBtn.GetComponent<Button>().onClick.AddListener(ConfirmSwapOnclick);
+
         }
 
         private void Update()
@@ -64,6 +65,16 @@ namespace AIS.Intervene
                 && !hand.SelectionLocked
                 && BudgetUtility.CanAfford(InterveneBudgetInterfacer.Instance, SwapCost);
             ConfirmSwapBtn.interactable = m_SwapArmed;
+
+            Color ConfirmSwapHighlight = m_SwapArmed ? new Color(1f, 0.85f, 0.3f) : Color.white;
+            if (ConfirmSwapBtn.colors.normalColor != ConfirmSwapHighlight)
+            {
+                ColorBlock colors = ConfirmSwapBtn.colors;
+                colors.normalColor = ConfirmSwapHighlight;
+                colors.selectedColor = ConfirmSwapHighlight;
+                colors.highlightedColor = ConfirmSwapHighlight;
+                ConfirmSwapBtn.colors = colors;
+            }
 
             int highlight = m_SwapArmed ? m_HandIndex
                 : (hand.SelectedCardIndices.Count > 0 ? hand.SelectedCardIndices[0] : -1);
@@ -207,6 +218,12 @@ namespace AIS.Intervene
             SwapDeckWidget.gameObject.SetActive(false);
             ConfirmSwapBtn.gameObject.SetActive(false);
             BG.gameObject.SetActive(true);
+
+            ColorBlock resetColors = ConfirmSwapBtn.colors;
+            resetColors.normalColor = Color.white;
+            resetColors.selectedColor = Color.white;
+            resetColors.highlightedColor = Color.white;
+            ConfirmSwapBtn.colors = resetColors;
         }
 
         private void SwapCardOnclick()
@@ -225,6 +242,12 @@ namespace AIS.Intervene
                 SwapDeckWidget.gameObject.SetActive(false);
                 ConfirmSwapBtn.gameObject.SetActive(false);
                 BG.gameObject.SetActive(true);
+
+                ColorBlock resetColors = ConfirmSwapBtn.colors;
+                resetColors.normalColor = Color.white;
+                resetColors.selectedColor = Color.white;
+                resetColors.highlightedColor = Color.white;
+                ConfirmSwapBtn.colors = resetColors;
             }
 
             else
