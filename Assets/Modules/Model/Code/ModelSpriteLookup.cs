@@ -80,6 +80,30 @@ namespace AIS.Model
             return def.DisplayName;
         }
 
+        public Sprite LookupPathwayBGSprite(PathwayType pathType, bool isHidden = false)
+        {
+            if (m_AllPathwayDefs == null)
+            {
+                BuildPathwayLookup();
+            }
+            PathwayDef def;
+            m_PathwayMap.TryGetValue(pathType, out def);
+
+            return def.BGSprite;
+        }
+
+        public bool LookupPathwayVerticalMirror(PathwayType pathType, bool isHidden = false)
+        {
+            if (m_AllPathwayDefs == null)
+            {
+                BuildPathwayLookup();
+            }
+            PathwayDef def;
+            m_PathwayMap.TryGetValue(pathType, out def);
+
+            return def.MirrorVertical;
+        }
+
         public Sprite LookupPathwayIcon(PathwayType pathType, bool isHidden = false)
         {
             if (isHidden) { return m_HiddenPathwayDef.Sprite; }

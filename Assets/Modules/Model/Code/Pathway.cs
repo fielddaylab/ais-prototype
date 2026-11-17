@@ -89,6 +89,7 @@ namespace AIS.Model
     {
         // Effect id for the "trap invasives on move" effect installed by tributary-trap action cards.
         private const string TRAP_PATHWAY_EFFECT_ID = "pathway-trap";
+        private const float PERCENT_TEXT_OFFSET = 0.3f;
 
         #region Inspector
 
@@ -428,6 +429,9 @@ namespace AIS.Model
             {
                 // update icon to hidden
                 PathwayTypeRenderer.sprite = ModelSpriteLookup.Instance.LookupPathwayIcon(PathwayType, true);
+                PathwayTypeBGRenderer.sprite = ModelSpriteLookup.Instance.LookupPathwayBGSprite(PathwayType, true);
+                PathwayTypeBGRenderer.flipY = ModelSpriteLookup.Instance.LookupPathwayVerticalMirror(PathwayType, true);
+
                 // hide transfer rate
                 TransferRateText.gameObject.SetActive(false);
             }
@@ -435,11 +439,29 @@ namespace AIS.Model
             {
                 // update icon
                 PathwayTypeRenderer.sprite = ModelSpriteLookup.Instance.LookupPathwayIcon(PathwayType);
+                PathwayTypeBGRenderer.sprite = ModelSpriteLookup.Instance.LookupPathwayBGSprite(PathwayType, true);
+                PathwayTypeBGRenderer.flipY = ModelSpriteLookup.Instance.LookupPathwayVerticalMirror(PathwayType, true);
+                
                 // update transfer rate
                 TransferRateText.gameObject.SetActive(true);
-                string text = TransferRate + " per turn";
+                if (ModelSpriteLookup.Instance.LookupPathwayVerticalMirror(PathwayType, true))
+                {
+                    // place text above bg
+                    var rectPos = TransferRateText.rectTransform.anchoredPosition;
+                    rectPos.y = PERCENT_TEXT_OFFSET;
+                    TransferRateText.rectTransform.anchoredPosition = rectPos;
+                }
+                else
+                {
+                    // place text below bg
+                    var rectPos = TransferRateText.rectTransform.anchoredPosition;
+                    rectPos.y = -PERCENT_TEXT_OFFSET;
+                    TransferRateText.rectTransform.anchoredPosition = rectPos;
+                }
+
+                    string text = TransferRate.ToString();
                 if (TransferRateType == RateType.Ratio) {
-                    text = TransferRate * 100 + "% per turn";
+                    text = TransferRate * 100 + "%";
                 }
                 // update trapped visuals
                 if (IsTrapped())

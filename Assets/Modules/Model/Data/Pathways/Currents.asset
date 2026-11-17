@@ -13,5 +13,7 @@ MonoBehaviour:
   m_Name: Currents
   m_EditorClassIdentifier: 
   PathType: 1
-  Sprite: {fileID: 21300000, guid: 69ae2158cc5e25848a9191019867ac0b, type: 3}
+  BGSprite: {fileID: 21300000, guid: b16145e1f9f042d4d842266569b821e9, type: 3}
+  Sprite: {fileID: 21300000, guid: e1da3aa17600932498f54bb950c7a27b, type: 3}
   IsHidden: 0
+  MirrorVertical: 0

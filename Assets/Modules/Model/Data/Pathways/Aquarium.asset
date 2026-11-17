@@ -13,5 +13,7 @@ MonoBehaviour:
   m_Name: Aquarium
   m_EditorClassIdentifier: 
   PathType: 32
+  BGSprite: {fileID: 21300000, guid: b16145e1f9f042d4d842266569b821e9, type: 3}
   Sprite: {fileID: 21300000, guid: 59373bdbb4056d84fa603dbfcd851249, type: 3}
   IsHidden: 0
+  MirrorVertical: 0

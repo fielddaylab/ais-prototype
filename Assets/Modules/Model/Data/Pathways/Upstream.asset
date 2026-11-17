@@ -13,5 +13,7 @@ MonoBehaviour:
   m_Name: Upstream
   m_EditorClassIdentifier: 
   PathType: 64
+  BGSprite: {fileID: 21300000, guid: 269c2b6e9e9505c4f8f25738f2199de4, type: 3}
   Sprite: {fileID: 21300000, guid: 57cb3fe1590768743b79b00b5d99f35c, type: 3}
   IsHidden: 0
+  MirrorVertical: 0

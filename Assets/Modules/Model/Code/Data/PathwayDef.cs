@@ -9,7 +9,9 @@ namespace AIS.Model
     public class PathwayDef : ScriptableObject
     {
         public PathwayType PathType;
+        public Sprite BGSprite;
         public Sprite Sprite;
         public bool IsHidden;
+        public bool MirrorVertical;
     }
 }
