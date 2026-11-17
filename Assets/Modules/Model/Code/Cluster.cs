@@ -61,8 +61,14 @@ namespace AIS.Model
 
             ParentEcosystem = ecosystem;
 
+            bool clusterIsHidden = ModelSpriteLookup.Instance.LookupSpeciesIcon(contentsId) == null;
+
+            PopulationText.gameObject.SetActive(!clusterIsHidden);
+
             IconRenderer.sprite = ModelSpriteLookup.Instance.LookupSpeciesIcon(contentsId);
-            PopulationText.SetText("x" + Population.ToStringLookup() + "M");
+            if (!clusterIsHidden) {
+                PopulationText.SetText("x" + Population.ToStringLookup() + "M");
+            }
             ActionTag.Highlight.sortingOrder = InvasionModelSorting.SPECIES_SORTING;
             //BGRenderer.sortingOrder = InvasionModelSorting.SPECIES_SORTING + 10;
 
@@ -71,7 +77,9 @@ namespace AIS.Model
             m_TextHiderSuitIcon.sortingOrder = InvasionModelSorting.SPECIES_SORTING + 18;
 
             IconRenderer.sortingOrder = InvasionModelSorting.SPECIES_SORTING + 20;
-            PopulationText.GetComponent<MeshRenderer>().sortingOrder = InvasionModelSorting.SPECIES_SORTING + 15;
+            if (!clusterIsHidden) {
+                PopulationText.GetComponent<MeshRenderer>().sortingOrder = InvasionModelSorting.SPECIES_SORTING + 15;
+            }
 
             // Clusters are created and destroyed all through the sim, so each one asks for its own
             // visibility rather than the registry tracking instances that will not outlive a tick.

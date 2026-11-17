@@ -15,4 +15,5 @@ MonoBehaviour:
   SpeciesId:
     m_Source: nest
     m_HashValue: 1590744203
-  Sprite: {fileID: 21300000, guid: 518ef3d48c939654f87bba4ae668f555, type: 3}
+  Sprite: {fileID: 0}
+  DisplayName: 
