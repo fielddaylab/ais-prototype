@@ -28,6 +28,10 @@ namespace AIS.Intervene {
         private const int NEST_THRESHOLD = 3;
         private const float SIM_PHASE_DELAY = 1.2f;
         private const float SIM_PHASE_SHORT_DELAY = 0.8f;
+        private const float PREDATOR_HUNT_RATE = 0.4f;
+        private const float INVASIVE_HUNT_RATE = 0.6f;
+        private const float STARVE_RATE = 0.4f;
+        private const float REPRODUCE_RATE = 0.4f;
 
         // Stands in for banked prey when an ecosystem's invasives do not hunt.
         private const float DEFAULT_HUNT_RATIO = 0.5f;
@@ -183,8 +187,8 @@ namespace AIS.Intervene {
                 totalPreyConsumed = 0;
                 for (int i = 0; i < totalInvasives; i++)
                 {
-                    int rollResult = UnityEngine.Random.Range(1, 7);
-                    if (rollResult <= totalPrey)
+                    //int rollResult = UnityEngine.Random.Range(1, 7);
+                    if (UnityEngine.Random.Range(0, 1f) <= INVASIVE_HUNT_RATE)
                     {
                         totalPreyConsumed++;
                     }
@@ -233,13 +237,18 @@ namespace AIS.Intervene {
                 InterveneUI.Instance.SetSimPhase("Invasive Turn: Starve");
                 if (totalPreyConsumed == 0)
                 {
-                    int rollResult = UnityEngine.Random.Range(1, 13);
-                    if (rollResult <= totalInvasives)
+                    int starveCount = 0;
+                    for (int i = 0; i < totalInvasives; i++)
                     {
-                        eco.ReleasePopulation(invasiveCounts[0].Item1, 1);
-                        Debug.Log("[InterveneDriver] [InterspeciesDynamics] eco " + eco.EcosystemId + " invasives starved 1");
-                        AisGame.Events.Dispatch(InterveneEvents.OnStarve);
+                        // int rollResult = UnityEngine.Random.Range(1, 13);
+                        if (UnityEngine.Random.Range(0, 1f) <= STARVE_RATE)
+                        {
+                            eco.ReleasePopulation(invasiveCounts[0].Item1, 1);
+                            starveCount++;
+                        }
                     }
+                    Debug.Log("[InterveneDriver] [InterspeciesDynamics] eco " + eco.EcosystemId + " invasives starved " + starveCount);
+                    AisGame.Events.Dispatch(InterveneEvents.OnStarve);
                 }
                 yield return SIM_PHASE_SHORT_DELAY;
             }
@@ -327,8 +336,8 @@ namespace AIS.Intervene {
             int totalPreyConsumed = 0;
             for (int i = 0; i < totalPredators; i++)
             {
-                int rollResult = UnityEngine.Random.Range(1, 7);
-                if (rollResult <= totalPrey)
+                //int rollResult = UnityEngine.Random.Range(1, 7);
+                if (UnityEngine.Random.Range(0, 1f) <= PREDATOR_HUNT_RATE)
                 {
                     totalPreyConsumed++;
                 }
@@ -347,13 +356,18 @@ namespace AIS.Intervene {
             // Starve
             if (totalPreyConsumed == 0)
             {
-                int rollResult = UnityEngine.Random.Range(1, 13);
-                if (rollResult <= totalPredators)
+                int starveCount = 0;
+                for (int i = 0; i < totalPredators; i++)
                 {
-                    eco.ReleasePopulation(predatorCounts[0].Item1, 1);
-                    Debug.Log("[InterveneDriver] [InterspeciesDynamics] eco " + eco.EcosystemId + " predators starved 1");
-                    AisGame.Events.Dispatch(InterveneEvents.OnStarve);
+                    // int rollResult = UnityEngine.Random.Range(1, 13);
+                    if (UnityEngine.Random.Range(0, 1f) <= STARVE_RATE)
+                    {
+                        eco.ReleasePopulation(predatorCounts[0].Item1, 1);
+                        starveCount++;
+                    }
                 }
+                Debug.Log("[InterveneDriver] [InterspeciesDynamics] eco " + eco.EcosystemId + " predators starved " + starveCount);
+                AisGame.Events.Dispatch(InterveneEvents.OnStarve);
             }
             yield return SIM_PHASE_SHORT_DELAY;
 
@@ -416,29 +430,36 @@ namespace AIS.Intervene {
             SetEcosystemFocused(eco, true);
 
             InterveneUI.Instance.SetSimPhase("Prey Turn: Reproduce");
-            // Reproduce
-            int rollResult = UnityEngine.Random.Range(1, 7);
-            // check reproduce condition and if numEgg >= 1
-            var preyCluster = eco.GetCluster(preyCounts[0].Item1);
 
-            int reproduceNum = rollResult <= totalPrey ? 1 : 0;
+            // Reproduce
+            int reproduceNum = 0;
+            for (int i = 0; i < totalPrey; i++)
+            {
+                if (UnityEngine.Random.Range(0, 1f) <= REPRODUCE_RATE)
+                {
+                    reproduceNum++;
+                }
+            }
+
             reproduceNum = eco.ApplyReproductionModifiers(ActionTarget.Prey, reproduceNum);
+
+            var preyCluster = eco.GetCluster(preyCounts[0].Item1);
 
             if (reproduceNum > 0)
             {
                 if (preyCluster != null)
                 {
                     // never negative
-                    preyCluster.NumEgg = Math.Max(0, preyCluster.NumEgg + reproduceNum);
+                    preyCluster.NumEgg = Math.Max(0, preyCluster.NumEgg + (reproduceNum > 0 ? 1: 0));
                 }
             }
 
             if (preyCluster != null && preyCluster.NumEgg > 0 && preyCluster.IsSpawnable)
             {
                 // TODO: how to divvy if multiple types of prey?
-                eco.AddPopulation(preyCounts[0].Item1, 1, preyCounts[0].Item3, preyCounts[0].Item4);
+                eco.AddPopulation(preyCounts[0].Item1, reproduceNum, preyCounts[0].Item3, preyCounts[0].Item4);
                 preyCluster.NumEgg -= 1;
-                Debug.Log("[InterveneDriver] [InterspeciesDynamics] eco " + eco.EcosystemId + " prey reproduced 1");
+                Debug.Log("[InterveneDriver] [InterspeciesDynamics] eco " + eco.EcosystemId + " prey reproduced " + reproduceNum);
                 AisGame.Events.Dispatch(InterveneEvents.OnReproduce);
             }
 

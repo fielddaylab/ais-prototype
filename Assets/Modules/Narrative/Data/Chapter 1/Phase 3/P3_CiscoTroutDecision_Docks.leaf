@@ -25,7 +25,7 @@ $if global:ciscoFirst == false
 
        {@You} 
               I need some numbers, and I figure you'd be the best to ask. 
-              Do you information on the populations of cisco and trout in the lake?
+              Do you have information on the populations of cisco and trout in the lake?
 
        {@João}
               I've been keeping track of the population for cisco. Your uncle's been looking at trout. 
@@ -53,7 +53,7 @@ $elseif global:troutFirst == false
 
        {@You} 
               I need some numbers, and I figure you'd be the best to ask. 
-              Do you information on the populations of cisco and trout in the lake?
+              Do you have information on the populations of cisco and trout in the lake?
 
        {@João}
               I've been keeping track of the population for cisco. Your uncle's been looking at trout. 
